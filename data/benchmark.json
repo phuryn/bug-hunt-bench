@@ -5,9 +5,9 @@
     "planted_total": 105,
     "repo1_total": 45,
     "repo2_total": 60,
-    "survivors": 51,
-    "models": 14,
-    "runs": 24,
+    "survivors": 50,
+    "models": 15,
+    "runs": 25,
     "updated": "2026-08-25",
     "source_repo": "https://github.com/phuryn/experiments/tree/main/bug-hunt-bench",
     "author": "Pawel Huryn",
@@ -39,7 +39,7 @@
     "One round per model per repo. Same-setting variance is real and measured: three Grok 4.5 runs on identical settings scored 16, 13 and 17.",
     "Wall clock is not comparable across all rows - some waves ran their two repo legs concurrently, some sequentially, and one row excludes a harness stall. Where it matters the row says so.",
     "Cost is not one kind of number. Each row is tagged: an actual bill, a list-rate estimate, a reconstructed floor, or free.",
-    "51 of the 105 bugs have survived every model in every run to date."
+    "50 of the 105 bugs have survived every model in every run to date. The count moves rarely: three bugs have ever been taken off it."
   ],
   "runs": [
     {
@@ -416,6 +416,31 @@
       "superseded": null,
       "caveat": "Mixed serving path: repo 1 ran Meta-direct at verified xhigh, repo 2 through OpenRouter at default effort. The single-path number for this model is the 14/105 row.",
       "note": null
+    },
+    {
+      "id": "Ox Alpha (stealth; free)",
+      "model": "Ox Alpha (stealth)",
+      "vendor": "unidentified - fingerprints as Z.ai GLM",
+      "harness": "Claude Code / OpenRouter",
+      "effort": "default",
+      "effort_status": "inert_default",
+      "date": "2026-08-25",
+      "color": "#0B6E6E",
+      "fixed": 16,
+      "repo1_fixed": 8,
+      "repo2_fixed": 8,
+      "partial": 1,
+      "claimed_only": 1,
+      "extras": 3,
+      "false_positive_fixes": 0,
+      "wall_min": 59.4,
+      "cost_usd": 0.0,
+      "cost_kind": "free",
+      "ceiling": true,
+      "featured": true,
+      "superseded": null,
+      "caveat": null,
+      "note": "OpenRouter stealth slug, free at the time of the run. Wire fingerprint (tokenizer, special tokens, model card) matches Z.ai's GLM-5.3 serving stack. Fixed H3 - a repo-1 bug that had survived every model in every prior run."
     },
     {
       "id": "Grok 4.5",
