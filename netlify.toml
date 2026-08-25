@@ -1,0 +1,15 @@
+# Static site, no build step. Netlify serves the repository root as-is.
+[build]
+  publish = "."
+  command = ""
+
+[build.processing]
+  skip_processing = true
+
+# Headers live in _headers so they also apply when the folder is served by any
+# other static host. Netlify reads that file directly.
+
+[[redirects]]
+  from = "/data"
+  to = "/data/benchmark.json"
+  status = 302
