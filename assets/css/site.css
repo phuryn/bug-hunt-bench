@@ -427,6 +427,44 @@ h1 em { font-style: normal; color: var(--accent); }
   font-size: 14px; background: var(--plate); border: 1px solid var(--hairline);
 }
 
+/* ---------------------------------------------------------------- skeleton */
+/* The board is rendered from JSON, so between first paint and the fetch landing
+   the page had a hole in it (Pawel, 2026-08-25: "sometimes it looks empty").
+   This is markup, not JS: it paints with the HTML and is removed once the real
+   board exists - and on failure too, so a broken load never pulses forever. */
+.skeleton {
+  background: var(--plate); border: 1px solid var(--hairline);
+  padding: 14px 16px 18px;
+}
+.skeleton__head, .skeleton__row {
+  height: 12px; border-radius: 2px; background: var(--hairline);
+  animation: skel 1.5s ease-in-out infinite;
+}
+.skeleton__head { height: 16px; margin-bottom: 16px; width: 46%; }
+.skeleton__row { margin-top: 15px; }
+.skeleton__row:nth-child(2) { width: 92%; }
+.skeleton__row:nth-child(3) { width: 84%; }
+.skeleton__row:nth-child(4) { width: 88%; }
+.skeleton__row:nth-child(5) { width: 76%; }
+.skeleton__row:nth-child(6) { width: 83%; }
+.skeleton__row:nth-child(7) { width: 71%; }
+.skeleton__row:nth-child(8) { width: 79%; }
+.skeleton__row:nth-child(9) { width: 66%; }
+@keyframes skel { 0%, 100% { opacity: 0.55; } 50% { opacity: 0.95; } }
+@media (prefers-reduced-motion: reduce) {
+  .skeleton__head, .skeleton__row { animation: none; opacity: 0.7; }
+}
+/* while loading, the real regions are empty - keep them out of the flow so the
+   placeholder is the only thing occupying the space */
+.is-loading .tablewrap,
+.is-loading .pullquote,
+.is-loading .keys { display: none; }
+.skeleton, .tickrule__skeleton { display: none; }
+.is-loading .skeleton { display: block; }
+.is-loading .tickrule__skeleton { display: block; height: 44px; margin-top: 0; }
+.is-loading .tickrule figcaption { visibility: hidden; }
+@media print { .skeleton { display: none !important; } }
+
 /* ------------------------------------------------------------------- table */
 
 .tablewrap {
@@ -589,12 +627,17 @@ h1 em { font-style: normal; color: var(--accent); }
 
 /* pull quote + keys */
 /* the card's closing strip: accent rule, panel ground, the rule in accent italic */
+/* The scoring note. It was a display pull quote - serif italic, accent colour, ~1.3rem -
+   which reads fine for one line and strange for a paragraph: at phone width it became five
+   lines of italic serif and stopped looking like a caption and started looking like a poem
+   (Pawel, 2026-08-25). It is an explanatory note, so it is set as one: sans, body size,
+   left rule instead of a slab, sitting close under the table it explains. */
 .pullquote {
-  margin: 30px 0 0; padding: 18px clamp(18px, 2.4vw, 26px) 20px;
-  background: var(--panel); border-top: 2px solid var(--accent);
-  font-family: var(--serif); font-style: italic;
-  font-size: clamp(1.08rem, 1.9vw, 1.35rem); line-height: 1.45;
-  color: var(--accent); max-width: none;
+  margin: 16px 0 0; padding: 12px 0 0 14px;
+  border-top: 0; border-left: 3px solid var(--accent);
+  font-family: var(--sans); font-style: normal; font-weight: 400;
+  font-size: 13px; line-height: 1.55;
+  color: var(--ink-2); max-width: 92ch;
 }
 
 .keys {

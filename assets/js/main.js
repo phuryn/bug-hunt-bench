@@ -9,12 +9,12 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el,
-} from './format.js?v=ac7c2c0461';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=ac7c2c0461';
-import { renderScatter, AXES } from './scatter.js?v=ac7c2c0461';
-import { renderPicker } from './selector.js?v=ac7c2c0461';
-import { exportView } from './export-png.js?v=ac7c2c0461';
-import { initTheme, hasAdjustedColors } from './theme.js?v=ac7c2c0461';
+} from './format.js?v=e8044c6c40';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=e8044c6c40';
+import { renderScatter, AXES } from './scatter.js?v=e8044c6c40';
+import { renderPicker } from './selector.js?v=e8044c6c40';
+import { exportView } from './export-png.js?v=e8044c6c40';
+import { initTheme, hasAdjustedColors } from './theme.js?v=e8044c6c40';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -131,6 +131,8 @@ function chartCaveat(axisId) {
 function renderHero() {
   const m = DATA.meta;
   const updated = fmtDate(m.updated);
+  const wrap = document.getElementById('hero-updated-wrap');
+  if (wrap) wrap.hidden = false;   // only once there is a date to show
   ['hero-updated', 'footer-updated'].forEach((id) => {
     const t = $(id);
     t.setAttribute('datetime', m.updated);
@@ -587,9 +589,22 @@ async function boot() {
   initTheme(() => renderAll());
   renderAll();
   setView(state.view);
+
+  // the board is real now; the placeholder has done its job
+  ['board-skeleton', 'tickrule-skeleton'].forEach((id) => {
+    const n = document.getElementById(id);
+    if (n) n.remove();
+  });
+  document.documentElement.classList.remove('is-loading');
 }
 
 boot().catch((err) => {
+  // never leave the skeleton pulsing forever - a failed load must look failed
+  ['board-skeleton', 'tickrule-skeleton'].forEach((id) => {
+    const n = document.getElementById(id);
+    if (n) n.remove();
+  });
+  document.documentElement.classList.remove('is-loading');
   const host = document.getElementById('panel-table');
   if (host) {
     host.textContent = '';

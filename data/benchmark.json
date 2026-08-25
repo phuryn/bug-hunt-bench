@@ -18,7 +18,7 @@
     "Two unrelated production codebases: a ~28K-line TypeScript VS Code extension (45 bugs) and a ~60K-line React/Supabase LMS (60 bugs). Most bugs are real regressions reverted from the repos' own fix history, each with its fix commit.",
     "The test suites stay green, so nothing points at the answers. Every model gets the identical prompt, one round per repo, in its own native agentic CLI.",
     "Grading is blind: the model's diff is the ground truth, not its report. An independent judge scores against a withheld answer key and never learns which model produced the diff.",
-    "The score counts PLANTED bugs fixed, and nothing else. Some models bug-max: they report a long list of real but irrelevant problems, and there is no reliable way to count that - the list has no fixed size, no answer key, and no ceiling, so scoring it would reward volume. Unplanted fixes are counted separately and never added to the score. Planted bugs are the only measure here that can be checked."
+    "The score counts planted bugs only. Some models bug-max - they report a long list of real but irrelevant problems, and that list has no answer key and no ceiling, so counting it would just reward volume. Unplanted fixes are tracked separately and never scored."
   ],
   "glossary": {
     "fixed": "Planted bugs fixed and verified against the withheld answer key. The only number in the score.",

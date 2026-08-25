@@ -19,3 +19,7 @@
   var meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute('content', theme === 'dark' ? '#101419' : '#eef0f3');
 }());
+
+// the board is JS-rendered; mark the document so the placeholder shows and the
+// real regions stay hidden until there is something in them (no empty-looking page)
+document.documentElement.classList.add('is-loading');

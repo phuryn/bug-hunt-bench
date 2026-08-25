@@ -15,7 +15,7 @@
      <html> before the first paint, so a dark-theme visitor never sees a white
      flash. It is a file rather than an inline block because the CSP has no
      'unsafe-inline'. -->
-<script src="/assets/js/theme-boot.js?v=ac7c2c0461"></script>
+<script src="/assets/js/theme-boot.js?v=e8044c6c40"></script>
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bug Hunt Bench">
@@ -33,10 +33,12 @@
 <meta name="twitter:creator" content="@PawelHuryn">
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=ac7c2c0461">
+<link rel="stylesheet" href="/assets/css/site.css?v=e8044c6c40">
 
 <!-- dateModified and url are patched at runtime from data/benchmark.json; keep the static values in sync anyway. -->
 <script type="application/ld+json" id="dataset-schema">
@@ -74,7 +76,7 @@
   ]
 }
 </script>
-<script type="module" src="/assets/js/main.js?v=ac7c2c0461"></script>
+<script type="module" src="/assets/js/main.js?v=e8044c6c40"></script>
 </head>
 <body>
 <a class="skip-link" href="#leaderboard">Skip to the leaderboard</a>
@@ -104,7 +106,7 @@
 <main id="main">
 
   <section class="hero wrap" aria-labelledby="page-title">
-    <p class="kicker">Blind-graded &middot; One prompt per repo &middot; Updated <time id="hero-updated" datetime="">&nbsp;</time></p>
+    <p class="kicker">Blind-graded &middot; One prompt per repo<span id="hero-updated-wrap" hidden> &middot; Updated <time id="hero-updated" datetime=""></time></span></p>
     <!-- replaced at runtime with the headline built from data/benchmark.json; the
          static text is what a crawler without JavaScript gets, and carries no figures -->
     <h1 id="page-title">Bug Hunt Bench</h1>
@@ -122,6 +124,7 @@
 
     <figure class="tickrule">
       <div class="tickrule__plot" id="tickrule-plot" aria-hidden="true"></div>
+      <div class="tickrule__skeleton skeleton__row" id="tickrule-skeleton" aria-hidden="true"></div>
       <figcaption id="tickrule-caption"></figcaption>
     </figure>
   </section>
@@ -157,6 +160,13 @@
     </div>
 
     <div class="panel" id="panel-table" role="tabpanel" tabindex="0" aria-labelledby="tab-table">
+      <div class="skeleton" id="board-skeleton" aria-hidden="true">
+        <div class="skeleton__head"></div>
+        <div class="skeleton__row"></div><div class="skeleton__row"></div>
+        <div class="skeleton__row"></div><div class="skeleton__row"></div>
+        <div class="skeleton__row"></div><div class="skeleton__row"></div>
+        <div class="skeleton__row"></div><div class="skeleton__row"></div>
+      </div>
       <div class="tablewrap" id="tablewrap" tabindex="0" role="region" aria-label="Leaderboard table, scrollable">
         <table class="board" id="board">
           <caption class="board__caption" id="board-caption">
@@ -167,7 +177,7 @@
         </table>
       </div>
       <p class="empty" id="table-empty" hidden>No runs selected. Pick some above, or hit <strong>Featured</strong>.</p>
-      <blockquote class="pullquote" id="extras-pullquote"></blockquote>
+      <p class="pullquote" id="extras-pullquote"></p>
       <div class="keys" id="table-keys"></div>
     </div>
 
