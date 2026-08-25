@@ -5,9 +5,9 @@
     "planted_total": 105,
     "repo1_total": 45,
     "repo2_total": 60,
-    "survivors": 50,
-    "models": 15,
-    "runs": 25,
+    "survivors": 49,
+    "models": 16,
+    "runs": 26,
     "updated": "2026-08-25",
     "source_repo": "https://github.com/phuryn/experiments/tree/main/bug-hunt-bench",
     "author": "Pawel Huryn",
@@ -39,7 +39,7 @@
     "One round per model per repo. Same-setting variance is real and measured: three Grok 4.5 runs on identical settings scored 16, 13 and 17.",
     "Wall clock is the same measure on every row: repo 1 plus repo 2 agent time, with dependency install and health checks excluded. Two things bend it, and both are marked on the score-and-time map. Three runs took their two repo legs concurrently - the sum is still like-for-like, but two agents sharing one machine and one API key contend, so those figures can run high rather than low. And one figure is adjusted: the retired-Gemini-CLI run excludes a 35-minute harness stall, the only number here that is not what the harness measured.",
     "Cost is not one kind of number: some figures are an actual bill, some are a token-count estimate at published list rates, one CLI only allows a reconstructed lower bound, and one run was free. The key under the board names which is which - they are not interchangeable, and none of them is a quote for what you would pay.",
-    "50 of the 105 bugs have survived every model in every run to date. The count moves rarely: three bugs have ever been taken off it."
+    "49 of the 105 bugs have survived every model in every run to date. The count moves rarely - four bugs have ever come off it, two of them on 25 August 2026."
   ],
   "runs": [
     {
@@ -329,6 +329,32 @@
       "note": null
     },
     {
+      "id": "GLM-5.3",
+      "model": "GLM-5.3",
+      "vendor": "Z.ai",
+      "harness": "Claude Code / OpenRouter",
+      "effort": "default",
+      "effort_status": "inert_default",
+      "date": "2026-08-25",
+      "color": "#0B6E6E",
+      "fixed": 19,
+      "repo1_fixed": 8,
+      "repo2_fixed": 11,
+      "partial": 1,
+      "claimed_only": 1,
+      "extras": 4,
+      "false_positive_fixes": 0,
+      "wall_min": 66.7,
+      "cost_usd": 19.73,
+      "cost_kind": "bill",
+      "wall_note": null,
+      "ceiling": true,
+      "featured": true,
+      "superseded": null,
+      "caveat": null,
+      "note": "Run as the behavioural control for the Ox Alpha stealth slug, whose wire fingerprint matches this model's serving stack. Their claim lists overlapped heavily, but only 10 of their 25 graded fixes are the same bugs."
+    },
+    {
       "id": "Qwen3.8-Max",
       "model": "Qwen3.8-Max",
       "vendor": "Alibaba",
@@ -440,7 +466,7 @@
       "effort": "default",
       "effort_status": "inert_default",
       "date": "2026-08-25",
-      "color": "#0B6E6E",
+      "color": "#8A6D0B",
       "fixed": 16,
       "repo1_fixed": 8,
       "repo2_fixed": 8,
