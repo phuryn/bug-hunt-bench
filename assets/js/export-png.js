@@ -1,4 +1,7 @@
 /* PNG export.
+   Follows the active theme: every colour is read from the live custom properties,
+   so the exported card is the one on screen, and run colours go through the same
+   runColor() the page uses.
    Everything is drawn with the canvas 2D API — no SVG rasterisation, no library, no
    service. Rasterising the live SVG would lose the web fonts (an <img>-loaded SVG
    cannot reach them), and the labels are placed by measured text width, so a silent
@@ -6,10 +9,11 @@
    identical to the screen and lets the attribution block be part of the image. */
 
 import {
-  COLUMNS, GROUPS, TOTALS, COST_KIND_LABEL, EFFORT_STATUS_LABEL,
-  fmtCost, fmtWall, fmtInt, fmtDate, compareRuns,
+  COLUMNS, GROUPS, TOTALS, SCORE_BAR_REF, SCORE_BAR_NOTE, COST_KIND_LABEL,
+  EFFORT_STATUS_LABEL, fmtCost, fmtWall, fmtInt, fmtDate, barRatio, compareRuns,
 } from './format.js';
 import { scatterLayout } from './scatter.js';
+import { runColor, activeTheme } from './theme.js';
 
 const SCALE = 2;
 const PAD = 32;
@@ -30,11 +34,13 @@ function theme() {
     muted: cssVar('--muted') || '#6b727b',
     accent: cssVar('--accent') || '#3f6b8f',
     neutral: cssVar('--neutral') || '#aab1ba',
+    bar: cssVar('--bar') || '#aab1ba',
   };
 }
 
 const SANS = 'Inter, system-ui, sans-serif';
 const SERIF = '"EB Garamond", Georgia, serif';
+const MONO = 'ui-monospace, SFMono-Regular, Consolas, monospace';
 
 function hatchPattern(ctx, color) {
   const tile = document.createElement('canvas');
@@ -156,7 +162,7 @@ function drawTable(ctx, T, runs, state, w) {
   cols.forEach((c) => { c.x = x; c.width = c.w * scale; x += c.width; });
 
   let y = ctx.__y;
-  const rowH = 42;
+  const rowH = 50;
 
   // group header
   y += 24;
@@ -182,12 +188,24 @@ function drawTable(ctx, T, runs, state, w) {
     text(ctx, str, tx, y, font, active ? T.ink : T.muted, right);
   });
   y += 9;
-  line(ctx, PAD, y, w - PAD, y, T.rule);
+  line(ctx, PAD, y, w - PAD, y, T.ink, 2);
   ctx.__groupRules = cols.filter((c, i) => i > 0 && c.group !== cols[i - 1].group).map((c) => c.x);
   const rulesTop = y;
 
-  const extrasMax = ctx.__extrasMax;
+  const { extrasMax, wallMax, costMax } = ctx.__scales;
   const hatch = hatchPattern(ctx, T.muted);
+
+  /* the on-screen geometry, in canvas terms: bar from the left edge of the
+     column, value printed at its end, the value's width reserved out of the
+     track so a full-length bar cannot push its own number off the column */
+  const drawBar = (c, top, ratio, height, fill, reserve) => {
+    const trackW = Math.max(10, c.width - 8 - reserve);
+    if (ratio === null || ratio === 0) return c.x + 4;
+    const bw = Math.max(1.5, ratio * trackW);
+    ctx.fillStyle = fill;
+    roundedRight(ctx, c.x + 4, top, bw, height, 4);
+    return c.x + 4 + bw;
+  };
   const sorted = runs.slice().sort((a, b) => compareRuns(a, b, state.sort, state.dir));
 
   sorted.forEach((run) => {
@@ -198,45 +216,42 @@ function drawTable(ctx, T, runs, state, w) {
     cols.forEach((c) => {
       const rightX = c.x + c.width - 8;
       if (c.key === 'model') {
-        ctx.fillStyle = run.color;
-        ctx.fillRect(c.x + 8, top + 10, 9, 9);
-        const name = truncate(ctx, run.model, `500 13px ${SANS}`, c.width - 30);
-        text(ctx, name, c.x + 24, baseline, `500 13px ${SANS}`, run.superseded ? T.muted : T.ink);
+        ctx.fillStyle = runColor(run.color);
+        ctx.fillRect(c.x + 8, top + 12, 11, 11);
+        const name = truncate(ctx, run.model, `600 14px ${SANS}`, c.width - 32);
+        text(ctx, name, c.x + 26, baseline, `600 14px ${SANS}`, run.superseded ? T.muted : T.ink);
         const status = EFFORT_STATUS_LABEL[run.effort_status] || run.effort_status;
         const metaStr = `${run.effort} · ${status} · ${run.vendor}${run.superseded ? ' · superseded' : ''}`;
-        text(ctx, truncate(ctx, metaStr, `10px ${SANS}`, c.width - 30), c.x + 24, baseline + 13, `10px ${SANS}`, T.muted);
+        text(ctx, truncate(ctx, metaStr, `10px ${MONO}`, c.width - 32), c.x + 26, baseline + 14, `10px ${MONO}`, T.muted);
       } else if (c.key === 'fixed') {
-        const numW = 46;
-        const trackW = c.width - numW - 18;
-        const ty = top + 15;
-        ctx.fillStyle = T.panel;
-        ctx.fillRect(c.x + 4, ty, trackW, 9);
-        ctx.fillStyle = run.color;
-        roundedRight(ctx, c.x + 4, ty, Math.max(2, (run.fixed / TOTALS.fixed) * trackW), 9, 3);
-        text(ctx, fmtInt(run.fixed), rightX - 20, baseline + 3, `600 15px ${SANS}`, T.ink, 'right');
-        text(ctx, `/${TOTALS.fixed}`, rightX, baseline + 3, `11px ${SANS}`, T.neutral, 'right');
+        const end = drawBar(c, top + 11, barRatio(run.fixed, SCORE_BAR_REF), 18,
+          runColor(run.color), 58);
+        ctx.font = `600 15px ${SANS}`;
+        const nw = ctx.measureText(fmtInt(run.fixed)).width;
+        text(ctx, fmtInt(run.fixed), end + 10, baseline + 4, `600 15px ${SANS}`, T.ink);
+        text(ctx, `/${TOTALS.fixed}`, end + 12 + nw, baseline + 4, `11px ${SANS}`, T.neutral);
       } else if (c.key === 'extras') {
-        const numW = 22;
-        const trackW = c.width - numW - 18;
-        const ty = top + 17;
-        const fw = extrasMax ? (run.extras / extrasMax) * trackW : 0;
-        line(ctx, c.x + 4, ty + 6, c.x + 4 + trackW, ty + 6, T.hairline);
-        if (fw > 0) {
-          ctx.fillStyle = hatch;
-          ctx.fillRect(c.x + 4, ty, fw, 6);
-          line(ctx, c.x + 4, ty + 6, c.x + 4 + fw, ty + 6, T.muted);
+        const end = drawBar(c, top + 16, barRatio(run.extras, extrasMax), 9, hatch, 28);
+        text(ctx, fmtInt(run.extras), end + 10, baseline + 2, `12px ${SANS}`, T.muted);
+      } else if (c.key === 'wall_min') {
+        const end = drawBar(c, top + 14, barRatio(run.wall_min, wallMax), 13, T.bar, 62);
+        ctx.font = `12.5px ${SANS}`;
+        const vw = ctx.measureText(fmtWall(run.wall_min)).width;
+        text(ctx, fmtWall(run.wall_min), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
+        if (run.wall_min !== null && run.wall_min !== undefined) {
+          text(ctx, 'min', end + 13 + vw, baseline + 2, `10px ${SANS}`, T.neutral);
         }
-        text(ctx, fmtInt(run.extras), rightX, baseline, `12px ${SANS}`, T.muted, 'right');
       } else if (c.key === 'cost_usd') {
         const kind = COST_KIND_LABEL[run.cost_kind] || run.cost_kind;
-        ctx.font = `10px ${SANS}`;
-        const kw = ctx.measureText(kind).width;
-        text(ctx, kind, rightX, baseline, `10px ${SANS}`, T.muted, 'right');
-        text(ctx, fmtCost(run.cost_usd), rightX - kw - 6, baseline, `12px ${SANS}`, T.ink2, 'right');
+        const end = drawBar(c, top + 13, barRatio(run.cost_usd, costMax), 13, T.bar, 62);
+        text(ctx, fmtCost(run.cost_usd), end + 10, baseline, `12.5px ${SANS}`, T.ink2);
+        if (run.cost_usd !== null && run.cost_usd !== undefined) {
+          // the tag sits under its own figure and never leaves it: a bar makes
+          // lengths look comparable, and these dollars are not one kind of number
+          text(ctx, kind, end + 10, baseline + 13, `10px ${SANS}`, T.muted);
+        }
       } else if (c.key === 'date') {
         text(ctx, fmtDate(run.date), rightX, baseline, `11.5px ${SANS}`, T.muted, 'right');
-      } else if (c.key === 'wall_min') {
-        text(ctx, fmtWall(run.wall_min), rightX, baseline, `12px ${SANS}`, T.ink2, 'right');
       } else {
         const v = run[c.key];
         text(ctx, fmtInt(v), rightX, baseline, `12px ${SANS}`, v === 0 ? T.neutral : T.ink2, 'right');
@@ -317,6 +332,9 @@ function drawScatter(ctx, T, runs, allRuns, w) {
     ctx.beginPath();
     ctx.arc(p.cx, p.cy, 7, 0, Math.PI * 2);
     ctx.fill();
+    ctx.strokeStyle = T.hairline;
+    ctx.lineWidth = 1;
+    ctx.stroke();
     ctx.fillStyle = p.color;
     ctx.beginPath();
     ctx.arc(p.cx, p.cy, 5, 0, Math.PI * 2);
@@ -352,7 +370,9 @@ function drawScatter(ctx, T, runs, allRuns, w) {
 
 /* -------------------------------------------------------------------- main */
 
-export async function exportView({ view, runs, allRuns, state, meta, siteUrl, presetName }) {
+export async function exportView({
+  view, runs, allRuns, state, meta, scales, siteUrl, presetName,
+}) {
   if (document.fonts && document.fonts.ready) await document.fonts.ready;
   const T = theme();
 
@@ -365,14 +385,15 @@ export async function exportView({ view, runs, allRuns, state, meta, siteUrl, pr
       ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Sorted by ${sortLabel}.`
       : `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Cost on a logarithmic axis; the score axis stops above the board's best run, which is out of 105.`,
     'Score = planted bugs fixed, verified blind against a withheld answer key. Extras are real defects that were never planted; they are tracked, never added to the score.',
+    // the same sentence the page carries, because an exported PNG travels alone
+    view === 'table' ? SCORE_BAR_NOTE : null,
     `Cost figures are tagged bill / list rate / floor / free and are not interchangeable. ${siteUrl}`,
-  ];
+  ].filter(Boolean);
 
-  const extrasMax = Math.max(...allRuns.map((r) => r.extras || 0));
   const headH = 150;
   let bodyH;
   if (view === 'table') {
-    bodyH = 24 + 8 + 20 + 9 + runs.length * 42 + 20;
+    bodyH = 24 + 8 + 20 + 9 + runs.length * 50 + 20;
   } else {
     const plotW = w - PAD * 2;
     bodyH = 20 + Math.round(plotW * 0.5) + 8 + 16 + Math.ceil(runs.length / 3) * 17 + 16;
@@ -385,7 +406,7 @@ export async function exportView({ view, runs, allRuns, state, meta, siteUrl, pr
   canvas.height = h * SCALE;
   const ctx = canvas.getContext('2d');
   ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0);
-  ctx.__extrasMax = extrasMax;
+  ctx.__scales = scales;
 
   ctx.fillStyle = T.plate;
   ctx.fillRect(0, 0, w, h);
@@ -406,7 +427,8 @@ export async function exportView({ view, runs, allRuns, state, meta, siteUrl, pr
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `bug-hunt-bench-${view === 'table' ? 'leaderboard' : 'score-vs-cost'}-${meta.updated}.png`;
+  // the theme is baked into the file name too, so two exports never collide
+  a.download = `bug-hunt-bench-${view === 'table' ? 'leaderboard' : 'score-vs-cost'}-${activeTheme()}-${meta.updated}.png`;
   document.body.appendChild(a);
   a.click();
   a.remove();

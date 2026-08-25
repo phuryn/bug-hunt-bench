@@ -3,12 +3,13 @@
    string so any view can be linked and reloaded. */
 
 import {
-  COLUMNS, glossaryTerm, slugify, fmtDate, el,
+  COLUMNS, SCORE_BAR_NOTE, glossaryTerm, slugify, fmtDate, el,
 } from './format.js';
 import { renderHead, renderBody, renderColgroup } from './table.js';
 import { renderScatter } from './scatter.js';
 import { renderPicker } from './selector.js';
 import { exportView } from './export-png.js';
+import { initTheme, hasAdjustedColors } from './theme.js';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -27,8 +28,12 @@ const state = {
 
 let DATA = null;
 let RUNS = [];
-let EXTRAS_MAX = 0;
+/* Bar scales are taken from the whole board, never from the current selection:
+   changing what is selected must not silently rescale the rows that survive. */
+let SCALES = { extrasMax: 0, wallMax: 0, costMax: 0 };
 let SITE_URL = '';
+
+const NUMBER_WORD = ['no', 'one', 'Two', 'Three', 'Four', 'Five', 'Six'];
 
 const $ = (id) => document.getElementById(id);
 
@@ -93,6 +98,19 @@ function renderHero() {
     t.setAttribute('datetime', m.updated);
     t.textContent = updated;
   });
+
+  /* Kicker, headline, standfirst — the card's hierarchy. The headline is the
+     finding, built from the data file like everything else; the product name
+     lives in the kicker and the masthead. The markup ships "Bug Hunt Bench" as
+     the h1 so a crawler that runs no JavaScript still gets a heading, and no
+     figure is ever typed into the HTML. */
+  const repos = [m.repo1_total, m.repo2_total].filter((v) => typeof v === 'number').length;
+  const h1 = $('page-title');
+  h1.textContent = '';
+  h1.append(
+    el('em', { text: `${m.planted_total} planted bugs.` }),
+    ` ${NUMBER_WORD[repos]} repos. ${m.models} frontier models, ${m.runs} runs.`,
+  );
   $('hero-lede').textContent = m.subtitle;
   if (m.source_repo) $('source-link').href = m.source_repo;
 
@@ -179,11 +197,19 @@ function renderKeys() {
       el('span', { class: 'swatch-key swatch-key--score' }),
       'Solid, in the run’s own colour: planted bugs fixed, out of 105.',
     ]),
+    el('p', { class: 'note', text: SCORE_BAR_NOTE }),
     el('p', {}, [
       el('span', { class: 'swatch-key swatch-key--extras' }),
-      'Hatched grey: extras. Scaled against the highest extras count on the board, never against the score.',
+      'Hatched grey, half height: extras. Scaled against the highest extras count on the board, never against the score.',
+    ]),
+    el('p', {}, [
+      el('span', { class: 'swatch-key swatch-key--meta' }),
+      'Flat grey: wall clock and cost, each scaled to the highest figure on the board. Grey, never the run’s colour, because neither is the score — and a cost bar is only comparable to another bar with the same tag.',
     ]),
     el('p', { text: '† marks a run carrying a note, a caveat, or a supersession. Open it on the row.' }),
+    hasAdjustedColors(RUNS)
+      ? el('p', { class: 'note', text: 'In the dark theme a run colour that would be invisible on a dark surface is shown lightened. The hue is the run’s own; only the brightness moves, and only on screen.' })
+      : null,
   ]));
 
   keys.appendChild(keyList('cost_', 'What the cost tag means'));
@@ -231,7 +257,7 @@ function renderViews() {
   $('export-png').title = empty ? 'Select at least one run to export' : 'Download the current view as a PNG';
 
   renderHead($('board-head'), state, onSort);
-  renderBody($('board-body'), runs, state, DATA.glossary, EXTRAS_MAX);
+  renderBody($('board-body'), runs, state, DATA.glossary, SCALES);
 
   const legend = $('chart-legend');
   legend.textContent = '';
@@ -262,6 +288,7 @@ function renderViews() {
 
 function renderAll() {
   renderPicker($('picker-grid'), RUNS, state.selected, onToggleRun, onToggleVendor);
+  renderKeys();
   renderViews();
   writeUrl();
 }
@@ -355,6 +382,7 @@ function wire() {
         allRuns: RUNS,
         state,
         meta: DATA.meta,
+        scales: SCALES,
         siteUrl: SITE_URL || location.origin + location.pathname,
         presetName: state.preset ? PRESETS[state.preset].name : 'Custom selection',
       });
@@ -392,7 +420,8 @@ async function boot() {
   DATA = await res.json();
 
   RUNS = DATA.runs.map((r) => ({ ...r, slug: slugify(r.id) }));
-  EXTRAS_MAX = Math.max(...RUNS.map((r) => r.extras || 0));
+  const maxOf = (key) => Math.max(0, ...RUNS.map((r) => r[key] || 0));
+  SCALES = { extrasMax: maxOf('extras'), wallMax: maxOf('wall_min'), costMax: maxOf('cost_usd') };
 
   const board = document.getElementById('board');
   board.setAttribute('role', 'table');
@@ -402,7 +431,7 @@ async function boot() {
   const best = RUNS.reduce((a, b) => (b.fixed > a.fixed ? b : a), RUNS[0]);
   const axisNote = $('axis-note');
   if (axisNote) {
-    axisNote.textContent = `The score axis stops short of 105 on purpose — the best run on the board to date fixed ${best.fixed}.`;
+    axisNote.textContent = `The score axis stops short of 105 on purpose — the best run on the board to date fixed ${best.fixed}, and a 0–105 axis would push every point into the bottom third. It is ticked in real fixed counts, and it moves with the board rather than with the selection.`;
   }
 
   renderHero();
@@ -412,6 +441,8 @@ async function boot() {
 
   readUrl();
   wire();
+  // a theme change repaints every run colour, so the whole board is rebuilt
+  initTheme(() => renderAll());
   renderAll();
   setView(state.view);
 }

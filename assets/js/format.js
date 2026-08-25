@@ -3,6 +3,17 @@
 
 export const TOTALS = { fixed: 105, repo1_fixed: 45, repo2_fixed: 60 };
 
+/* Bar geometry reference for the score.
+   The score is out of 105 and every printed value still says so. The BAR is
+   drawn against 100, exactly as on the printed card: with a 105-unit track the
+   whole board lives between 8% and 40% and the differences that matter stop
+   being visible. 100 is a reference length, not a denominator — a run cannot
+   reach it either. The note below is the one place this is spelled out, and it
+   is used verbatim on the page and in the PNG export so a screenshot that
+   travels on its own carries it too. */
+export const SCORE_BAR_REF = 100;
+export const SCORE_BAR_NOTE = 'Bar length is drawn against a 100-unit reference so the runs spread out and can be told apart. The score itself is unchanged and still out of 105 — the number printed at the end of each bar is the real one.';
+
 export const EFFORT_STATUS_LABEL = {
   first_party: 'first-party tier',
   verified: 'verified',
@@ -56,23 +67,36 @@ export function fmtWall(v) {
   return v.toFixed(1);
 }
 
+/** Bar width as a share of the track, with the value's own width reserved out of it.
+    Kept here because the table and the PNG export must agree on the geometry. */
+export function barRatio(value, max) {
+  if (value === null || value === undefined || !(max > 0)) return null;
+  return Math.max(0, Math.min(1, value / max));
+}
+
 export function fmtInt(v) {
   return v === null || v === undefined ? '—' : String(v);
 }
 
-/** Column model, shared by the table, the sorter and the PNG export. */
+/** Column model, shared by the table, the sorter and the PNG export.
+    `pct` sizes the on-screen colgroup; `w` is the export's own ratio, tuned
+    separately because the canvas has no line wrapping and the model column needs
+    more room there than it does on screen. */
 export const COLUMNS = [
-  { key: 'model', label: 'Model / run', group: 'run', kind: 'text', align: 'left', pct: 21.5, w: 244 },
-  { key: 'fixed', label: 'Fixed', unit: '/105', group: 'score', kind: 'score', pct: 15.5, w: 196 },
-  { key: 'repo1_fixed', label: 'Repo 1', unit: '/45', group: 'score', pct: 6, w: 64 },
-  { key: 'repo2_fixed', label: 'Repo 2', unit: '/60', group: 'score', pct: 6, w: 64 },
-  { key: 'partial', label: 'Partial', group: 'not', pct: 6, w: 62 },
-  { key: 'claimed_only', label: 'Claimed only', group: 'not', pct: 7.5, w: 86 },
-  { key: 'extras', label: 'Extras', group: 'not', kind: 'extras', pct: 9, w: 106 },
-  { key: 'wall_min', label: 'Wall clock', unit: 'min', group: 'meta', pct: 9.5, w: 108 },
-  { key: 'cost_usd', label: 'Cost', unit: 'usd', group: 'meta', kind: 'cost', pct: 11, w: 118 },
-  { key: 'date', label: 'Date', group: 'meta', kind: 'date', pct: 8, w: 90 },
+  { key: 'model', label: 'Model / run', group: 'run', kind: 'text', align: 'left', pct: 16, w: 260 },
+  { key: 'fixed', label: 'Fixed', unit: '/105', group: 'score', kind: 'score', align: 'left', pct: 20, w: 250 },
+  { key: 'repo1_fixed', label: 'Repo 1', unit: '/45', group: 'score', pct: 5.5, w: 62 },
+  { key: 'repo2_fixed', label: 'Repo 2', unit: '/60', group: 'score', pct: 5.5, w: 62 },
+  { key: 'partial', label: 'Partial', group: 'not', pct: 5, w: 58 },
+  { key: 'claimed_only', label: 'Claimed only', group: 'not', pct: 5.5, w: 68 },
+  { key: 'extras', label: 'Extras', group: 'not', kind: 'extras', align: 'left', pct: 8, w: 96 },
+  { key: 'wall_min', label: 'Wall clock', unit: 'min', group: 'meta', kind: 'wall', align: 'left', pct: 11.5, w: 140 },
+  { key: 'cost_usd', label: 'Cost', unit: 'usd', group: 'meta', kind: 'cost', align: 'left', pct: 15.5, w: 186 },
+  { key: 'date', label: 'Date', group: 'meta', kind: 'date', pct: 7.5, w: 84 },
 ];
+
+/** The three columns drawn as bars share one rhythm; the model column is text. */
+export const BAR_KINDS = new Set(['score', 'extras', 'wall', 'cost']);
 
 export const GROUPS = [
   { id: 'run', label: '', cls: 'g-run' },

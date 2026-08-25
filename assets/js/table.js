@@ -1,12 +1,22 @@
 /* The leaderboard table.
-   One bar per row and it is the score. Extras get a hatched grey ghost bar at half
-   the height, in a column group headed "Tracked, not scored", so the two can never
-   be read as the same quantity. */
+   Four bars per row, on the card's rhythm: bar from the left edge of the cell,
+   value printed at its end. They are deliberately not interchangeable.
+
+     score   the run's own colour, full height, drawn against a 100-unit reference
+     extras  grey hatch at half height, scaled to the biggest extras count on the
+             board, sitting in a column group headed "Tracked, not scored"
+     wall    flat neutral grey, scaled to the slowest run on the board
+     cost    flat neutral grey, scaled to the dearest run on the board, and the
+             bill / list / floor / free tag stays printed beside the figure,
+             because a bar makes lengths look comparable and these are not
+
+   Only the score bar ever carries a run's colour. */
 
 import {
-  COLUMNS, GROUPS, TOTALS, EFFORT_STATUS_LABEL, COST_KIND_LABEL,
-  fmtCost, fmtWall, fmtInt, fmtDate, el, svgEl, compareRuns,
+  COLUMNS, GROUPS, TOTALS, SCORE_BAR_REF, EFFORT_STATUS_LABEL, COST_KIND_LABEL,
+  fmtCost, fmtWall, fmtInt, fmtDate, barRatio, el, svgEl, compareRuns,
 } from './format.js';
+import { runColor } from './theme.js';
 
 const MOBILE_LABEL = {
   fixed: 'Fixed of 105',
@@ -62,10 +72,13 @@ export function renderHead(headEl, state, onSort) {
   const colRow = el('tr', { class: 'cols', role: 'row' });
   COLUMNS.forEach((c) => {
     const active = state.sort === c.key;
+    const cls = [];
+    if (c.group !== 'run' && COLUMNS.filter((x) => x.group === c.group)[0].key === c.key) cls.push('divide');
+    if (c.align === 'left' && c.key !== 'model') cls.push('col--bar');
     const th = el('th', {
       scope: 'col',
       role: 'columnheader',
-      class: c.group !== 'run' && COLUMNS.filter((x) => x.group === c.group)[0].key === c.key ? 'divide' : null,
+      class: cls.length ? cls.join(' ') : null,
       'aria-sort': active ? (state.dir === 'asc' ? 'ascending' : 'descending') : null,
     });
     const btn = el('button', {
@@ -110,55 +123,76 @@ function modelCell(run, glossary) {
   ]);
   return el('td', { class: 'model-cell', role: 'cell' }, [
     el('span', { class: 'model' }, [
-      el('span', { class: 'swatch', style: { 'background-color': run.color } }),
+      el('span', { class: 'swatch', style: { 'background-color': runColor(run.color) } }),
       body,
     ]),
   ]);
 }
 
+/* One bar, one value at its end. A missing figure and a genuine zero both draw
+   no bar at all: every other bar keeps a 2px floor so the cheapest run still
+   shows a tick, and that floor must not invent a mark for a run worth nothing.
+   The value's own width is reserved out of the track in CSS (--reserve), so a
+   full-length bar cannot push its number out of the cell. */
+function barRow(kind, ratio, color, value) {
+  const blank = ratio === null || ratio === 0;
+  const bar = el('span', { class: `bar bar--${kind}${blank ? ' bar--empty' : ''}` });
+  bar.style.setProperty('width', blank ? '0'
+    : `calc((100% - var(--reserve)) * ${ratio.toFixed(4)})`);
+  if (color) bar.style.setProperty('background-color', color);
+  return el('span', { class: `bar-row bar-row--${kind}` }, [
+    bar,
+    el('span', { class: 'bar-val' }, [value]),
+  ]);
+}
+
 function scoreCell(run) {
-  const pct = (run.fixed / TOTALS.fixed) * 100;
-  const fill = el('span', { class: 'score__fill' });
-  fill.style.setProperty('width', `${pct}%`);
-  fill.style.setProperty('background-color', run.color);
   return el('td', {
-    class: 'score divide', role: 'cell', 'data-label': MOBILE_LABEL.fixed,
+    class: 'score divide col--bar', role: 'cell', 'data-label': MOBILE_LABEL.fixed,
   }, [
-    el('span', { class: 'score__inner' }, [
-      el('span', { class: 'score__track' }, [fill]),
+    barRow('score', barRatio(run.fixed, SCORE_BAR_REF), runColor(run.color),
       el('span', { class: 'score__num' }, [
         document.createTextNode(fmtInt(run.fixed)),
         el('span', { class: 'score__den', text: `/${TOTALS.fixed}` }),
-      ]),
-    ]),
+      ])),
   ]);
 }
 
 function extrasCell(run, extrasMax) {
-  const pct = extrasMax > 0 ? (run.extras / extrasMax) * 100 : 0;
-  const fill = el('span', { class: 'extras__fill' });
-  fill.style.setProperty('width', `${pct}%`);
   return el('td', {
-    class: 'extras', role: 'cell', 'data-label': MOBILE_LABEL.extras,
+    class: 'extras col--bar', role: 'cell', 'data-label': MOBILE_LABEL.extras,
   }, [
-    el('span', { class: 'extras__inner' }, [
-      el('span', { class: 'extras__track' }, [fill]),
-      el('span', { class: 'extras__num', text: fmtInt(run.extras) }),
-    ]),
+    barRow('extras', barRatio(run.extras, extrasMax), null,
+      el('span', { class: 'extras__num', text: fmtInt(run.extras) })),
   ]);
 }
 
-function costCell(run, glossary) {
+function wallCell(run, wallMax) {
+  const has = run.wall_min !== null && run.wall_min !== undefined;
+  return el('td', {
+    class: 'divide col--bar', role: 'cell', 'data-label': MOBILE_LABEL.wall_min,
+  }, [
+    barRow('wall', barRatio(run.wall_min, wallMax), null,
+      el('span', {}, [
+        el('span', { class: 'wall__num', text: fmtWall(run.wall_min) }),
+        has ? el('span', { class: 'wall__unit', text: 'min' }) : null,
+      ])),
+  ]);
+}
+
+function costCell(run, glossary, costMax) {
   const kind = COST_KIND_LABEL[run.cost_kind] || run.cost_kind;
-  return el('td', { role: 'cell', 'data-label': MOBILE_LABEL.cost_usd }, [
-    el('span', { class: 'cost' }, [
-      el('span', { class: 'cost__val', text: fmtCost(run.cost_usd) }),
-      el('abbr', {
-        class: 'cost__kind',
-        text: kind,
-        title: glossary[`cost_${run.cost_kind}`] || kind,
-      }),
-    ]),
+  const has = run.cost_usd !== null && run.cost_usd !== undefined;
+  return el('td', { class: 'col--bar', role: 'cell', 'data-label': MOBILE_LABEL.cost_usd }, [
+    barRow('cost', barRatio(run.cost_usd, costMax), null,
+      el('span', { class: 'cost' }, [
+        el('span', { class: 'cost__val', text: fmtCost(run.cost_usd) }),
+        has ? el('abbr', {
+          class: 'cost__kind',
+          text: kind,
+          title: glossary[`cost_${run.cost_kind}`] || kind,
+        }) : null,
+      ])),
   ]);
 }
 
@@ -186,7 +220,8 @@ function annotationRow(run, colCount) {
   return row;
 }
 
-export function renderBody(bodyEl, runs, state, glossary, extrasMax) {
+export function renderBody(bodyEl, runs, state, glossary, scales) {
+  const { extrasMax, wallMax, costMax } = scales;
   bodyEl.textContent = '';
   bodyEl.setAttribute('role', 'rowgroup');
   const sorted = runs.slice().sort((a, b) => compareRuns(a, b, state.sort, state.dir));
@@ -229,10 +264,8 @@ export function renderBody(bodyEl, runs, state, glossary, extrasMax) {
     tr.appendChild(partial);
     tr.appendChild(numCell(run.claimed_only, MOBILE_LABEL.claimed_only, 'num--flag'));
     tr.appendChild(extrasCell(run, extrasMax));
-    const wall = numCell(run.wall_min === null ? null : fmtWall(run.wall_min), MOBILE_LABEL.wall_min);
-    wall.classList.add('divide');
-    tr.appendChild(wall);
-    tr.appendChild(costCell(run, glossary));
+    tr.appendChild(wallCell(run, wallMax));
+    tr.appendChild(costCell(run, glossary, costMax));
     tr.appendChild(el('td', { role: 'cell', 'data-label': MOBILE_LABEL.date }, [
       el('time', { datetime: run.date, text: fmtDate(run.date) }),
     ]));
@@ -243,5 +276,3 @@ export function renderBody(bodyEl, runs, state, glossary, extrasMax) {
 
   return sorted;
 }
-
-/* numCell takes pre-formatted strings for floats; keep integers going through fmtInt. */

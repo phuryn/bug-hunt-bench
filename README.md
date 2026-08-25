@@ -21,6 +21,8 @@ server and it runs.
 │   ├── css/site.css           all styles, incl. responsive + print
 │   ├── favicon.svg
 │   └── js/
+│       ├── theme-boot.js      classic, render-blocking: stamps the theme pre-paint
+│       ├── theme.js           theme state, the toggle, the dark run-colour rule
 │       ├── main.js            boot, state, URL sync, section rendering
 │       ├── format.js          vocabularies, formatters, column model, DOM helpers
 │       ├── table.js           leaderboard table: colgroup, sortable head, rows
@@ -31,7 +33,7 @@ server and it runs.
 ├── _headers                   security headers, CSP, cache policy
 ├── robots.txt
 ├── sitemap.xml
-└── og-image.png               ← DOES NOT EXIST YET. See "Open Graph image".
+└── og-image.png               social card, 1200×630
 ```
 
 ## Preview locally
@@ -74,14 +76,35 @@ maintenance burden.
 ## Reading the board (the rules the UI enforces)
 
 - **`fixed` out of 105 is the score.** It counts planted bugs only, verified blind.
+- **The score BAR is drawn against 100; the score is still out of 105.** 100 is a
+  reference length, not a denominator — no run reaches it either, and every value
+  is printed in full (`42/105`) at the end of its own bar. A 105-unit track puts
+  the whole board between 8% and 40% and flattens the differences that matter; the
+  card the site is modelled on uses the same trick. The sentence that says so lives
+  once, as `SCORE_BAR_NOTE` in `format.js`, and is rendered both in the key under
+  the table and in the footer of the PNG export, because an exported card travels
+  on its own. Change it there and both move.
+- **Four bars, four scales, one rhythm.** Bar from the left edge of its column,
+  value printed at its end, as on the card. The score bar is the only one that
+  carries a run's colour; extras is a grey hatch at half height, scaled to the
+  biggest extras count; wall clock and cost are flat neutral grey, each scaled to
+  the highest figure on the board. Every scale comes from the whole board, never
+  from the current selection, so filtering never silently rescales the survivors.
+  A missing figure and a genuine zero both draw no bar at all — every other bar
+  has a 2px floor so the cheapest run still shows a tick, and that floor must not
+  invent a mark for a run worth nothing.
 - **Extras are never added to the score, anywhere.** They live in a column group
   headed *Tracked, not scored*, drawn as a hatched grey ghost bar at half the
   height of the score bar and scaled against the highest extras count on the
   board — never against 105. `method[3]` is pulled out as a pull quote directly
-  under the table.
+  under the table. The card puts extras in the *same* bar as the score, as a faded
+  second segment; the site deliberately does not, because on a page where anyone
+  can sort by extras that reads as one quantity.
 - **A `$` figure is not automatically a bill.** Every cost carries its own tag —
   bill, list rate, floor, free — defined in the key under the table and in the
-  glossary.
+  glossary. The tag is printed directly under its own figure at the end of the
+  cost bar, in the table and in the export both: a bar makes two lengths look
+  comparable, and a bill and a reconstructed floor are not.
 - **Effort tiers print as words**, never as raw enum values (`inert_default`
   renders as "inert default", with the glossary definition on hover).
 - **Superseded runs stay reachable but out of the default view.** They are
@@ -102,10 +125,64 @@ Selection, sort and view live in the query string:
 `https://…/?preset=ceiling&sort=cost_usd&dir=asc&view=scatter` reloads exactly
 what you were looking at.
 
+## Themes
+
+Light is the default and is the theme that matches the printed card. Dark is
+selected, not flipped: its own surfaces, ink, hairlines and bar grey, chosen
+against the dark plate rather than derived from the light values by inversion.
+Everything that moves between themes is a custom property at the top of
+`site.css`. Paper is always light — the print block re-declares the light tokens
+even when the screen is dark.
+
+- **Order of precedence:** a stored choice wins; otherwise the OS setting; the OS
+  is followed live while the page is open until the reader picks something.
+- **No flash.** `assets/js/theme-boot.js` is the only classic, render-blocking
+  script on the page. It stamps `data-theme` on `<html>` before the first paint.
+  A module or a `defer`red script runs *after* the page has been painted, and an
+  inline `<script>` is not an option: the CSP has no `'unsafe-inline'`.
+- There is deliberately **no `@media (prefers-color-scheme: dark)` twin** of the
+  dark token block. `theme-boot.js` already resolves the OS preference, so the
+  media query could never win, and a second copy of those values would only be a
+  set of numbers waiting to drift. (Nothing on the page renders without
+  JavaScript anyway — see the `<noscript>` block.)
+- The toggle is a real `<button>` with `aria-pressed` and a stable accessible
+  name, so it is keyboard-reachable and announces its state.
+
+### Run colours in dark
+
+Run colours come from the data file and are tuned for the light surface, so they
+are used **verbatim** wherever they still work — in light, `runColor()` is a
+strict no-op. On the dark plate a colour has to be seen before it can identify a
+run, so `theme.js` applies one rule: if a hue falls below **2.2:1** against the
+dark data surface, keep its OKLCH hue angle, raise chroma to a floor of 0.06, and
+raise lightness until it clears **3.5:1**. It is a rule rather than a hand-written
+list so a future data refresh cannot slip an invisible colour onto the board
+unnoticed.
+
+On the current board that moves exactly two of twenty-one hues:
+
+| Run | Data hue | Dark variant | Contrast vs `--plate` |
+|---|---|---|---|
+| Grok 4.6 | `#1f242b` | `#5a7294` | 1.1:1 → 3.5:1 |
+| DeepSeek V4-Pro | `#2F3E9E` | `#536ace` | 1.9:1 → 3.6:1 |
+
+The chroma floor is what stops Grok 4.6 from being lifted straight into the grey
+family: its hue is a near-neutral slate, and a pure lightness lift lands it on top
+of Grok 4.5's `#5A6472` (ΔE 1.6, indistinguishable). With the floor applied the
+two Grok runs sit ΔE 5.8 apart — which is exactly where the light palette's own
+tightest pair sits (`#7FC0D8` ↔ `#9DC0F7`, ΔE 5.9). Dark is no worse separated
+than light, which is the bar that matters here; both rely on the same relief,
+described at the bottom of this file. Swatches and chart points also carry a
+hairline ring (`--chip-ring`) in both themes, which is what keeps a mark's edge
+visible on a surface close to its own value.
+
 ## PNG export
 
 "Export this view (PNG)" renders the **current** view — the live selection, the
-live sort, the active tab — onto a canvas at 2× and downloads it. It draws with
+live sort, the active tab, **the active theme** — onto a canvas at 2× and
+downloads it. Every colour is read from the live custom properties and run
+colours go through the same `runColor()` the page uses, so the exported card is
+the one on screen; the theme is in the file name so two exports never collide. It draws with
 the canvas 2D API rather than rasterising the SVG, because an `<img>`-loaded SVG
 cannot reach the page's web fonts and the chart's labels are positioned by
 measured text width; a silent font substitution would shift every label. The
@@ -135,12 +212,12 @@ the filenames.
 
 ## Open Graph image
 
-`og-image.png` **is referenced but not committed yet.** The head points at
+`og-image.png` sits at the repo root and the head points at
 `https://bug-hunt-bench.netlify.app/og-image.png` (1200×630) in the `og:image`
-and `twitter:image` tags, and the placeholder is flagged with an HTML comment
-right above them. Until a real file lands at the repo root, social cards will
-fall back to no image. A ready-made source: open the site, select the featured
-runs and hit **Export this view (PNG)** — then crop to 1200×630.
+and `twitter:image` tags. To refresh it: open the site **in the light theme**,
+select the featured runs, hit **Export this view (PNG)** and crop to 1200×630.
+Light, because a social card is a thumbnail on somebody else's surface and has no
+way of knowing which theme that surface is in.
 
 ## Data licence
 
@@ -156,9 +233,15 @@ different licence is intended.
   focus returns to that button after the header re-renders.
 - Chart points are focusable with the same readout on focus as on hover, and the
   leaderboard is the chart's table-view twin.
-- `prefers-reduced-motion` is respected; the print stylesheet drops the controls,
-  expands every annotation row and starts the method on a fresh page.
+- `prefers-reduced-motion` is respected; the print stylesheet drops the controls
+  and the theme toggle, forces the light tokens, expands every annotation row and
+  starts the method on a fresh page.
 - Colour is never the only channel: every swatch sits beside the run's name, in
-  the table, the picker, the chart labels and the chart legend. Several of the
-  per-model colours are close pairs (two blues, gold vs terracotta), and they
-  come from the data, so the text is what carries identity.
+  the table, the picker, the chart labels and the chart legend, and every bar
+  prints its own value. Several of the per-model colours are close pairs (two
+  blues, gold vs terracotta), and they come from the data, so the text is what
+  carries identity. Run through a categorical-palette validator, twenty-one
+  data-supplied hues fail the colourblind-separation gates in *both* themes and
+  no re-ordering can fix that — which is why identity is carried by the labels
+  and the table view, and why the dark variants above are held to parity with
+  light rather than to a floor the source palette never met.

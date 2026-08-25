@@ -6,16 +6,22 @@
 <title>Bug Hunt Bench — frontier coding models against real planted bugs</title>
 <meta name="description" content="A blind-graded benchmark of frontier coding models on real bugs planted in two production codebases. The score counts planted bugs only; extra fixes are tracked separately and never added.">
 <link rel="canonical" href="https://bug-hunt-bench.netlify.app/">
+<meta name="color-scheme" content="light dark">
+<!-- theme-boot.js rewrites this to the dark surface when the dark theme is on -->
 <meta name="theme-color" content="#eef0f3">
-<meta name="color-scheme" content="light">
 <meta name="author" content="Pawel Huryn">
+
+<!-- The one classic, render-blocking script on the page: it stamps the theme on
+     <html> before the first paint, so a dark-theme visitor never sees a white
+     flash. It is a file rather than an inline block because the CSP has no
+     'unsafe-inline'. -->
+<script src="/assets/js/theme-boot.js"></script>
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bug Hunt Bench">
 <meta property="og:title" content="Bug Hunt Bench — frontier coding models against real planted bugs">
 <meta property="og:description" content="A blind-graded benchmark of frontier coding models on real bugs planted in two production codebases. The score counts planted bugs only; extra fixes are tracked separately and never added.">
 <meta property="og:url" content="https://bug-hunt-bench.netlify.app/">
-<!-- PLACEHOLDER: og-image.png does not exist in the repo yet. Add a 1200x630 PNG at the repo root. See README. -->
 <meta property="og:image" content="https://bug-hunt-bench.netlify.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -76,20 +82,31 @@
 <header class="masthead">
   <div class="wrap masthead__inner">
     <span class="wordmark">Bug&nbsp;Hunt&nbsp;Bench</span>
-    <nav class="masthead__nav" aria-label="Sections">
-      <a href="#leaderboard">Leaderboard</a>
-      <a href="#method">Method</a>
-      <a href="#caveats">Caveats</a>
-      <a href="#glossary">Definitions</a>
-      <a class="masthead__out" id="source-link" href="https://github.com/phuryn/experiments/tree/main/bug-hunt-bench">Raw data</a>
-    </nav>
+    <div class="masthead__right">
+      <nav class="masthead__nav" aria-label="Sections">
+        <a href="#leaderboard">Leaderboard</a>
+        <a href="#method">Method</a>
+        <a href="#caveats">Caveats</a>
+        <a href="#glossary">Definitions</a>
+        <a class="masthead__out" id="source-link" href="https://github.com/phuryn/experiments/tree/main/bug-hunt-bench">Raw data</a>
+      </nav>
+      <button type="button" class="themetoggle" id="theme-toggle" aria-pressed="false" aria-label="Dark theme">
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <circle class="disc" cx="8" cy="8" r="6"></circle>
+          <path class="half" d="M8 2a6 6 0 0 1 0 12z"></path>
+        </svg>
+        <span>Dark</span>
+      </button>
+    </div>
   </div>
 </header>
 
 <main id="main">
 
   <section class="hero wrap" aria-labelledby="page-title">
-    <p class="eyebrow">Blind-graded &middot; one prompt &middot; updated <time id="hero-updated" datetime="">&nbsp;</time></p>
+    <p class="kicker">Bug Hunt Bench &middot; Blind-graded &middot; One prompt &middot; Updated <time id="hero-updated" datetime="">&nbsp;</time></p>
+    <!-- replaced at runtime with the headline built from data/benchmark.json; the
+         static text is what a crawler without JavaScript gets, and carries no figures -->
     <h1 id="page-title">Bug Hunt Bench</h1>
     <p class="lede" id="hero-lede"></p>
 

@@ -4,12 +4,20 @@
    in a pure function, so the on-screen SVG and the PNG export cannot drift apart. */
 
 import { pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, svgEl, el, measureText } from './format.js';
+import { runColor } from './theme.js';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
 const CEILING = 105;
 
-/* The y-axis stops just above the best run on the whole board, not at 105.
+/* The y-axis stops just above the best run on the whole board, not at 105 and
+   not at the leaderboard's 100-unit bar reference either. Both answer the same
+   question - how do I separate these runs - with the number that separates best
+   in each place: a fixed 100 for bars, which have to stay comparable between one
+   screenshot and the next, and a dynamic cap here, because the chart is redrawn
+   for whatever is selected and a fixed top would waste half the plot. The axis
+   is ticked in real fixed counts either way, its title says "out of 105", and
+   the note under the chart says where it stops and why.
    The ceiling story is told by the tick rule in the header; here the job is
    telling runs apart, and a 0–105 axis spends two thirds of the plot on empty
    space and squashes every point into one band. The axis title and the note
@@ -77,7 +85,8 @@ export function scatterLayout(runs, allRuns, width, height) {
   const points = plotted.map((r) => ({
     run: r,
     id: r.id,
-    color: r.color,
+    // the drawn colour, not the raw one: a couple of hues get a dark-mode variant
+    color: runColor(r.color),
     cost: r.cost_usd,
     score: r.fixed,
     cx: x(r.cost_usd),
@@ -135,7 +144,7 @@ function tooltipContent(p) {
   const frag = document.createDocumentFragment();
   frag.appendChild(el('span', { class: 'tip-val', text: `${r.fixed} of 105 fixed` }));
   frag.appendChild(el('div', { class: 'tip-name' }, [
-    el('i', { class: 'tip-key', style: { 'background-color': r.color } }),
+    el('i', { class: 'tip-key', style: { 'background-color': runColor(r.color) } }),
     r.id,
   ]));
   frag.appendChild(tipRow('Cost', `${fmtCost(r.cost_usd)} (${kind})`));
@@ -269,7 +278,7 @@ export function renderScatter(host, runs, allRuns) {
   if (L.skipped > 0) {
     host.appendChild(el('p', {
       class: 'chart__note',
-      text: `${L.skipped} selected run${L.skipped === 1 ? '' : 's'} carry no cost figure and cannot be placed on a cost axis. They are in the table.`,
+      text: `${L.skipped} selected run${L.skipped === 1 ? ' carries' : 's carry'} no cost figure and cannot be placed on a cost axis. ${L.skipped === 1 ? 'It is' : 'They are'} in the table.`,
     }));
   }
 

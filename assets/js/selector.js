@@ -2,6 +2,7 @@
    behaviour is the platform's, not ours. */
 
 import { el, fmtDate, EFFORT_STATUS_LABEL } from './format.js';
+import { runColor } from './theme.js';
 
 export function renderPicker(gridEl, runs, selected, onToggle, onVendorToggle) {
   gridEl.textContent = '';
@@ -35,7 +36,7 @@ export function renderPicker(gridEl, runs, selected, onToggle, onVendorToggle) {
       input.addEventListener('change', () => onToggle(r.slug, input.checked));
       const label = el('label', { class: 'run', for: `run-${r.slug}` }, [
         input,
-        el('span', { class: 'swatch', style: { 'background-color': r.color } }),
+        el('span', { class: 'swatch', style: { 'background-color': runColor(r.color) } }),
         el('span', { class: 'run__body' }, [
           el('span', { class: 'run__name', text: r.id }),
           el('span', { class: 'run__meta' }, [
