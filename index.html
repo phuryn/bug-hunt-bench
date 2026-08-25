@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bug Hunt Bench — frontier coding models against real planted bugs</title>
 <meta name="description" content="A blind-graded benchmark of frontier coding models on real bugs planted in two production codebases. The score counts planted bugs only; extra fixes are tracked separately and never added.">
-<link rel="canonical" href="https://bug-hunt-bench.netlify.app/">
+<link rel="canonical" href="https://bughunt.productcompass.pm/">
 <meta name="color-scheme" content="light dark">
 <!-- theme-boot.js rewrites this to the dark surface when the dark theme is on -->
 <meta name="theme-color" content="#eef0f3">
@@ -21,15 +21,15 @@
 <meta property="og:site_name" content="Bug Hunt Bench">
 <meta property="og:title" content="Bug Hunt Bench — frontier coding models against real planted bugs">
 <meta property="og:description" content="A blind-graded benchmark of frontier coding models on real bugs planted in two production codebases. The score counts planted bugs only; extra fixes are tracked separately and never added.">
-<meta property="og:url" content="https://bug-hunt-bench.netlify.app/">
-<meta property="og:image" content="https://bug-hunt-bench.netlify.app/og-image.png">
+<meta property="og:url" content="https://bughunt.productcompass.pm/">
+<meta property="og:image" content="https://bughunt.productcompass.pm/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Bug Hunt Bench leaderboard">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Bug Hunt Bench — frontier coding models against real planted bugs">
 <meta name="twitter:description" content="A blind-graded benchmark of frontier coding models on real bugs planted in two production codebases. The score counts planted bugs only.">
-<meta name="twitter:image" content="https://bug-hunt-bench.netlify.app/og-image.png">
+<meta name="twitter:image" content="https://bughunt.productcompass.pm/og-image.png">
 <meta name="twitter:creator" content="@PawelHuryn">
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -46,7 +46,7 @@
   "name": "Bug Hunt Bench",
   "alternateName": "Bug Hunt Bench coding-model benchmark",
   "description": "A blind-graded benchmark of frontier coding models on real bugs planted in two production codebases: a TypeScript VS Code extension and a React/Supabase LMS. Each model gets one round per repo in its own native agentic CLI, and an independent judge grades the resulting diff against a withheld answer key. The headline score counts planted bugs only.",
-  "url": "https://bug-hunt-bench.netlify.app/",
+  "url": "https://bughunt.productcompass.pm/",
   "sameAs": "https://github.com/phuryn/experiments/tree/main/bug-hunt-bench",
   "license": "https://opensource.org/licenses/MIT",
   "isAccessibleForFree": true,
@@ -61,7 +61,7 @@
   "distribution": {
     "@type": "DataDownload",
     "encodingFormat": "application/json",
-    "contentUrl": "https://bug-hunt-bench.netlify.app/data/benchmark.json"
+    "contentUrl": "https://bughunt.productcompass.pm/data/benchmark.json"
   },
   "measurementTechnique": "Blind grading of model-produced diffs against a withheld answer key",
   "variableMeasured": [
@@ -69,7 +69,7 @@
     { "@type": "PropertyValue", "name": "partial", "description": "The defect was addressed but not fully closed. Not counted in the score." },
     { "@type": "PropertyValue", "name": "claimed_only", "description": "The model reported a fix that its diff does not deliver." },
     { "@type": "PropertyValue", "name": "extras", "description": "Genuine defects fixed that were never planted. Real work, deliberately kept out of the score." },
-    { "@type": "PropertyValue", "name": "wall_min", "description": "Wall-clock minutes for the run. Not comparable across all rows.", "unitText": "minute" },
+    { "@type": "PropertyValue", "name": "wall_min", "description": "Wall-clock minutes for the run: repo 1 plus repo 2 agent time, dependency install excluded.", "unitText": "minute" },
     { "@type": "PropertyValue", "name": "cost_usd", "description": "Run cost in US dollars, tagged by kind: an actual bill, a list-rate estimate, a reconstructed floor, or free.", "unitText": "USD" }
   ]
 }
@@ -81,13 +81,13 @@
 
 <header class="masthead">
   <div class="wrap masthead__inner">
-    <span class="wordmark">Bug&nbsp;Hunt&nbsp;Bench</span>
+    <span class="wordmark" aria-current="page">Bug&nbsp;Hunt&nbsp;Bench</span>
     <div class="masthead__right">
       <nav class="masthead__nav" aria-label="Sections">
-        <a href="#leaderboard">Leaderboard</a>
-        <a href="#method">Method</a>
-        <a href="#caveats">Caveats</a>
-        <a href="#glossary">Definitions</a>
+        <a href="#leaderboard">The board</a>
+        <a href="/method">Method</a>
+        <a href="/method#caveats">Caveats</a>
+        <a href="/method#definitions">Definitions</a>
         <a class="masthead__out" id="source-link" href="https://github.com/phuryn/experiments/tree/main/bug-hunt-bench">Raw data</a>
       </nav>
       <button type="button" class="themetoggle" id="theme-toggle" aria-pressed="false" aria-label="Dark theme">
@@ -104,18 +104,26 @@
 <main id="main">
 
   <section class="hero wrap" aria-labelledby="page-title">
-    <p class="kicker">Bug Hunt Bench &middot; Blind-graded &middot; One prompt &middot; Updated <time id="hero-updated" datetime="">&nbsp;</time></p>
+    <p class="kicker">Blind-graded &middot; One prompt per repo &middot; Updated <time id="hero-updated" datetime="">&nbsp;</time></p>
     <!-- replaced at runtime with the headline built from data/benchmark.json; the
          static text is what a crawler without JavaScript gets, and carries no figures -->
     <h1 id="page-title">Bug Hunt Bench</h1>
     <p class="lede" id="hero-lede"></p>
 
+    <!-- The bridge: what the benchmark is, and the way through to the page that
+         says it properly. The method, the caveats and the definitions moved to
+         /method so the board comes first; this is the only prose about them that
+         stays here, and it carries no figures, so it cannot go stale. -->
+    <aside class="bridge" aria-label="What this is">
+      <p class="eyebrow">What this is</p>
+      <p>Same prompt, one round per repo, each model in its own agentic CLI. An independent judge grades the diff against an answer key the model never sees.</p>
+      <p class="bridge__more"><a href="/method">Method, caveats and definitions</a></p>
+    </aside>
+
     <figure class="tickrule">
       <div class="tickrule__plot" id="tickrule-plot" aria-hidden="true"></div>
       <figcaption id="tickrule-caption"></figcaption>
     </figure>
-
-    <dl class="facts" id="hero-facts"></dl>
   </section>
 
   <section class="controls wrap" aria-labelledby="controls-title">
@@ -142,6 +150,7 @@
         <div class="tabs" role="tablist" aria-label="View">
           <button type="button" class="tab" role="tab" id="tab-table" aria-controls="panel-table" aria-selected="true" data-view="table">Leaderboard</button>
           <button type="button" class="tab" role="tab" id="tab-scatter" aria-controls="panel-scatter" aria-selected="false" tabindex="-1" data-view="scatter">Score vs cost</button>
+          <button type="button" class="tab" role="tab" id="tab-time" aria-controls="panel-time" aria-selected="false" tabindex="-1" data-view="time">Score vs time</button>
         </div>
         <button type="button" class="btn btn--export" id="export-png">Export this view (PNG)</button>
       </div>
@@ -150,9 +159,8 @@
     <div class="panel" id="panel-table" role="tabpanel" tabindex="0" aria-labelledby="tab-table">
       <div class="tablewrap" id="tablewrap" tabindex="0" role="region" aria-label="Leaderboard table, scrollable">
         <table class="board" id="board">
-          <caption class="board__caption">
-            Ranked by planted bugs fixed, out of 105. Click any column heading to re-sort.
-            Everything under <em>Not scored</em> is tracked but never added to the score.
+          <caption class="board__caption" id="board-caption">
+            Ranked by planted bugs fixed, out of 105. Click a column heading to re-sort, or <b>†</b> on a row for its detail.
           </caption>
           <thead id="board-head"></thead>
           <tbody id="board-body"></tbody>
@@ -169,43 +177,36 @@
       <div class="chart__legend" id="chart-legend"></div>
       <p class="chart__note">
         Cost is on a logarithmic axis: the spread across the board is roughly two hundredfold, and a linear axis would pile half the runs into the left margin.
-        <strong>These dollar figures are not one kind of number.</strong> Each point carries its own tag — bill, list rate, floor, free — so horizontal distance between two differently tagged points is not a like-for-like comparison.
         The step line marks the cost–score frontier: runs that no other selected run beats on both axes at once.
         <span id="axis-note"></span>
         Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>.
       </p>
     </div>
-  </section>
 
-  <section class="prose wrap" id="method" aria-labelledby="method-title">
-    <p class="eyebrow">How it works</p>
-    <h2 id="method-title">The method</h2>
-    <div id="method-body"></div>
-  </section>
-
-  <section class="prose wrap" id="caveats" aria-labelledby="caveats-title">
-    <p class="eyebrow">Where it stops</p>
-    <h2 id="caveats-title">What this board does not tell you</h2>
-    <ol class="caveats" id="caveats-body"></ol>
-  </section>
-
-  <section class="prose wrap" id="glossary" aria-labelledby="glossary-title">
-    <p class="eyebrow">Read the columns right</p>
-    <h2 id="glossary-title">Definitions</h2>
-    <dl class="glossary" id="glossary-body"></dl>
+    <div class="panel" id="panel-time" role="tabpanel" tabindex="0" aria-labelledby="tab-time" hidden>
+      <div class="chart" id="chart-time"></div>
+      <p class="empty" id="time-empty" hidden>No runs selected. Pick some above, or hit <strong>Featured</strong>.</p>
+      <div class="chart__legend" id="time-legend"></div>
+      <p class="chart__note">
+        Minutes are on a linear axis: the board spans under sevenfold, well inside one order of magnitude, so a linear axis places every run honestly and keeps the reading additive.
+        The step line marks the time–score frontier: runs that no other selected run beats on both axes at once.
+        <span id="time-axis-note"></span>
+        Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>.
+      </p>
+    </div>
   </section>
 
   <noscript>
     <section class="prose wrap">
       <h2>This board needs JavaScript</h2>
-      <p>The table and the chart are drawn in the browser from a single JSON file, so no number on this page is hand-typed. You can read the same numbers straight from the source: <a href="/data/benchmark.json">data/benchmark.json</a>, or the <a href="https://github.com/phuryn/experiments/tree/main/bug-hunt-bench">public scoreboards</a>.</p>
+      <p>The table and the charts are drawn in the browser from a single JSON file, so no number on this page is hand-typed. You can read the same numbers straight from the source: <a href="/data/benchmark.json">data/benchmark.json</a>, or the <a href="https://github.com/phuryn/experiments/tree/main/bug-hunt-bench">public scoreboards</a>. The <a href="/method">method page</a> reads from the same file.</p>
     </section>
   </noscript>
 </main>
 
 <footer class="footer">
   <div class="wrap footer__inner">
-    <p><strong>Bug Hunt Bench</strong> — built and run by <a href="https://www.productcompass.pm">Pawel Huryn</a>. Updated <time id="footer-updated" datetime="">&nbsp;</time>.</p>
+    <p><strong>Bug Hunt Bench</strong> — built and run by <a href="https://www.productcompass.pm">Pawel Huryn</a>. Updated <time id="footer-updated" datetime="">&nbsp;</time>. <a href="/method">How it works, and what it does not tell you</a>.</p>
     <p>Every number on this page is read from <a href="/data/benchmark.json">data/benchmark.json</a>, generated from the <a href="https://github.com/phuryn/experiments/tree/main/bug-hunt-bench">public scoreboards</a>. Nothing here is typed by hand.</p>
   </div>
 </footer>

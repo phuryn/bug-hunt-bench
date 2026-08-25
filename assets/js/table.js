@@ -14,7 +14,8 @@
 
 import {
   COLUMNS, GROUPS, TOTALS, SCORE_BAR_REF, EFFORT_STATUS_LABEL, COST_KIND_LABEL,
-  fmtCost, fmtWall, fmtInt, fmtDate, barRatio, el, svgEl, compareRuns,
+  DETAIL_FIGURES, fmtCost, fmtWall, fmtInt, fmtDate, barRatio, defHref, defLink,
+  el, svgEl, compareRuns,
 } from './format.js';
 import { runColor } from './theme.js';
 
@@ -22,8 +23,6 @@ const MOBILE_LABEL = {
   fixed: 'Fixed of 105',
   repo1_fixed: 'Repo 1 of 45',
   repo2_fixed: 'Repo 2 of 60',
-  partial: 'Partial',
-  claimed_only: 'Claimed only',
   extras: 'Extras (not scored)',
   wall_min: 'Wall clock (min)',
   cost_usd: 'Cost',
@@ -59,13 +58,19 @@ export function renderHead(headEl, state, onSort) {
   GROUPS.forEach((g) => {
     const span = COLUMNS.filter((c) => c.group === g.id).length;
     if (!span) return;
+    /* the group label is the one header that is not a sort button, so it is
+       where a column can carry a link to its own definition without stealing
+       the click that sorts it */
     groupRow.appendChild(el('th', {
       colspan: span > 1 ? span : null,
       scope: g.label ? 'colgroup' : null,
       class: [g.cls, g.label ? 'divide' : ''].filter(Boolean).join(' '),
-      text: g.label,
       role: 'columnheader',
-    }));
+    }, g.label
+      ? [g.def
+        ? el('a', { class: 'deflink', href: defHref(g.def), title: `What "${g.label}" means` }, [g.label])
+        : document.createTextNode(g.label)]
+      : null));
   });
   headEl.appendChild(groupRow);
 
@@ -167,10 +172,15 @@ function extrasCell(run, extrasMax) {
   ]);
 }
 
+/* Wall clock is one measure on every row. Three rows carry a note on how their
+   figure was taken, and those rows say so where the figure is, not only in the
+   caveats: the dagger sits on the cell and opens the same row detail. */
 function wallCell(run, wallMax) {
   const has = run.wall_min !== null && run.wall_min !== undefined;
-  return el('td', {
-    class: 'divide col--bar', role: 'cell', 'data-label': MOBILE_LABEL.wall_min,
+  const cell = el('td', {
+    class: `divide col--bar${run.wall_note ? ' has-note' : ''}`,
+    role: 'cell',
+    'data-label': MOBILE_LABEL.wall_min,
   }, [
     barRow('wall', barRatio(run.wall_min, wallMax), null,
       el('span', {}, [
@@ -178,6 +188,7 @@ function wallCell(run, wallMax) {
         has ? el('span', { class: 'wall__unit', text: 'min' }) : null,
       ])),
   ]);
+  return cell;
 }
 
 function costCell(run, glossary, costMax) {
@@ -205,19 +216,64 @@ function numCell(value, label, extraClass) {
   ]);
 }
 
-function annotationRow(run, colCount) {
+/* Every row has a detail now, because partial and claimed-only live here rather
+   than in two columns of mostly zeroes. The figures come first, each label
+   linked to its own definition; then the wall-clock note, then whatever the run
+   carries — a supersession, a caveat, a note. */
+function detailRow(run, colCount) {
   const cell = el('td', { colspan: colCount, role: 'cell' });
-  const parts = [
+
+  const figs = el('p', { class: 'detail__figs' });
+  DETAIL_FIGURES.forEach(({ key, label }, i) => {
+    if (i) figs.appendChild(el('span', { class: 'detail__sep', text: '·' }));
+    figs.appendChild(el('span', { class: 'detail__fig' }, [
+      defLink(key, label),
+      el('b', {
+        class: run[key] ? 'detail__val' : 'detail__val detail__val--zero',
+        text: fmtInt(run[key]),
+      }),
+    ]));
+  });
+  cell.appendChild(figs);
+
+  [
+    ['Wall clock', run.wall_note],
     ['Superseded', run.superseded],
     ['Caveat', run.caveat],
     ['Note', run.note],
-  ];
-  parts.forEach(([label, textValue]) => {
+  ].forEach(([label, textValue]) => {
     if (!textValue) return;
     cell.appendChild(el('p', {}, [el('b', { text: label }), document.createTextNode(textValue)]));
   });
-  const row = el('tr', { class: 'annotation-row', role: 'row' }, [cell]);
-  return row;
+
+  return el('tr', { class: 'annotation-row', role: 'row' }, [cell]);
+}
+
+/* One disclosure, two places that can open it: the model name and — when the row
+   has one — the wall-clock figure. Both buttons stay in step, because a reader
+   who opened it from one and sees the other still claiming "collapsed" has been
+   told something untrue. */
+function makeToggle(run, row, buttons, where) {
+  const btn = el('button', {
+    type: 'button',
+    class: 'notebtn',
+    'aria-expanded': 'false',
+    'aria-controls': `detail-${run.slug}`,
+    text: '†',
+  });
+  btn.setAttribute('aria-label', where === 'wall'
+    ? `Show the note on the wall-clock figure for ${run.id}`
+    : `Show the detail for ${run.id}`);
+  btn.title = where === 'wall'
+    ? 'How this wall-clock figure was taken'
+    : 'Partial, claimed-only and any note on this run';
+  btn.addEventListener('click', () => {
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    row.hidden = open;
+    buttons.forEach((b) => b.setAttribute('aria-expanded', open ? 'false' : 'true'));
+  });
+  buttons.push(btn);
+  return btn;
 }
 
 export function renderBody(bodyEl, runs, state, glossary, scales) {
@@ -233,45 +289,29 @@ export function renderBody(bodyEl, runs, state, glossary, scales) {
       'data-run': run.slug,
     });
 
+    const detail = detailRow(run, COLUMNS.length);
+    detail.hidden = true;
+    detail.querySelector('td').id = `detail-${run.slug}`;
+    const buttons = [];
+
     const mCell = modelCell(run, glossary);
-    const hasNote = Boolean(run.superseded || run.caveat || run.note);
-    let noteRow = null;
-    if (hasNote) {
-      noteRow = annotationRow(run, COLUMNS.length);
-      noteRow.hidden = true;
-      const btn = el('button', {
-        type: 'button',
-        class: 'notebtn',
-        'aria-expanded': 'false',
-        title: 'Show the note on this run',
-        text: '†',
-      });
-      btn.setAttribute('aria-label', `Show the note on ${run.id}`);
-      btn.addEventListener('click', () => {
-        const open = btn.getAttribute('aria-expanded') === 'true';
-        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
-        noteRow.hidden = open;
-      });
-      mCell.querySelector('.model__meta').appendChild(btn);
-    }
+    mCell.querySelector('.model__meta').appendChild(makeToggle(run, detail, buttons, 'model'));
     tr.appendChild(mCell);
 
     tr.appendChild(scoreCell(run));
     tr.appendChild(numCell(run.repo1_fixed, MOBILE_LABEL.repo1_fixed));
     tr.appendChild(numCell(run.repo2_fixed, MOBILE_LABEL.repo2_fixed));
-    const partial = numCell(run.partial, MOBILE_LABEL.partial);
-    partial.classList.add('divide');
-    tr.appendChild(partial);
-    tr.appendChild(numCell(run.claimed_only, MOBILE_LABEL.claimed_only, 'num--flag'));
     tr.appendChild(extrasCell(run, extrasMax));
-    tr.appendChild(wallCell(run, wallMax));
+    const wall = wallCell(run, wallMax);
+    if (run.wall_note) wall.querySelector('.bar-val').appendChild(makeToggle(run, detail, buttons, 'wall'));
+    tr.appendChild(wall);
     tr.appendChild(costCell(run, glossary, costMax));
     tr.appendChild(el('td', { role: 'cell', 'data-label': MOBILE_LABEL.date }, [
       el('time', { datetime: run.date, text: fmtDate(run.date) }),
     ]));
 
     bodyEl.appendChild(tr);
-    if (noteRow) bodyEl.appendChild(noteRow);
+    bodyEl.appendChild(detail);
   });
 
   return sorted;

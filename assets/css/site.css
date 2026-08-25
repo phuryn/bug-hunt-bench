@@ -25,6 +25,15 @@
   --neutral:   #aab1ba;
   --bar:       #aab1ba;   /* the card's bar grey: wall clock and cost, never an identity */
 
+  /* The only two hues on the page that mean something rather than identify
+     something: the state of a planted bug on the tick rule. Chosen against THIS
+     page surface with the categorical validator, not picked by eye -
+     CVD deltaE 11.7 (target 8), normal-vision 26.8 (floor 15), and both above
+     3:1 on --page. Red-green is still the pair that fails a deuteranope, so the
+     rule never leans on them: fill and height carry the same distinction. */
+  --tick-fixed:    #2b8f66;
+  --tick-survivor: #9e2b20;
+
   /* surfaces that invert rather than lighten */
   --chip-ring: rgba(28, 32, 38, 0.16);
   --tip-bg:    #1c2026;
@@ -66,6 +75,11 @@
   --accent-wash: rgba(143, 184, 220, 0.10);
   --neutral:   #626c79;
   --bar:       #5c6673;
+
+  /* the dark theme's own steps for the tick rule, validated against #101419:
+     CVD deltaE 8.1, normal-vision 27.5, contrast 4.7:1 and 4.8:1 */
+  --tick-fixed:    #0b9360;
+  --tick-survivor: #e15247;
 
   --chip-ring: rgba(233, 237, 242, 0.30);
   --tip-bg:    #232a33;
@@ -126,6 +140,7 @@ a:hover { color: var(--ink); }
 /* the card's kicker: accent, wide-tracked, the loudest small type on the page */
 .kicker {
   grid-column: 1;
+  grid-row: 1;
   font-size: clamp(11px, 1.15vw, 13px);
   font-weight: 700; letter-spacing: 0.26em; text-transform: uppercase;
   color: var(--accent); margin: 0 0 16px;
@@ -141,7 +156,10 @@ a:hover { color: var(--ink); }
 .wordmark {
   font-family: var(--sans); font-size: 12px; font-weight: 600;
   letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink);
+  text-decoration: none;
 }
+a.wordmark:hover { color: var(--accent); }
+.masthead__nav a[aria-current="page"] { color: var(--ink); border-bottom-color: var(--accent); }
 .masthead__right {
   display: flex; align-items: center; gap: clamp(12px, 2vw, 26px); flex-wrap: wrap;
 }
@@ -168,11 +186,15 @@ a:hover { color: var(--ink); }
 
 /* -------------------------------------------------------------------- hero */
 
+/* The board is the point, so the hero is sized to get out of its way: two
+   columns, the argument on the left, the way through to the method on the right.
+   The four stat tiles that used to hold that rail are gone - every figure on
+   them was already on the board a few hundred pixels further down. */
 .hero {
-  padding-block: clamp(40px, 7vw, 84px) clamp(18px, 2.5vw, 30px);
+  padding-block: clamp(22px, 3vw, 40px) clamp(10px, 1.5vw, 16px);
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(240px, 0.8fr);
-  column-gap: clamp(32px, 6vw, 88px);
+  grid-template-columns: minmax(0, 1.55fr) minmax(228px, 0.7fr);
+  column-gap: clamp(28px, 5vw, 72px);
   align-items: start;
 }
 
@@ -180,83 +202,99 @@ a:hover { color: var(--ink); }
    and the wordmark. The opening clause carries the accent, as on the card. */
 h1 {
   grid-column: 1;
+  grid-row: 2;
   font-family: var(--serif);
   font-weight: 500;
-  font-size: clamp(2.15rem, 4.6vw, 3.7rem);
-  line-height: 1.02;
-  letter-spacing: -0.019em;
-  margin: 0 0 16px;
-  max-width: 22ch;
+  font-size: clamp(1.95rem, 3.6vw, 3rem);
+  line-height: 1.04;
+  letter-spacing: -0.018em;
+  margin: 0 0 12px;
+  max-width: 26ch;
   text-wrap: balance;
 }
 h1 em { font-style: normal; color: var(--accent); }
 
 .lede {
   grid-column: 1;
+  grid-row: 3;
   font-family: var(--serif);
   font-style: italic;
-  font-size: clamp(1.05rem, 1.75vw, 1.28rem);
-  line-height: 1.44;
+  font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+  line-height: 1.42;
   color: var(--ink-2);
-  max-width: 52ch;
+  max-width: 50ch;
   margin: 0;
   text-wrap: pretty;
 }
 
-.hero .eyebrow { grid-column: 1; }
+.hero .eyebrow { grid-column: 1; margin-bottom: 8px; }
 
-/* the facts rail */
-.facts {
+/* the bridge: what this is, and the door to the page that says it properly */
+.bridge {
   grid-column: 2;
   grid-row: 1 / span 3;
   margin: 6px 0 0;
+  padding-top: 12px;
   border-top: 1px solid var(--rule);
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  max-width: 40ch;
 }
-.facts > div {
-  display: flex; align-items: baseline; justify-content: space-between;
-  gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--hairline);
-}
-.facts dt {
-  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--muted); font-weight: 500;
-}
-.facts dd {
-  margin: 0; font-size: 1.32rem; font-weight: 600; color: var(--ink);
-  line-height: 1.1; text-align: right;
-}
-.facts dd small {
-  display: block; font-size: 11.5px; font-weight: 400; color: var(--muted);
-  letter-spacing: 0; margin-top: 3px; text-transform: none;
-}
+.bridge p { margin: 0 0 8px; }
+.bridge .eyebrow { grid-column: auto; margin-bottom: 8px; }
+.bridge__more { margin: 0; }
+.bridge__more a { font-weight: 500; }
+.bridge__more a::after { content: " →"; }
 
-/* the signature: a 105-tick measure rule */
+/* the signature: a 105-tick measure rule.
+   Two states, three channels each, because red and green alone is exactly the
+   pair that collapses for a deuteranope and on a mono printer:
+     fixed by at least one model - hollow, green, two-thirds height
+     never fixed by anything     - solid,  red,   full height
+   The survivors are the story, so they carry the heavier mark. */
 .tickrule {
   grid-column: 1 / -1;
-  margin: clamp(36px, 5vw, 64px) 0 0;
+  grid-row: 4;
+  margin: clamp(22px, 3.2vw, 40px) 0 0;
 }
 .tickrule__plot {
   display: flex; gap: 2px; align-items: flex-end;
-  height: 46px; width: 100%;
+  height: 44px; width: 100%;
 }
-.tickrule__plot span {
-  flex: 1 1 0; min-width: 0; height: 100%;
-  background: var(--rule);
+.tickrule__plot .tick {
+  flex: 1 1 0; min-width: 0;
   border-radius: 1px;
 }
-.tickrule__plot span.is-survivor { background: var(--ink); }
-.tickrule__brace {
-  height: 8px; border: 1px solid var(--ink); border-top: 0;
-  margin-left: auto; margin-top: 5px;
+.tickrule__plot .tick--fixed {
+  height: 62%;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--tick-fixed);
+}
+.tickrule__plot .tick--survivor {
+  height: 100%;
+  background: var(--tick-survivor);
 }
 .tickrule figcaption {
   font-size: 12.5px; color: var(--muted); margin-top: 10px;
-  max-width: 78ch; line-height: 1.5;
+  max-width: 84ch; line-height: 1.55;
 }
-.tickrule figcaption b { color: var(--ink); font-weight: 500; }
+.tickrule figcaption b { color: var(--ink); font-weight: 600; }
+
+/* the caption is the legend: each half names its own mark and shows it */
+.tickkey { color: var(--ink-2); }
+.tickkey__mark {
+  display: inline-block; width: 7px; vertical-align: -1px;
+  margin-right: 5px; border-radius: 1px;
+}
+.tickkey--fixed .tickkey__mark {
+  height: 8px; box-shadow: inset 0 0 0 1.5px var(--tick-fixed);
+}
+.tickkey--survivor .tickkey__mark { height: 11px; background: var(--tick-survivor); }
 
 /* ---------------------------------------------------------------- controls */
 
-.controls { padding-block: clamp(28px, 4vw, 44px) 0; }
+.controls { padding-block: clamp(20px, 2.6vw, 32px) 0; }
 .controls__bar {
   display: flex; align-items: baseline; justify-content: space-between;
   gap: 16px; flex-wrap: wrap;
@@ -283,7 +321,7 @@ h1 em { font-style: normal; color: var(--accent); }
 }
 .preset[aria-pressed="true"] + .preset { border-left-color: var(--on-bg); }
 
-.picker { margin-top: 18px; }
+.picker { margin-top: 12px; }
 .picker > summary {
   cursor: pointer; font-size: 12.5px; color: var(--ink);
   padding: 6px 0; list-style: none; display: flex; align-items: center; gap: 8px;
@@ -342,7 +380,7 @@ h1 em { font-style: normal; color: var(--accent); }
 
 /* ------------------------------------------------------------------- views */
 
-.views { padding-block: clamp(30px, 4vw, 46px) 0; }
+.views { padding-block: clamp(20px, 2.8vw, 34px) 0; }
 .views__bar {
   display: flex; align-items: flex-end; justify-content: space-between;
   gap: 16px; flex-wrap: wrap;
@@ -376,7 +414,7 @@ h1 em { font-style: normal; color: var(--accent); }
   color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
 }
 
-.panel { padding-top: 22px; }
+.panel { padding-top: 16px; }
 .panel:focus { outline: none; }
 .panel:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 
@@ -393,7 +431,7 @@ h1 em { font-style: normal; color: var(--accent); }
   border: 1px solid var(--hairline);
 }
 .board {
-  width: 100%; min-width: 1160px; table-layout: fixed;
+  width: 100%; min-width: 1030px; table-layout: fixed;
   border-collapse: collapse; font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
@@ -416,6 +454,9 @@ h1 em { font-style: normal; color: var(--accent); }
 .board thead tr.groups th {
   padding-block: 9px 6px; border-bottom: 1px solid var(--hairline);
   color: var(--ink-2); font-size: 10px; letter-spacing: 0.12em; text-align: left;
+  /* "Tracked, not scored" heads one column now, so the label wraps inside it
+     rather than running over the neighbour it does not describe */
+  white-space: normal; line-height: 1.25;
 }
 .board thead tr.cols th { white-space: normal; }
 .board thead tr.groups th.g-score { color: var(--ink); }
@@ -453,6 +494,32 @@ h1 em { font-style: normal; color: var(--accent); }
   font-weight: 600; font-size: 10.5px; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--muted); margin-right: 8px;
 }
+
+/* Partial and claimed-only live here rather than in two columns of mostly
+   zeroes. They are figures, so they are set like figures - label, then value -
+   and each label links at its own definition. */
+.detail__figs { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; }
+.detail__fig { display: inline-flex; align-items: baseline; gap: 7px; }
+.detail__fig .deflink {
+  font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); font-weight: 600;
+}
+.detail__val {
+  font-size: 14px; font-weight: 600; color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.detail__val--zero { color: var(--neutral); font-weight: 500; }
+.detail__sep { color: var(--hairline); }
+
+/* a link to a definition on the method page: underlined on the dotted rhythm the
+   cost tags already use, so it reads as "there is more behind this word" */
+.deflink {
+  color: inherit; text-decoration: none;
+  border-bottom: 1px dotted var(--neutral);
+}
+.deflink:hover, .deflink:focus-visible { color: var(--accent); border-bottom-color: var(--accent); }
+.keys__dagger { color: var(--ink-2); font-weight: 600; }
+.board td.has-note .bar-val { display: inline-flex; align-items: baseline; }
 
 /* model cell — chip, then the name and the harness line stacked behind it */
 .model { display: grid; grid-template-columns: 12px 1fr; gap: 0 10px; align-items: start; }
@@ -614,6 +681,11 @@ h1 em { font-style: normal; color: var(--accent); }
   stroke-linejoin: round; stroke-linecap: round;
 }
 .chart .pt-leader { stroke: var(--neutral); stroke-width: 1; }
+/* a figure carrying its own note wears a broken ring - not a colour, so it
+   survives the run colour underneath it, a colourblind reader and a mono print */
+.chart .pt-flag {
+  fill: none; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 2.5;
+}
 .chart .hit { fill: transparent; cursor: pointer; }
 .chart .hit:focus-visible { outline: none; }
 .chart .pt-halo { fill: none; stroke: var(--accent); stroke-width: 1.5; opacity: 0; }
@@ -633,6 +705,10 @@ h1 em { font-style: normal; color: var(--accent); }
 .chart__tip .tip-key {
   display: inline-block; width: 14px; height: 2px; vertical-align: 3px; margin-right: 6px;
 }
+.chart__tip .tip-note {
+  color: var(--tip-meta); font-size: 11px; line-height: 1.4;
+  margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--rule);
+}
 
 .chart-host { position: relative; }
 
@@ -645,6 +721,17 @@ h1 em { font-style: normal; color: var(--accent); }
   width: 9px; height: 9px; border-radius: 50%; display: inline-block;
   box-shadow: inset 0 0 0 1px var(--chip-ring);
 }
+/* What the measure IS, inside the plate with the plot, so it travels with the
+   chart instead of sitting somewhere below it. */
+.chart__def {
+  margin: 14px 0 2px; padding: 1px 0 1px 13px;
+  border-left: 2px solid var(--rule);
+  font-size: 12px; line-height: 1.5; color: var(--ink-2);
+  max-width: 104ch;
+}
+.chart__def--skip { color: var(--muted); }
+.chart__def-flag { display: block; margin-top: 5px; color: var(--muted); }
+
 .chart__note {
   font-size: 12.5px; color: var(--muted); line-height: 1.55;
   max-width: 92ch; margin: 16px 0 0;
@@ -652,6 +739,16 @@ h1 em { font-style: normal; color: var(--accent); }
 .chart__note strong { color: var(--ink-2); font-weight: 600; }
 
 /* ------------------------------------------------------------------- prose */
+
+/* the method page's own header: one column, no rail, no tick rule */
+.hero--method { grid-template-columns: minmax(0, 1fr); }
+.hero--method h1 { max-width: 20ch; grid-row: 2; }
+.hero--method .lede { grid-row: 3; }
+.backlink { grid-column: 1; grid-row: 4; margin: 18px 0 0; font-size: 13px; }
+.backlink a { text-decoration: none; border-bottom: 1px solid var(--hairline); }
+.backlink a::before { content: "← "; }
+.backlink a:hover { border-bottom-color: var(--accent); }
+.backlink--end { margin-top: 30px; }
 
 .prose { padding-block: clamp(44px, 6vw, 76px) 0; }
 .prose h2 {
@@ -694,7 +791,12 @@ h1 em { font-style: normal; color: var(--accent); }
   padding: 11px 16px 11px 0; font-size: 12px; font-weight: 600;
   letter-spacing: 0.04em; color: var(--ink);
   border-bottom: 1px solid var(--hairline);
+  scroll-margin-top: 24px;
 }
+/* the board deep-links straight at a term, so the term has to show it was hit */
+.glossary dt:target, .caveats li:target { background: var(--accent-wash); }
+.glossary dt:focus-visible, .caveats li:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.caveats li { scroll-margin-top: 24px; }
 .glossary dd {
   margin: 0; padding: 11px 0; font-size: 13.5px; color: var(--ink-2);
   line-height: 1.5; border-bottom: 1px solid var(--hairline);
@@ -714,8 +816,9 @@ h1 em { font-style: normal; color: var(--accent); }
 
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; }
-  .facts { grid-column: 1; grid-row: auto; margin-top: 30px; }
+  .bridge { grid-column: 1; grid-row: auto; margin-top: 22px; max-width: none; }
   .lede { max-width: none; }
+  .tickrule { grid-row: auto; }
   .tickrule__plot { height: 34px; gap: 1px; }
 }
 
@@ -727,6 +830,7 @@ h1 em { font-style: normal; color: var(--accent); }
   .views__actions { width: 100%; justify-content: space-between; }
   .board__caption { padding-bottom: 10px; }
   .tickrule__plot { height: 26px; }
+  .tickrule__plot .tick--fixed { box-shadow: inset 0 0 0 1px var(--tick-fixed); }
   .glossary { grid-template-columns: 1fr; }
   .glossary dt { border-bottom: 0; padding-bottom: 0; }
   .glossary dd { padding-top: 4px; }
@@ -761,7 +865,7 @@ h1 em { font-style: normal; color: var(--accent); }
   .board td.model-cell::before, .board td.score::before { display: none; }
   /* a card is narrower than a table cell, so the reserved value width shrinks with it */
   .bar-row--score { --reserve: 62px; }
-  .bar-row--wall { --reserve: 62px; }
+  .bar-row--wall { --reserve: 70px; }
   .bar-row--cost { --reserve: 100px; }
   .bar-row--extras { --reserve: 30px; }
   .bar { height: 15px; }
@@ -795,6 +899,8 @@ h1 em { font-style: normal; color: var(--accent); }
     --ink: #1c2026; --ink-2: #3d444d; --muted: #6b727b;
     --accent: #3f6b8f; --neutral: #aab1ba; --bar: #aab1ba;
     --chip-ring: rgba(28, 32, 38, 0.16);
+    /* the tick rule's own two hues follow the paper, not the screen */
+    --tick-fixed: #2b8f66; --tick-survivor: #9e2b20;
     color-scheme: light;
   }
   body { background: #fff; font-size: 10.5pt; }
@@ -804,13 +910,19 @@ h1 em { font-style: normal; color: var(--accent); }
   .tablewrap { overflow: visible; border: 0; }
   .board { font-size: 8pt; min-width: 0; }
   .board th, .board td { padding: 5px 6px; }
-  .bar, .swatch, .keys .swatch-key {
+  .bar, .swatch, .keys .swatch-key,
+  .tickrule__plot .tick, .tickkey__mark {
     -webkit-print-color-adjust: exact; print-color-adjust: exact;
   }
+  /* on paper the tick rule still reads without either hue: the survivors are the
+     solid, full-height marks and the caption names both */
+  .bridge { border-top: 0; }
   /* every annotation is printed, since nobody can expand a row on paper */
   .board tbody tr.annotation-row[hidden] { display: table-row !important; }
   .footer { background: #fff; }
   a { color: inherit; text-decoration: none; }
-  #method { break-before: page; }
+  .prose { break-inside: auto; }
+  .method-p, .caveats li, .glossary dt, .glossary dd { break-inside: avoid; }
+  .backlink { display: none !important; }
   .chart__tip { display: none !important; }
 }

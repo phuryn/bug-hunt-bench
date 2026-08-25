@@ -1,12 +1,16 @@
 /* Bug Hunt Bench — bootstrap, state, URL sync.
-   One selection drives the table, the chart and the export. State lives in the query
-   string so any view can be linked and reloaded. */
+   One selection drives the table, both maps and the export. State lives in the
+   query string so any view can be linked and reloaded.
+
+   This page is the board. The method, the caveats and the definitions live on
+   /method, rendered from the same data file — never duplicated into markup —
+   and everything here that needs one of them links at the exact anchor. */
 
 import {
-  COLUMNS, SCORE_BAR_NOTE, glossaryTerm, slugify, fmtDate, el,
+  COLUMNS, SCORE_BAR_NOTE, caveatHref, defHref, methodHref, slugify, fmtDate, el,
 } from './format.js';
 import { renderHead, renderBody, renderColgroup } from './table.js';
-import { renderScatter } from './scatter.js';
+import { renderScatter, AXES } from './scatter.js';
 import { renderPicker } from './selector.js';
 import { exportView } from './export-png.js';
 import { initTheme, hasAdjustedColors } from './theme.js';
@@ -16,6 +20,29 @@ const PRESETS = {
   all: { test: () => true, name: 'All runs' },
   ceiling: { test: (r) => r.ceiling === true, name: 'Ceiling runs only' },
   clear: { test: () => false, name: 'Nothing selected' },
+};
+
+/* The three views and the panels they live in. A fourth measure would mean an
+   axis spec in scatter.js and a row here — not a new renderer. */
+const VIEWS = {
+  table: { panel: 'panel-table', tab: 'tab-table' },
+  scatter: {
+    panel: 'panel-scatter', tab: 'tab-scatter', axis: AXES.cost,
+    host: 'chart', legend: 'chart-legend', empty: 'scatter-empty', note: 'axis-note',
+  },
+  time: {
+    panel: 'panel-time', tab: 'tab-time', axis: AXES.time,
+    host: 'chart-time', legend: 'time-legend', empty: 'time-empty', note: 'time-axis-note',
+  },
+};
+const CHART_VIEWS = ['scatter', 'time'];
+
+/* Which caveat belongs beside which map. Matched on its opening words, with the
+   generator's current position as a fallback, so a reordered data file moves the
+   right sentence rather than a confidently wrong one. */
+const CHART_CAVEAT = {
+  time: { index: 1, starts: 'Wall clock' },
+  cost: { index: 2, starts: 'Cost' },
 };
 
 const state = {
@@ -69,12 +96,15 @@ function readUrl() {
     const preset = p.get('preset');
     applyPreset(PRESETS[preset] ? preset : 'featured');
   }
+  /* A sort key that is no longer a column — an old ?sort=claimed_only link, say —
+     is simply not applied, and the board opens on its default sort. A stale link
+     has to degrade, never throw. */
   const sort = p.get('sort');
   if (sort && COLUMNS.some((c) => c.key === sort)) state.sort = sort;
   const dir = p.get('dir');
   if (dir === 'asc' || dir === 'desc') state.dir = dir;
   const view = p.get('view');
-  if (view === 'scatter' || view === 'table') state.view = view;
+  if (VIEWS[view]) state.view = view;
 }
 
 function writeUrl() {
@@ -89,6 +119,16 @@ function writeUrl() {
 }
 
 /* ------------------------------------------------------------- static bits */
+
+/** The caveat that belongs to a map, and the anchor for the whole of it. */
+function chartCaveat(axisId) {
+  const spec = CHART_CAVEAT[axisId];
+  if (!spec || !Array.isArray(DATA.caveats)) return null;
+  const found = DATA.caveats.findIndex((c) => String(c).startsWith(spec.starts));
+  const i = found >= 0 ? found : spec.index;
+  const text = DATA.caveats[i];
+  return text ? { text, href: caveatHref(i) } : null;
+}
 
 function renderHero() {
   const m = DATA.meta;
@@ -114,112 +154,42 @@ function renderHero() {
   $('hero-lede').textContent = m.subtitle;
   if (m.source_repo) $('source-link').href = m.source_repo;
 
-  // the 105-tick measure rule
+  /* The 105-tick measure rule — the one place on this page where a colour means
+     something on its own account rather than identifying a run.
+
+     Two states, and each carries three channels, because red-green is exactly
+     the pair that fails for a deuteranope and on a mono printer: a bug fixed by
+     at least one model is a HOLLOW GREEN tick at two-thirds height; a bug
+     nothing has ever fixed is a SOLID RED tick at full height. Strip the colour
+     and fill plus height still separate them; strip everything and the caption
+     still names both. The survivors are the story, so they get the heavy mark. */
   const plot = $('tickrule-plot');
   plot.textContent = '';
   const survivorsFrom = m.planted_total - m.survivors;
   for (let i = 0; i < m.planted_total; i += 1) {
-    plot.appendChild(el('span', { class: i >= survivorsFrom ? 'is-survivor' : null }));
+    plot.appendChild(el('span', { class: i >= survivorsFrom ? 'tick tick--survivor' : 'tick tick--fixed' }));
   }
-  const brace = el('div', { class: 'tickrule__brace' });
-  brace.style.setProperty('width', `${(m.survivors / m.planted_total) * 100}%`);
-  plot.after(brace);
   const cap = $('tickrule-caption');
   cap.textContent = '';
   cap.append(
     'Each tick is one of the ',
     el('b', { text: String(m.planted_total) }),
-    ' planted bugs. The ',
+    ' planted bugs. ',
+    el('span', { class: 'tickkey tickkey--fixed' }, [
+      el('i', { class: 'tickkey__mark', 'aria-hidden': 'true' }),
+      'Hollow green — fixed by at least one model, in any run to date',
+    ]),
+    ' (',
+    el('b', { text: String(survivorsFrom) }),
+    '). ',
+    el('span', { class: 'tickkey tickkey--survivor' }, [
+      el('i', { class: 'tickkey__mark', 'aria-hidden': 'true' }),
+      'Solid red — never fixed, by anything',
+    ]),
+    ' (',
     el('b', { text: String(m.survivors) }),
-    ' solid ticks have survived every model in every run to date.',
+    ').',
   );
-
-  const best = RUNS.reduce((a, b) => (b.fixed > a.fixed ? b : a), RUNS[0]);
-  const facts = [
-    ['Planted bugs', String(m.planted_total), `${m.repo1_total} in repo 1 · ${m.repo2_total} in repo 2`],
-    ['Survived everything', String(m.survivors), 'no model, no run, no round'],
-    ['Models · runs', `${m.models} · ${m.runs}`, 'a model can appear at several tiers'],
-    ['Best run to date', `${best.fixed} / ${m.planted_total}`, `${best.model} · ${fmtDate(best.date)}`],
-  ];
-  const dl = $('hero-facts');
-  dl.textContent = '';
-  facts.forEach(([term, value, note]) => {
-    dl.appendChild(el('div', {}, [
-      el('dt', { text: term }),
-      el('dd', {}, [value, el('small', { text: note })]),
-    ]));
-  });
-}
-
-function renderProse() {
-  const body = $('method-body');
-  body.textContent = '';
-  DATA.method.forEach((p, i) => {
-    body.appendChild(el('div', { class: 'method-p' }, [
-      el('span', { class: 'n', text: String(i + 1) }),
-      el('p', { text: p }),
-    ]));
-  });
-
-  const caveats = $('caveats-body');
-  caveats.textContent = '';
-  DATA.caveats.forEach((c) => caveats.appendChild(el('li', { text: c })));
-
-  const gloss = $('glossary-body');
-  gloss.textContent = '';
-  Object.entries(DATA.glossary).forEach(([k, v]) => {
-    gloss.appendChild(el('dt', { text: glossaryTerm(k) }));
-    gloss.appendChild(el('dd', { text: v }));
-  });
-
-  // the extras rule, pulled out beside the table where it can be misread
-  $('extras-pullquote').textContent = DATA.method[DATA.method.length - 1];
-}
-
-function keyList(prefix, labelPrefix) {
-  const dl = el('dl', {});
-  Object.entries(DATA.glossary)
-    .filter(([k]) => k.startsWith(prefix))
-    .forEach(([k, v]) => {
-      dl.appendChild(el('dt', { text: k.slice(prefix.length).replace(/_/g, ' ') }));
-      dl.appendChild(el('dd', { text: v }));
-    });
-  return el('div', {}, [el('h3', { text: labelPrefix }), dl]);
-}
-
-function renderKeys() {
-  const keys = $('table-keys');
-  keys.textContent = '';
-
-  keys.appendChild(el('div', {}, [
-    el('h3', { text: 'Reading the bars' }),
-    el('p', {}, [
-      el('span', { class: 'swatch-key swatch-key--score' }),
-      'Solid, in the run’s own colour: planted bugs fixed, out of 105.',
-    ]),
-    el('p', { class: 'note', text: SCORE_BAR_NOTE }),
-    el('p', {}, [
-      el('span', { class: 'swatch-key swatch-key--extras' }),
-      'Hatched grey, half height: extras. Scaled against the highest extras count on the board, never against the score.',
-    ]),
-    el('p', {}, [
-      el('span', { class: 'swatch-key swatch-key--meta' }),
-      'Flat grey: wall clock and cost, each scaled to the highest figure on the board. Grey, never the run’s colour, because neither is the score — and a cost bar is only comparable to another bar with the same tag.',
-    ]),
-    el('p', { text: '† marks a run carrying a note, a caveat, or a supersession. Open it on the row.' }),
-    hasAdjustedColors(RUNS)
-      ? el('p', { class: 'note', text: 'In the dark theme a run colour that would be invisible on a dark surface is shown lightened. The hue is the run’s own; only the brightness moves, and only on screen.' })
-      : null,
-  ]));
-
-  keys.appendChild(keyList('cost_', 'What the cost tag means'));
-  keys.appendChild(keyList('effort_', 'What the effort tag means'));
-
-  keys.appendChild(el('div', {}, [
-    el('h3', { text: 'Variance' }),
-    el('p', { text: DATA.caveats[0] }),
-    el('p', { text: 'One run is one run. Read gaps of a point or two as noise.' }),
-  ]));
 }
 
 function patchSchema() {
@@ -239,9 +209,124 @@ function patchSchema() {
   }
 }
 
+/* -------------------------------------------------------------------- keys */
+
+function keyList(prefix, labelPrefix) {
+  const dl = el('dl', {});
+  Object.entries(DATA.glossary)
+    .filter(([k]) => k.startsWith(prefix))
+    .forEach(([k, v]) => {
+      // the term links at its own definition, not at the top of the method page
+      dl.appendChild(el('dt', {}, [
+        el('a', { class: 'deflink', href: defHref(k) }, [k.slice(prefix.length).replace(/_/g, ' ')]),
+      ]));
+      dl.appendChild(el('dd', { text: v }));
+    });
+  return el('div', {}, [el('h3', { text: labelPrefix }), dl]);
+}
+
+function renderKeys() {
+  const keys = $('table-keys');
+  keys.textContent = '';
+
+  keys.appendChild(el('div', {}, [
+    el('h3', { text: 'Reading the bars' }),
+    el('p', {}, [
+      el('span', { class: 'swatch-key swatch-key--score' }),
+      'Solid, in the run’s own colour: planted bugs fixed, out of 105.',
+    ]),
+    el('p', { class: 'note', text: SCORE_BAR_NOTE }),
+    el('p', {}, [
+      el('span', { class: 'swatch-key swatch-key--extras' }),
+      'Hatched grey, half height: ',
+      el('a', { class: 'deflink', href: defHref('extras') }, ['extras']),
+      '. Scaled against the highest extras count on the board, never against the score.',
+    ]),
+    el('p', {}, [
+      el('span', { class: 'swatch-key swatch-key--meta' }),
+      'Flat grey: wall clock and cost, each scaled to the highest figure on the board. Grey, never the run’s colour, because neither is the score — and a cost bar is only comparable to another bar with the same tag.',
+    ]),
+    el('p', {}, [
+      el('b', { class: 'keys__dagger', text: '†' }),
+      ' opens a row’s detail: ',
+      el('a', { class: 'deflink', href: defHref('partial') }, ['partial']),
+      ', ',
+      el('a', { class: 'deflink', href: defHref('claimed_only') }, ['claimed only']),
+      ', and any note, caveat or supersession the run carries. On a wall-clock figure it opens the note on that figure.',
+    ]),
+    hasAdjustedColors(RUNS)
+      ? el('p', { class: 'note', text: 'In the dark theme a run colour that would be invisible on a dark surface is shown lightened. The hue is the run’s own; only the brightness moves, and only on screen.' })
+      : null,
+  ]));
+
+  keys.appendChild(keyList('cost_', 'What the cost tag means'));
+  keys.appendChild(keyList('effort_', 'What the effort tag means'));
+
+  keys.appendChild(el('div', {}, [
+    el('h3', { text: 'Variance' }),
+    el('p', { text: DATA.caveats[0] }),
+    el('p', {}, [
+      'One run is one run. Read gaps of a point or two as noise. ',
+      el('a', { class: 'deflink', href: methodHref('caveats') }, ['All four caveats']),
+      '.',
+    ]),
+  ]));
+
+  // the extras rule, pulled out beside the table where it can be misread
+  $('extras-pullquote').textContent = DATA.method[DATA.method.length - 1];
+}
+
 /* ---------------------------------------------------------------- renderers */
 
-let lastChartWidth = 0;
+const lastChartWidth = { scatter: 0, time: 0 };
+
+/** The sentence that belongs to a map, drawn inside the plate with the plot. */
+function chartFootnote(axisId) {
+  const cav = chartCaveat(axisId);
+  if (!cav) return null;
+  return (L) => {
+    const parts = [
+      document.createTextNode(`${cav.text} `),
+      el('a', { class: 'deflink', href: cav.href }, ['In the caveats']),
+      document.createTextNode('.'),
+    ];
+    if (L.flagged && L.flagged.length) {
+      parts.push(el('span', { class: 'chart__def-flag' }, [
+        `† ${L.flagged.length} of the ${L.points.length} runs shown carry a note on their own figure — it is on the point, and on the row.`,
+      ]));
+    }
+    return parts;
+  };
+}
+
+function renderChart(key) {
+  const V = VIEWS[key];
+  const runs = selectedRuns();
+  const legend = $(V.legend);
+  legend.textContent = '';
+  if (!runs.length) return;
+  const L = renderScatter($(V.host), runs, RUNS, V.axis, chartFootnote(V.axis.id));
+  lastChartWidth[key] = $(V.host).clientWidth;
+  if (!L) return;
+  L.points.slice().sort((a, b) => b.score - a.score).forEach((p) => {
+    legend.appendChild(el('span', {}, [
+      el('i', { style: { 'background-color': p.color } }),
+      `${p.run.id} — ${p.run.fixed}`,
+    ]));
+  });
+}
+
+/* The picker is 25 runs deep and starts closed. Building it into the collapsed
+   details put a few hundred words of markup between the reader and the board for
+   nothing, so it is built when it is opened and dropped when it is shut. */
+function renderPickerIfOpen() {
+  const grid = $('picker-grid');
+  if (!$('picker').open) {
+    grid.textContent = '';
+    return;
+  }
+  renderPicker(grid, RUNS, state.selected, onToggleRun, onToggleVendor);
+}
 
 function renderViews() {
   const runs = selectedRuns();
@@ -251,28 +336,18 @@ function renderViews() {
   $('tablewrap').hidden = empty;
   $('extras-pullquote').hidden = empty;
   $('table-keys').hidden = empty;
-  $('scatter-empty').hidden = !empty;
-  $('chart').hidden = empty;
+  CHART_VIEWS.forEach((k) => {
+    $(VIEWS[k].empty).hidden = !empty;
+    $(VIEWS[k].host).hidden = empty;
+    if (empty) $(VIEWS[k].legend).textContent = '';
+  });
   $('export-png').disabled = empty;
   $('export-png').title = empty ? 'Select at least one run to export' : 'Download the current view as a PNG';
 
   renderHead($('board-head'), state, onSort);
   renderBody($('board-body'), runs, state, DATA.glossary, SCALES);
 
-  const legend = $('chart-legend');
-  legend.textContent = '';
-  if (state.view === 'scatter' && !empty) {
-    const L = renderScatter($('chart'), runs, RUNS);
-    lastChartWidth = $('chart').clientWidth;
-    if (L) {
-      L.points.slice().sort((a, b) => b.score - a.score).forEach((p) => {
-        legend.appendChild(el('span', {}, [
-          el('i', { style: { 'background-color': p.color } }),
-          `${p.run.id} — ${p.run.fixed}`,
-        ]));
-      });
-    }
-  }
+  if (!empty && VIEWS[state.view].axis) renderChart(state.view);
 
   const label = state.preset ? PRESETS[state.preset].name : 'Custom selection';
   $('picker-summary').textContent = '';
@@ -287,7 +362,7 @@ function renderViews() {
 }
 
 function renderAll() {
-  renderPicker($('picker-grid'), RUNS, state.selected, onToggleRun, onToggleVendor);
+  renderPickerIfOpen();
   renderKeys();
   renderViews();
   writeUrl();
@@ -331,15 +406,14 @@ function onToggleVendor(group, on) {
 }
 
 function setView(view, focus) {
-  state.view = view;
+  state.view = VIEWS[view] ? view : 'table';
   document.querySelectorAll('.tab').forEach((t) => {
-    const on = t.dataset.view === view;
+    const on = t.dataset.view === state.view;
     t.setAttribute('aria-selected', String(on));
     t.tabIndex = on ? 0 : -1;
     if (on && focus) t.focus();
   });
-  $('panel-table').hidden = view !== 'table';
-  $('panel-scatter').hidden = view !== 'scatter';
+  Object.entries(VIEWS).forEach(([k, V]) => { $(V.panel).hidden = k !== state.view; });
   renderViews();
   writeUrl();
 }
@@ -351,6 +425,8 @@ function wire() {
       renderAll();
     });
   });
+
+  $('picker').addEventListener('toggle', renderPickerIfOpen);
 
   const tabs = [...document.querySelectorAll('.tab')];
   tabs.forEach((tab, i) => {
@@ -376,13 +452,17 @@ function wire() {
     exportBtn.classList.add('is-busy');
     exportBtn.textContent = 'Rendering…';
     try {
+      const axis = VIEWS[state.view].axis || null;
+      const cav = axis ? chartCaveat(axis.id) : null;
       await exportView({
         view: state.view,
+        axis,
         runs: selectedRuns(),
         allRuns: RUNS,
         state,
         meta: DATA.meta,
         scales: SCALES,
+        caveat: cav ? cav.text : null,
         siteUrl: SITE_URL || location.origin + location.pathname,
         presetName: state.preset ? PRESETS[state.preset].name : 'Custom selection',
       });
@@ -399,20 +479,36 @@ function wire() {
   });
 
   if (window.ResizeObserver) {
-    const ro = new ResizeObserver(() => {
-      if (state.view !== 'scatter') return;
-      const w = $('chart').clientWidth;
-      if (Math.abs(w - lastChartWidth) < 6) return;
-      lastChartWidth = w;
-      renderViews();
+    CHART_VIEWS.forEach((k) => {
+      const ro = new ResizeObserver(() => {
+        if (state.view !== k) return;
+        const w = $(VIEWS[k].host).clientWidth;
+        if (Math.abs(w - lastChartWidth[k]) < 6) return;
+        lastChartWidth[k] = w;
+        renderViews();
+      });
+      ro.observe($(VIEWS[k].host));
     });
-    ro.observe($('chart'));
   }
 }
 
 /* -------------------------------------------------------------------- boot */
 
+/* The method, the caveats and the definitions used to be sections of this page,
+   and those anchors were in the masthead for long enough to have been shared.
+   Send an old link to the section it names on the page that now holds it. */
+const MOVED = { method: 'method', caveats: 'caveats', glossary: 'definitions' };
+
+function forwardMovedAnchor() {
+  const id = location.hash.replace('#', '');
+  if (!MOVED[id]) return false;
+  location.replace(methodHref(MOVED[id]));
+  return true;
+}
+
 async function boot() {
+  if (forwardMovedAnchor()) return;
+
   const canonical = document.querySelector('link[rel="canonical"]');
   SITE_URL = canonical ? canonical.href : '';
 
@@ -427,16 +523,15 @@ async function boot() {
   board.setAttribute('role', 'table');
   renderColgroup(board);
 
-  // the scatter's y-axis stops above the board's best run; say so in the note
+  // both maps stop their score axis above the board's best run; say so in the note
   const best = RUNS.reduce((a, b) => (b.fixed > a.fixed ? b : a), RUNS[0]);
-  const axisNote = $('axis-note');
-  if (axisNote) {
-    axisNote.textContent = `The score axis stops short of 105 on purpose — the best run on the board to date fixed ${best.fixed}, and a 0–105 axis would push every point into the bottom third. It is ticked in real fixed counts, and it moves with the board rather than with the selection.`;
-  }
+  const axisNote = `The score axis stops short of 105 on purpose — the best run on the board to date fixed ${best.fixed}, and a 0–105 axis would push every point into the bottom third. It is ticked in real fixed counts, and it moves with the board rather than with the selection.`;
+  CHART_VIEWS.forEach((k) => {
+    const node = $(VIEWS[k].note);
+    if (node) node.textContent = axisNote;
+  });
 
   renderHero();
-  renderProse();
-  renderKeys();
   patchSchema();
 
   readUrl();

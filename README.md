@@ -14,27 +14,51 @@ server and it runs.
 
 ```
 .
-├── index.html                 the whole page: markup, head, JSON-LD
+├── index.html                 THE BOARD: markup, head, JSON-LD
+├── method.html                THE METHOD PAGE: method, caveats, definitions
 ├── data/
 │   └── benchmark.json         GENERATED — the single source of every number
 ├── assets/
-│   ├── css/site.css           all styles, incl. responsive + print
+│   ├── css/site.css           all styles for both pages, incl. responsive + print
 │   ├── favicon.svg
 │   └── js/
 │       ├── theme-boot.js      classic, render-blocking: stamps the theme pre-paint
 │       ├── theme.js           theme state, the toggle, the dark run-colour rule
-│       ├── main.js            boot, state, URL sync, section rendering
+│       ├── main.js            the board: boot, state, URL sync, section rendering
+│       ├── method.js          the method page: renders method/caveats/glossary
 │       ├── format.js          vocabularies, formatters, column model, DOM helpers
-│       ├── table.js           leaderboard table: colgroup, sortable head, rows
-│       ├── scatter.js         score-vs-cost SVG + the shared layout function
+│       ├── table.js           leaderboard table: colgroup, sortable head, rows, row detail
+│       ├── scatter.js         both maps — one layout function, two axis specs
 │       ├── selector.js        run picker (native checkboxes, grouped by vendor)
 │       └── export-png.js      canvas renderer for "Export this view (PNG)"
-├── netlify.toml               publish = repo root, no build command
+├── netlify.toml               publish = repo root, no build command, /method rewrite
 ├── _headers                   security headers, CSP, cache policy
 ├── robots.txt
 ├── sitemap.xml
 └── og-image.png               social card, 1200×630
 ```
+
+## Two pages, not a router
+
+`/` is the board and nothing else: masthead, headline, the 105-tick rule, the run
+picker, the table, the two maps, the export, and the key that makes the columns
+readable. `/method` is the argument: **The method**, **What this board does not
+tell you**, **Definitions**. Both are real HTML files sharing one stylesheet, one
+theme system and one masthead — there is no client-side router.
+
+The split cost no duplication, because the moved sections were never markup in the
+first place: `method`, `caveats` and `glossary` are rendered from
+`data/benchmark.json` by `method.js`, exactly as they were rendered by `main.js`
+before. Every term on the board that needs a definition links at the anchor for
+that definition (`/method#def-cost_bill`, `/method#caveat-2`), built by
+`defHref()` / `caveatHref()` in `format.js` and matched by the ids `method.js`
+stamps on each term. Nothing on the board hard-codes a `/method` URL.
+
+Netlify serves `method.html` at `/method` by itself, but the rule is written into
+`netlify.toml` anyway (a 200 rewrite plus a 301 off `/method.html`), because the
+canonical, the sitemap and every link on the board point at the extensionless
+path. Old `#method` / `#caveats` / `#glossary` links to the board still work:
+`main.js` forwards them to the matching section on `/method`.
 
 ## Preview locally
 
@@ -61,13 +85,16 @@ Everything on the page — every score, bar, tick, axis, label, definition and
 caveat — is read from that file at runtime. The page contains no duplicated
 figures, which is why a data refresh needs no other edit.
 
-Three strings are maintained by hand and are the only things that can drift:
+A few strings are maintained by hand and are the only things that can drift.
+Every one of them is deliberately written without figures, so a data refresh
+cannot make them wrong:
 
 | String | Where | When to touch it |
 |---|---|---|
-| `<title>` and `<meta name="description">` | `index.html` head | Deliberately written without numbers so they cannot go stale. |
-| `lastmod` | `sitemap.xml` | Bump to `meta.updated` on a data refresh. |
-| Canonical / og / Twitter / robots / sitemap URLs | `index.html`, `robots.txt`, `sitemap.xml` | Change `https://bug-hunt-bench.netlify.app/` when a custom domain lands. |
+| `<title>` and `<meta name="description">` | `index.html`, `method.html` heads | Written without numbers so they cannot go stale. |
+| The bridge — "what this is" + the link to `/method` | `index.html` hero | Only if the setup itself changes. |
+| `lastmod` | `sitemap.xml` | Bump both `<url>` entries to `meta.updated` on a data refresh. |
+| Canonical / og / Twitter / robots / sitemap URLs | `index.html`, `method.html`, `robots.txt`, `sitemap.xml` | The site is at `https://bughunt.productcompass.pm/` (Netlify site `bughuntbench.netlify.app`, custom domain CNAME'd). The URL in every exported PNG is read from the canonical tag, so it follows automatically. |
 
 `dateModified` and `url` inside the JSON-LD block are *also* patched at runtime
 from the data file, so the static values there are a fallback, not a
@@ -93,6 +120,34 @@ maintenance burden.
   A missing figure and a genuine zero both draw no bar at all — every other bar
   has a 2px floor so the cheapest run still shows a tick, and that floor must not
   invent a mark for a run worth nothing.
+- **The 105-tick rule is the one place a colour means something.** Every other
+  colour on the site identifies a run; these two identify a *state*. A bug fixed
+  by at least one model is a **hollow green** tick at two-thirds height; a bug
+  nothing has ever fixed is a **solid red** tick at full height. Red and green is
+  exactly the pair that collapses for a deuteranope and on a mono printer, so the
+  rule never leans on hue: fill and height carry the same distinction, and the
+  caption names both marks and shows each one inline, so there is no legend to
+  hunt for. The survivors are the story, so they get the heavier mark.
+  The two hues are `--tick-fixed` / `--tick-survivor`, one pair per theme, chosen
+  against the page surface with the data-viz palette validator rather than by eye:
+  light `#2b8f66` / `#9e2b20` (CVD ΔE 11.7, normal-vision 26.8, contrast 3.5:1 and
+  6.5:1 on `#eef0f3`), dark `#0b9360` / `#e15247` (CVD ΔE 8.1, normal-vision 27.5,
+  4.7:1 and 4.8:1 on `#101419`). Both clear the ΔE ≥ 8 gate; the second channel is
+  there because clearing it is not the same as a dichromat reading it at a glance.
+  Print re-declares the light pair, so paper never gets the dark steps.
+- **Partial and claimed-only are not columns.** Most rows are zero on both, and
+  two columns of mostly zeroes bought a reader nothing on a grid this wide. They
+  are one click away instead: **every** row has a `†` detail that prints them
+  first, each label linked to its own definition. "Claimed only: 0" is a real
+  signal about a model — it just is not worth a column. They are still in the
+  glossary, still in the chart tooltip, and still printed on paper, where every
+  detail row is expanded because nobody can click one.
+- **A wall-clock figure that carries a note says so where the figure is.** Three
+  runs have a `wall_note` in the data. Those rows get a second `†` on the
+  wall-clock cell — the same disclosure the model name opens, kept in step — and
+  on the score-vs-time map they get a broken ring and a dagger on the label.
+  Neither mark is a colour, so both survive the run colour underneath, a
+  colourblind reader and a black-and-white print.
 - **Extras are never added to the score, anywhere.** They live in a column group
   headed *Tracked, not scored*, drawn as a hatched grey ghost bar at half the
   height of the score bar and scaled against the highest extras count on the
@@ -119,11 +174,16 @@ Selection, sort and view live in the query string:
 ?preset=featured|all|ceiling|clear     a named preset
 ?runs=<slug>,<slug>                    an explicit selection (slugs from run ids)
 ?sort=<column key>&dir=asc|desc        table sort
-?view=table|scatter                    active view
+?view=table|scatter|time               active view (scatter = score vs cost)
 ```
 
 `https://…/?preset=ceiling&sort=cost_usd&dir=asc&view=scatter` reloads exactly
 what you were looking at.
+
+Every parameter is validated against the live model rather than trusted: a `sort`
+key that is no longer a column — an old `?sort=claimed_only` link — is simply not
+applied and the board opens on its default sort, and the rewritten URL drops it.
+A stale link has to degrade, never throw.
 
 ## Themes
 
@@ -176,6 +236,34 @@ described at the bottom of this file. Swatches and chart points also carry a
 hairline ring (`--chip-ring`) in both themes, which is what keeps a mark's edge
 visible on a surface close to its own value.
 
+## The two maps
+
+Both are the same renderer with a different axis spec (`AXES` in `scatter.js`);
+adding a third measure means adding a spec, not a chart.
+
+- **Score vs cost — logarithmic x.** The board spans roughly two hundredfold, and
+  a linear axis would pile half the runs into the left margin. Two things have no
+  place on that axis and they are not the same claim, so the note says which: a
+  run with no cost figure, and a run that genuinely cost **zero**, which is a
+  known number a log axis cannot place.
+- **Score vs time — linear x.** Wall clock spans about 25 to 164 minutes: under
+  sevenfold, well inside one order of magnitude. Linear places every run honestly
+  and keeps the reading additive, which is how minutes are read; a log axis would
+  stretch the gaps at the fast end and squash them at the slow end for no gain.
+  The axis starts at zero, because on a duration axis zero is a real place.
+
+Both mark the good corner (*cheap and strong*, *fast and strong*) and draw the
+frontier — runs no other selected run beats on both axes at once.
+
+`caveats[1]` and `caveats[2]` are pulled out and drawn **inside the plate with the
+plot**, matched on their opening words with the generator's position as a
+fallback, so a reordered data file moves the right sentence rather than a
+confidently wrong one. On the time map that sentence is the definition of the
+measure — one measure on every row, both repo legs, install excluded — not a
+blanket disclaimer, because there is nothing blanket to disclaim; the two things
+that bend specific rows are marked on those rows. The exported PNG carries the
+first sentence of it plus, when any are shown, the count of flagged runs.
+
 ## PNG export
 
 "Export this view (PNG)" renders the **current** view — the live selection, the
@@ -190,15 +278,19 @@ layout maths is shared with the on-screen chart (`scatterLayout()` in
 `scatter.js`), so the two cannot drift.
 
 Every export bakes in the title, the "planted bugs only — extras are never added
-to the score" line, the update date, the selection and sort, the cost-tag warning
-and the site URL, so a screenshot of a screenshot stays attributable.
+to the score" line, the update date, the selection and sort, and the site URL —
+read from the canonical tag, so it follows the domain — which is what keeps a
+screenshot of a screenshot attributable. The cost-tag warning is printed only
+where a dollar figure is actually on the card. The three views land as
+`bug-hunt-bench-{leaderboard|score-vs-cost|score-vs-time}-{theme}-{date}.png`.
 
 ## Deploy to Netlify
 
 1. Push this repo to GitHub (`phuryn/bug-hunt-bench`).
 2. In Netlify: **Add new site → Import an existing project** → pick the repo.
 3. Netlify reads `netlify.toml`: **build command empty, publish directory `.`**
-   (the repository root — there is nothing to compile, so there is no `/public`).
+   (the repository root — there is nothing to compile, so there is no `/public`),
+   plus the `/method` rewrite and the `/data` shortcut.
 4. Deploy. `_headers` is picked up automatically for security headers and caching.
 
 The CSP in `_headers` allows exactly what the page uses: same-origin scripts and
@@ -212,10 +304,11 @@ the filenames.
 
 ## Open Graph image
 
-`og-image.png` sits at the repo root and the head points at
-`https://bug-hunt-bench.netlify.app/og-image.png` (1200×630) in the `og:image`
+`og-image.png` sits at the repo root and both heads point at
+`https://bughunt.productcompass.pm/og-image.png` (1200×630) in the `og:image`
 and `twitter:image` tags. To refresh it: open the site **in the light theme**,
-select the featured runs, hit **Export this view (PNG)** and crop to 1200×630.
+select the featured runs, hit **Export this view (PNG)** and crop the top of the
+card to a 1200×630 ratio (the full export width, height = width × 630 / 1200).
 Light, because a social card is a thumbnail on somebody else's surface and has no
 way of knowing which theme that surface is in.
 
@@ -227,15 +320,22 @@ different licence is intended.
 
 ## Accessibility and browser notes
 
-- One `h1`, real headings, a real `<table>` with `<caption>`, `<th scope>` and
-  explicit ARIA roles (kept so the mobile card layout still reads as a table).
+- One `h1` per page, real headings, a real `<table>` with `<caption>`,
+  `<th scope>` and explicit ARIA roles (kept so the mobile card layout still reads
+  as a table).
+- A row detail is a real disclosure: `aria-expanded` on the trigger,
+  `aria-controls` at the detail cell. Two triggers can open the same one (the
+  model name and a flagged wall-clock figure) and they are kept in step, because a
+  reader who opened it from one and sees the other still claiming "collapsed" has
+  been told something untrue.
 - Every sortable header is a button; `aria-sort` marks the active column and
   focus returns to that button after the header re-renders.
 - Chart points are focusable with the same readout on focus as on hover, and the
   leaderboard is the chart's table-view twin.
-- `prefers-reduced-motion` is respected; the print stylesheet drops the controls
-  and the theme toggle, forces the light tokens, expands every annotation row and
-  starts the method on a fresh page.
+- `prefers-reduced-motion` is respected. The print stylesheet drops the controls,
+  the tabs and the theme toggle, forces the light tokens on both pages (including
+  the tick rule's own pair), and expands every row detail — nobody can click one
+  on paper, and partial and claimed-only live there now.
 - Colour is never the only channel: every swatch sits beside the run's name, in
   the table, the picker, the chart labels and the chart legend, and every bar
   prints its own value. Several of the per-model colours are close pairs (two

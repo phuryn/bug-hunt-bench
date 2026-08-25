@@ -17,5 +17,11 @@
 /index.html
   Cache-Control: public, max-age=0, must-revalidate
 
+/method.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/method
+  Cache-Control: public, max-age=0, must-revalidate
+
 /
   Cache-Control: public, max-age=0, must-revalidate

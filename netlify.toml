@@ -13,3 +13,16 @@
   from = "/data"
   to = "/data/benchmark.json"
   status = 302
+
+# Netlify serves method.html at /method on its own, but the canonical, the
+# sitemap and every link on the board point at /method, so the rule is written
+# down rather than inherited.
+[[redirects]]
+  from = "/method"
+  to = "/method.html"
+  status = 200
+
+[[redirects]]
+  from = "/method.html"
+  to = "/method"
+  status = 301

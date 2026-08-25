@@ -1,14 +1,56 @@
-/* Score vs cost.
-   Cost on a log x-axis (the board spans roughly two hundredfold), score on a linear
-   y-axis that stops just above the best run on the board. Layout is computed once,
-   in a pure function, so the on-screen SVG and the PNG export cannot drift apart. */
+/* The two maps: score against cost, and score against wall clock.
+   One layout function, one renderer, two axis specs — the only thing that differs
+   between them is the x measure, its scale and the sentence under the plot.
+   Layout is computed in a pure function so the on-screen SVG and the PNG export
+   cannot drift apart.
 
-import { pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, svgEl, el, measureText } from './format.js';
+   Cost is logarithmic: the board spans roughly two hundredfold, and a linear axis
+   would pile half the runs into the left margin. Wall clock is LINEAR: it spans
+   under sevenfold — well inside one order of magnitude — so a linear axis places
+   every run honestly and keeps the reading additive, which is how minutes are
+   read. A log axis there would stretch the gaps at the fast end and squash the
+   ones at the slow end, for no gain. */
+
+import {
+  pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, svgEl, el, measureText,
+} from './format.js';
 import { runColor } from './theme.js';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
+const LINEAR_STEPS = [5, 10, 15, 20, 25, 30, 50, 60, 100, 150, 200];
 const CEILING = 105;
+
+/* The x measures. `flag` names the field that marks a value as carrying its own
+   note on how it was taken; a flagged point is drawn differently and says why. */
+export const AXES = {
+  cost: {
+    id: 'cost',
+    key: 'cost_usd',
+    scale: 'log',
+    title: 'Run cost, USD — logarithmic, cheaper to the left',
+    titleCompact: 'Cost, USD (log)',
+    exportTitle: 'RUN COST, USD — LOGARITHMIC, CHEAPER TO THE LEFT',
+    corner: 'cheap and strong',
+    chartTitle: 'Score against cost',
+    slug: 'score-vs-cost',
+    fmt: fmtCost,
+    flag: null,
+  },
+  time: {
+    id: 'time',
+    key: 'wall_min',
+    scale: 'linear',
+    title: 'Wall clock, minutes — linear, faster to the left',
+    titleCompact: 'Wall clock, min',
+    exportTitle: 'WALL CLOCK, MINUTES — LINEAR, FASTER TO THE LEFT',
+    corner: 'fast and strong',
+    chartTitle: 'Score against wall clock',
+    slug: 'score-vs-time',
+    fmt: (v) => `${fmtWall(v)} min`,
+    flag: 'wall_note',
+  },
+};
 
 /* The y-axis stops just above the best run on the whole board, not at 105 and
    not at the leaderboard's 100-unit bar reference either. Both answer the same
@@ -17,11 +59,7 @@ const CEILING = 105;
    screenshot and the next, and a dynamic cap here, because the chart is redrawn
    for whatever is selected and a fixed top would waste half the plot. The axis
    is ticked in real fixed counts either way, its title says "out of 105", and
-   the note under the chart says where it stops and why.
-   The ceiling story is told by the tick rule in the header; here the job is
-   telling runs apart, and a 0–105 axis spends two thirds of the plot on empty
-   space and squashes every point into one band. The axis title and the note
-   under the chart both keep "of 105" in front of the reader. */
+   the note under the chart says where it stops and why. */
 function yDomainTop(allRuns) {
   const best = Math.max(0, ...allRuns.map((r) => r.fixed || 0));
   return Math.min(CEILING, Math.ceil((best + 4) / 10) * 10);
@@ -39,15 +77,25 @@ function overlaps(a, b) {
   return !(a.x1 < b.x0 || b.x1 < a.x0 || a.y1 < b.y0 || b.y1 < a.y0);
 }
 
-/** Runs that no other selected run beats on both cost and score at once. */
+/** Runs that no other selected run beats on both x and score at once. Lower x is
+    the better direction on both maps — cheaper, or faster. */
 function frontierOf(points) {
   const keep = points.filter((p) => !points.some((q) => (
-    q !== p && q.cost <= p.cost && q.score >= p.score && (q.cost < p.cost || q.score > p.score)
+    q !== p && q.xv <= p.xv && q.score >= p.score && (q.xv < p.xv || q.score > p.score)
   )));
-  return keep.sort((a, b) => a.cost - b.cost);
+  return keep.sort((a, b) => a.xv - b.xv);
 }
 
-export function scatterLayout(runs, allRuns, width, height) {
+function linearTicks(hi, plotW) {
+  const want = Math.max(3, Math.min(8, Math.round(plotW / 110)));
+  const step = LINEAR_STEPS.find((s) => hi / s <= want) || LINEAR_STEPS[LINEAR_STEPS.length - 1];
+  const out = [];
+  for (let v = 0; v <= hi + 1e-9; v += step) out.push(v);
+  return out;
+}
+
+export function scatterLayout(runs, allRuns, width, height, axis) {
+  const A = axis || AXES.cost;
   const compact = width < 620;
   const m = {
     top: 38,
@@ -58,32 +106,42 @@ export function scatterLayout(runs, allRuns, width, height) {
   const plotW = Math.max(60, width - m.left - m.right);
   const plotH = Math.max(60, height - m.top - m.bottom);
 
-  const costs = allRuns.map((r) => r.cost_usd).filter((c) => c !== null && c !== undefined && c > 0);
-  const lo = costs.length ? Math.min(...costs) / 1.7 : 0.5;
-  const hi = costs.length ? Math.max(...costs) * 1.7 : 100;
-  const l0 = Math.log10(lo);
-  const l1 = Math.log10(hi);
+  const val = (r) => r[A.key];
+  const isNum = (v) => v !== null && v !== undefined;
   const yTop = yDomainTop(allRuns);
-  const x = (c) => m.left + ((Math.log10(c) - l0) / (l1 - l0)) * plotW;
   const y = (s) => m.top + plotH - (s / yTop) * plotH;
 
-  let xTicks = LOG_TICKS.filter((t) => t >= lo && t <= hi).map((t) => ({
-    v: t,
-    x: x(t),
-    label: t < 1 ? `$${t.toFixed(2).replace(/0$/, '')}` : `$${t}`,
-  }));
-  // on a phone, half the ticks is still a readable log axis; all of them collide
-  if (compact) xTicks = xTicks.filter((_, i) => i % 2 === 0);
-  const yStep = yTop > 60 ? 20 : 10;
-  const yTicks = [];
-  for (let v = 0; v <= yTop; v += yStep) yTicks.push({ v, y: y(v) });
+  let x;
+  let xTicks;
+  let plotted;
+  if (A.scale === 'log') {
+    const vals = allRuns.map(val).filter((c) => isNum(c) && c > 0);
+    const lo = vals.length ? Math.min(...vals) / 1.7 : 0.5;
+    const hi = vals.length ? Math.max(...vals) * 1.7 : 100;
+    const l0 = Math.log10(lo);
+    const l1 = Math.log10(hi);
+    x = (c) => m.left + ((Math.log10(c) - l0) / (l1 - l0)) * plotW;
+    xTicks = LOG_TICKS.filter((t) => t >= lo && t <= hi).map((t) => ({
+      v: t, x: x(t), label: t < 1 ? `$${t.toFixed(2).replace(/0$/, '')}` : `$${t}`,
+    }));
+    // on a phone, half the ticks is still a readable log axis; all of them collide
+    if (compact) xTicks = xTicks.filter((_, i) => i % 2 === 0);
+    plotted = runs.filter((r) => isNum(val(r)) && val(r) > 0);
+  } else {
+    // minutes start at zero, because on a duration axis zero is a real place
+    const vals = allRuns.map(val).filter(isNum);
+    const hi = vals.length ? Math.max(...vals) * 1.06 : 10;
+    x = (c) => m.left + (c / hi) * plotW;
+    xTicks = linearTicks(hi, plotW).map((t) => ({ v: t, x: x(t), label: String(t) }));
+    plotted = runs.filter((r) => isNum(val(r)));
+  }
 
-  const plotted = runs.filter((r) => r.cost_usd !== null && r.cost_usd !== undefined && r.cost_usd > 0);
-  // Two different reasons a run has no place on this axis, and they are not the same claim:
-  // a run with NO cost figure, and a run that genuinely cost ZERO (a free model) - $0 is a
-  // known, meaningful number that a logarithmic axis simply cannot place. Say which.
-  const freeRuns = runs.filter((r) => r.cost_usd === 0);
-  const unpricedRuns = runs.filter((r) => r.cost_usd === null || r.cost_usd === undefined);
+  /* Two different reasons a run can have no place on a log axis, and they are not
+     the same claim: a run with NO figure, and a run whose figure is genuinely
+     ZERO — a known, meaningful number a logarithmic axis cannot place. Say which.
+     A linear axis has neither problem; only the missing case can arise there. */
+  const zeroRuns = A.scale === 'log' ? runs.filter((r) => val(r) === 0) : [];
+  const missingRuns = runs.filter((r) => !isNum(val(r)));
   const skipped = runs.length - plotted.length;
   const labels = pointLabels(plotted);
 
@@ -92,11 +150,12 @@ export function scatterLayout(runs, allRuns, width, height) {
     id: r.id,
     // the drawn colour, not the raw one: a couple of hues get a dark-mode variant
     color: runColor(r.color),
-    cost: r.cost_usd,
+    xv: val(r),
     score: r.fixed,
-    cx: x(r.cost_usd),
+    cx: x(val(r)),
     cy: y(r.fixed),
-    label: labels.get(r.id) || r.model,
+    flagged: Boolean(A.flag && r[A.flag]),
+    label: (labels.get(r.id) || r.model) + (A.flag && r[A.flag] ? ' †' : ''),
   })).sort((a, b) => b.score - a.score);
 
   // Greedy label placement: first come, first served, in score order.
@@ -123,6 +182,10 @@ export function scatterLayout(runs, allRuns, width, height) {
     if (!done) p.labelPos = null;
   });
 
+  const yStep = yTop > 60 ? 20 : 10;
+  const yTicks = [];
+  for (let v = 0; v <= yTop; v += yStep) yTicks.push({ v, y: y(v) });
+
   const frontier = frontierOf(points);
   let frontierPath = '';
   if (frontier.length > 1) {
@@ -133,8 +196,10 @@ export function scatterLayout(runs, allRuns, width, height) {
   }
 
   return {
-    width, height, m, plotW, plotH, compact,
-    x, y, xTicks, yTicks, yTop, points, frontier, frontierPath, skipped, freeRuns, unpricedRuns,
+    axis: A, width, height, m, plotW, plotH, compact,
+    x, y, xTicks, yTicks, yTop, points, frontier, frontierPath,
+    skipped, zeroRuns, missingRuns,
+    flagged: points.filter((p) => p.flagged),
     ceilingY: yTop === CEILING ? y(CEILING) : null, baseY: y(0),
   };
 }
@@ -143,7 +208,7 @@ function tipRow(label, value) {
   return el('div', { class: 'tip-row' }, [`${label}: ${value}`]);
 }
 
-function tooltipContent(p) {
+function tooltipContent(p, axis) {
   const r = p.run;
   const kind = COST_KIND_LABEL[r.cost_kind] || r.cost_kind;
   const frag = document.createDocumentFragment();
@@ -152,29 +217,40 @@ function tooltipContent(p) {
     el('i', { class: 'tip-key', style: { 'background-color': runColor(r.color) } }),
     r.id,
   ]));
-  frag.appendChild(tipRow('Cost', `${fmtCost(r.cost_usd)} (${kind})`));
-  frag.appendChild(tipRow('Wall clock', `${fmtWall(r.wall_min)} min`));
+  const cost = () => tipRow('Cost', `${fmtCost(r.cost_usd)} (${kind})`);
+  const wall = () => tipRow('Wall clock', `${fmtWall(r.wall_min)} min`);
+  // the measure this map is about goes first
+  if (axis.id === 'time') {
+    frag.appendChild(wall());
+    frag.appendChild(cost());
+  } else {
+    frag.appendChild(cost());
+    frag.appendChild(wall());
+  }
   frag.appendChild(tipRow('Extras, not scored', String(r.extras)));
   frag.appendChild(tipRow('Claimed only', String(r.claimed_only)));
   frag.appendChild(tipRow('Run date', fmtDate(r.date)));
+  if (r.wall_note) frag.appendChild(el('div', { class: 'tip-note', text: `† ${r.wall_note}` }));
   return frag;
 }
 
-export function renderScatter(host, runs, allRuns) {
+export function renderScatter(host, runs, allRuns, axis, footnote) {
+  const A = axis || AXES.cost;
   host.classList.add('chart-host');
   host.textContent = '';
   if (!runs.length) return null;
 
   const width = Math.max(320, host.clientWidth || 900);
   const height = width < 620 ? 400 : Math.min(520, Math.round(width * 0.46));
-  const L = scatterLayout(runs, allRuns, width, height);
+  const L = scatterLayout(runs, allRuns, width, height, A);
 
   const svg = svgEl('svg', {
     viewBox: `0 0 ${width} ${height}`,
-    width, height,
-    'aria-label': 'Planted bugs fixed plotted against run cost. Every value is also in the leaderboard table.',
+    width,
+    height,
+    'aria-label': `Planted bugs fixed plotted against ${A.id === 'time' ? 'wall clock' : 'run cost'}. Every value is also in the leaderboard table.`,
   });
-  svg.appendChild(svgEl('title', { text: 'Score against cost, for the selected runs' }));
+  svg.appendChild(svgEl('title', { text: `${A.chartTitle}, for the selected runs` }));
 
   const grid = svgEl('g', { 'aria-hidden': 'true' });
   L.yTicks.forEach((t) => {
@@ -212,14 +288,14 @@ export function renderScatter(host, runs, allRuns) {
     }));
   }
   ceil.appendChild(svgEl('text', {
-    class: 'corner-label', x: L.m.left + 8, y: L.m.top + 16, text: 'cheap and strong',
+    class: 'corner-label', x: L.m.left + 8, y: L.m.top + 16, text: A.corner,
   }));
   svg.appendChild(ceil);
 
   // axis titles
   svg.appendChild(svgEl('text', {
     class: 'axis-title', x: L.m.left, y: height - 14,
-    text: L.compact ? 'Cost, USD (log)' : 'Run cost, USD — logarithmic, cheaper to the left',
+    text: L.compact ? A.titleCompact : A.title,
   }));
   svg.appendChild(svgEl('text', {
     class: 'axis-title', x: -(L.m.top + L.plotH / 2), y: 13,
@@ -236,7 +312,7 @@ export function renderScatter(host, runs, allRuns) {
 
   const showTip = (p, group) => {
     tip.textContent = '';
-    tip.appendChild(tooltipContent(p));
+    tip.appendChild(tooltipContent(p, A));
     tip.hidden = false;
     const hostW = host.clientWidth;
     const scale = hostW / width;
@@ -258,6 +334,12 @@ export function renderScatter(host, runs, allRuns) {
     g.appendChild(svgEl('circle', { class: 'pt-halo', cx: p.cx, cy: p.cy, r: 9 }));
     g.appendChild(svgEl('circle', { class: 'pt-ring', cx: p.cx, cy: p.cy, r: 7 }));
     g.appendChild(svgEl('circle', { cx: p.cx, cy: p.cy, r: 5, fill: p.color }));
+    /* A figure that carries its own note wears a broken ring, and its label wears
+       the same dagger the table uses. Neither is a colour, so both survive the
+       run colour underneath, a colourblind reader and a black-and-white print. */
+    if (p.flagged) {
+      g.appendChild(svgEl('circle', { class: 'pt-flag', cx: p.cx, cy: p.cy, r: 10.5 }));
+    }
     if (p.labelPos) {
       g.appendChild(svgEl('text', {
         class: 'pt-label', x: p.labelPos.x, y: p.labelPos.y,
@@ -266,7 +348,7 @@ export function renderScatter(host, runs, allRuns) {
     }
     const hit = svgEl('circle', {
       class: 'hit', cx: p.cx, cy: p.cy, r: 18, tabindex: '0', role: 'button',
-      'aria-label': `${p.run.id}: ${p.run.fixed} of 105 fixed, ${fmtCost(p.cost)} ${COST_KIND_LABEL[p.run.cost_kind] || ''}`,
+      'aria-label': `${p.run.id}: ${p.run.fixed} of 105 fixed, ${A.fmt(p.xv)}${p.flagged ? `. Note on this figure: ${p.run[A.flag]}` : ''}`,
     });
     hit.addEventListener('pointerenter', () => showTip(p, g));
     hit.addEventListener('pointerleave', () => hideTip(g));
@@ -280,19 +362,26 @@ export function renderScatter(host, runs, allRuns) {
   host.appendChild(svg);
   host.appendChild(tip);
 
+  /* What the measure IS, inside the plate with the plot, so it travels with the
+     chart instead of sitting somewhere below it. */
+  if (footnote) {
+    const parts = footnote(L);
+    if (parts) host.appendChild(el('p', { class: 'chart__def' }, parts));
+  }
+
   if (L.skipped > 0) {
     const parts = [];
-    const free = L.freeRuns || [];
-    const unpriced = L.unpricedRuns || [];
-    if (free.length) {
-      const names = free.map((r) => r.model).join(', ');
+    const zero = L.zeroRuns || [];
+    const missing = L.missingRuns || [];
+    if (zero.length) {
+      const names = zero.map((r) => r.model).join(', ');
       parts.push(`${names} cost nothing to run, and zero has no place on a logarithmic cost axis.`);
     }
-    if (unpriced.length) {
-      parts.push(`${unpriced.length} selected run${unpriced.length === 1 ? ' carries' : 's carry'} no cost figure.`);
+    if (missing.length) {
+      parts.push(`${missing.length} selected run${missing.length === 1 ? ' carries' : 's carry'} no ${A.id === 'time' ? 'wall-clock' : 'cost'} figure.`);
     }
     parts.push(`${L.skipped === 1 ? 'It is' : 'They are'} in the table.`);
-    host.appendChild(el('p', { class: 'chart__note', text: parts.join(' ') }));
+    host.appendChild(el('p', { class: 'chart__def chart__def--skip', text: parts.join(' ') }));
   }
 
   return L;

@@ -11,8 +11,9 @@
 import {
   COLUMNS, GROUPS, TOTALS, SCORE_BAR_REF, SCORE_BAR_NOTE, COST_KIND_LABEL,
   EFFORT_STATUS_LABEL, fmtCost, fmtWall, fmtInt, fmtDate, barRatio, compareRuns,
+  firstSentence,
 } from './format.js';
-import { scatterLayout } from './scatter.js';
+import { scatterLayout, AXES } from './scatter.js';
 import { runColor, activeTheme } from './theme.js';
 
 const SCALE = 2;
@@ -112,6 +113,26 @@ function roundedRight(ctx, x, y, w, h, r) {
   ctx.fill();
 }
 
+/** Wrap a sentence to a width. The canvas has no line breaking of its own, and a
+    definition that runs off the edge of the card is worse than no card. */
+function wrapText(ctx, str, font, maxW) {
+  ctx.font = font;
+  const words = String(str).split(/\s+/);
+  const lines = [];
+  let line = '';
+  words.forEach((word) => {
+    const next = line ? `${line} ${word}` : word;
+    if (line && ctx.measureText(next).width > maxW) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = next;
+    }
+  });
+  if (line) lines.push(line);
+  return lines;
+}
+
 function truncate(ctx, str, font, maxW) {
   ctx.font = font;
   if (ctx.measureText(str).width <= maxW) return str;
@@ -164,13 +185,20 @@ function drawTable(ctx, T, runs, state, w) {
   let y = ctx.__y;
   const rowH = 50;
 
-  // group header
-  y += 24;
+  /* Group header. "Tracked, not scored" heads a single column now, so a label
+     can be wider than the group it describes - it wraps inside its own width
+     rather than running over the neighbour it does not describe. */
+  y += 34;
   GROUPS.forEach((g) => {
     const groupCols = cols.filter((c) => c.group === g.id);
     if (!groupCols.length || !g.label) return;
     const gx = groupCols[0].x;
-    text(ctx, g.label.toUpperCase(), gx + 8, y, `600 10px ${SANS}`, g.id === 'score' ? T.ink : T.muted);
+    const gw = groupCols.reduce((sum, c) => sum + c.width, 0) - 12;
+    const font = `600 10px ${SANS}`;
+    const lines = wrapText(ctx, g.label.toUpperCase(), font, gw).slice(0, 2);
+    lines.forEach((l, i) => {
+      text(ctx, l, gx + 8, y - (lines.length - 1 - i) * 11, font, g.id === 'score' ? T.ink : T.muted);
+    });
   });
   y += 8;
   line(ctx, PAD, y, w - PAD, y, T.hairline);
@@ -265,7 +293,7 @@ function drawTable(ctx, T, runs, state, w) {
   ctx.lineWidth = 1;
   ctx.__groupRules.forEach((gx) => {
     ctx.beginPath();
-    ctx.moveTo(gx + 0.5, rulesTop - 44);
+    ctx.moveTo(gx + 0.5, rulesTop - 54);
     ctx.lineTo(gx + 0.5, y - 1);
     ctx.stroke();
   });
@@ -276,11 +304,12 @@ function drawTable(ctx, T, runs, state, w) {
 
 /* ----------------------------------------------------------------- scatter */
 
-function drawScatter(ctx, T, runs, allRuns, w) {
+function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
+  const A = axis || AXES.cost;
   const top = ctx.__y + 20;
   const plotW = w - PAD * 2;
   const height = Math.round(plotW * 0.5);
-  const L = scatterLayout(runs, allRuns, plotW, height);
+  const L = scatterLayout(runs, allRuns, plotW, height, A);
   ctx.save();
   ctx.translate(PAD, top);
 
@@ -304,9 +333,9 @@ function drawScatter(ctx, T, runs, allRuns, w) {
     line(ctx, L.m.left, L.ceilingY, L.m.left + L.plotW, L.ceilingY, T.rule);
     text(ctx, '105 — every planted bug', L.m.left + L.plotW, L.ceilingY - 7, `10.5px ${SANS}`, T.muted, 'right');
   }
-  text(ctx, 'CHEAP AND STRONG', L.m.left + 8, L.m.top + 16, `10px ${SANS}`, T.muted);
+  text(ctx, A.corner.toUpperCase(), L.m.left + 8, L.m.top + 16, `10px ${SANS}`, T.muted);
 
-  text(ctx, 'RUN COST, USD — LOGARITHMIC, CHEAPER TO THE LEFT', L.m.left, height - 12, `600 10px ${SANS}`, T.ink2);
+  text(ctx, A.exportTitle, L.m.left, height - 12, `600 10px ${SANS}`, T.ink2);
   ctx.save();
   ctx.translate(12, L.m.top + L.plotH / 2);
   ctx.rotate(-Math.PI / 2);
@@ -339,6 +368,17 @@ function drawScatter(ctx, T, runs, allRuns, w) {
     ctx.beginPath();
     ctx.arc(p.cx, p.cy, 5, 0, Math.PI * 2);
     ctx.fill();
+    // the same broken ring the page draws: this figure carries a note of its own
+    if (p.flagged) {
+      ctx.save();
+      ctx.strokeStyle = T.muted;
+      ctx.lineWidth = 1;
+      ctx.setLineDash([2, 2.5]);
+      ctx.beginPath();
+      ctx.arc(p.cx, p.cy, 10.5, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
   });
   L.points.forEach((p) => {
     if (!p.labelPos) return;
@@ -348,6 +388,19 @@ function drawScatter(ctx, T, runs, allRuns, w) {
 
   ctx.restore();
   ctx.__y = top + height + 8;
+
+  /* What the measure IS, drawn with the plot rather than left to the footer: an
+     exported card travels on its own, and a reader who meets it there has no
+     page to read it against. */
+  if (defLines && defLines.length) {
+    let dy = ctx.__y + 14;
+    line(ctx, PAD, dy - 10, w - PAD, dy - 10, T.hairline);
+    defLines.forEach((l) => {
+      text(ctx, l, PAD, dy, `11.5px ${SANS}`, T.ink2);
+      dy += 15;
+    });
+    ctx.__y = dy - 4;
+  }
 
   // legend — identity is never colour alone
   const cols = 3;
@@ -360,7 +413,7 @@ function drawScatter(ctx, T, runs, allRuns, w) {
     ctx.beginPath();
     ctx.arc(cx + 5, cy - 4, 4.5, 0, Math.PI * 2);
     ctx.fill();
-    text(ctx, truncate(ctx, `${p.run.id} — ${p.run.fixed}`, `11.5px ${SANS}`, colW - 26),
+    text(ctx, truncate(ctx, `${p.run.id} — ${p.run.fixed}${p.flagged ? ' †' : ''}`, `11.5px ${SANS}`, colW - 26),
       cx + 15, cy, `11.5px ${SANS}`, T.ink2);
   });
   ly += Math.ceil(L.points.length / cols) * 17;
@@ -371,32 +424,50 @@ function drawScatter(ctx, T, runs, allRuns, w) {
 /* -------------------------------------------------------------------- main */
 
 export async function exportView({
-  view, runs, allRuns, state, meta, scales, siteUrl, presetName,
+  view, axis, runs, allRuns, state, meta, scales, caveat, siteUrl, presetName,
 }) {
   if (document.fonts && document.fonts.ready) await document.fonts.ready;
   const T = theme();
+  const isChart = Boolean(axis);
 
-  const w = view === 'table' ? 1240 : 1100;
+  const w = isChart ? 1100 : 1240;
   const sortCol = COLUMNS.find((c) => c.key === state.sort);
   const sortLabel = `${sortCol ? sortCol.label : state.sort} ${state.dir === 'asc' ? 'ascending' : 'descending'}`;
 
+  /* The definition line, and — only when there are any on this card — how many of
+     the runs shown carry a note on their own figure. Measured before the canvas
+     is sized, because wrapping decides how tall the card has to be. */
+  const measure = document.createElement('canvas').getContext('2d');
+  let defLines = [];
+  if (isChart && caveat) {
+    const flagged = axis.flag ? runs.filter((r) => r[axis.flag]).length : 0;
+    const defText = firstSentence(caveat)
+      + (flagged ? ` † ${flagged} of the ${runs.length} runs shown carry a note on their own figure.` : '');
+    defLines = wrapText(measure, defText, `11.5px ${SANS}`, w - PAD * 2);
+  }
+
   const footerLines = [
-    view === 'table'
-      ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Sorted by ${sortLabel}.`
-      : `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Cost on a logarithmic axis; the score axis stops above the board's best run, which is out of 105.`,
+    isChart
+      ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${axis.id === 'cost' ? 'Cost on a logarithmic axis' : 'Wall clock on a linear axis'}; the score axis stops above the board's best run, which is out of 105.`
+      : `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Sorted by ${sortLabel}.`,
     'Score = planted bugs fixed, verified blind against a withheld answer key. Extras are real defects that were never planted; they are tracked, never added to the score.',
     // the same sentence the page carries, because an exported PNG travels alone
-    view === 'table' ? SCORE_BAR_NOTE : null,
-    `Cost figures are tagged bill / list rate / floor / free and are not interchangeable. ${siteUrl}`,
+    isChart ? null : SCORE_BAR_NOTE,
+    // only where a dollar figure is actually on the card
+    !isChart || axis.id === 'cost'
+      ? `Cost figures are tagged bill / list rate / floor / free and are not interchangeable. ${siteUrl}`
+      : siteUrl,
   ].filter(Boolean);
 
   const headH = 150;
   let bodyH;
-  if (view === 'table') {
-    bodyH = 24 + 8 + 20 + 9 + runs.length * 50 + 20;
-  } else {
+  if (isChart) {
     const plotW = w - PAD * 2;
-    bodyH = 20 + Math.round(plotW * 0.5) + 8 + 16 + Math.ceil(runs.length / 3) * 17 + 16;
+    bodyH = 20 + Math.round(plotW * 0.5) + 8
+      + (defLines.length ? 14 + defLines.length * 15 - 4 : 0)
+      + 16 + Math.ceil(runs.length / 3) * 17 + 16;
+  } else {
+    bodyH = 34 + 8 + 20 + 9 + runs.length * 50 + 20;
   }
   const footH = 18 + footerLines.length * 15 + 14;
   const h = headH + bodyH + footH;
@@ -414,12 +485,12 @@ export async function exportView({
   ctx.lineWidth = 1;
   ctx.strokeRect(0.5, 0.5, w - 1, h - 1);
 
-  const title = view === 'table' ? 'Leaderboard' : 'Score against cost';
+  const title = isChart ? axis.chartTitle : 'Leaderboard';
   const subtitle = 'Planted bugs only — extras are never added to the score.';
   ctx.__y = drawHeader(ctx, T, w, title, subtitle, { updatedLong: fmtDate(meta.updated) }, siteUrl);
 
-  if (view === 'table') drawTable(ctx, T, runs, state, w);
-  else drawScatter(ctx, T, runs, allRuns, w);
+  if (isChart) drawScatter(ctx, T, runs, allRuns, w, axis, defLines);
+  else drawTable(ctx, T, runs, state, w);
 
   drawFooter(ctx, T, w, Math.max(ctx.__y + 10, h - footH), footerLines);
 
@@ -427,8 +498,8 @@ export async function exportView({
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  // the theme is baked into the file name too, so two exports never collide
-  a.download = `bug-hunt-bench-${view === 'table' ? 'leaderboard' : 'score-vs-cost'}-${activeTheme()}-${meta.updated}.png`;
+  // the view and the theme are both baked into the file name, so two exports never collide
+  a.download = `bug-hunt-bench-${isChart ? axis.slug : 'leaderboard'}-${activeTheme()}-${meta.updated}.png`;
   document.body.appendChild(a);
   a.click();
   a.remove();

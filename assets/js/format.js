@@ -83,27 +83,50 @@ export function fmtInt(v) {
     separately because the canvas has no line wrapping and the model column needs
     more room there than it does on screen. */
 export const COLUMNS = [
-  { key: 'model', label: 'Model / run', group: 'run', kind: 'text', align: 'left', pct: 16, w: 260 },
-  { key: 'fixed', label: 'Fixed', unit: '/105', group: 'score', kind: 'score', align: 'left', pct: 20, w: 250 },
-  { key: 'repo1_fixed', label: 'Repo 1', unit: '/45', group: 'score', pct: 5.5, w: 62 },
-  { key: 'repo2_fixed', label: 'Repo 2', unit: '/60', group: 'score', pct: 5.5, w: 62 },
-  { key: 'partial', label: 'Partial', group: 'not', pct: 5, w: 58 },
-  { key: 'claimed_only', label: 'Claimed only', group: 'not', pct: 5.5, w: 68 },
-  { key: 'extras', label: 'Extras', group: 'not', kind: 'extras', align: 'left', pct: 8, w: 96 },
-  { key: 'wall_min', label: 'Wall clock', unit: 'min', group: 'meta', kind: 'wall', align: 'left', pct: 11.5, w: 140 },
-  { key: 'cost_usd', label: 'Cost', unit: 'usd', group: 'meta', kind: 'cost', align: 'left', pct: 15.5, w: 186 },
-  { key: 'date', label: 'Date', group: 'meta', kind: 'date', pct: 7.5, w: 84 },
+  { key: 'model', label: 'Model / run', group: 'run', kind: 'text', align: 'left', pct: 18, w: 270 },
+  { key: 'fixed', label: 'Fixed', unit: '/105', group: 'score', kind: 'score', align: 'left', pct: 22, w: 260 },
+  { key: 'repo1_fixed', label: 'Repo 1', unit: '/45', group: 'score', pct: 6.5, w: 68 },
+  { key: 'repo2_fixed', label: 'Repo 2', unit: '/60', group: 'score', pct: 6.5, w: 68 },
+  { key: 'extras', label: 'Extras', group: 'not', kind: 'extras', align: 'left', pct: 9, w: 104 },
+  { key: 'wall_min', label: 'Wall clock', unit: 'min', group: 'meta', kind: 'wall', align: 'left', pct: 13.5, w: 152 },
+  { key: 'cost_usd', label: 'Cost', unit: 'usd', group: 'meta', kind: 'cost', align: 'left', pct: 16, w: 196 },
+  { key: 'date', label: 'Date', group: 'meta', kind: 'date', pct: 8.5, w: 92 },
 ];
 
-/** The three columns drawn as bars share one rhythm; the model column is text. */
-export const BAR_KINDS = new Set(['score', 'extras', 'wall', 'cost']);
+/* Partial and claimed-only are NOT columns. Most rows are zero on both, and two
+   more columns of width bought a reader nothing on the grid. They are still on
+   the board — every row's detail carries them, labelled and linked to their own
+   definition — because "claimed only: 0" is a real signal about a model, just
+   not one worth a column. Keys the row detail prints, in this order. */
+export const DETAIL_FIGURES = [
+  { key: 'partial', label: 'Partial' },
+  { key: 'claimed_only', label: 'Claimed only' },
+];
 
 export const GROUPS = [
   { id: 'run', label: '', cls: 'g-run' },
-  { id: 'score', label: 'Score — planted bugs only', cls: 'g-score' },
-  { id: 'not', label: 'Tracked, not scored', cls: 'g-not' },
+  { id: 'score', label: 'Score — planted bugs only', cls: 'g-score', def: 'fixed' },
+  { id: 'not', label: 'Tracked, not scored', cls: 'g-not', def: 'extras' },
   { id: 'meta', label: 'Run', cls: 'g-meta' },
 ];
+
+/* The method, the caveats and the definitions live on their own page now, so the
+   board opens on the board. Everything that needs one of them links to the exact
+   anchor rather than to the top of that page. One place builds those links. */
+export const METHOD_PATH = '/method';
+export const methodHref = (hash) => (hash ? `${METHOD_PATH}#${hash}` : METHOD_PATH);
+/** Anchor for a glossary key, matched by the id method.js stamps on each term. */
+export const defHref = (key) => methodHref(`def-${key}`);
+export const caveatHref = (i) => methodHref(`caveat-${i + 1}`);
+
+/** First sentence of a data string, for places that have room for one line.
+    Falls back to the whole string rather than to a truncation that could cut a
+    qualifier off a claim. */
+export function firstSentence(s) {
+  const str = String(s || '').trim();
+  const m = /^(.+?[.!?])(\s|$)/.exec(str);
+  return m && m[1].length >= 40 ? m[1] : str;
+}
 
 /** Sort comparator. Nulls and undefined always sort last, whichever direction. */
 export function compareRuns(a, b, key, dir) {
@@ -149,6 +172,11 @@ export function pointLabels(runs) {
     });
   });
   return out;
+}
+
+/** An <a> to a definition on the method page. Text in as text, never as markup. */
+export function defLink(key, label) {
+  return el('a', { class: 'deflink', href: defHref(key) }, [label]);
 }
 
 /** DOM helper. Text always goes in as text — never as markup. */

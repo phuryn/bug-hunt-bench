@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://bug-hunt-bench.netlify.app/sitemap.xml
+Sitemap: https://bughunt.productcompass.pm/sitemap.xml
