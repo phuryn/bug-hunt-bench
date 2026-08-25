@@ -12,9 +12,9 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
-} from './format.js?v=e8044c6c40';
-import { scatterLayout, AXES } from './scatter.js?v=e8044c6c40';
-import { runColor, activeTheme } from './theme.js?v=e8044c6c40';
+} from './format.js?v=5c475c1ad5';
+import { scatterLayout, AXES } from './scatter.js?v=5c475c1ad5';
+import { runColor, activeTheme } from './theme.js?v=5c475c1ad5';
 
 const SCALE = 2;
 const PAD = 32;

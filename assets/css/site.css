@@ -169,7 +169,8 @@ a.wordmark:hover { color: var(--accent); }
   padding-bottom: 2px; border-bottom: 1px solid transparent;
 }
 .masthead__nav a:hover { color: var(--ink); border-bottom-color: var(--rule); }
-.masthead__out { color: var(--accent) !important; }
+/* the external link is nav, not a call to action: same weight as its neighbours
+   (Pawel, 2026-08-25). The .masthead__out accent rule was removed, not overridden. */
 
 /* theme toggle — a real button, a real pressed state, a stable accessible name */
 .themetoggle {

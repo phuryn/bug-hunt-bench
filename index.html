@@ -15,7 +15,7 @@
      <html> before the first paint, so a dark-theme visitor never sees a white
      flash. It is a file rather than an inline block because the CSP has no
      'unsafe-inline'. -->
-<script src="/assets/js/theme-boot.js?v=e8044c6c40"></script>
+<script src="/assets/js/theme-boot.js?v=5c475c1ad5"></script>
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bug Hunt Bench">
@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=e8044c6c40">
+<link rel="stylesheet" href="/assets/css/site.css?v=5c475c1ad5">
 
 <!-- dateModified and url are patched at runtime from data/benchmark.json; keep the static values in sync anyway. -->
 <script type="application/ld+json" id="dataset-schema">
@@ -76,7 +76,7 @@
   ]
 }
 </script>
-<script type="module" src="/assets/js/main.js?v=e8044c6c40"></script>
+<script type="module" src="/assets/js/main.js?v=5c475c1ad5"></script>
 </head>
 <body>
 <a class="skip-link" href="#leaderboard">Skip to the leaderboard</a>
@@ -86,11 +86,11 @@
     <span class="wordmark" aria-current="page">Bug&nbsp;Hunt&nbsp;Bench</span>
     <div class="masthead__right">
       <nav class="masthead__nav" aria-label="Sections">
-        <a href="#leaderboard">The board</a>
+        <a href="#leaderboard" aria-current="page">The board</a>
         <a href="/method">Method</a>
         <a href="/method#caveats">Caveats</a>
         <a href="/method#definitions">Definitions</a>
-        <a class="masthead__out" id="source-link" href="https://github.com/phuryn/experiments/tree/main/bug-hunt-bench">Raw data</a>
+        <a id="source-link" href="https://github.com/phuryn/experiments/tree/main/bug-hunt-bench" target="_blank" rel="noopener" aria-label="Raw data (opens in a new tab)">Raw data</a>
       </nav>
       <button type="button" class="themetoggle" id="theme-toggle" aria-pressed="false" aria-label="Dark theme">
         <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
