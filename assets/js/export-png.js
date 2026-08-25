@@ -9,12 +9,12 @@
    identical to the screen and lets the attribution block be part of the image. */
 
 import {
-  COLUMNS, GROUPS, TOTALS, SCORE_BAR_REF, SCORE_BAR_NOTE, COST_KIND_LABEL,
-  EFFORT_STATUS_LABEL, fmtCost, fmtWall, fmtInt, fmtDate, barRatio, compareRuns,
-  firstSentence,
-} from './format.js?v=5edf3dde1d';
-import { scatterLayout, AXES } from './scatter.js?v=5edf3dde1d';
-import { runColor, activeTheme } from './theme.js?v=5edf3dde1d';
+  COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
+  fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
+  costSentence, segmentsText,
+} from './format.js?v=1f04c8a829';
+import { scatterLayout, AXES } from './scatter.js?v=1f04c8a829';
+import { runColor, activeTheme } from './theme.js?v=1f04c8a829';
 
 const SCALE = 2;
 const PAD = 32;
@@ -81,6 +81,18 @@ function fitFont(ctx, str, maxW, weight, start, floor) {
     size -= 0.5;
   }
   return `${weight} ${size}px ${SANS}`;
+}
+
+/** Shrink a mono line until it fits, before resorting to an ellipsis: the
+    harness line is provenance, and half of it is worth less than all of it. */
+function fitMono(ctx, str, maxW, start, floor) {
+  let size = start;
+  while (size > floor) {
+    ctx.font = `${size}px ${MONO}`;
+    if (ctx.measureText(str).width <= maxW) break;
+    size -= 0.25;
+  }
+  return `${size}px ${MONO}`;
 }
 
 function text(ctx, str, x, y, font, color, align) {
@@ -176,6 +188,10 @@ function drawFooter(ctx, T, w, y, lines) {
 /* ------------------------------------------------------------------- table */
 
 function drawTable(ctx, T, runs, state, w) {
+  /* the same geometry as the screen: every bar scaled to the longest figure
+     among the rows ON THIS CARD, so an exported selection reads like the
+     selection it was exported from */
+  const { fixedMax, extrasMax, wallMax, costMax } = barScales(runs);
   const cols = COLUMNS.map((c) => ({ ...c }));
   const totalW = cols.reduce((s, c) => s + c.w, 0);
   const scale = (w - PAD * 2) / totalW;
@@ -220,7 +236,6 @@ function drawTable(ctx, T, runs, state, w) {
   ctx.__groupRules = cols.filter((c, i) => i > 0 && c.group !== cols[i - 1].group).map((c) => c.x);
   const rulesTop = y;
 
-  const { extrasMax, wallMax, costMax } = ctx.__scales;
   const hatch = hatchPattern(ctx, T.muted);
 
   /* the on-screen geometry, in canvas terms: bar from the left edge of the
@@ -246,13 +261,21 @@ function drawTable(ctx, T, runs, state, w) {
       if (c.key === 'model') {
         ctx.fillStyle = runColor(run.color);
         ctx.fillRect(c.x + 8, top + 12, 11, 11);
-        const name = truncate(ctx, run.model, `600 14px ${SANS}`, c.width - 32);
+        /* name and badge on one line, vendor · harness under it — the screen's
+           two lines, and nothing else: what the tier means is in the footer */
+        const suffix = effortSuffix(run);
+        const badge = `${String(run.effort || '').toUpperCase()}${suffix ? ` · ${suffix}` : ''}`;
+        ctx.font = `600 14px ${SANS}`;
+        const nameW = Math.min(ctx.measureText(run.model).width, c.width - 40 - ctx.measureText(badge).width);
+        const name = truncate(ctx, run.model, `600 14px ${SANS}`, nameW);
         text(ctx, name, c.x + 26, baseline, `600 14px ${SANS}`, run.superseded ? T.muted : T.ink);
-        const status = EFFORT_STATUS_LABEL[run.effort_status] || run.effort_status;
-        const metaStr = `${run.effort} · ${status} · ${run.vendor}${run.superseded ? ' · superseded' : ''}`;
-        text(ctx, truncate(ctx, metaStr, `10px ${MONO}`, c.width - 32), c.x + 26, baseline + 14, `10px ${MONO}`, T.muted);
+        ctx.font = `600 14px ${SANS}`;
+        text(ctx, badge, c.x + 32 + ctx.measureText(name).width, baseline - 1, `600 9px ${SANS}`, T.ink2);
+        const metaStr = `${[run.vendor, run.harness].filter(Boolean).join(' · ')}${run.superseded ? ' · superseded' : ''}`;
+        const metaFont = fitMono(ctx, metaStr, c.width - 32, 9.5, 7.5);
+        text(ctx, truncate(ctx, metaStr, metaFont, c.width - 32), c.x + 26, baseline + 14, metaFont, T.muted);
       } else if (c.key === 'fixed') {
-        const end = drawBar(c, top + 11, barRatio(run.fixed, SCORE_BAR_REF), 18,
+        const end = drawBar(c, top + 11, barRatio(run.fixed, fixedMax), 18,
           runColor(run.color), 58);
         ctx.font = `600 15px ${SANS}`;
         const nw = ctx.measureText(fmtInt(run.fixed)).width;
@@ -270,14 +293,10 @@ function drawTable(ctx, T, runs, state, w) {
           text(ctx, 'min', end + 13 + vw, baseline + 2, `10px ${SANS}`, T.neutral);
         }
       } else if (c.key === 'cost_usd') {
-        const kind = COST_KIND_LABEL[run.cost_kind] || run.cost_kind;
-        const end = drawBar(c, top + 13, barRatio(run.cost_usd, costMax), 13, T.bar, 62);
-        text(ctx, fmtCost(run.cost_usd), end + 10, baseline, `12.5px ${SANS}`, T.ink2);
-        if (run.cost_usd !== null && run.cost_usd !== undefined) {
-          // the tag sits under its own figure and never leaves it: a bar makes
-          // lengths look comparable, and these dollars are not one kind of number
-          text(ctx, kind, end + 10, baseline + 13, `10px ${SANS}`, T.muted);
-        }
+        // the figure only; which of these are bills and which are estimates is
+        // one generated sentence in the footer, as it is in the key on the page
+        const end = drawBar(c, top + 13, barRatio(run.cost_usd, costMax), 13, T.bar, 56);
+        text(ctx, fmtCost(run.cost_usd), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
       } else if (c.key === 'date') {
         text(ctx, fmtDate(run.date), rightX, baseline, `11.5px ${SANS}`, T.muted, 'right');
       } else {
@@ -413,7 +432,7 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
     ctx.beginPath();
     ctx.arc(cx + 5, cy - 4, 4.5, 0, Math.PI * 2);
     ctx.fill();
-    text(ctx, truncate(ctx, `${p.run.id} — ${p.run.fixed}${p.flagged ? ' †' : ''}`, `11.5px ${SANS}`, colW - 26),
+    text(ctx, truncate(ctx, `${p.run.id} — ${p.run.fixed}${p.flagged ? ` ${NOTE_MARK}` : ''}`, `11.5px ${SANS}`, colW - 26),
       cx + 15, cy, `11.5px ${SANS}`, T.ink2);
   });
   ly += Math.ceil(L.points.length / cols) * 17;
@@ -424,7 +443,7 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
 /* -------------------------------------------------------------------- main */
 
 export async function exportView({
-  view, axis, runs, allRuns, state, meta, scales, caveat, siteUrl, presetName,
+  view, axis, runs, allRuns, state, meta, glossary, caveat, siteUrl, presetName,
 }) {
   if (document.fonts && document.fonts.ready) await document.fonts.ready;
   const T = theme();
@@ -442,22 +461,29 @@ export async function exportView({
   if (isChart && caveat) {
     const flagged = axis.flag ? runs.filter((r) => r[axis.flag]).length : 0;
     const defText = firstSentence(caveat)
-      + (flagged ? ` † ${flagged} of the ${runs.length} runs shown carry a note on their own figure.` : '');
+      + (flagged ? ` ${NOTE_MARK} ${flagged} of the ${runs.length} runs shown carry a note on how that figure was taken.` : '');
     defLines = wrapText(measure, defText, `11.5px ${SANS}`, w - PAD * 2);
   }
 
+  /* The card travels on its own, so every sentence the page keeps in the key
+     under the table has to be on it: how the bars are scaled, and which of these
+     dollar figures are bills. The cost sentence is generated from the runs on
+     THIS card, exactly as the key generates it from the runs on screen. */
+  const costLine = !isChart || axis.id === 'cost'
+    ? segmentsText(costSentence(runs, glossary))
+    : '';
   const footerLines = [
     isChart
       ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${axis.id === 'cost' ? 'Cost on a logarithmic axis' : 'Wall clock on a linear axis'}; the score axis stops above the board's best run, which is out of 105.`
       : `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Sorted by ${sortLabel}.`,
     'Score = planted bugs fixed, verified blind against a withheld answer key. Extras are real defects that were never planted; they are tracked, never added to the score.',
     // the same sentence the page carries, because an exported PNG travels alone
-    isChart ? null : SCORE_BAR_NOTE,
-    // only where a dollar figure is actually on the card
-    !isChart || axis.id === 'cost'
-      ? `Cost figures are tagged bill / list rate / floor / free and are not interchangeable. ${siteUrl}`
-      : siteUrl,
-  ].filter(Boolean);
+    isChart ? null : BAR_SCALE_NOTE,
+    costLine || null,
+    siteUrl,
+  ].filter(Boolean)
+    // the canvas has no line breaking: wrap here or a long sentence runs off the card
+    .flatMap((l) => wrapText(measure, l, `11.5px ${SANS}`, w - PAD * 2));
 
   const headH = 150;
   let bodyH;
@@ -477,7 +503,6 @@ export async function exportView({
   canvas.height = h * SCALE;
   const ctx = canvas.getContext('2d');
   ctx.setTransform(SCALE, 0, 0, SCALE, 0, 0);
-  ctx.__scales = scales;
 
   ctx.fillStyle = T.plate;
   ctx.fillRect(0, 0, w, h);

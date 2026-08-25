@@ -3,36 +3,201 @@
 
 export const TOTALS = { fixed: 105, repo1_fixed: 45, repo2_fixed: 60 };
 
-/* Bar geometry reference for the score.
-   The score is out of 105 and every printed value still says so. The BAR is
-   drawn against 100, exactly as on the printed card: with a 105-unit track the
-   whole board lives between 8% and 40% and the differences that matter stop
-   being visible. 100 is a reference length, not a denominator — a run cannot
-   reach it either. The note below is the one place this is spelled out, and it
-   is used verbatim on the page and in the PNG export so a screenshot that
-   travels on its own carries it too. */
-export const SCORE_BAR_REF = 100;
-export const SCORE_BAR_NOTE = 'Bar length is drawn against a 100-unit reference so the runs spread out and can be told apart. The score itself is unchanged and still out of 105 — the number printed at the end of each bar is the real one.';
+/* Bar geometry.
+   Every bar on the board is scaled to the LONGEST figure among the rows
+   currently shown, so the leading run fills its column and every other bar is
+   read as a share of the leader rather than as a share of an abstract track.
+   The printed value is untouched and still carries its own denominator (42/105),
+   because the length answers "how does this compare" and the number answers
+   "what was it". Scaling to the selection means filtering re-lengthens the
+   survivors, which is the point: the reader is always comparing what is on
+   screen. The note below is the one place this is spelled out, and it is used
+   verbatim on the page and in the PNG export so a screenshot that travels on
+   its own carries it too. */
+export const BAR_SCALE_NOTE = 'Every bar is scaled to the longest figure among the runs shown, so the leader fills its column and the rest read as a share of it. The printed number is always the real one — the score is still out of 105.';
 
-export const EFFORT_STATUS_LABEL = {
-  first_party: 'first-party tier',
-  verified: 'verified',
-  verified_ceiling: 'verified ceiling',
-  clamped: 'clamped',
-  inert_default: 'inert default',
+/** The four bar scales, taken from the rows being drawn. One helper, because
+    the table and the PNG export must agree on the geometry. */
+export function barScales(runs) {
+  const maxOf = (key) => Math.max(0, ...runs.map((r) => r[key] || 0));
+  return {
+    fixedMax: maxOf('fixed'),
+    extrasMax: maxOf('extras'),
+    wallMax: maxOf('wall_min'),
+    costMax: maxOf('cost_usd'),
+  };
+}
+
+/* The effort a run was asked for is the badge: MAX / XHIGH / HIGH / DEFAULT.
+   The two-word status vocabulary that used to be printed beside it -
+   "first-party tier", "verified ceiling", "inert default" - asked the reader to
+   hold two independent facts at once (was the setting checked, and is it the
+   model's top setting) and scrambled into "inert ceiling" on the way back out.
+   The enum stays a machine key, and the words come off the grid: what DEFAULT
+   means is one sentence in the key under the table, not two words repeated down
+   a column of six rows.
+
+   Exactly one case keeps its words on the row. `clamped` means the tool was
+   asked for a higher tier and quietly ran a lower one - a published correction
+   on a single run, and a key cannot carry a correction for a row a reader may
+   never scroll past. Everything else is one click away on the method page, in
+   plain English, straight from the data file. */
+export const EFFORT_SUFFIX = {
+  verified_ceiling: null,
+  verified: null,
+  first_party: null,
+  clamped: 'ran lower',
+  inert_default: null,
 };
 
+/** The words to print after the effort badge, or null when the badge says it
+    all. An unknown status is shown rather than swallowed: a new enum value from
+    the generator should be visible, not silently dropped. */
+export function effortSuffix(run) {
+  const status = run.effort_status;
+  if (!status) return null;
+  if (!(status in EFFORT_SUFFIX)) return String(status).replace(/_/g, ' ');
+  return EFFORT_SUFFIX[status];
+}
+
+/** Glossary key for a run's effort status, so a badge can link at its definition. */
+export const effortDefKey = (run) => (run.effort_status ? `effort_${run.effort_status}` : null);
+
+/* A figure that carries a note of its own is marked on the charts, where the
+   axis would otherwise be misread. One glyph, defined once: the table no longer
+   carries a mark at all, so this is not the dagger it used to share. */
+export const NOTE_MARK = '*';
+
+/* What kind of dollar figure this is, in words a reader does not have to look
+   up: "floor" alone read as jargon beside a number, and a reconstructed lower
+   bound is exactly the case where a reader must not assume a bill. The full
+   definition stays one click away on the method page. */
 export const COST_KIND_LABEL = {
-  bill: 'bill',
+  bill: 'billed',
   list: 'list rate',
-  floor: 'floor',
+  floor: 'lower bound',
   free: 'free',
 };
 
-/** Turn a glossary key into a readable term. Generic, so new keys keep working. */
+/* The same four kinds, as they read inside a sentence. The board no longer tags
+   every dollar figure - a word under all twenty-five of them was the same word
+   over and over - so the exceptions are named once, in the key, in prose. */
+export const COST_KIND_PHRASE = {
+  bill: { one: 'a real bill', many: 'real bills' },
+  list: { one: 'a list-rate estimate', many: 'list-rate estimates' },
+  floor: { one: 'a reconstructed lower bound', many: 'reconstructed lower bounds' },
+  free: { one: 'free', many: 'free' },
+};
+
+const isNum = (v) => v !== null && v !== undefined && !Number.isNaN(v);
+
+/** How to name a group of runs in the sentence: their model names, collapsed to
+    the family when they all share one ("Grok 4.6" + "Grok 4.5" -> "Grok
+    figures"), so the sentence names runs the way a reader would. Parenthetical
+    qualifiers are dropped; they are on the row. */
+function familyNames(rows) {
+  const clean = (m) => String(m).replace(/\s*\([^)]*\)\s*/g, ' ').replace(/\s+/g, ' ').trim();
+  const names = [...new Set(rows.map((r) => clean(r.model)).filter(Boolean))];
+  const firsts = new Set(names.map((n) => n.split(' ')[0]));
+  if (names.length > 1 && firsts.size === 1) return { names: [`${[...firsts][0]} figures`], plural: true };
+  return { names, plural: names.length > 1 };
+}
+
+function listNames(names) {
+  if (names.length <= 2) return names.join(' and ');
+  return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`;
+}
+
+/** The half of a definition that explains the term, if it has one: everything
+    after the dash or colon the generator writes ("Reconstructed lower bound -
+    this CLI reports context occupancy, not billing"). */
+function explanationTail(def) {
+  const m = /^[^-:—]+[-:—]\s*(.+)$/.exec(String(def || '').trim());
+  if (!m) return null;
+  return m[1].replace(/\s*\.\s*$/, '');
+}
+
+/* Which costs are bills and which are estimates, said once for the rows on
+   screen instead of on every row. Built from the data, so a new arm, a changed
+   tag or a different selection rewrites the sentence rather than dating it.
+   Returns segments - plain text, or text that links at its own definition - so
+   the page can render links and the PNG export can render the same words flat. */
+export function costSentence(runs, glossary) {
+  const rows = runs.filter((r) => isNum(r.cost_usd) && r.cost_kind);
+  if (!rows.length) return null;
+  const groups = new Map();
+  rows.forEach((r) => {
+    if (!groups.has(r.cost_kind)) groups.set(r.cost_kind, []);
+    groups.get(r.cost_kind).push(r);
+  });
+  /* The kind most rows share leads the sentence; the exceptions follow in the
+     vocabulary's own order, so the same selection always reads the same way. */
+  const vocab = Object.keys(COST_KIND_PHRASE);
+  const rank = (k) => (vocab.indexOf(k) < 0 ? vocab.length : vocab.indexOf(k));
+  const order = [...groups.entries()]
+    .sort((a, b) => b[1].length - a[1].length || rank(a[0]) - rank(b[0]));
+
+  const phrase = (kind, plural) => {
+    const p = COST_KIND_PHRASE[kind];
+    if (!p) return COST_KIND_LABEL[kind] || kind;
+    return plural ? p.many : p.one;
+  };
+  const verb = (kind, plural) => {
+    if (kind === 'free') return plural ? 'were' : 'was';
+    return plural ? 'are' : 'is';
+  };
+  const gloss = glossary || {};
+  const seg = [];
+  const [leadKind, leadRows] = order[0];
+
+  if (order.length === 1) {
+    seg.push({ text: rows.length > 1 ? 'Every cost shown is ' : 'The cost shown is ' });
+    seg.push({ text: phrase(leadKind, false), def: `cost_${leadKind}` });
+    seg.push({ text: '.' });
+    return seg;
+  }
+
+  seg.push({ text: leadRows.length > 1 ? 'Costs are ' : 'The cost is ' });
+  seg.push({ text: phrase(leadKind, leadRows.length > 1), def: `cost_${leadKind}` });
+  seg.push({ text: ' unless noted: ' });
+  order.slice(1).forEach(([kind, rs], i) => {
+    if (i) seg.push({ text: '; ' });
+    const { names, plural } = familyNames(rs);
+    seg.push({ text: `${listNames(names)} ${verb(kind, plural)} ` });
+    seg.push({ text: phrase(kind, plural), def: `cost_${kind}` });
+    const tail = explanationTail(gloss[`cost_${kind}`]);
+    if (tail) seg.push({ text: ` (${tail})` });
+  });
+  seg.push({ text: '.' });
+  return seg;
+}
+
+/** The same sentence as flat text, for the canvas, which has no links. */
+export const segmentsText = (seg) => (seg ? seg.map((s) => s.text).join('') : '');
+
+/* How each effort key is NAMED on the definitions page. The board shows the
+   badge and, in two cases, two words; a reader who follows one of those links
+   has to land on the same words, not on the enum. Kept beside the suffix map so
+   the two cannot drift. */
+export const EFFORT_TERM = {
+  verified_ceiling: 'its max',
+  verified: 'setting checked',
+  first_party: 'the vendor’s own setting',
+  clamped: 'ran lower',
+  inert_default: 'no dial',
+};
+
+/** Turn a glossary key into a readable term — the same words the board prints.
+    Falls back to the key itself, so a term the generator adds still renders. */
 export function glossaryTerm(key) {
-  if (key.startsWith('cost_')) return 'Cost: ' + key.slice(5).replace(/_/g, ' ');
-  if (key.startsWith('effort_')) return 'Effort: ' + key.slice(7).replace(/_/g, ' ');
+  if (key.startsWith('cost_')) {
+    const k = key.slice(5);
+    return 'Cost: ' + (COST_KIND_LABEL[k] || k.replace(/_/g, ' '));
+  }
+  if (key.startsWith('effort_')) {
+    const k = key.slice(7);
+    return 'Effort: ' + (EFFORT_TERM[k] || k.replace(/_/g, ' '));
+  }
   const words = key.replace(/_/g, ' ');
   return words.charAt(0).toUpperCase() + words.slice(1);
 }
@@ -83,25 +248,21 @@ export function fmtInt(v) {
     separately because the canvas has no line wrapping and the model column needs
     more room there than it does on screen. */
 export const COLUMNS = [
-  { key: 'model', label: 'Model / run', group: 'run', kind: 'text', align: 'left', pct: 18, w: 270 },
-  { key: 'fixed', label: 'Fixed', unit: '/105', group: 'score', kind: 'score', align: 'left', pct: 22, w: 260 },
-  { key: 'repo1_fixed', label: 'Repo 1', unit: '/45', group: 'score', pct: 6.5, w: 68 },
-  { key: 'repo2_fixed', label: 'Repo 2', unit: '/60', group: 'score', pct: 6.5, w: 68 },
-  { key: 'extras', label: 'Extras', group: 'not', kind: 'extras', align: 'left', pct: 9, w: 104 },
-  { key: 'wall_min', label: 'Wall clock', unit: 'min', group: 'meta', kind: 'wall', align: 'left', pct: 13.5, w: 152 },
-  { key: 'cost_usd', label: 'Cost', unit: 'usd', group: 'meta', kind: 'cost', align: 'left', pct: 16, w: 196 },
-  { key: 'date', label: 'Date', group: 'meta', kind: 'date', pct: 8.5, w: 92 },
+  { key: 'model', label: 'Model / run', group: 'run', kind: 'text', align: 'left', pct: 24, w: 300 },
+  { key: 'fixed', label: 'Fixed', unit: '/105', group: 'score', kind: 'score', align: 'left', pct: 26, w: 300 },
+  { key: 'extras', label: 'Extras', group: 'not', kind: 'extras', align: 'left', pct: 11, w: 130 },
+  { key: 'wall_min', label: 'Wall clock', unit: 'min', group: 'meta', kind: 'wall', align: 'left', pct: 14.5, w: 170 },
+  { key: 'cost_usd', label: 'Cost', unit: 'usd', group: 'meta', kind: 'cost', align: 'left', pct: 15.5, w: 190 },
+  { key: 'date', label: 'Date', group: 'meta', kind: 'date', pct: 9, w: 100 },
 ];
 
-/* Partial and claimed-only are NOT columns. Most rows are zero on both, and two
-   more columns of width bought a reader nothing on the grid. They are still on
-   the board — every row's detail carries them, labelled and linked to their own
-   definition — because "claimed only: 0" is a real signal about a model, just
-   not one worth a column. Keys the row detail prints, in this order. */
-export const DETAIL_FIGURES = [
-  { key: 'partial', label: 'Partial' },
-  { key: 'claimed_only', label: 'Claimed only' },
-];
+/* Six columns, and the ones that are NOT here are a decision, not an oversight.
+   The repo 1 / repo 2 split is in the data and on the method page: it is how the
+   105 bugs are distributed, not a ranking, and two narrow number columns bought
+   the dashboard nothing. Partial and claimed-only are in the data and defined on
+   the method page too — most rows are zero on both. A ?sort= link naming any of
+   them is simply not applied (main.js validates against this list), so an old
+   link opens on the default sort instead of throwing. */
 
 export const GROUPS = [
   { id: 'run', label: '', cls: 'g-run' },

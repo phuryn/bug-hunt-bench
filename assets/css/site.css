@@ -431,7 +431,7 @@ h1 em { font-style: normal; color: var(--accent); }
   border: 1px solid var(--hairline);
 }
 .board {
-  width: 100%; min-width: 1030px; table-layout: fixed;
+  width: 100%; min-width: 880px; table-layout: fixed;
   border-collapse: collapse; font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
@@ -441,7 +441,7 @@ h1 em { font-style: normal; color: var(--accent); }
 }
 .board__caption em { color: var(--ink-2); font-style: italic; }
 
-.board th, .board td { padding: 11px 12px; text-align: right; white-space: nowrap; }
+.board th, .board td { padding: 9px 12px; text-align: right; white-space: nowrap; }
 .board th:first-child, .board td:first-child { text-align: left; padding-left: 16px; }
 .board td:last-child, .board th:last-child { padding-right: 16px; }
 /* bar columns read left-to-right from a shared start, so the header does too */
@@ -482,35 +482,6 @@ h1 em { font-style: normal; color: var(--accent); }
 .board tbody tr { border-bottom: 1px solid var(--hairline); }
 .board tbody tr:hover { background: var(--accent-wash); }
 .board tbody tr.is-superseded .model__name { color: var(--muted); }
-.board tbody tr.annotation-row { background: var(--panel); }
-.board tbody tr.annotation-row:hover { background: var(--panel); }
-.board tbody tr.annotation-row td {
-  white-space: normal; text-align: left; padding: 12px 16px 14px;
-  font-size: 12.5px; color: var(--ink-2); line-height: 1.5;
-}
-.annotation-row p { margin: 0 0 6px; max-width: 92ch; }
-.annotation-row p:last-child { margin-bottom: 0; }
-.annotation-row b {
-  font-weight: 600; font-size: 10.5px; letter-spacing: 0.08em;
-  text-transform: uppercase; color: var(--muted); margin-right: 8px;
-}
-
-/* Partial and claimed-only live here rather than in two columns of mostly
-   zeroes. They are figures, so they are set like figures - label, then value -
-   and each label links at its own definition. */
-.detail__figs { display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline; }
-.detail__fig { display: inline-flex; align-items: baseline; gap: 7px; }
-.detail__fig .deflink {
-  font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--muted); font-weight: 600;
-}
-.detail__val {
-  font-size: 14px; font-weight: 600; color: var(--ink);
-  font-variant-numeric: tabular-nums;
-}
-.detail__val--zero { color: var(--neutral); font-weight: 500; }
-.detail__sep { color: var(--hairline); }
-
 /* a link to a definition on the method page: underlined on the dotted rhythm the
    cost tags already use, so it reads as "there is more behind this word" */
 .deflink {
@@ -518,29 +489,43 @@ h1 em { font-style: normal; color: var(--accent); }
   border-bottom: 1px dotted var(--neutral);
 }
 .deflink:hover, .deflink:focus-visible { color: var(--accent); border-bottom-color: var(--accent); }
-.keys__dagger { color: var(--ink-2); font-weight: 600; }
-.board td.has-note .bar-val { display: inline-flex; align-items: baseline; }
+/* the effort badge's term, where the key explains it in a sentence */
+.keys__term { font-weight: 600; color: var(--ink-2); }
 
-/* model cell — chip, then the name and the harness line stacked behind it */
-.model { display: grid; grid-template-columns: 12px 1fr; gap: 0 10px; align-items: start; }
-.model .swatch { width: 12px; height: 12px; border-radius: 3px; margin-top: 4px; }
+/* Model cell — chip, name, badge, and one quiet line under it.
+   Two lines at most. The effort badge sits on the name's own line because it is
+   part of the run's identity (Fable 5 at MAX is not Fable 5 at HIGH); vendor and
+   harness sit under it because they are provenance, not identity. Nothing else
+   is here: the status vocabulary that used to take a third line moved into the
+   key under the table, and the dagger that took a fourth is gone. */
+.model { display: grid; grid-template-columns: 11px 1fr; gap: 0 9px; align-items: start; }
+.model .swatch { width: 11px; height: 11px; border-radius: 3px; margin-top: 4px; }
 .model__body { min-width: 0; }
 .model__name {
   display: block;
   font-weight: 600; font-size: 15px; color: var(--ink); line-height: 1.16;
-  letter-spacing: -0.012em; white-space: normal;
+  letter-spacing: -0.012em; white-space: normal; text-wrap: balance;
 }
-.model__meta .status { color: var(--ink-2); }
 .model__meta {
   display: block;
-  font-family: var(--mono); font-size: 10px; color: var(--muted);
-  margin-top: 4px; white-space: normal; line-height: 1.4;
+  font-family: var(--mono); font-size: 9.5px; color: var(--muted);
+  margin-top: 3px; white-space: normal; line-height: 1.35;
+  letter-spacing: -0.01em; text-wrap: pretty;
 }
+/* the tier the run was asked for. A link, because its definition is one click
+   away on the method page; it never carries more than the tier, except on the
+   one clamped row, where two words say the tool ran something lower. */
 .badge {
-  display: inline-block; font-size: 9px; letter-spacing: 0.07em;
+  display: inline-flex; align-items: baseline; gap: 4px;
+  font-size: 9px; letter-spacing: 0.07em;
   text-transform: uppercase; font-weight: 600; color: var(--ink-2);
   border: 1px solid var(--rule); border-radius: 2px; padding: 0 4px 1px;
-  vertical-align: 2px; white-space: nowrap;
+  vertical-align: 2px; white-space: nowrap; text-decoration: none;
+}
+.badge:hover, .badge:focus-visible { color: var(--ink); border-color: var(--ink-2); }
+.badge__note {
+  text-transform: none; letter-spacing: 0; font-weight: 500; font-size: 9.5px;
+  color: var(--muted); border-left: 1px solid var(--hairline); padding-left: 4px;
 }
 .tag {
   display: inline-block; font-size: 9.5px; letter-spacing: 0.06em;
@@ -548,12 +533,6 @@ h1 em { font-style: normal; color: var(--accent); }
   border: 1px dotted var(--neutral); border-radius: 2px; padding: 1px 4px;
 }
 .tag--superseded { border-style: solid; border-color: var(--hairline); background: var(--panel); }
-.notebtn {
-  font: inherit; font-size: 13px; line-height: 1; background: none; cursor: pointer;
-  border: 1px solid var(--hairline); border-radius: 2px; color: var(--muted);
-  padding: 1px 5px 3px; margin-left: 4px;
-}
-.notebtn:hover, .notebtn[aria-expanded="true"] { color: var(--ink); border-color: var(--rule); }
 
 /* ---------------------------------------------------------- the bar system
 
@@ -585,33 +564,22 @@ h1 em { font-style: normal; color: var(--accent); }
 .bar-val { flex: none; margin-left: 10px; white-space: nowrap; }
 
 
-.bar-row--score { --reserve: 66px; }
+.bar-row--score { --reserve: 62px; }
 .score__num { font-size: 16px; font-weight: 600; color: var(--ink); }
 .score__den { color: var(--neutral); font-weight: 400; font-size: 11.5px; }
 
-.num { color: var(--ink-2); }
-.num--zero { color: var(--neutral); }
-.num--flag { color: var(--ink); font-weight: 600; }
-
 /* extras — deliberately NOT a score: own column group, own scale, hatch, half height */
-.bar-row--extras { --reserve: 34px; }
+.bar-row--extras { --reserve: 30px; }
 .extras__num { color: var(--muted); }
 
-.bar-row--wall { --reserve: 70px; }
+.bar-row--wall { --reserve: 68px; }
 .wall__num { color: var(--ink-2); font-size: 12.5px; }
 .wall__unit { color: var(--neutral); font-size: 10px; margin-left: 3px; }
 
-/* the cost tag sits under its own figure rather than beside it: a bar plus a
-   figure plus a tag will not fit on one line at this width, and the tag has to
-   stay with the number it qualifies */
+/* the cost cell is the figure and nothing else now: which of these are bills
+   and which are estimates is one sentence in the key, not a word on every row */
 .bar-row--cost { --reserve: 68px; }
-.cost { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 1px; }
 .cost__val { color: var(--ink-2); font-size: 12.5px; }
-.cost__kind {
-  font-size: 9.5px; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--muted); border-bottom: 1px dotted var(--neutral); cursor: help;
-  text-decoration: none;
-}
 
 .board time { color: var(--muted); font-size: 11px; }
 
@@ -865,17 +833,11 @@ h1 em { font-style: normal; color: var(--accent); }
   .board td.model-cell::before, .board td.score::before { display: none; }
   /* a card is narrower than a table cell, so the reserved value width shrinks with it */
   .bar-row--score { --reserve: 62px; }
-  .bar-row--wall { --reserve: 70px; }
-  .bar-row--cost { --reserve: 100px; }
+  .bar-row--wall { --reserve: 68px; }
+  .bar-row--cost { --reserve: 66px; }
   .bar-row--extras { --reserve: 30px; }
   .bar { height: 15px; }
   .bar--wall, .bar--cost { height: 11px; }
-  .board tbody tr.annotation-row {
-    display: block; padding: 0; margin-top: -10px; margin-bottom: 10px;
-    border-top: 0;
-  }
-  .board tbody tr.annotation-row td { padding: 10px 14px 12px; }
-  .board tbody tr.annotation-row td::before { display: none; }
   .score__num { font-size: 17px; }
 }
 
@@ -904,12 +866,16 @@ h1 em { font-style: normal; color: var(--accent); }
     color-scheme: light;
   }
   body { background: #fff; font-size: 10.5pt; }
-  .masthead__nav, .controls, .tabs, .btn, .themetoggle, .skip-link, .picker, .notebtn { display: none !important; }
+  .masthead__nav, .controls, .tabs, .btn, .themetoggle, .skip-link, .picker { display: none !important; }
   .views__bar { border-bottom: 1px solid #999; }
   .chart, .tablewrap, .board tbody tr { break-inside: avoid; }
   .tablewrap { overflow: visible; border: 0; }
   .board { font-size: 8pt; min-width: 0; }
   .board th, .board td { padding: 5px 6px; }
+  /* the first and last columns keep a 16px screen gutter otherwise, and on
+     paper that is the difference between a date that fits and one that clips */
+  .board th:first-child, .board td:first-child { padding-left: 6px; }
+  .board th:last-child, .board td:last-child { padding-right: 6px; }
   .bar, .swatch, .keys .swatch-key,
   .tickrule__plot .tick, .tickkey__mark {
     -webkit-print-color-adjust: exact; print-color-adjust: exact;
@@ -917,8 +883,9 @@ h1 em { font-style: normal; color: var(--accent); }
   /* on paper the tick rule still reads without either hue: the survivors are the
      solid, full-height marks and the caption names both */
   .bridge { border-top: 0; }
-  /* every annotation is printed, since nobody can expand a row on paper */
-  .board tbody tr.annotation-row[hidden] { display: table-row !important; }
+  /* nothing on the board is behind a click any more, so paper needs no
+     expansion rule: the key under the table prints with it, and that is where
+     the cost kinds and the effort badge are explained */
   .footer { background: #fff; }
   a { color: inherit; text-decoration: none; }
   .prose { break-inside: auto; }

@@ -1,28 +1,36 @@
 /* The leaderboard table.
-   Four bars per row, on the card's rhythm: bar from the left edge of the cell,
-   value printed at its end. They are deliberately not interchangeable.
+   Six columns - model, fixed, extras, wall clock, cost, date - and four bars, on
+   the card's rhythm: bar from the left edge of the cell, value printed at its
+   end. They are deliberately not interchangeable.
 
-     score   the run's own colour, full height, drawn against a 100-unit reference
-     extras  grey hatch at half height, scaled to the biggest extras count on the
-             board, sitting in a column group headed "Tracked, not scored"
-     wall    flat neutral grey, scaled to the slowest run on the board
-     cost    flat neutral grey, scaled to the dearest run on the board, and the
-             bill / list / floor / free tag stays printed beside the figure,
-             because a bar makes lengths look comparable and these are not
+     score   the run's own colour, full height, scaled to the best score shown
+     extras  grey hatch at half height, scaled to the biggest extras count shown,
+             sitting in a column group headed "Tracked, not scored"
+     wall    flat neutral grey, scaled to the slowest run shown
+     cost    flat neutral grey, scaled to the dearest run shown
 
-   Only the score bar ever carries a run's colour. */
+   Only the score bar ever carries a run's colour.
+
+   A cell shows the number. It does not show what kind of number it is: the cost
+   tag used to be printed under every dollar figure and the effort status beside
+   every model, and a word repeated down a column is noise, not information. The
+   exceptions are named once, in the key under the table, generated from the rows
+   on screen - and one badge suffix survives inline, on the single clamped row,
+   because a published correction cannot be left to a key.
+
+   There is no row detail and no dagger either. Partial and claimed-only are in
+   the data and defined on the method page; the sentences a row carries - a
+   caveat, a note, a supersession - ride on the cell as a plain title, which
+   costs no layout and needs no marker. */
 
 import {
-  COLUMNS, GROUPS, TOTALS, SCORE_BAR_REF, EFFORT_STATUS_LABEL, COST_KIND_LABEL,
-  DETAIL_FIGURES, fmtCost, fmtWall, fmtInt, fmtDate, barRatio, defHref, defLink,
-  el, svgEl, compareRuns,
-} from './format.js?v=5edf3dde1d';
-import { runColor } from './theme.js?v=5edf3dde1d';
+  COLUMNS, GROUPS, TOTALS, fmtCost, fmtWall, fmtInt, fmtDate,
+  barRatio, barScales, effortSuffix, effortDefKey, defHref, el, svgEl, compareRuns,
+} from './format.js?v=1f04c8a829';
+import { runColor } from './theme.js?v=1f04c8a829';
 
 const MOBILE_LABEL = {
   fixed: 'Fixed of 105',
-  repo1_fixed: 'Repo 1 of 45',
-  repo2_fixed: 'Repo 2 of 60',
   extras: 'Extras (not scored)',
   wall_min: 'Wall clock (min)',
   cost_usd: 'Cost',
@@ -63,7 +71,7 @@ export function renderHead(headEl, state, onSort) {
        the click that sorts it */
     groupRow.appendChild(el('th', {
       colspan: span > 1 ? span : null,
-      scope: g.label ? 'colgroup' : null,
+      scope: g.label ? (span > 1 ? 'colgroup' : 'col') : null,
       class: [g.cls, g.label ? 'divide' : ''].filter(Boolean).join(' '),
       role: 'columnheader',
     }, g.label
@@ -102,31 +110,50 @@ export function renderHead(headEl, state, onSort) {
   headEl.appendChild(colRow);
 }
 
+/* The sentences a row carries. They used to open in a disclosure row under the
+   grid; they now ride on the model cell as a plain title - still there for
+   anyone who wants them, invisible to everyone who does not, and costing the
+   table no height at all. */
+function rowTitle(run) {
+  return [
+    run.superseded ? `Superseded: ${run.superseded}` : null,
+    run.caveat ? `Caveat: ${run.caveat}` : null,
+    run.note ? `Note: ${run.note}` : null,
+  ].filter(Boolean).join('\n') || null;
+}
+
+/* Two lines at most: the name with its effort badge, then vendor - harness.
+   The badge is the tier the run was asked for - MAX / XHIGH / HIGH / DEFAULT -
+   and it says nothing else, because what DEFAULT means is one sentence in the
+   key rather than two words on every row that has it. The single exception is
+   the clamped run, where the tool ran something lower than the badge asked for:
+   that is a published correction and it stays on its own row. Either way the
+   badge links at its definition, which reads in plain English, from the data. */
 function modelCell(run, glossary) {
   const meta = [run.vendor, run.harness].filter(Boolean).join(' · ');
-  const statusLabel = EFFORT_STATUS_LABEL[run.effort_status] || run.effort_status;
+  const defKey = effortDefKey(run);
+  const suffix = effortSuffix(run);
+  const badge = el('a', {
+    class: 'badge',
+    href: defKey ? defHref(defKey) : null,
+    title: (glossary && glossary[defKey]) || `Reasoning effort tier requested for this run: ${run.effort}`,
+    /* the tier and its suffix are two elements with no whitespace between them,
+       which a screen reader would run together as one word */
+    'aria-label': `Effort tier: ${run.effort}${suffix ? `, ${suffix}` : ''}`,
+  }, [
+    el('span', { class: 'badge__tier', text: run.effort }),
+    suffix ? el('span', { class: 'badge__note', text: suffix }) : null,
+  ]);
+
   const body = el('span', { class: 'model__body' }, [
-    el('span', { class: 'model__name' }, [
-      run.model,
-      ' ',
-      el('span', {
-        class: 'badge',
-        text: run.effort,
-        title: `Reasoning effort tier requested for this run: ${run.effort}`,
-      }),
-    ]),
+    el('span', { class: 'model__name' }, [run.model, ' ', badge]),
     el('span', { class: 'model__meta' }, [
-      el('span', {
-        class: 'status',
-        text: statusLabel,
-        title: glossary[`effort_${run.effort_status}`] || '',
-      }),
-      document.createTextNode(` · ${meta}`),
+      document.createTextNode(meta),
       run.superseded ? document.createTextNode(' ') : null,
       run.superseded ? el('span', { class: 'tag tag--superseded', text: 'superseded' }) : null,
     ]),
   ]);
-  return el('td', { class: 'model-cell', role: 'cell' }, [
+  return el('td', { class: 'model-cell', role: 'cell', title: rowTitle(run) }, [
     el('span', { class: 'model' }, [
       el('span', { class: 'swatch', style: { 'background-color': runColor(run.color) } }),
       body,
@@ -151,11 +178,11 @@ function barRow(kind, ratio, color, value) {
   ]);
 }
 
-function scoreCell(run) {
+function scoreCell(run, fixedMax) {
   return el('td', {
     class: 'score divide col--bar', role: 'cell', 'data-label': MOBILE_LABEL.fixed,
   }, [
-    barRow('score', barRatio(run.fixed, SCORE_BAR_REF), runColor(run.color),
+    barRow('score', barRatio(run.fixed, fixedMax), runColor(run.color),
       el('span', { class: 'score__num' }, [
         document.createTextNode(fmtInt(run.fixed)),
         el('span', { class: 'score__den', text: `/${TOTALS.fixed}` }),
@@ -173,14 +200,16 @@ function extrasCell(run, extrasMax) {
 }
 
 /* Wall clock is one measure on every row. Three rows carry a note on how their
-   figure was taken, and those rows say so where the figure is, not only in the
-   caveats: the dagger sits on the cell and opens the same row detail. */
+   figure was taken; that sentence rides on the cell rather than on a marker, and
+   the same rows wear a broken ring on the score-vs-time map, which is where a
+   bent minute figure would actually mislead a reader. */
 function wallCell(run, wallMax) {
   const has = run.wall_min !== null && run.wall_min !== undefined;
-  const cell = el('td', {
-    class: `divide col--bar${run.wall_note ? ' has-note' : ''}`,
+  return el('td', {
+    class: 'divide col--bar',
     role: 'cell',
     'data-label': MOBILE_LABEL.wall_min,
+    title: run.wall_note ? `Wall clock: ${run.wall_note}` : null,
   }, [
     barRow('wall', barRatio(run.wall_min, wallMax), null,
       el('span', {}, [
@@ -188,96 +217,23 @@ function wallCell(run, wallMax) {
         has ? el('span', { class: 'wall__unit', text: 'min' }) : null,
       ])),
   ]);
-  return cell;
 }
 
-function costCell(run, glossary, costMax) {
-  const kind = COST_KIND_LABEL[run.cost_kind] || run.cost_kind;
-  const has = run.cost_usd !== null && run.cost_usd !== undefined;
+/* The dollar figure, and only the dollar figure. Which of these are bills, which
+   are list-rate estimates and which are reconstructed lower bounds is one
+   sentence in the key, built from the rows on screen - printing the tag under
+   all twenty-five of them was the same four words over and over. */
+function costCell(run, costMax) {
   return el('td', { class: 'col--bar', role: 'cell', 'data-label': MOBILE_LABEL.cost_usd }, [
     barRow('cost', barRatio(run.cost_usd, costMax), null,
-      el('span', { class: 'cost' }, [
-        el('span', { class: 'cost__val', text: fmtCost(run.cost_usd) }),
-        has ? el('abbr', {
-          class: 'cost__kind',
-          text: kind,
-          title: glossary[`cost_${run.cost_kind}`] || kind,
-        }) : null,
-      ])),
+      el('span', { class: 'cost__val', text: fmtCost(run.cost_usd) })),
   ]);
 }
 
-function numCell(value, label, extraClass) {
-  const cls = ['num'];
-  if (value === 0) cls.push('num--zero');
-  else if (extraClass) cls.push(extraClass);
-  return el('td', { role: 'cell', 'data-label': label }, [
-    el('span', { class: cls.join(' '), text: fmtInt(value) }),
-  ]);
-}
-
-/* Every row has a detail now, because partial and claimed-only live here rather
-   than in two columns of mostly zeroes. The figures come first, each label
-   linked to its own definition; then the wall-clock note, then whatever the run
-   carries — a supersession, a caveat, a note. */
-function detailRow(run, colCount) {
-  const cell = el('td', { colspan: colCount, role: 'cell' });
-
-  const figs = el('p', { class: 'detail__figs' });
-  DETAIL_FIGURES.forEach(({ key, label }, i) => {
-    if (i) figs.appendChild(el('span', { class: 'detail__sep', text: '·' }));
-    figs.appendChild(el('span', { class: 'detail__fig' }, [
-      defLink(key, label),
-      el('b', {
-        class: run[key] ? 'detail__val' : 'detail__val detail__val--zero',
-        text: fmtInt(run[key]),
-      }),
-    ]));
-  });
-  cell.appendChild(figs);
-
-  [
-    ['Wall clock', run.wall_note],
-    ['Superseded', run.superseded],
-    ['Caveat', run.caveat],
-    ['Note', run.note],
-  ].forEach(([label, textValue]) => {
-    if (!textValue) return;
-    cell.appendChild(el('p', {}, [el('b', { text: label }), document.createTextNode(textValue)]));
-  });
-
-  return el('tr', { class: 'annotation-row', role: 'row' }, [cell]);
-}
-
-/* One disclosure, two places that can open it: the model name and — when the row
-   has one — the wall-clock figure. Both buttons stay in step, because a reader
-   who opened it from one and sees the other still claiming "collapsed" has been
-   told something untrue. */
-function makeToggle(run, row, buttons, where) {
-  const btn = el('button', {
-    type: 'button',
-    class: 'notebtn',
-    'aria-expanded': 'false',
-    'aria-controls': `detail-${run.slug}`,
-    text: '†',
-  });
-  btn.setAttribute('aria-label', where === 'wall'
-    ? `Show the note on the wall-clock figure for ${run.id}`
-    : `Show the detail for ${run.id}`);
-  btn.title = where === 'wall'
-    ? 'How this wall-clock figure was taken'
-    : 'Partial, claimed-only and any note on this run';
-  btn.addEventListener('click', () => {
-    const open = btn.getAttribute('aria-expanded') === 'true';
-    row.hidden = open;
-    buttons.forEach((b) => b.setAttribute('aria-expanded', open ? 'false' : 'true'));
-  });
-  buttons.push(btn);
-  return btn;
-}
-
-export function renderBody(bodyEl, runs, state, glossary, scales) {
-  const { extrasMax, wallMax, costMax } = scales;
+export function renderBody(bodyEl, runs, state, glossary) {
+  /* The scales come from the rows being drawn, so the leader fills its column
+     and every other bar reads as a share of the leader. */
+  const { fixedMax, extrasMax, wallMax, costMax } = barScales(runs);
   bodyEl.textContent = '';
   bodyEl.setAttribute('role', 'rowgroup');
   const sorted = runs.slice().sort((a, b) => compareRuns(a, b, state.sort, state.dir));
@@ -289,29 +245,16 @@ export function renderBody(bodyEl, runs, state, glossary, scales) {
       'data-run': run.slug,
     });
 
-    const detail = detailRow(run, COLUMNS.length);
-    detail.hidden = true;
-    detail.querySelector('td').id = `detail-${run.slug}`;
-    const buttons = [];
-
-    const mCell = modelCell(run, glossary);
-    mCell.querySelector('.model__meta').appendChild(makeToggle(run, detail, buttons, 'model'));
-    tr.appendChild(mCell);
-
-    tr.appendChild(scoreCell(run));
-    tr.appendChild(numCell(run.repo1_fixed, MOBILE_LABEL.repo1_fixed));
-    tr.appendChild(numCell(run.repo2_fixed, MOBILE_LABEL.repo2_fixed));
+    tr.appendChild(modelCell(run, glossary));
+    tr.appendChild(scoreCell(run, fixedMax));
     tr.appendChild(extrasCell(run, extrasMax));
-    const wall = wallCell(run, wallMax);
-    if (run.wall_note) wall.querySelector('.bar-val').appendChild(makeToggle(run, detail, buttons, 'wall'));
-    tr.appendChild(wall);
-    tr.appendChild(costCell(run, glossary, costMax));
+    tr.appendChild(wallCell(run, wallMax));
+    tr.appendChild(costCell(run, costMax));
     tr.appendChild(el('td', { role: 'cell', 'data-label': MOBILE_LABEL.date }, [
       el('time', { datetime: run.date, text: fmtDate(run.date) }),
     ]));
 
     bodyEl.appendChild(tr);
-    bodyEl.appendChild(detail);
   });
 
   return sorted;

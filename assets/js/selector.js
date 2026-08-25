@@ -1,8 +1,8 @@
 /* Run picker: native checkboxes grouped by vendor, so keyboard and screen-reader
    behaviour is the platform's, not ours. */
 
-import { el, fmtDate, EFFORT_STATUS_LABEL } from './format.js?v=5edf3dde1d';
-import { runColor } from './theme.js?v=5edf3dde1d';
+import { el, fmtDate, effortSuffix } from './format.js?v=1f04c8a829';
+import { runColor } from './theme.js?v=1f04c8a829';
 
 export function renderPicker(gridEl, runs, selected, onToggle, onVendorToggle) {
   gridEl.textContent = '';
@@ -40,7 +40,10 @@ export function renderPicker(gridEl, runs, selected, onToggle, onVendorToggle) {
         el('span', { class: 'run__body' }, [
           el('span', { class: 'run__name', text: r.id }),
           el('span', { class: 'run__meta' }, [
-            `${EFFORT_STATUS_LABEL[r.effort_status] || r.effort_status} · ${fmtDate(r.date)}`,
+            /* the tier the run was asked for, as the board's badge shows it -
+               plus the two words the clamped row carries there */
+            [String(r.effort || '').toUpperCase(), effortSuffix(r), fmtDate(r.date)]
+              .filter(Boolean).join(' · '),
             r.superseded ? ' · ' : null,
             r.superseded ? el('span', { class: 'tag tag--superseded', text: 'superseded' }) : null,
           ]),

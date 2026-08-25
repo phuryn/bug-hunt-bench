@@ -29,11 +29,11 @@
     "cost_list": "A token-count estimate at published list rates, not a bill.",
     "cost_floor": "Reconstructed lower bound - this CLI reports context occupancy, not billing.",
     "cost_free": "Served free at the time of the run.",
-    "effort_verified_ceiling": "The reasoning tier was verified to bind, and it is this model's top tier.",
-    "effort_verified": "The reasoning tier was verified to bind.",
-    "effort_first_party": "A documented tier on the vendor's own CLI.",
-    "effort_clamped": "The requested tier was silently replaced by the CLI - published as a correction.",
-    "effort_inert_default": "Served through a gateway whose effort parameter provably does nothing, so the run used the model's default."
+    "effort_verified_ceiling": "This model's highest reasoning setting. We checked that changing the setting actually changes what the model does.",
+    "effort_verified": "We checked that changing this reasoning setting actually changes what the model does.",
+    "effort_first_party": "A setting the vendor documents in their own tool. Taken at face value, not separately tested.",
+    "effort_clamped": "We asked for a higher setting and the tool quietly ran a lower one. Published as a correction.",
+    "effort_inert_default": "This route ignores the effort setting entirely, so the model ran at its own default. There was no working dial to turn."
   },
   "caveats": [
     "One round per model per repo. Same-setting variance is real and measured: three Grok 4.5 runs on identical settings scored 16, 13 and 17.",

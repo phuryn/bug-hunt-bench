@@ -7,13 +7,14 @@
    and everything here that needs one of them links at the exact anchor. */
 
 import {
-  COLUMNS, SCORE_BAR_NOTE, caveatHref, defHref, methodHref, slugify, fmtDate, el,
-} from './format.js?v=5edf3dde1d';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=5edf3dde1d';
-import { renderScatter, AXES } from './scatter.js?v=5edf3dde1d';
-import { renderPicker } from './selector.js?v=5edf3dde1d';
-import { exportView } from './export-png.js?v=5edf3dde1d';
-import { initTheme, hasAdjustedColors } from './theme.js?v=5edf3dde1d';
+  COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
+  caveatHref, defHref, methodHref, slugify, fmtDate, el,
+} from './format.js?v=1f04c8a829';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=1f04c8a829';
+import { renderScatter, AXES } from './scatter.js?v=1f04c8a829';
+import { renderPicker } from './selector.js?v=1f04c8a829';
+import { exportView } from './export-png.js?v=1f04c8a829';
+import { initTheme, hasAdjustedColors } from './theme.js?v=1f04c8a829';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -55,9 +56,6 @@ const state = {
 
 let DATA = null;
 let RUNS = [];
-/* Bar scales are taken from the whole board, never from the current selection:
-   changing what is selected must not silently rescale the rows that survive. */
-let SCALES = { extrasMax: 0, wallMax: 0, costMax: 0 };
 let SITE_URL = '';
 
 const NUMBER_WORD = ['no', 'one', 'Two', 'Three', 'Four', 'Five', 'Six'];
@@ -211,23 +209,69 @@ function patchSchema() {
 
 /* -------------------------------------------------------------------- keys */
 
-function keyList(prefix, labelPrefix) {
-  const dl = el('dl', {});
-  Object.entries(DATA.glossary)
-    .filter(([k]) => k.startsWith(prefix))
-    .forEach(([k, v]) => {
-      // the term links at its own definition, not at the top of the method page
-      dl.appendChild(el('dt', {}, [
-        el('a', { class: 'deflink', href: defHref(k) }, [k.slice(prefix.length).replace(/_/g, ' ')]),
-      ]));
-      dl.appendChild(el('dd', { text: v }));
-    });
-  return el('div', {}, [el('h3', { text: labelPrefix }), dl]);
+/* The key carries the vocabulary the grid no longer prints. A cell shows a
+   number; what kind of number it is is said ONCE, here, for the rows on screen -
+   because a tag under every dollar figure and a status beside every model name
+   is the same word repeated twenty-five times, which is noise a reader has to
+   step over on the way to the figures. Everything here is generated from the
+   data file and from the current selection, so it cannot go stale or contradict
+   the board, and every term links at its full definition on the method page. */
+
+const EFFORT_RANK = ['max', 'xhigh', 'high', 'medium', 'low', 'minimal', 'default'];
+
+/** The effort tiers actually on screen, in the order a reader ranks them. */
+function tiersShown(runs) {
+  const tiers = [...new Set(runs.map((r) => r.effort).filter(Boolean))];
+  return tiers.sort((a, b) => {
+    const ra = EFFORT_RANK.indexOf(String(a).toLowerCase());
+    const rb = EFFORT_RANK.indexOf(String(b).toLowerCase());
+    return (ra < 0 ? EFFORT_RANK.length : ra) - (rb < 0 ? EFFORT_RANK.length : rb);
+  }).map((t) => String(t).toUpperCase());
+}
+
+/** The generated cost sentence, with each kind linked at its own definition. */
+function costKey(runs) {
+  const seg = costSentence(runs, DATA.glossary);
+  if (!seg) return null;
+  const p = el('p', {});
+  seg.forEach((part) => {
+    p.appendChild(part.def
+      ? el('a', { class: 'deflink', href: defHref(part.def) }, [part.text])
+      : document.createTextNode(part.text));
+  });
+  return el('div', {}, [el('h3', { text: 'What the costs are' }), p]);
+}
+
+/* The badge is the tier the run asked for. Two statuses need a sentence, and
+   both are printed only when a row on screen actually carries one: DEFAULT,
+   which is not a tier at all but a route with no working dial, and the clamped
+   run, which is the one row still carrying words of its own. */
+function effortKey(runs) {
+  const block = el('div', {}, [
+    el('h3', { text: 'What the effort badge means' }),
+    el('p', {}, [`The tier the run was asked for: ${tiersShown(runs).join(' · ')}. Every badge links at its own definition.`]),
+  ]);
+  const line = (status, term) => {
+    if (!runs.some((r) => r.effort_status === status)) return;
+    const def = DATA.glossary[`effort_${status}`];
+    if (!def) return;
+    block.appendChild(el('p', {}, [
+      el('a', { class: 'deflink keys__term', href: defHref(`effort_${status}`) }, [term]),
+      ` — ${firstSentence(def)}`,
+    ]));
+  };
+  line('inert_default', 'DEFAULT');
+  line('clamped', 'ran lower');
+  return block;
 }
 
 function renderKeys() {
   const keys = $('table-keys');
+  const runs = selectedRuns();
   keys.textContent = '';
+  /* the key describes the rows on screen, so with none on screen there is
+     nothing to describe - and the whole block is hidden anyway */
+  if (!runs.length) return;
 
   keys.appendChild(el('div', {}, [
     el('h3', { text: 'Reading the bars' }),
@@ -235,32 +279,34 @@ function renderKeys() {
       el('span', { class: 'swatch-key swatch-key--score' }),
       'Solid, in the run’s own colour: planted bugs fixed, out of 105.',
     ]),
-    el('p', { class: 'note', text: SCORE_BAR_NOTE }),
+    el('p', { class: 'note', text: BAR_SCALE_NOTE }),
     el('p', {}, [
       el('span', { class: 'swatch-key swatch-key--extras' }),
       'Hatched grey, half height: ',
       el('a', { class: 'deflink', href: defHref('extras') }, ['extras']),
-      '. Scaled against the highest extras count on the board, never against the score.',
+      '. Scaled against extras, never against the score.',
     ]),
     el('p', {}, [
       el('span', { class: 'swatch-key swatch-key--meta' }),
-      'Flat grey: wall clock and cost, each scaled to the highest figure on the board. Grey, never the run’s colour, because neither is the score — and a cost bar is only comparable to another bar with the same tag.',
+      'Flat grey: wall clock and cost. Grey, never the run’s colour, because neither is the score.',
     ]),
     el('p', {}, [
-      el('b', { class: 'keys__dagger', text: '†' }),
-      ' opens a row’s detail: ',
+      'Not on the grid: ',
       el('a', { class: 'deflink', href: defHref('partial') }, ['partial']),
-      ', ',
-      el('a', { class: 'deflink', href: defHref('claimed_only') }, ['claimed only']),
-      ', and any note, caveat or supersession the run carries. On a wall-clock figure it opens the note on that figure.',
+      ' and ',
+      el('a', { class: 'deflink', href: defHref('claimed_only') }, ['claimed-only']),
+      ' fixes, and the repo 1 / repo 2 split. All four are in the data and on the ',
+      el('a', { class: 'deflink', href: methodHref('definitions') }, ['method page']),
+      '.',
     ]),
     hasAdjustedColors(RUNS)
       ? el('p', { class: 'note', text: 'In the dark theme a run colour that would be invisible on a dark surface is shown lightened. The hue is the run’s own; only the brightness moves, and only on screen.' })
       : null,
   ]));
 
-  keys.appendChild(keyList('cost_', 'What the cost tag means'));
-  keys.appendChild(keyList('effort_', 'What the effort tag means'));
+  const cost = costKey(runs);
+  if (cost) keys.appendChild(cost);
+  keys.appendChild(effortKey(runs));
 
   keys.appendChild(el('div', {}, [
     el('h3', { text: 'Variance' }),
@@ -292,7 +338,7 @@ function chartFootnote(axisId) {
     ];
     if (L.flagged && L.flagged.length) {
       parts.push(el('span', { class: 'chart__def-flag' }, [
-        `† ${L.flagged.length} of the ${L.points.length} runs shown carry a note on their own figure — it is on the point, and on the row.`,
+        `${NOTE_MARK} ${L.flagged.length} of the ${L.points.length} runs shown carry a note on how that figure was taken — the marked points, and the caveat above.`,
       ]));
     }
     return parts;
@@ -345,7 +391,10 @@ function renderViews() {
   $('export-png').title = empty ? 'Select at least one run to export' : 'Download the current view as a PNG';
 
   renderHead($('board-head'), state, onSort);
-  renderBody($('board-body'), runs, state, DATA.glossary, SCALES);
+  renderBody($('board-body'), runs, state, DATA.glossary);
+  /* the key names the exceptions among the rows on screen, so it is rebuilt
+     with them - not once at boot */
+  renderKeys();
 
   if (!empty && VIEWS[state.view].axis) renderChart(state.view);
 
@@ -363,7 +412,6 @@ function renderViews() {
 
 function renderAll() {
   renderPickerIfOpen();
-  renderKeys();
   renderViews();
   writeUrl();
 }
@@ -461,7 +509,7 @@ function wire() {
         allRuns: RUNS,
         state,
         meta: DATA.meta,
-        scales: SCALES,
+        glossary: DATA.glossary,
         caveat: cav ? cav.text : null,
         siteUrl: SITE_URL || location.origin + location.pathname,
         presetName: state.preset ? PRESETS[state.preset].name : 'Custom selection',
@@ -516,8 +564,6 @@ async function boot() {
   DATA = await res.json();
 
   RUNS = DATA.runs.map((r) => ({ ...r, slug: slugify(r.id) }));
-  const maxOf = (key) => Math.max(0, ...RUNS.map((r) => r[key] || 0));
-  SCALES = { extrasMax: maxOf('extras'), wallMax: maxOf('wall_min'), costMax: maxOf('cost_usd') };
 
   const board = document.getElementById('board');
   board.setAttribute('role', 'table');

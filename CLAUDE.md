@@ -38,7 +38,7 @@ assets/js/
   main.js           boot, state, URL sync, hero, selector wiring
   method.js         renders method.html from the same JSON
   format.js         vocabularies, formatters, column model, DOM helpers
-  table.js          leaderboard: colgroup, sortable head, rows, detail rows
+  table.js          leaderboard: colgroup, sortable head, rows
   scatter.js        both charts (score vs cost, score vs time) from one renderer
   selector.js       run picker
   export-png.js     canvas renderer for "Export this view"
@@ -74,18 +74,30 @@ Run `python stamp-assets.py` locally too if you want your working copy to match 
   planted. Some models report large numbers of unrelated issues; a board that adds those rewards
   noise. Keep them visually separate and clearly labelled *Tracked, not scored*.
 - **`claimed_only`** = the model reported a fix its diff does not deliver. **`partial`** = addressed
-  but not closed. Neither is on the grid; both live in the row's detail and in the glossary.
+  but not closed. Neither is on the grid and neither is behind a click: both stay in the data, are
+  defined on `/method`, are named in the key under the table, and are in the chart tooltip.
 - **`cost_kind`** is a vocabulary — `bill` (real invoice/credits delta), `list` (token estimate at
   published rates), `floor` (reconstructed lower bound), `free`. A dollar figure tagged `list` or
-  `floor` is **not** a bill and the UI must never imply otherwise.
+  `floor` is **not** a bill and the UI must never imply otherwise. It says so ONCE, in prose, in the
+  key under the table and in the PNG footer: `costSentence()` groups the rows on screen by kind and
+  names the exceptions ("Costs are list-rate estimates unless noted: …"). Never put the tag back
+  under every figure — the same word on twenty-five rows is noise, not honesty.
 - **`effort_status`** is a vocabulary — `verified_ceiling`, `verified`, `first_party`, `clamped`
   (the CLI silently replaced the requested tier), `inert_default` (the gateway's effort parameter
-  provably does nothing). Never print the raw enum; render the label and link its definition.
-- **`wall_note`** marks the rows whose wall clock is bent: three runs took their two repo legs
+  provably does nothing). It is a machine key and it does NOT print. The board shows the tier badge
+  (MAX / XHIGH / HIGH / DEFAULT), linked at its definition; what DEFAULT means is one sentence in
+  the key. The single inline exception is `clamped`, which wears "ran lower" on its own row because
+  it is a published correction. The old two-word labels ("verified ceiling", "inert default") were
+  removed on 2026-08-25: they made a reader hold two facts at once and came back as "inert
+  ceiling".
+- **`wall_note`** is marked on the score-vs-time map (broken ring + `*` on the label), not on the
+  table, because that is where a bent minute figure misleads; in the table it is the cell's `title`.
+  It marks the rows whose wall clock is bent: three runs took their two repo legs
   concurrently (contention pushes those figures **high**, not low), and one excludes a 35-minute
   harness stall. Wall clock is otherwise one consistent measure: repo 1 + repo 2 agent time,
   dependency install excluded.
 - **`superseded` / `caveat` / `note`** attach to a row when present; surface them, don't drop them.
+  They ride on the cell as a plain `title` — no marker, no disclosure row, no layout cost.
 
 The honesty apparatus *is* the product. Do not quietly simplify it away to save space.
 

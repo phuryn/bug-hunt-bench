@@ -27,7 +27,7 @@ server and it runs.
 │       ├── main.js            the board: boot, state, URL sync, section rendering
 │       ├── method.js          the method page: renders method/caveats/glossary
 │       ├── format.js          vocabularies, formatters, column model, DOM helpers
-│       ├── table.js           leaderboard table: colgroup, sortable head, rows, row detail
+│       ├── table.js           leaderboard table: colgroup, sortable head, rows
 │       ├── scatter.js         both maps — one layout function, two axis specs
 │       ├── selector.js        run picker (native checkboxes, grouped by vendor)
 │       └── export-png.js      canvas renderer for "Export this view (PNG)"
@@ -103,23 +103,26 @@ maintenance burden.
 ## Reading the board (the rules the UI enforces)
 
 - **`fixed` out of 105 is the score.** It counts planted bugs only, verified blind.
-- **The score BAR is drawn against 100; the score is still out of 105.** 100 is a
-  reference length, not a denominator — no run reaches it either, and every value
-  is printed in full (`42/105`) at the end of its own bar. A 105-unit track puts
-  the whole board between 8% and 40% and flattens the differences that matter; the
-  card the site is modelled on uses the same trick. The sentence that says so lives
-  once, as `SCORE_BAR_NOTE` in `format.js`, and is rendered both in the key under
-  the table and in the footer of the PNG export, because an exported card travels
-  on its own. Change it there and both move.
+- **Every bar is scaled to the longest figure among the rows on screen; the score
+  is still out of 105.** The leading run fills its column and every other bar is
+  read as a share of the leader, which is the comparison a reader is actually
+  making. A 105-unit track put the whole board between 8% and 40% and flattened
+  the differences that matter; a fixed 100-unit reference was better and still
+  spent a third of the column on nothing. Filtering re-lengthens the survivors on
+  purpose — the scale describes what is displayed — and the printed value never
+  moves: `42/105` sits at the end of its own bar either way. The sentence that
+  says so lives once, as `BAR_SCALE_NOTE` in `format.js`, and is rendered both in
+  the key under the table and in the footer of the PNG export, because an
+  exported card travels on its own. Change it there and both move.
 - **Four bars, four scales, one rhythm.** Bar from the left edge of its column,
   value printed at its end, as on the card. The score bar is the only one that
-  carries a run's colour; extras is a grey hatch at half height, scaled to the
-  biggest extras count; wall clock and cost are flat neutral grey, each scaled to
-  the highest figure on the board. Every scale comes from the whole board, never
-  from the current selection, so filtering never silently rescales the survivors.
-  A missing figure and a genuine zero both draw no bar at all — every other bar
-  has a 2px floor so the cheapest run still shows a tick, and that floor must not
-  invent a mark for a run worth nothing.
+  carries a run's colour; extras is a grey hatch at half height, scaled against
+  extras and never against the score; wall clock and cost are flat neutral grey.
+  All four scales come from `barScales()` over the rows being drawn, so the table
+  and the PNG export cannot disagree about the geometry. A missing figure and a
+  genuine zero both draw no bar at all — every other bar has a 2px floor so the
+  cheapest run still shows a tick, and that floor must not invent a mark for a
+  run worth nothing.
 - **The 105-tick rule is the one place a colour means something.** Every other
   colour on the site identifies a run; these two identify a *state*. A bug fixed
   by at least one model is a **hollow green** tick at two-thirds height; a bug
@@ -135,36 +138,56 @@ maintenance burden.
   4.7:1 and 4.8:1 on `#101419`). Both clear the ΔE ≥ 8 gate; the second channel is
   there because clearing it is not the same as a dichromat reading it at a glance.
   Print re-declares the light pair, so paper never gets the dark steps.
-- **Partial and claimed-only are not columns.** Most rows are zero on both, and
-  two columns of mostly zeroes bought a reader nothing on a grid this wide. They
-  are one click away instead: **every** row has a `†` detail that prints them
-  first, each label linked to its own definition. "Claimed only: 0" is a real
-  signal about a model — it just is not worth a column. They are still in the
-  glossary, still in the chart tooltip, and still printed on paper, where every
-  detail row is expanded because nobody can click one.
-- **A wall-clock figure that carries a note says so where the figure is.** Three
-  runs have a `wall_note` in the data. Those rows get a second `†` on the
-  wall-clock cell — the same disclosure the model name opens, kept in step — and
-  on the score-vs-time map they get a broken ring and a dagger on the label.
-  Neither mark is a colour, so both survive the run colour underneath, a
+- **Six columns: model, fixed, extras, wall clock, cost, date.** What is *not* on
+  the grid is a decision. Partial and claimed-only are zero on most rows and were
+  never worth a column of their own; the repo 1 / repo 2 split is how the 105 bugs
+  are distributed, not a ranking, and it is not dashboard material. All three stay
+  in the data file, are defined on `/method`, and are named in the key under the
+  table. Partial and claimed-only are also still in the chart tooltip.
+- **A cell shows the number, not what kind of number it is.** The cost tag under
+  every dollar figure and the effort status beside every model name were the same
+  few words repeated down a column, and a word repeated twenty-five times is
+  something a reader steps over on the way to the figures. Both moved into the key
+  under the table, where `costSentence()` names the exceptions *for the rows on
+  screen* — "Costs are list-rate estimates unless noted: … Grok 4.6 is a
+  reconstructed lower bound … Ox Alpha was free" — built from the data, so a new
+  arm or a different selection rewrites the sentence rather than dating it. The
+  same sentence is baked into the PNG footer.
+- **There is no row detail and no `†`.** A caveat, a note or a supersession rides
+  on the model cell as a plain `title`: still there for anyone who wants it, no
+  marker, no layout cost, and nothing to expand. The wall-clock note rides on the
+  wall-clock cell the same way.
+- **A bent wall-clock figure is marked where it would mislead: on the map.**
+  Three runs have a `wall_note` in the data. On the score-vs-time map they get a
+  broken ring and a `*` on the label (`NOTE_MARK` in `format.js` — one glyph,
+  defined once), because that is where a reader compares minutes along an axis. In
+  the table the sentence is the cell's `title` and nothing is drawn: the grid stays
+  a grid. Neither mark is a colour, so both survive the run colour underneath, a
   colourblind reader and a black-and-white print.
 - **Extras are never added to the score, anywhere.** They live in a column group
   headed *Tracked, not scored*, drawn as a hatched grey ghost bar at half the
-  height of the score bar and scaled against the highest extras count on the
-  board — never against 105. `method[3]` is pulled out as a pull quote directly
+  height of the score bar and scaled against the highest extras count on screen —
+  never against the score. `method[3]` is pulled out as a pull quote directly
   under the table. The card puts extras in the *same* bar as the score, as a faded
   second segment; the site deliberately does not, because on a page where anyone
   can sort by extras that reads as one quantity.
-- **A `$` figure is not automatically a bill.** Every cost carries its own tag —
-  bill, list rate, floor, free — defined in the key under the table and in the
-  glossary. The tag is printed directly under its own figure at the end of the
-  cost bar, in the table and in the export both: a bar makes two lengths look
-  comparable, and a bill and a reconstructed floor are not.
-- **Effort tiers print as words**, never as raw enum values (`inert_default`
-  renders as "inert default", with the glossary definition on hover).
+- **A `$` figure is not automatically a bill.** `cost_kind` is still on every row
+  in the data and still governs what the reader is told — but it is told once, in
+  the generated cost sentence in the key and in the PNG footer, instead of under
+  all twenty-five figures. The words are plain: *billed*, *list rate*, *lower
+  bound*, *free*, each linked at its own definition.
+- **The effort badge is the tier, and only the tier** — MAX / XHIGH / HIGH /
+  DEFAULT — linked at its definition, which reads in plain English straight from
+  the data file. The old two-word statuses ("first-party tier", "verified
+  ceiling", "inert default") asked a reader to hold two independent facts at once
+  and came back out scrambled as "inert ceiling", so they are off the grid: what
+  DEFAULT means is one sentence in the key. **One exception stays inline** — a
+  `clamped` run wears "ran lower" beside its badge, because that is a published
+  correction on a single row, and a key cannot carry a correction for a row nobody
+  scrolls to.
 - **Superseded runs stay reachable but out of the default view.** They are
   excluded from the `featured` preset, tagged in the picker and in the table, and
-  carry their explanation in an expandable annotation row (`†`).
+  carry their explanation in the row's `title`.
 
 ## Linkable state
 
@@ -323,19 +346,20 @@ different licence is intended.
 - One `h1` per page, real headings, a real `<table>` with `<caption>`,
   `<th scope>` and explicit ARIA roles (kept so the mobile card layout still reads
   as a table).
-- A row detail is a real disclosure: `aria-expanded` on the trigger,
-  `aria-controls` at the detail cell. Two triggers can open the same one (the
-  model name and a flagged wall-clock figure) and they are kept in step, because a
-  reader who opened it from one and sees the other still claiming "collapsed" has
-  been told something untrue.
+- The effort badge is a link at its own definition, with an explicit
+  `aria-label`: its tier and (on the clamped row) its two words are separate
+  elements with no whitespace between them, which a screen reader would otherwise
+  run together into one word.
 - Every sortable header is a button; `aria-sort` marks the active column and
   focus returns to that button after the header re-renders.
 - Chart points are focusable with the same readout on focus as on hover, and the
   leaderboard is the chart's table-view twin.
 - `prefers-reduced-motion` is respected. The print stylesheet drops the controls,
   the tabs and the theme toggle, forces the light tokens on both pages (including
-  the tick rule's own pair), and expands every row detail — nobody can click one
-  on paper, and partial and claimed-only live there now.
+  the tick rule's own pair) and tightens the outer gutters so the date column does
+  not clip on paper. Nothing on the board is behind a click any more, so paper
+  needs no expansion rule: the key prints with the table, and the key is where the
+  cost kinds and the effort badge are explained.
 - Colour is never the only channel: every swatch sits beside the run's name, in
   the table, the picker, the chart labels and the chart legend, and every bar
   prints its own value. Several of the per-model colours are close pairs (two

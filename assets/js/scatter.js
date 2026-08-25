@@ -12,9 +12,9 @@
    ones at the slow end, for no gain. */
 
 import {
-  pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, svgEl, el, measureText,
-} from './format.js?v=5edf3dde1d';
-import { runColor } from './theme.js?v=5edf3dde1d';
+  pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText,
+} from './format.js?v=1f04c8a829';
+import { runColor } from './theme.js?v=1f04c8a829';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -155,7 +155,7 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
     cx: x(val(r)),
     cy: y(r.fixed),
     flagged: Boolean(A.flag && r[A.flag]),
-    label: (labels.get(r.id) || r.model) + (A.flag && r[A.flag] ? ' †' : ''),
+    label: (labels.get(r.id) || r.model) + (A.flag && r[A.flag] ? ` ${NOTE_MARK}` : ''),
   })).sort((a, b) => b.score - a.score);
 
   // Greedy label placement: first come, first served, in score order.
@@ -230,7 +230,7 @@ function tooltipContent(p, axis) {
   frag.appendChild(tipRow('Extras, not scored', String(r.extras)));
   frag.appendChild(tipRow('Claimed only', String(r.claimed_only)));
   frag.appendChild(tipRow('Run date', fmtDate(r.date)));
-  if (r.wall_note) frag.appendChild(el('div', { class: 'tip-note', text: `† ${r.wall_note}` }));
+  if (r.wall_note) frag.appendChild(el('div', { class: 'tip-note', text: `${NOTE_MARK} ${r.wall_note}` }));
   return frag;
 }
 
@@ -334,9 +334,12 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
     g.appendChild(svgEl('circle', { class: 'pt-halo', cx: p.cx, cy: p.cy, r: 9 }));
     g.appendChild(svgEl('circle', { class: 'pt-ring', cx: p.cx, cy: p.cy, r: 7 }));
     g.appendChild(svgEl('circle', { cx: p.cx, cy: p.cy, r: 5, fill: p.color }));
-    /* A figure that carries its own note wears a broken ring, and its label wears
-       the same dagger the table uses. Neither is a colour, so both survive the
-       run colour underneath, a colourblind reader and a black-and-white print. */
+    /* A figure that carries its own note wears a broken ring, and its label
+       wears a star. The table carries no marker at all now, so this pair is the
+       only place a bent figure is flagged - which is the place it matters, since
+       a reader compares minutes along the axis. Neither mark is a colour, so
+       both survive the run colour underneath, a colourblind reader and a
+       black-and-white print. */
     if (p.flagged) {
       g.appendChild(svgEl('circle', { class: 'pt-flag', cx: p.cx, cy: p.cy, r: 10.5 }));
     }
