@@ -345,3 +345,12 @@ different licence is intended.
   no re-ordering can fix that — which is why identity is carried by the labels
   and the table view, and why the dark variants above are held to parity with
   light rather than to a floor the source palette never met.
+
+## Changing CSS or JS
+
+Run `python stamp-assets.py` before committing. It appends a content hash to every local
+CSS/JS reference in the HTML, so a changed file becomes a changed URL. Without it a returning
+visitor gets the new HTML with a cached copy of the old script, and the board hangs on its
+loading state — that happened live on 2026-08-25. The script is idempotent; run it whenever
+`assets/` changes.
+

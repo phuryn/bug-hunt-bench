@@ -6,13 +6,16 @@
   Cross-Origin-Opener-Policy: same-origin
   Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'none'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; manifest-src 'self'
 
-# No content hashing (there is no build step), so assets are revalidated daily
-# rather than marked immutable. Netlify serves ETags, so a revalidation is cheap.
+# Asset URLs carry a content hash (?v=...) stamped by stamp-assets.py, so a changed
+# file is a changed URL and a long cache is safe. The bare paths are still revalidated
+# often, because anything that reaches them missed the stamp - and serving a stale
+# script under a stable name is what breaks a no-build-step site (hit live 2026-08-25:
+# new HTML + a browser holding day-old JS hung the page on its loading state).
 /assets/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+  Cache-Control: public, max-age=300, must-revalidate
 
 /data/*
-  Cache-Control: public, max-age=600, stale-while-revalidate=3600
+  Cache-Control: public, max-age=60, must-revalidate
 
 /index.html
   Cache-Control: public, max-age=0, must-revalidate
