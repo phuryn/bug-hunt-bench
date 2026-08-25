@@ -79,6 +79,11 @@ export function scatterLayout(runs, allRuns, width, height) {
   for (let v = 0; v <= yTop; v += yStep) yTicks.push({ v, y: y(v) });
 
   const plotted = runs.filter((r) => r.cost_usd !== null && r.cost_usd !== undefined && r.cost_usd > 0);
+  // Two different reasons a run has no place on this axis, and they are not the same claim:
+  // a run with NO cost figure, and a run that genuinely cost ZERO (a free model) - $0 is a
+  // known, meaningful number that a logarithmic axis simply cannot place. Say which.
+  const freeRuns = runs.filter((r) => r.cost_usd === 0);
+  const unpricedRuns = runs.filter((r) => r.cost_usd === null || r.cost_usd === undefined);
   const skipped = runs.length - plotted.length;
   const labels = pointLabels(plotted);
 
@@ -129,7 +134,7 @@ export function scatterLayout(runs, allRuns, width, height) {
 
   return {
     width, height, m, plotW, plotH, compact,
-    x, y, xTicks, yTicks, yTop, points, frontier, frontierPath, skipped,
+    x, y, xTicks, yTicks, yTop, points, frontier, frontierPath, skipped, freeRuns, unpricedRuns,
     ceilingY: yTop === CEILING ? y(CEILING) : null, baseY: y(0),
   };
 }
@@ -276,10 +281,18 @@ export function renderScatter(host, runs, allRuns) {
   host.appendChild(tip);
 
   if (L.skipped > 0) {
-    host.appendChild(el('p', {
-      class: 'chart__note',
-      text: `${L.skipped} selected run${L.skipped === 1 ? ' carries' : 's carry'} no cost figure and cannot be placed on a cost axis. ${L.skipped === 1 ? 'It is' : 'They are'} in the table.`,
-    }));
+    const parts = [];
+    const free = L.freeRuns || [];
+    const unpriced = L.unpricedRuns || [];
+    if (free.length) {
+      const names = free.map((r) => r.model).join(', ');
+      parts.push(`${names} cost nothing to run, and zero has no place on a logarithmic cost axis.`);
+    }
+    if (unpriced.length) {
+      parts.push(`${unpriced.length} selected run${unpriced.length === 1 ? ' carries' : 's carry'} no cost figure.`);
+    }
+    parts.push(`${L.skipped === 1 ? 'It is' : 'They are'} in the table.`);
+    host.appendChild(el('p', { class: 'chart__note', text: parts.join(' ') }));
   }
 
   return L;
