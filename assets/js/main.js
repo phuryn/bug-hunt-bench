@@ -9,12 +9,12 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el,
-} from './format.js?v=1f04c8a829';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=1f04c8a829';
-import { renderScatter, AXES } from './scatter.js?v=1f04c8a829';
-import { renderPicker } from './selector.js?v=1f04c8a829';
-import { exportView } from './export-png.js?v=1f04c8a829';
-import { initTheme, hasAdjustedColors } from './theme.js?v=1f04c8a829';
+} from './format.js?v=ac7c2c0461';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=ac7c2c0461';
+import { renderScatter, AXES } from './scatter.js?v=ac7c2c0461';
+import { renderPicker } from './selector.js?v=ac7c2c0461';
+import { exportView } from './export-png.js?v=ac7c2c0461';
+import { initTheme, hasAdjustedColors } from './theme.js?v=ac7c2c0461';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -157,8 +157,9 @@ function renderHero() {
 
      Two states, and each carries three channels, because red-green is exactly
      the pair that fails for a deuteranope and on a mono printer: a bug fixed by
-     at least one model is a HOLLOW GREEN tick at two-thirds height; a bug
-     nothing has ever fixed is a SOLID RED tick at full height. Strip the colour
+     at least one model is a SOLID GREEN tick; a bug nothing has ever fixed is a
+     HOLLOW RED tick. Equal height, so the rule reads as one measure of 105 and
+     the difference is fill, not size (Pawel, 2026-08-25). Strip the colour
      and fill plus height still separate them; strip everything and the caption
      still names both. The survivors are the story, so they get the heavy mark. */
   const plot = $('tickrule-plot');
@@ -175,14 +176,14 @@ function renderHero() {
     ' planted bugs. ',
     el('span', { class: 'tickkey tickkey--fixed' }, [
       el('i', { class: 'tickkey__mark', 'aria-hidden': 'true' }),
-      'Hollow green — fixed by at least one model, in any run to date',
+      'Solid green — fixed by at least one model, in any run to date',
     ]),
     ' (',
     el('b', { text: String(survivorsFrom) }),
     '). ',
     el('span', { class: 'tickkey tickkey--survivor' }, [
       el('i', { class: 'tickkey__mark', 'aria-hidden': 'true' }),
-      'Solid red — never fixed, by anything',
+      'Hollow red — never fixed, by anything',
     ]),
     ' (',
     el('b', { text: String(m.survivors) }),

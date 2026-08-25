@@ -13,8 +13,8 @@
 
 import {
   pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText,
-} from './format.js?v=1f04c8a829';
-import { runColor } from './theme.js?v=1f04c8a829';
+} from './format.js?v=ac7c2c0461';
+import { runColor } from './theme.js?v=ac7c2c0461';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -227,7 +227,7 @@ function tooltipContent(p, axis) {
     frag.appendChild(cost());
     frag.appendChild(wall());
   }
-  frag.appendChild(tipRow('Extras, not scored', String(r.extras)));
+  frag.appendChild(tipRow('Unplanted, not scored', String(r.extras)));
   frag.appendChild(tipRow('Claimed only', String(r.claimed_only)));
   frag.appendChild(tipRow('Run date', fmtDate(r.date)));
   if (r.wall_note) frag.appendChild(el('div', { class: 'tip-note', text: `${NOTE_MARK} ${r.wall_note}` }));

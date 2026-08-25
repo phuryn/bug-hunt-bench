@@ -198,6 +198,9 @@ export function glossaryTerm(key) {
     const k = key.slice(7);
     return 'Effort: ' + (EFFORT_TERM[k] || k.replace(/_/g, ' '));
   }
+  // the board's column heading and the glossary term must be the same word, or a
+  // reader following a definition link lands on vocabulary the table never used
+  if (key === 'extras') return 'Unplanted';
   const words = key.replace(/_/g, ' ');
   return words.charAt(0).toUpperCase() + words.slice(1);
 }
@@ -248,12 +251,11 @@ export function fmtInt(v) {
     separately because the canvas has no line wrapping and the model column needs
     more room there than it does on screen. */
 export const COLUMNS = [
-  { key: 'model', label: 'Model / run', group: 'run', kind: 'text', align: 'left', pct: 24, w: 300 },
-  { key: 'fixed', label: 'Fixed', unit: '/105', group: 'score', kind: 'score', align: 'left', pct: 26, w: 300 },
-  { key: 'extras', label: 'Extras', group: 'not', kind: 'extras', align: 'left', pct: 11, w: 130 },
-  { key: 'wall_min', label: 'Wall clock', unit: 'min', group: 'meta', kind: 'wall', align: 'left', pct: 14.5, w: 170 },
-  { key: 'cost_usd', label: 'Cost', unit: 'usd', group: 'meta', kind: 'cost', align: 'left', pct: 15.5, w: 190 },
-  { key: 'date', label: 'Date', group: 'meta', kind: 'date', pct: 9, w: 100 },
+  { key: 'model', label: 'Model / run', group: 'run', kind: 'text', align: 'left', pct: 26, w: 320 },
+  { key: 'fixed', label: 'Fixed', unit: '/105', group: 'score', kind: 'score', align: 'left', pct: 29, w: 340 },
+  { key: 'extras', label: 'Unplanted', group: 'not', kind: 'extras', align: 'left', pct: 12, w: 140 },
+  { key: 'wall_min', label: 'Wall clock', unit: 'min', group: 'meta', kind: 'wall', align: 'left', pct: 16, w: 190 },
+  { key: 'cost_usd', label: 'Cost', unit: 'usd', group: 'meta', kind: 'cost', align: 'left', pct: 17, w: 200 },
 ];
 
 /* Six columns, and the ones that are NOT here are a decision, not an oversight.
@@ -267,7 +269,7 @@ export const COLUMNS = [
 export const GROUPS = [
   { id: 'run', label: '', cls: 'g-run' },
   { id: 'score', label: 'Score — planted bugs only', cls: 'g-score', def: 'fixed' },
-  { id: 'not', label: 'Tracked, not scored', cls: 'g-not', def: 'extras' },
+  { id: 'not', label: 'Not scored', cls: 'g-not', def: 'extras' },
   { id: 'meta', label: 'Run', cls: 'g-meta' },
 ];
 

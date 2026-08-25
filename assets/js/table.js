@@ -24,17 +24,16 @@
    costs no layout and needs no marker. */
 
 import {
-  COLUMNS, GROUPS, TOTALS, fmtCost, fmtWall, fmtInt, fmtDate,
+  COLUMNS, GROUPS, TOTALS, fmtCost, fmtWall, fmtInt,
   barRatio, barScales, effortSuffix, effortDefKey, defHref, el, svgEl, compareRuns,
-} from './format.js?v=1f04c8a829';
-import { runColor } from './theme.js?v=1f04c8a829';
+} from './format.js?v=ac7c2c0461';
+import { runColor } from './theme.js?v=ac7c2c0461';
 
 const MOBILE_LABEL = {
   fixed: 'Fixed of 105',
-  extras: 'Extras (not scored)',
+  extras: 'Unplanted (not scored)',
   wall_min: 'Wall clock (min)',
   cost_usd: 'Cost',
-  date: 'Date',
 };
 
 function arrow(dir) {
@@ -250,10 +249,14 @@ export function renderBody(bodyEl, runs, state, glossary) {
     tr.appendChild(extrasCell(run, extrasMax));
     tr.appendChild(wallCell(run, wallMax));
     tr.appendChild(costCell(run, costMax));
-    tr.appendChild(el('td', { role: 'cell', 'data-label': MOBILE_LABEL.date }, [
-      el('time', { datetime: run.date, text: fmtDate(run.date) }),
-    ]));
 
+    // The head is generated from COLUMNS but the body is appended by hand, so the two
+    // can drift: dropping the date column from COLUMNS left this row one cell longer
+    // than its header (2026-08-25). Fail loudly in that case rather than shipping a
+    // table whose columns do not line up with their headings.
+    if (tr.children.length !== COLUMNS.length) {
+      throw new Error(`row has ${tr.children.length} cells, COLUMNS has ${COLUMNS.length}`);
+    }
     bodyEl.appendChild(tr);
   });
 

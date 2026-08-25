@@ -12,9 +12,9 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
-} from './format.js?v=1f04c8a829';
-import { scatterLayout, AXES } from './scatter.js?v=1f04c8a829';
-import { runColor, activeTheme } from './theme.js?v=1f04c8a829';
+} from './format.js?v=ac7c2c0461';
+import { scatterLayout, AXES } from './scatter.js?v=ac7c2c0461';
+import { runColor, activeTheme } from './theme.js?v=ac7c2c0461';
 
 const SCALE = 2;
 const PAD = 32;
@@ -297,8 +297,6 @@ function drawTable(ctx, T, runs, state, w) {
         // one generated sentence in the footer, as it is in the key on the page
         const end = drawBar(c, top + 13, barRatio(run.cost_usd, costMax), 13, T.bar, 56);
         text(ctx, fmtCost(run.cost_usd), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
-      } else if (c.key === 'date') {
-        text(ctx, fmtDate(run.date), rightX, baseline, `11.5px ${SANS}`, T.muted, 'right');
       } else {
         const v = run[c.key];
         text(ctx, fmtInt(v), rightX, baseline, `12px ${SANS}`, v === 0 ? T.neutral : T.ink2, 'right');
@@ -476,7 +474,7 @@ export async function exportView({
     isChart
       ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${axis.id === 'cost' ? 'Cost on a logarithmic axis' : 'Wall clock on a linear axis'}; the score axis stops above the board's best run, which is out of 105.`
       : `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Sorted by ${sortLabel}.`,
-    'Score = planted bugs fixed, verified blind against a withheld answer key. Extras are real defects that were never planted; they are tracked, never added to the score.',
+    'Score = planted bugs fixed, verified blind against a withheld answer key. Unplanted defects are real, but they are counted separately and never added to the score.',
     // the same sentence the page carries, because an exported PNG travels alone
     isChart ? null : BAR_SCALE_NOTE,
     costLine || null,
@@ -511,7 +509,7 @@ export async function exportView({
   ctx.strokeRect(0.5, 0.5, w - 1, h - 1);
 
   const title = isChart ? axis.chartTitle : 'Leaderboard';
-  const subtitle = 'Planted bugs only — extras are never added to the score.';
+  const subtitle = 'Planted bugs only — unplanted fixes are never added to the score.';
   ctx.__y = drawHeader(ctx, T, w, title, subtitle, { updatedLong: fmtDate(meta.updated) }, siteUrl);
 
   if (isChart) drawScatter(ctx, T, runs, allRuns, w, axis, defLines);
