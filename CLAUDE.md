@@ -1,0 +1,111 @@
+# CLAUDE.md — Bug Hunt Bench website
+
+The public site for Bug Hunt Bench: 105 real bugs planted in two production repos, frontier coding
+models find and fix what they can, graded blind. Live at **https://bughunt.productcompass.pm**
+(Netlify, custom domain; Netlify site `bughuntbench`). Run by Pawel Huryn.
+
+This file is for any agent working in this repo. Read it before touching anything.
+
+## The one rule that matters
+
+**Never invent, adjust, re-derive or hand-edit a number.** Every figure on this site comes from
+`data/benchmark.json`, and that file is **generated** — by `tools/build_bench_site_data.py` in the
+private `Editor` repo, from the public scoreboards at
+[phuryn/experiments/bug-hunt-bench](https://github.com/phuryn/experiments/tree/main/bug-hunt-bench).
+
+- Do not edit `data/benchmark.json`. A hand edit will be silently overwritten on the next
+  regeneration, and worse, it breaks the guarantee the site is built on.
+- If the site needs a field the data lacks, say so — the fix belongs in the generator, upstream.
+- These numbers are published and load-bearing. Someone's model ranking is on them.
+
+## What this site is not
+
+- **No build step, no framework, no npm, no `node_modules`.** Plain HTML, CSS and vanilla ES
+  modules. A contributor can open `index.html` and a static host can serve the folder as-is.
+- **No database, no backend, no auth, no analytics, no cookies.**
+- One dependency-free exception: `stamp-assets.py`, which runs at deploy (see below).
+
+## Layout
+
+```
+index.html          the board: tick rule, run selector, leaderboard, two charts, PNG export
+method.html         served at /method: method, caveats, definitions (same data, no duplication)
+data/benchmark.json GENERATED upstream - read only
+assets/css/site.css all styles, both themes, responsive + print
+assets/js/
+  theme-boot.js     render-blocking, stamps data-theme before first paint (no flash)
+  theme.js          theme state, toggle, dark-mode colour rule
+  main.js           boot, state, URL sync, hero, selector wiring
+  method.js         renders method.html from the same JSON
+  format.js         vocabularies, formatters, column model, DOM helpers
+  table.js          leaderboard: colgroup, sortable head, rows, detail rows
+  scatter.js        both charts (score vs cost, score vs time) from one renderer
+  selector.js       run picker
+  export-png.js     canvas renderer for "Export this view"
+stamp-assets.py     content-hashes CSS/JS URLs; runs on every Netlify deploy
+netlify.toml  _headers  robots.txt  sitemap.xml  og-image.png
+```
+
+## Hard constraints
+
+**CSP has no `'unsafe-inline'`.** `_headers` sets a real Content-Security-Policy. That means:
+no inline `style="..."` attributes, no `<style>` blocks, no inline `<script>`. Widths and colours
+are applied via CSSOM (`el.style.setProperty(...)` on elements is fine; a `style` attribute in the
+HTML source is not). If you add anything, replay `_headers` against a local server and confirm zero
+violations before claiming it works.
+
+**Caching and asset stamping.** Asset filenames never change, so a stable URL plus a long cache
+serves a returning visitor new HTML with an old script — the board then hangs on its loading state.
+This happened live on 2026-08-25. Two defences, keep both:
+1. `stamp-assets.py` appends a content hash (`site.css?v=8b7d92…`) to every local CSS/JS reference.
+   It runs as the Netlify **build command**, so it cannot be forgotten. It is idempotent, and it
+   exits non-zero if the HTML references a file that does not exist — a broken reference fails the
+   deploy instead of shipping.
+2. `_headers` keeps `/assets/*` at `max-age=300, must-revalidate` and `/data/*` at 60s, so anything
+   that ever slips past the stamp self-heals in minutes.
+
+Run `python stamp-assets.py` locally too if you want your working copy to match what deploys.
+
+## What the numbers mean (get this right in any copy you write)
+
+- **`fixed` (out of 105) is the score.** Planted bugs only, verified blind against a withheld answer
+  key. Repo 1 has 45, repo 2 has 60.
+- **`extras` are never added to the score, anywhere.** They are real defects that were never
+  planted. Some models report large numbers of unrelated issues; a board that adds those rewards
+  noise. Keep them visually separate and clearly labelled *Tracked, not scored*.
+- **`claimed_only`** = the model reported a fix its diff does not deliver. **`partial`** = addressed
+  but not closed. Neither is on the grid; both live in the row's detail and in the glossary.
+- **`cost_kind`** is a vocabulary — `bill` (real invoice/credits delta), `list` (token estimate at
+  published rates), `floor` (reconstructed lower bound), `free`. A dollar figure tagged `list` or
+  `floor` is **not** a bill and the UI must never imply otherwise.
+- **`effort_status`** is a vocabulary — `verified_ceiling`, `verified`, `first_party`, `clamped`
+  (the CLI silently replaced the requested tier), `inert_default` (the gateway's effort parameter
+  provably does nothing). Never print the raw enum; render the label and link its definition.
+- **`wall_note`** marks the rows whose wall clock is bent: three runs took their two repo legs
+  concurrently (contention pushes those figures **high**, not low), and one excludes a 35-minute
+  harness stall. Wall clock is otherwise one consistent measure: repo 1 + repo 2 agent time,
+  dependency install excluded.
+- **`superseded` / `caveat` / `note`** attach to a row when present; surface them, don't drop them.
+
+The honesty apparatus *is* the product. Do not quietly simplify it away to save space.
+
+## Working here
+
+- **Verify visually, don't assume.** Serve locally (`python -m http.server`), drive headless Chrome
+  (puppeteer lives in the `Editor` repo's `node_modules`; load it with `createRequire` — do not
+  install anything here), screenshot **both themes** for the board, both charts and a mobile
+  viewport, then **look at the images**. Check the console for errors.
+- Re-check after any change to columns or data shape: sorting every column both directions,
+  rows with null `cost_usd`/`wall_min`, empty/single/all selection, deep-linked URL state, the PNG
+  export in both themes, the print stylesheet, and a CSP replay.
+- Commit locally with clear messages. Pushing is fine; the repo deploys to production on push to
+  `main`, so a broken push is a broken site.
+
+## Conventions
+
+- Two type registers: EB Garamond for prose, Inter for data. No emoji. No decorative gradients.
+- Per-model colours come from the data and are tuned for the light theme. Do not change them here.
+  Dark mode lifts only the hues that fall below contrast, by rule, in `theme.js`.
+- Colour is never the only channel: swatch beside every model name, value at the end of every bar,
+  fill/height differences on the tick rule.
+- Editorial and quiet: a research leaderboard, not a SaaS landing page.

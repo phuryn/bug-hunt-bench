@@ -1,7 +1,13 @@
 # Static site, no build step. Netlify serves the repository root as-is.
 [build]
   publish = "."
-  command = ""
+  # Stamping runs HERE, on every deploy, on purpose. The site has no bundler, so asset
+  # filenames never change; a long cache plus a stable name means a returning visitor can
+  # get new HTML with an old script, and the board hangs on its loading state (hit live
+  # 2026-08-25). Running it at deploy makes correctness structural rather than a step
+  # someone has to remember. It is idempotent, and it exits non-zero when the HTML points
+  # at an asset that does not exist - a broken reference fails the deploy instead of shipping.
+  command = "python3 stamp-assets.py"
 
 [build.processing]
   skip_processing = true

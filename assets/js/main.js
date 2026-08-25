@@ -8,12 +8,12 @@
 
 import {
   COLUMNS, SCORE_BAR_NOTE, caveatHref, defHref, methodHref, slugify, fmtDate, el,
-} from './format.js';
-import { renderHead, renderBody, renderColgroup } from './table.js';
-import { renderScatter, AXES } from './scatter.js';
-import { renderPicker } from './selector.js';
-import { exportView } from './export-png.js';
-import { initTheme, hasAdjustedColors } from './theme.js';
+} from './format.js?v=5edf3dde1d';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=5edf3dde1d';
+import { renderScatter, AXES } from './scatter.js?v=5edf3dde1d';
+import { renderPicker } from './selector.js?v=5edf3dde1d';
+import { exportView } from './export-png.js?v=5edf3dde1d';
+import { initTheme, hasAdjustedColors } from './theme.js?v=5edf3dde1d';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },

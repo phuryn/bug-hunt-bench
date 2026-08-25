@@ -8,8 +8,8 @@
    straight at them: a reader who clicks "cost tag" under the table should land
    on that definition, not at the top of this page. */
 
-import { glossaryTerm, fmtDate, el } from './format.js';
-import { initTheme } from './theme.js';
+import { glossaryTerm, fmtDate, el } from './format.js?v=5edf3dde1d';
+import { initTheme } from './theme.js?v=5edf3dde1d';
 
 const $ = (id) => document.getElementById(id);
 
