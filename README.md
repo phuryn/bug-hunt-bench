@@ -144,7 +144,7 @@ runs and hit **Export this view (PNG)** — then crop to 1200×630.
 
 ## Data licence
 
-The JSON-LD `Dataset` block declares **CC BY 4.0**. That was the site's choice,
+The JSON-LD `Dataset` block declares **MIT - matching the source data in phuryn/experiments ("MIT. Use anything; a link back is appreciated.").
 not something carried in the data file — change or remove it in `index.html` if a
 different licence is intended.
 
