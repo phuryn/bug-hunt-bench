@@ -37,8 +37,8 @@
   },
   "caveats": [
     "One round per model per repo. Same-setting variance is real and measured: three Grok 4.5 runs on identical settings scored 16, 13 and 17.",
-    "Wall clock is the same measure on every row: repo 1 plus repo 2 agent time, with dependency install and health checks excluded. Two things bend it, and both are marked on the row. Three runs took their two repo legs concurrently - the sum is still like-for-like, but two agents sharing one machine and one API key contend, so those figures can run high rather than low. And one figure is adjusted: the retired-Gemini-CLI run excludes a 35-minute harness stall, the only number here that is not what the harness measured.",
-    "Cost is not one kind of number. Each row is tagged: an actual bill, a list-rate estimate, a reconstructed floor, or free.",
+    "Wall clock is the same measure on every row: repo 1 plus repo 2 agent time, with dependency install and health checks excluded. Two things bend it, and both are marked on the score-and-time map. Three runs took their two repo legs concurrently - the sum is still like-for-like, but two agents sharing one machine and one API key contend, so those figures can run high rather than low. And one figure is adjusted: the retired-Gemini-CLI run excludes a 35-minute harness stall, the only number here that is not what the harness measured.",
+    "Cost is not one kind of number: some figures are an actual bill, some are a token-count estimate at published list rates, one CLI only allows a reconstructed lower bound, and one run was free. The key under the board names which is which - they are not interchangeable, and none of them is a quote for what you would pay.",
     "50 of the 105 bugs have survived every model in every run to date. The count moves rarely: three bugs have ever been taken off it."
   ],
   "runs": [
