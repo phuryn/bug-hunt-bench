@@ -93,7 +93,7 @@ cannot make them wrong:
 |---|---|---|
 | `<title>` and `<meta name="description">` | `index.html`, `method.html` heads | Written without numbers so they cannot go stale. |
 | The bridge — "what this is" + the link to `/method` | `index.html` hero | Only if the setup itself changes. |
-| `lastmod` | `sitemap.xml` | Bump both `<url>` entries to `meta.updated` on a data refresh. |
+| `lastmod` | `sitemap.xml` | Automatic — `build_bench_site_data.py` stamps every `<lastmod>` from `meta.updated` when it regenerates the data. |
 | Canonical / og / Twitter / robots / sitemap URLs | `index.html`, `method.html`, `robots.txt`, `sitemap.xml` | The site is at `https://bughunt.productcompass.pm/` (Netlify site `bughuntbench.netlify.app`, custom domain CNAME'd). The URL in every exported PNG is read from the canonical tag, so it follows automatically. |
 
 `dateModified` and `url` inside the JSON-LD block are *also* patched at runtime
