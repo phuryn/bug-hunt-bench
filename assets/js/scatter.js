@@ -13,8 +13,8 @@
 
 import {
   pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
-} from './format.js?v=22fb7726ab';
-import { runColor } from './theme.js?v=22fb7726ab';
+} from './format.js?v=3ee7e267ba';
+import { runColor } from './theme.js?v=3ee7e267ba';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -215,7 +215,7 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
   if (frontier.length > 1) {
     frontierPath = `M${frontier[0].cx.toFixed(1)} ${frontier[0].cy.toFixed(1)}`;
     for (let i = 1; i < frontier.length; i += 1) {
-      frontierPath += ` H${frontier[i].cx.toFixed(1)} V${frontier[i].cy.toFixed(1)}`;
+      frontierPath += ` L${frontier[i].cx.toFixed(1)} ${frontier[i].cy.toFixed(1)}`;
     }
   }
 

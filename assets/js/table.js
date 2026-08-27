@@ -26,8 +26,8 @@
 import {
   COLUMNS, GROUPS, TOTALS, fmtCost, fmtWall, fmtInt,
   barRatio, barScales, effortSuffix, effortDefKey, defHref, el, svgEl, compareRuns,
-} from './format.js?v=22fb7726ab';
-import { runColor } from './theme.js?v=22fb7726ab';
+} from './format.js?v=3ee7e267ba';
+import { runColor } from './theme.js?v=3ee7e267ba';
 
 const MOBILE_LABEL = {
   fixed: 'Fixed of 105',

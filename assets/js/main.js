@@ -9,12 +9,12 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
-} from './format.js?v=22fb7726ab';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=22fb7726ab';
-import { renderScatter, AXES } from './scatter.js?v=22fb7726ab';
-import { renderPicker } from './selector.js?v=22fb7726ab';
-import { exportView } from './export-png.js?v=22fb7726ab';
-import { initTheme, hasAdjustedColors } from './theme.js?v=22fb7726ab';
+} from './format.js?v=3ee7e267ba';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=3ee7e267ba';
+import { renderScatter, AXES } from './scatter.js?v=3ee7e267ba';
+import { renderPicker } from './selector.js?v=3ee7e267ba';
+import { exportView } from './export-png.js?v=3ee7e267ba';
+import { initTheme, hasAdjustedColors } from './theme.js?v=3ee7e267ba';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },

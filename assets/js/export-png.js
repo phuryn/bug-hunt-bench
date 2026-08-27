@@ -12,9 +12,9 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
-} from './format.js?v=22fb7726ab';
-import { scatterLayout, AXES } from './scatter.js?v=22fb7726ab';
-import { runColor, activeTheme } from './theme.js?v=22fb7726ab';
+} from './format.js?v=3ee7e267ba';
+import { scatterLayout, AXES } from './scatter.js?v=3ee7e267ba';
+import { runColor, activeTheme } from './theme.js?v=3ee7e267ba';
 
 const SCALE = 2;
 const PAD = 32;
@@ -373,13 +373,14 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
     ctx.strokeStyle = T.accent;
     ctx.globalAlpha = 0.5;
     ctx.lineWidth = 1;
+    ctx.setLineDash([2, 3]);
     ctx.beginPath();
     ctx.moveTo(L.frontier[0].cx, L.frontier[0].cy);
     for (let i = 1; i < L.frontier.length; i += 1) {
-      ctx.lineTo(L.frontier[i].cx, L.frontier[i - 1].cy);
       ctx.lineTo(L.frontier[i].cx, L.frontier[i].cy);
     }
     ctx.stroke();
+    ctx.setLineDash([]);
     ctx.globalAlpha = 1;
   }
 
