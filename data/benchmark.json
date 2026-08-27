@@ -66,7 +66,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 0
     },
     {
       "id": "GPT-5.6 Sol (re-run Jul 31)",
@@ -92,7 +93,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 2
     },
     {
       "id": "GPT-5.6 Luna (max effort)",
@@ -118,7 +120,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 200
     },
     {
       "id": "GPT-5.6 Sol",
@@ -144,7 +147,8 @@
       "featured": false,
       "superseded": "Superseded by the Jul 31 re-run on the same setting (serving-side change, not a new model).",
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 2
     },
     {
       "id": "Fable 5 (max effort)",
@@ -170,7 +174,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 0
     },
     {
       "id": "Grok 4.6 (xhigh)",
@@ -196,7 +201,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 1
     },
     {
       "id": "Opus 5 (max effort)",
@@ -222,7 +228,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 100
     },
     {
       "id": "Opus 5 (medium effort)",
@@ -248,7 +255,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 103
     },
     {
       "id": "Fable 5",
@@ -274,7 +282,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 2
     },
     {
       "id": "Grok 4.6 (medium)",
@@ -300,7 +309,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 3
     },
     {
       "id": "Gemini 3.7 Flash (high)",
@@ -326,7 +336,8 @@
       "featured": false,
       "superseded": null,
       "caveat": "Gemini CLI was retired on Jun 18, 2026; it silently served 3.5 Flash until the model was pinned on the wire. Wall clock excludes a 35-minute harness stall.",
-      "note": null
+      "note": null,
+      "group_rank": 2
     },
     {
       "id": "Kimi K3",
@@ -352,7 +363,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 6
     },
     {
       "id": "Opus 5",
@@ -378,7 +390,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 102
     },
     {
       "id": "GLM-5.3",
@@ -404,7 +417,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": "Run as the behavioural control for the Ox Alpha stealth slug, whose wire fingerprint matches this model's serving stack. Their claim lists overlapped heavily, but only 10 of their 25 graded fixes are the same bugs."
+      "note": "Run as the behavioural control for the Ox Alpha stealth slug, whose wire fingerprint matches this model's serving stack. Their claim lists overlapped heavily, but only 10 of their 25 graded fixes are the same bugs.",
+      "group_rank": 106
     },
     {
       "id": "Qwen3.8-Max",
@@ -430,7 +444,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 1
     },
     {
       "id": "Gemini 3.7 Flash (high; Antigravity CLI retest)",
@@ -456,7 +471,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": "Google's current CLI."
+      "note": "Google's current CLI.",
+      "group_rank": 2
     },
     {
       "id": "Grok 4.5 (re-run Aug 6)",
@@ -482,7 +498,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 102
     },
     {
       "id": "Muse Spark 1.2 (xhigh, Meta API)",
@@ -508,7 +525,8 @@
       "featured": false,
       "superseded": null,
       "caveat": "Mixed serving path: repo 1 ran Meta-direct at verified xhigh, repo 2 through OpenRouter at default effort. The single-path number for this model is the 14/105 row.",
-      "note": null
+      "note": null,
+      "group_rank": 1
     },
     {
       "id": "Ox Alpha (stealth; free)",
@@ -534,7 +552,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": "OpenRouter stealth slug, free at the time of the run; Z.ai confirmed on 26 Aug 2026 that it was GLM-5.3-Flash. Off the default view because the named, priced run is the GLM-5.3 Flash row. Fixed H3 - a repo-1 bug that had survived every model in every prior run."
+      "note": "OpenRouter stealth slug, free at the time of the run; Z.ai confirmed on 26 Aug 2026 that it was GLM-5.3-Flash. Off the default view because the named, priced run is the GLM-5.3 Flash row. Fixed H3 - a repo-1 bug that had survived every model in every prior run.",
+      "group_rank": 206
     },
     {
       "id": "Grok 4.5",
@@ -560,7 +579,8 @@
       "featured": false,
       "superseded": "One of three runs at the same setting (16 / 13 / 17) - the spread is this board's variance evidence.",
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 102
     },
     {
       "id": "Grok 4.6 (low)",
@@ -586,7 +606,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 4
     },
     {
       "id": "DeepSeek V4-Flash 0731",
@@ -612,7 +633,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": "The Jul 31 re-post-trained revision."
+      "note": "The Jul 31 re-post-trained revision.",
+      "group_rank": 106
     },
     {
       "id": "Muse Spark 1.2 (default effort, OpenRouter)",
@@ -638,7 +660,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 6
     },
     {
       "id": "GPT-5.6 Luna (high effort)",
@@ -664,7 +687,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 202
     },
     {
       "id": "GLM-5.3 Flash",
@@ -690,7 +714,8 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": "The named release of the Ox Alpha stealth slug, run on Z.ai's own host with provider fallbacks off. 13 against the stealth run's 16 is inside this board's same-setting spread. The bill is at the 50% launch price; list doubles after 9 Sep 2026. Its five claimed-only are bugs it named in its report and deliberately left alone."
+      "note": "The named release of the Ox Alpha stealth slug, run on Z.ai's own host with provider fallbacks off. 13 against the stealth run's 16 is inside this board's same-setting spread. The bill is at the 50% launch price; list doubles after 9 Sep 2026. Its five claimed-only are bugs it named in its report and deliberately left alone.",
+      "group_rank": 6
     },
     {
       "id": "Grok 4.5 (high re-run - CLI has no max)",
@@ -716,7 +741,8 @@
       "featured": false,
       "superseded": "Same setting as the other Grok 4.5 runs.",
       "caveat": "Commissioned as a max run; the CLI silently clamps unknown tiers, so this is a second high run - published as a correction.",
-      "note": null
+      "note": null,
+      "group_rank": 102
     },
     {
       "id": "DeepSeek V4-Pro",
@@ -742,7 +768,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 6
     },
     {
       "id": "GPT-5.6 Luna (medium effort)",
@@ -768,7 +795,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 203
     },
     {
       "id": "Sonnet 5",
@@ -794,7 +822,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 302
     },
     {
       "id": "Opus 4.8",
@@ -820,7 +849,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 202
     },
     {
       "id": "DeepSeek V4-Flash",
@@ -846,7 +876,8 @@
       "featured": false,
       "superseded": "This slug resolved to the April snapshot; the Jul 31 revision is the row above.",
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 106
     },
     {
       "id": "GPT-5.6 Luna (low effort)",
@@ -872,7 +903,8 @@
       "featured": false,
       "superseded": null,
       "caveat": null,
-      "note": null
+      "note": null,
+      "group_rank": 204
     }
   ]
 }

@@ -12,9 +12,9 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
-} from './format.js?v=5c475c1ad5';
-import { scatterLayout, AXES } from './scatter.js?v=5c475c1ad5';
-import { runColor, activeTheme } from './theme.js?v=5c475c1ad5';
+} from './format.js?v=22fb7726ab';
+import { scatterLayout, AXES } from './scatter.js?v=22fb7726ab';
+import { runColor, activeTheme } from './theme.js?v=22fb7726ab';
 
 const SCALE = 2;
 const PAD = 32;
@@ -359,6 +359,16 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
   text(ctx, 'PLANTED BUGS FIXED, OUT OF 105', 0, 0, `600 10px ${SANS}`, T.ink2, 'center');
   ctx.restore();
 
+  L.familyLines.forEach((f) => {
+    ctx.strokeStyle = f.color;
+    ctx.globalAlpha = 0.4;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(f.points[0].cx, f.points[0].cy);
+    for (let i = 1; i < f.points.length; i += 1) ctx.lineTo(f.points[i].cx, f.points[i].cy);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+  });
   if (L.frontier.length > 1) {
     ctx.strokeStyle = T.accent;
     ctx.globalAlpha = 0.5;
@@ -430,7 +440,7 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
     ctx.beginPath();
     ctx.arc(cx + 5, cy - 4, 4.5, 0, Math.PI * 2);
     ctx.fill();
-    text(ctx, truncate(ctx, `${p.run.id} — ${p.run.fixed}${p.flagged ? ` ${NOTE_MARK}` : ''}`, `11.5px ${SANS}`, colW - 26),
+    text(ctx, truncate(ctx, `${p.run.model}${p.run.effort ? ` · ${p.run.effort}` : ''} — ${p.run.fixed}${p.flagged ? ` ${NOTE_MARK}` : ''}`, `11.5px ${SANS}`, colW - 26),
       cx + 15, cy, `11.5px ${SANS}`, T.ink2);
   });
   ly += Math.ceil(L.points.length / cols) * 17;

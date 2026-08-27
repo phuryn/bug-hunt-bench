@@ -12,9 +12,9 @@
    ones at the slow end, for no gain. */
 
 import {
-  pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText,
-} from './format.js?v=5c475c1ad5';
-import { runColor } from './theme.js?v=5c475c1ad5';
+  pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
+} from './format.js?v=22fb7726ab';
+import { runColor } from './theme.js?v=22fb7726ab';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -186,6 +186,30 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
   const yTicks = [];
   for (let v = 0; v <= yTop; v += yStep) yTicks.push({ v, y: y(v) });
 
+  // Family lines (Pawel 2026-08-27): join one model's efforts in dial order (low -> max) and give
+  // the whole family one colour on these two maps, so a reader sees a trajectory, not loose dots.
+  // The Pareto frontier is computed separately below and still governs.
+  const effRankOf = (e) => {
+    const i = EFFORT_RANK.indexOf(String(e || '').toLowerCase());
+    return i < 0 ? EFFORT_RANK.length : i;
+  };
+  const fam = new Map();
+  points.forEach((p) => {
+    if (!fam.has(p.run.model)) fam.set(p.run.model, []);
+    fam.get(p.run.model).push(p);
+  });
+  const familyLines = [];
+  fam.forEach((grp, model) => {
+    const ordered = grp.slice().sort((a, b) => effRankOf(a.run.effort) - effRankOf(b.run.effort));
+    const famColor = ordered[0].color;                 // the top-effort member's colour
+    ordered.forEach((p) => { p.color = famColor; });   // one colour per family on these views
+    if (ordered.length > 1) {
+      let d = `M${ordered[0].cx.toFixed(1)} ${ordered[0].cy.toFixed(1)}`;
+      for (let i = 1; i < ordered.length; i += 1) d += ` L${ordered[i].cx.toFixed(1)} ${ordered[i].cy.toFixed(1)}`;
+      familyLines.push({ model, color: famColor, d, points: ordered });
+    }
+  });
+
   const frontier = frontierOf(points);
   let frontierPath = '';
   if (frontier.length > 1) {
@@ -197,7 +221,7 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
 
   return {
     axis: A, width, height, m, plotW, plotH, compact,
-    x, y, xTicks, yTicks, yTop, points, frontier, frontierPath,
+    x, y, xTicks, yTicks, yTop, points, frontier, frontierPath, familyLines,
     skipped, zeroRuns, missingRuns,
     flagged: points.filter((p) => p.flagged),
     ceilingY: yTop === CEILING ? y(CEILING) : null, baseY: y(0),
@@ -214,8 +238,8 @@ function tooltipContent(p, axis) {
   const frag = document.createDocumentFragment();
   frag.appendChild(el('span', { class: 'tip-val', text: `${r.fixed} of 105 fixed` }));
   frag.appendChild(el('div', { class: 'tip-name' }, [
-    el('i', { class: 'tip-key', style: { 'background-color': runColor(r.color) } }),
-    r.id,
+    el('i', { class: 'tip-key', style: { 'background-color': p.color } }),
+    `${r.model}${r.effort ? ` · ${r.effort}` : ''}`,
   ]));
   const cost = () => tipRow('Cost', `${fmtCost(r.cost_usd)} (${kind})`);
   const wall = () => tipRow('Wall clock', `${fmtWall(r.wall_min)} min`);
@@ -303,6 +327,9 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
     text: L.compact ? 'Fixed, of 105' : 'Planted bugs fixed, out of 105',
   }));
 
+  L.familyLines.forEach((f) => {
+    svg.appendChild(svgEl('path', { class: 'family-line', d: f.d, stroke: f.color, 'aria-hidden': 'true' }));
+  });
   if (L.frontierPath) {
     svg.appendChild(svgEl('path', { class: 'frontier', d: L.frontierPath, 'aria-hidden': 'true' }));
   }
@@ -351,7 +378,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
     }
     const hit = svgEl('circle', {
       class: 'hit', cx: p.cx, cy: p.cy, r: 18, tabindex: '0', role: 'button',
-      'aria-label': `${p.run.id}: ${p.run.fixed} of 105 fixed, ${A.fmt(p.xv)}${p.flagged ? `. Note on this figure: ${p.run[A.flag]}` : ''}`,
+      'aria-label': `${p.run.model}${p.run.effort ? ` · ${p.run.effort}` : ''}: ${p.run.fixed} of 105 fixed, ${A.fmt(p.xv)}${p.flagged ? `. Note on this figure: ${p.run[A.flag]}` : ''}`,
     });
     hit.addEventListener('pointerenter', () => showTip(p, g));
     hit.addEventListener('pointerleave', () => hideTip(g));

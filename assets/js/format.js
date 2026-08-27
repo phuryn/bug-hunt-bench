@@ -42,6 +42,8 @@ export function barScales(runs) {
    on a single run, and a key cannot carry a correction for a row a reader may
    never scroll past. Everything else is one click away on the method page, in
    plain English, straight from the data file. */
+export const EFFORT_RANK = ['max', 'xhigh', 'high', 'medium', 'low', 'minimal', 'default'];
+
 export const EFFORT_SUFFIX = {
   verified_ceiling: null,
   verified: null,

@@ -683,6 +683,7 @@ h1 em { font-style: normal; color: var(--accent); }
 }
 .chart .ceiling-label { font-family: var(--sans); font-size: 10.5px; fill: var(--muted); }
 .chart .frontier { fill: none; stroke: var(--accent); stroke-width: 1; stroke-opacity: 0.5; }
+.chart .family-line { fill: none; stroke-width: 1.5; stroke-opacity: 0.4; }
 .chart .frontier-label { font-family: var(--sans); font-size: 10px; fill: var(--accent); }
 .chart .corner-label {
   font-family: var(--sans); font-size: 10px; fill: var(--muted);

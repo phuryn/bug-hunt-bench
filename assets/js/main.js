@@ -8,13 +8,13 @@
 
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
-  caveatHref, defHref, methodHref, slugify, fmtDate, el,
-} from './format.js?v=5c475c1ad5';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=5c475c1ad5';
-import { renderScatter, AXES } from './scatter.js?v=5c475c1ad5';
-import { renderPicker } from './selector.js?v=5c475c1ad5';
-import { exportView } from './export-png.js?v=5c475c1ad5';
-import { initTheme, hasAdjustedColors } from './theme.js?v=5c475c1ad5';
+  caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
+} from './format.js?v=22fb7726ab';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=22fb7726ab';
+import { renderScatter, AXES } from './scatter.js?v=22fb7726ab';
+import { renderPicker } from './selector.js?v=22fb7726ab';
+import { exportView } from './export-png.js?v=22fb7726ab';
+import { initTheme, hasAdjustedColors } from './theme.js?v=22fb7726ab';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -220,7 +220,6 @@ function patchSchema() {
    data file and from the current selection, so it cannot go stale or contradict
    the board, and every term links at its full definition on the method page. */
 
-const EFFORT_RANK = ['max', 'xhigh', 'high', 'medium', 'low', 'minimal', 'default'];
 
 /** The effort tiers actually on screen, in the order a reader ranks them. */
 function tiersShown(runs) {
@@ -360,7 +359,7 @@ function renderChart(key) {
   L.points.slice().sort((a, b) => b.score - a.score).forEach((p) => {
     legend.appendChild(el('span', {}, [
       el('i', { style: { 'background-color': p.color } }),
-      `${p.run.id} — ${p.run.fixed}`,
+      `${p.run.model}${p.run.effort ? ` · ${p.run.effort}` : ''} — ${p.run.fixed}`,
     ]));
   });
 }
@@ -557,6 +556,21 @@ function forwardMovedAnchor() {
   return true;
 }
 
+/* The board shows exactly one run per (model, effort): the newest by date.
+   Superseded rows and older duplicates drop out of every view, the picker and the
+   export — the full history stays on GitHub. Order is preserved from the data file
+   (emitted vendor -> model -> effort), so filtering never reshuffles the groups. */
+function newestPerTier(runs) {
+  const newest = new Map();
+  for (const r of runs) {
+    const k = `${r.model}|${r.effort}`;
+    const cur = newest.get(k);
+    if (!cur || String(r.date || '') > String(cur.date || '')) newest.set(k, r);
+  }
+  const keep = new Set(newest.values());
+  return runs.filter((r) => keep.has(r));
+}
+
 async function boot() {
   if (forwardMovedAnchor()) return;
 
@@ -566,7 +580,7 @@ async function boot() {
   const res = await fetch('data/benchmark.json', { cache: 'no-cache' });
   DATA = await res.json();
 
-  RUNS = DATA.runs.map((r) => ({ ...r, slug: slugify(r.id) }));
+  RUNS = newestPerTier(DATA.runs.filter((r) => !r.superseded)).map((r) => ({ ...r, slug: slugify(r.id) }));
 
   const board = document.getElementById('board');
   board.setAttribute('role', 'table');

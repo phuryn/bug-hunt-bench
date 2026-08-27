@@ -1,8 +1,8 @@
 /* Run picker: native checkboxes grouped by vendor, so keyboard and screen-reader
    behaviour is the platform's, not ours. */
 
-import { el, fmtDate, effortSuffix } from './format.js?v=5c475c1ad5';
-import { runColor } from './theme.js?v=5c475c1ad5';
+import { el, fmtDate, effortSuffix } from './format.js?v=22fb7726ab';
+import { runColor } from './theme.js?v=22fb7726ab';
 
 export function renderPicker(gridEl, runs, selected, onToggle, onVendorToggle) {
   gridEl.textContent = '';
@@ -15,6 +15,7 @@ export function renderPicker(gridEl, runs, selected, onToggle, onVendorToggle) {
 
   vendors.forEach((vendor) => {
     const group = byVendor.get(vendor);
+    group.sort((a, b) => (a.group_rank ?? 1e9) - (b.group_rank ?? 1e9));
     const allOn = group.every((r) => selected.has(r.slug));
     const toggle = el('button', {
       type: 'button',
@@ -38,7 +39,7 @@ export function renderPicker(gridEl, runs, selected, onToggle, onVendorToggle) {
         input,
         el('span', { class: 'swatch', style: { 'background-color': runColor(r.color) } }),
         el('span', { class: 'run__body' }, [
-          el('span', { class: 'run__name', text: r.id }),
+          el('span', { class: 'run__name', text: r.model }),
           el('span', { class: 'run__meta' }, [
             /* the tier the run was asked for, as the board's badge shows it -
                plus the two words the clamped row carries there */
