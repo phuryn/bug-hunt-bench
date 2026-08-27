@@ -90,7 +90,7 @@
       "cost_kind": "list",
       "wall_note": null,
       "ceiling": false,
-      "featured": false,
+      "featured": true,
       "superseded": null,
       "caveat": null,
       "note": null,
@@ -279,7 +279,7 @@
       "cost_kind": "list",
       "wall_note": null,
       "ceiling": false,
-      "featured": false,
+      "featured": true,
       "superseded": null,
       "caveat": null,
       "note": null,
@@ -306,7 +306,7 @@
       "cost_kind": "floor",
       "wall_note": "Both repo legs ran concurrently on one machine and one key; contention can inflate this figure, not shrink it.",
       "ceiling": false,
-      "featured": false,
+      "featured": true,
       "superseded": null,
       "caveat": null,
       "note": null,
@@ -387,7 +387,7 @@
       "cost_kind": "list",
       "wall_note": null,
       "ceiling": false,
-      "featured": false,
+      "featured": true,
       "superseded": null,
       "caveat": null,
       "note": null,
@@ -634,7 +634,7 @@
       "superseded": null,
       "caveat": null,
       "note": "The Jul 31 re-post-trained revision.",
-      "group_rank": 6
+      "group_rank": 106
     },
     {
       "id": "Muse Spark 1.2 (default effort, OpenRouter)",
@@ -684,7 +684,7 @@
       "cost_kind": "list",
       "wall_note": null,
       "ceiling": false,
-      "featured": false,
+      "featured": true,
       "superseded": null,
       "caveat": null,
       "note": null,
@@ -769,7 +769,7 @@
       "superseded": null,
       "caveat": null,
       "note": null,
-      "group_rank": 106
+      "group_rank": 6
     },
     {
       "id": "GPT-5.6 Luna (medium effort)",
@@ -819,7 +819,7 @@
       "cost_kind": "list",
       "wall_note": null,
       "ceiling": true,
-      "featured": false,
+      "featured": true,
       "superseded": null,
       "caveat": null,
       "note": null,
@@ -846,7 +846,7 @@
       "cost_kind": "list",
       "wall_note": null,
       "ceiling": true,
-      "featured": false,
+      "featured": true,
       "superseded": null,
       "caveat": null,
       "note": null,
@@ -877,7 +877,7 @@
       "superseded": "This slug resolved to the April snapshot; the Jul 31 revision is the row above.",
       "caveat": null,
       "note": null,
-      "group_rank": 6
+      "group_rank": 106
     },
     {
       "id": "GPT-5.6 Luna (low effort)",

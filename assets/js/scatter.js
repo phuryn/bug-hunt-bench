@@ -13,8 +13,8 @@
 
 import {
   pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
-} from './format.js?v=3ee7e267ba';
-import { runColor } from './theme.js?v=3ee7e267ba';
+} from './format.js?v=8b9888d19c';
+import { runColor } from './theme.js?v=8b9888d19c';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -330,9 +330,9 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
   L.familyLines.forEach((f) => {
     svg.appendChild(svgEl('path', { class: 'family-line', d: f.d, stroke: f.color, 'aria-hidden': 'true' }));
   });
-  if (L.frontierPath) {
-    svg.appendChild(svgEl('path', { class: 'frontier', d: L.frontierPath, 'aria-hidden': 'true' }));
-  }
+  // Pareto frontier removed 2026-08-27 (Pawel: too chaotic alongside the family lines - to be
+  // rethought). frontierOf/frontierPath still computed in scatterLayout; re-enable by drawing
+  // L.frontierPath as a <path class="frontier"> here.
 
   const tip = el('div', { class: 'chart__tip', role: 'status', hidden: true });
   const marks = svgEl('g', {});

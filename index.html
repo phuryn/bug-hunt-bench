@@ -15,7 +15,7 @@
      <html> before the first paint, so a dark-theme visitor never sees a white
      flash. It is a file rather than an inline block because the CSP has no
      'unsafe-inline'. -->
-<script src="/assets/js/theme-boot.js?v=3ee7e267ba"></script>
+<script src="/assets/js/theme-boot.js?v=8b9888d19c"></script>
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bug Hunt Bench">
@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=3ee7e267ba">
+<link rel="stylesheet" href="/assets/css/site.css?v=8b9888d19c">
 
 <!-- dateModified and url are patched at runtime from data/benchmark.json; keep the static values in sync anyway. -->
 <script type="application/ld+json" id="dataset-schema">
@@ -76,7 +76,7 @@
   ]
 }
 </script>
-<script type="module" src="/assets/js/main.js?v=3ee7e267ba"></script>
+<script type="module" src="/assets/js/main.js?v=8b9888d19c"></script>
 </head>
 <body>
 <a class="skip-link" href="#leaderboard">Skip to the leaderboard</a>
@@ -187,7 +187,6 @@
       <div class="chart__legend" id="chart-legend"></div>
       <p class="chart__note">
         Cost is on a logarithmic axis: the spread across the board is roughly two hundredfold, and a linear axis would pile half the runs into the left margin.
-        The step line marks the cost–score frontier: runs that no other selected run beats on both axes at once.
         <span id="axis-note"></span>
         Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>.
       </p>
@@ -199,7 +198,6 @@
       <div class="chart__legend" id="time-legend"></div>
       <p class="chart__note">
         Minutes are on a linear axis: the board spans under sevenfold, well inside one order of magnitude, so a linear axis places every run honestly and keeps the reading additive.
-        The step line marks the time–score frontier: runs that no other selected run beats on both axes at once.
         <span id="time-axis-note"></span>
         Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>.
       </p>
