@@ -16,6 +16,11 @@ private `Editor` repo, from the public scoreboards at
 - Do not edit `data/benchmark.json`. A hand edit will be silently overwritten on the next
   regeneration, and worse, it breaks the guarantee the site is built on.
 - If the site needs a field the data lacks, say so — the fix belongs in the generator, upstream.
+- **Colours are auto-assigned, not per-model.** The generator's `vendor_family_colors()` gives one
+  hue per vendor (`VENDOR_HUE`) shaded by model rank (flagship darkest); every effort of a model
+  shares that shade, and the picker, table, both charts and legends all read it. To add a vendor's
+  colour, add its hue to `VENDOR_HUE` in the generator — don't hand-set colours in the JS or the
+  annotations (a `color=` in an annotation is ignored for any mapped vendor).
 - These numbers are published and load-bearing. Someone's model ranking is on them.
 
 ## What this site is not
