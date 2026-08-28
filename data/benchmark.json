@@ -1324,8 +1324,8 @@
       "model": "Hy4 Preview",
       "vendor": "Tencent",
       "harness": "Claude Code / OpenRouter",
-      "effort": "default",
-      "effort_status": "inert_default",
+      "effort": "high",
+      "effort_status": "first_party",
       "date": "2026-08-28",
       "color": "#7C2D12",
       "fixed": 18,
@@ -1343,7 +1343,7 @@
       "featured": true,
       "superseded": null,
       "caveat": null,
-      "note": "Tencent Hunyuan 4 preview (MoE, 49B active of 770B), benchmarked day-one via OpenRouter. Reasoning is on by default here - Tencent documents a reasoning_effort that defaults to deep chain-of-thought - and we did not assert a tier, so this row is the model's own default. 18/105 for $3.13 real OpenRouter bill. On repo 1 it claimed 10 fixes and 9 verified against the answer key. Single host (Tencent Cloud); day-one 429/404s absorbed by proxy retries.",
+      "note": "Tencent Hunyuan 4 preview (MoE, 49B active of 770B), benchmarked day-one via OpenRouter. This is the model's ceiling. Tencent documents reasoning_effort as a BINARY switch - `high` (the default, which is what ran here) or `no_think` - so there is no higher tier to request and no graded scale to climb. 18/105 for $3.13 real OpenRouter bill. On repo 1 it claimed 10 fixes and 9 verified against the answer key. Single host (Tencent Cloud); day-one 429/404s absorbed by proxy retries.",
       "fixed_bugs": [
         13,
         16,
@@ -1364,7 +1364,7 @@
         98,
         99
       ],
-      "group_rank": 6
+      "group_rank": 2
     },
     {
       "id": "GPT-5.6 Terra (high effort)",
