@@ -1,8 +1,8 @@
 /* Run picker: native checkboxes grouped by vendor, so keyboard and screen-reader
    behaviour is the platform's, not ours. */
 
-import { el, fmtDate, effortSuffix } from './format.js?v=1417b1e724';
-import { runColor } from './theme.js?v=1417b1e724';
+import { el, fmtDate, effortSuffix } from './format.js?v=7ea6b6262f';
+import { runColor } from './theme.js?v=7ea6b6262f';
 
 export function renderPicker(gridEl, runs, selected, onToggle, onVendorToggle) {
   gridEl.textContent = '';

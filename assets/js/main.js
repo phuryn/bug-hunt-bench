@@ -9,13 +9,13 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
-} from './format.js?v=1417b1e724';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=1417b1e724';
-import { renderScatter, AXES } from './scatter.js?v=1417b1e724';
-import { renderPicker } from './selector.js?v=1417b1e724';
-import { exportView } from './export-png.js?v=1417b1e724';
-import { initTheme, hasAdjustedColors } from './theme.js?v=1417b1e724';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=1417b1e724';
+} from './format.js?v=7ea6b6262f';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=7ea6b6262f';
+import { renderScatter, AXES } from './scatter.js?v=7ea6b6262f';
+import { renderPicker } from './selector.js?v=7ea6b6262f';
+import { exportView } from './export-png.js?v=7ea6b6262f';
+import { initTheme, hasAdjustedColors } from './theme.js?v=7ea6b6262f';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=7ea6b6262f';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -86,6 +86,11 @@ const state = {
   dir: 'desc',
   view: 'table',
   preset: 'featured',
+  // Coverage-only: the slug of the run its columns are pivoted on, or null
+  // for the default shared-count order. Lives here, not in coverage.js,
+  // because it has to survive a view switch and round-trip the URL like
+  // every other piece of state on this page.
+  pivot: null,
 };
 
 let DATA = null;
@@ -127,6 +132,19 @@ function sanitizeView() {
   if (state.view === 'coverage' && !coverageEnabled) state.view = 'table';
 }
 
+/* A pivot needs the run it names to still be on screen, with its own
+   per-bug data — a run dropped from the selection, or one that never had
+   fixed_bugs, cannot stay the pivot. Called from renderViews(), so every
+   path that can change the selection (a preset, a picker toggle, a popped
+   URL) clears a pivot that no longer applies without needing its own call
+   site, the same way a stale ?pivot= link degrades on load rather than
+   pointing at a run that is not there. */
+function sanitizePivot() {
+  if (!state.pivot) return;
+  const run = RUNS.find((r) => r.slug === state.pivot);
+  if (!run || !state.selected.has(run.slug) || !Array.isArray(run.fixed_bugs)) state.pivot = null;
+}
+
 function readUrl() {
   const p = new URLSearchParams(location.search);
   const runsParam = p.get('runs');
@@ -147,6 +165,10 @@ function readUrl() {
   if (dir === 'asc' || dir === 'desc') state.dir = dir;
   const view = p.get('view');
   if (VIEWS[view]) state.view = view;
+  // Read raw; validity (still selected, still carries per-bug data) is
+  // checked by sanitizePivot() on the first render, same as a link typed by
+  // hand rather than produced by this page.
+  state.pivot = p.get('pivot') || null;
 }
 
 function writeUrl() {
@@ -156,6 +178,7 @@ function writeUrl() {
   if (state.sort !== 'fixed') p.set('sort', state.sort);
   if (state.dir !== 'desc') p.set('dir', state.dir);
   if (state.view !== 'table') p.set('view', state.view);
+  if (state.pivot) p.set('pivot', state.pivot);
   const qs = p.toString();
   history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
 }
@@ -413,13 +436,27 @@ function renderChart(key) {
     property of the selection, not fixed facts about the data. */
 function renderCoverageView() {
   const runs = selectedRuns();
-  const L = renderCoverage($('coverage-host'), runs, DATA.meta, DATA.glossary);
+  const L = renderCoverage($('coverage-host'), runs, DATA.meta, DATA.glossary, state.pivot, onPivotToggle);
   const note = $('coverage-note');
   note.textContent = '';
   if (!L) return;
   note.appendChild(el('p', { class: 'chart__note', text: coverageOrderNote(L) }));
   const summary = coverageSummaryNote(L);
   if (summary) note.appendChild(el('p', { class: 'chart__note', text: summary }));
+}
+
+/* A Coverage row doubles as a pivot control (coverage.js wires the click and
+   the Enter/Space handling; this is what "toggling" means to the board's own
+   state). Clicking the active pivot clears it; clicking any other run with
+   data makes it the new one. Re-render, re-sync the URL, then hand focus
+   back to that same run's row — the whole view was just rebuilt out from
+   under it, and a keyboard user should not lose their place over it. */
+function onPivotToggle(slug) {
+  state.pivot = state.pivot === slug ? null : slug;
+  renderViews();
+  writeUrl();
+  const row = document.querySelector(`.coverage__row[data-run="${CSS.escape(slug)}"]`);
+  if (row) row.focus();
 }
 
 /* The picker is 25 runs deep and starts closed. Building it into the collapsed
@@ -435,6 +472,7 @@ function renderPickerIfOpen() {
 }
 
 function renderViews() {
+  sanitizePivot();
   const runs = selectedRuns();
   const empty = runs.length === 0;
 

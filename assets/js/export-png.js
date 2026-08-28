@@ -12,10 +12,10 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
-} from './format.js?v=1417b1e724';
-import { scatterLayout, AXES } from './scatter.js?v=1417b1e724';
-import { coverageLayout, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=1417b1e724';
-import { runColor, activeTheme } from './theme.js?v=1417b1e724';
+} from './format.js?v=7ea6b6262f';
+import { scatterLayout, AXES } from './scatter.js?v=7ea6b6262f';
+import { coverageLayout, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=7ea6b6262f';
+import { runColor, activeTheme } from './theme.js?v=7ea6b6262f';
 
 const SCALE = 2;
 const PAD = 32;
@@ -440,19 +440,41 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
 /* ----------------------------------------------------------------- coverage
 
    Same rows, same column order, same colours as the on-screen view — both
-   read them from the one pure coverageLayout(runs, meta), which knows nothing
-   about pixels. Only the geometry below (gaps, row heights) is canvas-only,
-   the way drawTable's rowH and drawScatter's plot size are; the DOM version
-   gets its geometry from CSS flexbox instead. The constants are shared with
-   the body-height estimate in exportView() so the two cannot drift apart. */
+   read them from the one pure coverageLayout(runs, meta, pivotSlug), which
+   knows nothing about pixels. Only the geometry below (gaps, row heights) is
+   canvas-only, the way drawTable's rowH and drawScatter's plot size are; the
+   DOM version gets its geometry from CSS flexbox instead. The constants are
+   shared with the body-height estimate in exportView() so the two cannot
+   drift apart — that now includes the zone-label row, present only when a
+   pivot is active. */
 
 const COV_GAP = 2;
+const COV_DIVIDER_W = 10;   // a 2px line plus 4px margin either side — matches .coverage__divider
 const COV_COLKEY_H = 6;
 const COV_LABEL_H = 20;
 const COV_TICK_H = 15;
 const COV_ROW_GAP = 12;
 const COV_TOP_GAP = 20;
 const COV_AFTER_KEY_GAP = 14;
+const COV_ZONELABEL_H = 14;
+const COV_ZONELABEL_GAP = 6;
+
+/** The non-empty zones' [x0, x1) spans across the plot width, left to right
+    in the order coverageLayout() already put them in. Shared by the zone
+    labels, the repo strip and every run's tick line, so a divider always
+    lands in the same place whichever of those is drawing — the canvas
+    equivalent of the DOM's shared `.coverage__zoned` row. */
+function coverageZoneSpans(zones, cellW, gap, dividerW) {
+  const shown = zones.filter((z) => z.bugs.length);
+  let x = 0;
+  return shown.map((z, i) => {
+    if (i > 0) x += dividerW;
+    const width = z.bugs.length * cellW + (z.bugs.length - 1) * gap;
+    const span = { zone: z, x0: x, x1: x + width };
+    x += width;
+    return span;
+  });
+}
 
 function drawCoverage(ctx, T, L, w) {
   const left = PAD;
@@ -460,24 +482,45 @@ function drawCoverage(ctx, T, L, w) {
   let y = ctx.__y + COV_TOP_GAP;
 
   const n = L.bugCount;
-  const cellW = Math.max(0.5, (plotW - (n - 1) * COV_GAP) / n);
+  const numGroups = L.zones.filter((z) => z.bugs.length).length;
+  const dividerW = numGroups > 1 ? COV_DIVIDER_W : 0;
+  const cellW = Math.max(0.5, (plotW - (numGroups - 1) * dividerW - (n - numGroups) * COV_GAP) / n);
+  const spans = coverageZoneSpans(L.zones, cellW, COV_GAP, dividerW);
+
+  // zone labels — plain words, not A/B/C/D, drawn only while a pivot is active
+  if (L.pivot) {
+    spans.forEach((s) => {
+      if (!s.zone.label) return;
+      const cx = left + (s.x0 + s.x1) / 2;
+      const font = `600 9.5px ${SANS}`;
+      const str = truncate(ctx, s.zone.label.toUpperCase(), font, Math.max(16, s.x1 - s.x0));
+      text(ctx, str, cx, y + COV_ZONELABEL_H - 4, font, T.muted, 'center');
+    });
+    y += COV_ZONELABEL_H + COV_ZONELABEL_GAP;
+  }
 
   // the repo strip: which repo each column belongs to, in the shared order —
   // solid for repo 1, a faint tint for repo 2, echoing the hatch elsewhere
   // without needing a pattern at sub-pixel tick width
-  let x = left;
-  L.order.forEach((bugIdx) => {
-    if (bugIdx <= L.repo1Count) {
-      ctx.fillStyle = T.rule;
-      ctx.fillRect(x, y, cellW, COV_COLKEY_H);
-    } else {
-      ctx.fillStyle = T.muted;
-      ctx.globalAlpha = 0.45;
-      ctx.fillRect(x, y, cellW, COV_COLKEY_H);
-      ctx.globalAlpha = 1;
-    }
-    x += cellW + COV_GAP;
+  spans.forEach((s) => {
+    let x = left + s.x0;
+    s.zone.bugs.forEach((bugIdx) => {
+      if (bugIdx <= L.repo1Count) {
+        ctx.fillStyle = T.rule;
+        ctx.fillRect(x, y, cellW, COV_COLKEY_H);
+      } else {
+        ctx.fillStyle = T.muted;
+        ctx.globalAlpha = 0.45;
+        ctx.fillRect(x, y, cellW, COV_COLKEY_H);
+        ctx.globalAlpha = 1;
+      }
+      x += cellW + COV_GAP;
+    });
   });
+  for (let i = 1; i < spans.length; i += 1) {
+    const dx = left + (spans[i - 1].x1 + spans[i].x0) / 2;
+    line(ctx, dx, y, dx, y + COV_COLKEY_H, T.ink2, 2);
+  }
   y += COV_COLKEY_H + COV_AFTER_KEY_GAP;
 
   L.rows.forEach(({ run, hasData, ticks }) => {
@@ -486,32 +529,50 @@ function drawCoverage(ctx, T, L, w) {
     ctx.fillRect(left, y + 1, 10, 10);
     const suffix = effortSuffix(run);
     const badge = `${String(run.effort || '').toUpperCase()}${suffix ? ` · ${suffix}` : ''}`;
+    const isPivot = Boolean(L.pivot && L.pivot.slug === run.slug);
+    const chipFont = `600 8px ${SANS}`;
+    ctx.font = chipFont;
+    const chipW = isPivot ? ctx.measureText('SORTED BY').width + 8 : 0;
     const countStr = `${fmtInt(run.fixed)}/${L.bugCount}`;
     ctx.font = `12px ${SANS}`;
     const countW = ctx.measureText(countStr).width;
-    const nameMaxW = Math.max(40, plotW - 26 - countW - 16);
+    const nameMaxW = Math.max(40, plotW - 26 - countW - chipW - 16);
     ctx.font = `600 13px ${SANS}`;
     const name = truncate(ctx, run.model, `600 13px ${SANS}`, nameMaxW);
     text(ctx, name, left + 18, y + 10, `600 13px ${SANS}`, run.superseded ? T.muted : T.ink);
     const nameW = ctx.measureText(name).width;
     text(ctx, badge, left + 18 + nameW + 6, y + 9, `600 9px ${SANS}`, T.ink2);
+    if (isPivot) {
+      ctx.font = `600 9px ${SANS}`;
+      const badgeW = ctx.measureText(badge).width;
+      text(ctx, 'SORTED BY', left + 18 + nameW + 6 + badgeW + 8, y + 9, chipFont, T.accent);
+    }
     text(ctx, countStr, left + plotW, y + 10, `12px ${SANS}`, T.muted, 'right');
     y += COV_LABEL_H;
 
-    // tick line: one tick per bug, in the shared column order
+    // tick line: one tick per bug, in the shared column order, zoned the
+    // same way the repo strip and the label row above it are
     if (hasData) {
-      let tx = left;
-      ticks.forEach((t) => {
-        if (t.hit) {
-          ctx.fillStyle = runColor(run.color);
-          ctx.fillRect(tx, y, cellW, COV_TICK_H);
-        } else {
-          ctx.strokeStyle = T.rule;
-          ctx.lineWidth = 1;
-          ctx.strokeRect(tx + 0.5, y + 0.5, Math.max(0.5, cellW - 1), COV_TICK_H - 1);
-        }
-        tx += cellW + COV_GAP;
+      const tickByIdx = new Map(ticks.map((t) => [t.bugIdx, t]));
+      spans.forEach((s) => {
+        let x = left + s.x0;
+        s.zone.bugs.forEach((bugIdx) => {
+          const t = tickByIdx.get(bugIdx);
+          if (t.hit) {
+            ctx.fillStyle = runColor(run.color);
+            ctx.fillRect(x, y, cellW, COV_TICK_H);
+          } else {
+            ctx.strokeStyle = T.rule;
+            ctx.lineWidth = 1;
+            ctx.strokeRect(x + 0.5, y + 0.5, Math.max(0.5, cellW - 1), COV_TICK_H - 1);
+          }
+          x += cellW + COV_GAP;
+        });
       });
+      for (let i = 1; i < spans.length; i += 1) {
+        const dx = left + (spans[i - 1].x1 + spans[i].x0) / 2;
+        line(ctx, dx, y, dx, y + COV_TICK_H, T.ink2, 2);
+      }
     } else {
       text(ctx, 'No per-bug data available for this run.', left, y + COV_TICK_H - 4, `italic 11.5px ${SANS}`, T.muted);
     }
@@ -532,8 +593,10 @@ export async function exportView({
   const isChart = Boolean(axis);
   const isCoverage = view === 'coverage';
   // computed once, used for the body-height estimate below and passed straight
-  // into drawCoverage — the same rows, order and counts either way
-  const covL = isCoverage ? coverageLayout(runs, meta) : null;
+  // into drawCoverage — the same rows, order, zones and counts either way,
+  // pivot included, so the exported card never disagrees with the screen it
+  // was exported from
+  const covL = isCoverage ? coverageLayout(runs, meta, state.pivot) : null;
 
   const w = isChart ? 1100 : 1240;
   const sortCol = COLUMNS.find((c) => c.key === state.sort);
@@ -586,8 +649,10 @@ export async function exportView({
       + 16 + Math.ceil(runs.length / 3) * 17 + 16;
   } else if (isCoverage) {
     // the same rhythm drawCoverage() draws in, so the canvas is never too
-    // short (clipped) or too tall (a band of empty plate before the footer)
-    bodyH = COV_TOP_GAP + COV_COLKEY_H + COV_AFTER_KEY_GAP
+    // short (clipped) or too tall (a band of empty plate before the footer) —
+    // including the zone-label row, which only exists while a pivot does
+    bodyH = COV_TOP_GAP + (covL.pivot ? COV_ZONELABEL_H + COV_ZONELABEL_GAP : 0)
+      + COV_COLKEY_H + COV_AFTER_KEY_GAP
       + covL.rows.length * (COV_LABEL_H + COV_TICK_H + COV_ROW_GAP);
   } else {
     bodyH = 34 + 8 + 20 + 9 + runs.length * 50 + 20;

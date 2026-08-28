@@ -765,14 +765,49 @@ h1 em { font-style: normal; color: var(--accent); }
    colour when that run fixed the bug (there can be a few dozen colours on
    screen, one per row), and hollow, in one neutral ring, when it did not —
    the ring is never the run's own colour at reduced opacity, because that
-   would read as a weaker fix rather than as no fix. */
+   would read as a weaker fix rather than as no fix.
+
+   A run's own row doubles as a PIVOT control (coverage.js wires the click and
+   the Enter/Space handling): pivoting sorts the columns into four zones
+   around what that run fixed, dividing them the same way in the repo strip,
+   every row's tick line and, while a pivot is active, a row of plain-word
+   labels above it all. Every one of those is a `.coverage__zoned` row built
+   from the same zone list, so a divider always lands in the same place top
+   to bottom. With no pivot active there is one zone — everything — so a
+   `.coverage__zoned` row renders exactly as a flat tick row always did: no
+   divider, no seam, no cost. */
 
 .coverage { background: var(--plate); border: 1px solid var(--hairline); padding: 16px 16px 18px; }
+
+/* Zoned layout: one flex group per non-empty zone, sized to its own share of
+   the columns, with a divider between any two zones that both have columns
+   on screen. `.coverage__colkey` and `.coverage__ticks` below carry this
+   class too, and add only their own height and vertical rhythm — the flex
+   mechanics live here once. */
+.coverage__zoned { display: flex; align-items: stretch; height: 100%; width: 100%; }
+.coverage__zonegroup { display: flex; gap: 2px; align-items: stretch; min-width: 0; flex: 1 1 0; }
+.coverage__divider {
+  flex: 0 0 auto; width: 2px; margin: 0 4px; align-self: stretch;
+  background: var(--ink-2); border-radius: 1px;
+}
+
+/* Plain-word zone labels ("shared", "only this model" — never A/B/C/D),
+   shown only while a pivot is active. Each sits over its own zone's share of
+   the width and quietly truncates rather than crowd its neighbour; the
+   caption underneath says the same thing in full sentences, so nothing is
+   lost by dropping this row on a narrow screen (see the media query below). */
+.coverage__zonelabels { display: flex; align-items: baseline; margin: 0 0 6px; }
+.coverage__zonelabel {
+  flex: 1 1 0; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-size: 10px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--muted);
+}
+.coverage__divider--label { align-self: stretch; }
 
 /* the shared column order applies to every row, so the strip marking which
    repo a column belongs to is drawn once, on the same flex rhythm as every
    row's own tick line — which is what keeps the two lined up */
-.coverage__colkey { display: flex; gap: 2px; height: 6px; margin: 0 0 12px; }
+.coverage__colkey { height: 6px; margin: 0 0 12px; }
 .coverage__colkey .tick { flex: 1 1 0; min-width: 0; height: 100%; border-radius: 1px; }
 .coverage__colkey .is-repo1 { background: var(--rule); }
 .coverage__colkey .is-repo2 {
@@ -781,6 +816,18 @@ h1 em { font-style: normal; color: var(--accent); }
 
 .coverage__rows { display: flex; flex-direction: column; gap: 16px; }
 .coverage__row--nodata { opacity: 0.55; }
+
+/* A row with per-bug data doubles as a pivot control. The hit area eats a
+   little into the row gap above and below (negative margin, matching
+   padding) so the highlight reads as one full rectangle rather than hugging
+   the text; :focus-visible's outline is the page-wide default (see :root
+   rule near the top of this file) and needs nothing extra here. A row with
+   no data never gets role="button" — coverage.js leaves it exactly as it was. */
+.coverage__row { border-radius: 4px; }
+.coverage__row[role="button"] { cursor: pointer; margin: -6px -8px; padding: 6px 8px; }
+.coverage__row[role="button"]:hover,
+.coverage__row[role="button"]:focus-visible { background: var(--accent-wash); }
+.coverage__row.is-pivot { background: var(--accent-wash); box-shadow: inset 3px 0 0 var(--accent); }
 
 .coverage__label {
   display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px;
@@ -792,10 +839,19 @@ h1 em { font-style: normal; color: var(--accent); }
   flex: none; margin-left: auto;
   font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12.5px;
 }
+/* the pivot's own row also carries a small filled chip, on the same
+   on-surface colours a pressed preset uses (see .preset[aria-pressed] above)
+   — the row highlight says "this one changed the order", the chip says what */
+.coverage__chip {
+  flex: none; display: inline-flex; align-items: center;
+  font-size: 9px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+  color: var(--on-ink); background: var(--on-bg);
+  border-radius: 2px; padding: 1px 5px;
+}
 
 /* the tick line proper: full width, one tick per bug, gap and radius matched
    to the hero rule so this reads as the same measure drawn per-run */
-.coverage__ticks { display: flex; gap: 2px; align-items: stretch; height: 16px; width: 100%; }
+.coverage__ticks { display: flex; align-items: stretch; height: 16px; width: 100%; }
 .coverage__ticks .tick { flex: 1 1 0; min-width: 0; border-radius: 1px; }
 .coverage__ticks .is-miss { background: transparent; box-shadow: inset 0 0 0 1px var(--rule); }
 .coverage__ticks--nodata { height: auto; align-items: center; }
@@ -804,6 +860,10 @@ h1 em { font-style: normal; color: var(--accent); }
 @media (max-width: 700px) {
   .coverage { padding: 12px 12px 14px; }
   .coverage__rows { gap: 14px; }
+  /* the caption already says in full sentences what these labels abbreviate —
+     dropping them here is losing a shortcut, not losing information */
+  .coverage__zonelabels { display: none; }
+  .coverage__divider { margin: 0 2px; }
 }
 
 /* ------------------------------------------------------------------- prose */
