@@ -15,7 +15,7 @@
      <html> before the first paint, so a dark-theme visitor never sees a white
      flash. It is a file rather than an inline block because the CSP has no
      'unsafe-inline'. -->
-<script src="/assets/js/theme-boot.js?v=8b9888d19c"></script>
+<script src="/assets/js/theme-boot.js?v=1417b1e724"></script>
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bug Hunt Bench">
@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=8b9888d19c">
+<link rel="stylesheet" href="/assets/css/site.css?v=1417b1e724">
 
 <!-- dateModified and url are patched at runtime from data/benchmark.json; keep the static values in sync anyway. -->
 <script type="application/ld+json" id="dataset-schema">
@@ -76,7 +76,7 @@
   ]
 }
 </script>
-<script type="module" src="/assets/js/main.js?v=8b9888d19c"></script>
+<script type="module" src="/assets/js/main.js?v=1417b1e724"></script>
 </head>
 <body>
 <a class="skip-link" href="#leaderboard">Skip to the leaderboard</a>
@@ -136,6 +136,7 @@
         <button type="button" class="preset" data-preset="featured">Featured</button>
         <button type="button" class="preset" data-preset="all">All runs</button>
         <button type="button" class="preset" data-preset="ceiling">Ceiling runs only</button>
+        <button type="button" class="preset" data-preset="best-per-lab">Best per lab</button>
         <button type="button" class="preset" data-preset="clear">Clear</button>
       </div>
     </div>
@@ -154,6 +155,7 @@
           <button type="button" class="tab" role="tab" id="tab-table" aria-controls="panel-table" aria-selected="true" data-view="table">Leaderboard</button>
           <button type="button" class="tab" role="tab" id="tab-scatter" aria-controls="panel-scatter" aria-selected="false" tabindex="-1" data-view="scatter">Score vs cost</button>
           <button type="button" class="tab" role="tab" id="tab-time" aria-controls="panel-time" aria-selected="false" tabindex="-1" data-view="time">Score vs time</button>
+          <button type="button" class="tab" role="tab" id="tab-coverage" aria-controls="panel-coverage" aria-selected="false" tabindex="-1" data-view="coverage">Coverage</button>
         </div>
         <button type="button" class="btn btn--export" id="export-png">Export this view (PNG)</button>
       </div>
@@ -201,6 +203,12 @@
         <span id="time-axis-note"></span>
         Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>.
       </p>
+    </div>
+
+    <div class="panel" id="panel-coverage" role="tabpanel" tabindex="0" aria-labelledby="tab-coverage" hidden>
+      <div class="coverage" id="coverage-host"></div>
+      <p class="empty" id="coverage-empty" hidden>No runs selected. Pick some above, or hit <strong>Featured</strong>.</p>
+      <div id="coverage-note"></div>
     </div>
   </section>
 

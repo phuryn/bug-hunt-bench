@@ -755,6 +755,57 @@ h1 em { font-style: normal; color: var(--accent); }
 }
 .chart__note strong { color: var(--ink-2); font-weight: 600; }
 
+/* ----------------------------------------------------------------- coverage
+
+   The fourth view: which of the 105 bugs each run fixed, and where models
+   overlap. Same tick vocabulary as the hero rule (.tickrule above) — equal
+   height, fill vs hollow, never a size difference standing in for a state
+   difference — so a reader who has already read the hero rule reads this one
+   for free. The one addition is colour: a tick is filled in the RUN'S own
+   colour when that run fixed the bug (there can be a few dozen colours on
+   screen, one per row), and hollow, in one neutral ring, when it did not —
+   the ring is never the run's own colour at reduced opacity, because that
+   would read as a weaker fix rather than as no fix. */
+
+.coverage { background: var(--plate); border: 1px solid var(--hairline); padding: 16px 16px 18px; }
+
+/* the shared column order applies to every row, so the strip marking which
+   repo a column belongs to is drawn once, on the same flex rhythm as every
+   row's own tick line — which is what keeps the two lined up */
+.coverage__colkey { display: flex; gap: 2px; height: 6px; margin: 0 0 12px; }
+.coverage__colkey .tick { flex: 1 1 0; min-width: 0; height: 100%; border-radius: 1px; }
+.coverage__colkey .is-repo1 { background: var(--rule); }
+.coverage__colkey .is-repo2 {
+  background-image: repeating-linear-gradient(45deg, var(--muted) 0 1.4px, transparent 1.4px 3px);
+}
+
+.coverage__rows { display: flex; flex-direction: column; gap: 16px; }
+.coverage__row--nodata { opacity: 0.55; }
+
+.coverage__label {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px;
+  margin-bottom: 5px; font-size: 13px; color: var(--ink-2);
+}
+.coverage__label .swatch { margin-top: 0; }
+.coverage__name { flex: 1 1 auto; min-width: 0; font-weight: 600; color: var(--ink); }
+.coverage__count {
+  flex: none; margin-left: auto;
+  font-variant-numeric: tabular-nums; color: var(--muted); font-size: 12.5px;
+}
+
+/* the tick line proper: full width, one tick per bug, gap and radius matched
+   to the hero rule so this reads as the same measure drawn per-run */
+.coverage__ticks { display: flex; gap: 2px; align-items: stretch; height: 16px; width: 100%; }
+.coverage__ticks .tick { flex: 1 1 0; min-width: 0; border-radius: 1px; }
+.coverage__ticks .is-miss { background: transparent; box-shadow: inset 0 0 0 1px var(--rule); }
+.coverage__ticks--nodata { height: auto; align-items: center; }
+.coverage__nodata { font-size: 12px; color: var(--muted); font-style: italic; }
+
+@media (max-width: 700px) {
+  .coverage { padding: 12px 12px 14px; }
+  .coverage__rows { gap: 14px; }
+}
+
 /* ------------------------------------------------------------------- prose */
 
 /* the method page's own header: one column, no rail, no tick rule */

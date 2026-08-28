@@ -9,22 +9,52 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
-} from './format.js?v=8b9888d19c';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=8b9888d19c';
-import { renderScatter, AXES } from './scatter.js?v=8b9888d19c';
-import { renderPicker } from './selector.js?v=8b9888d19c';
-import { exportView } from './export-png.js?v=8b9888d19c';
-import { initTheme, hasAdjustedColors } from './theme.js?v=8b9888d19c';
+} from './format.js?v=1417b1e724';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=1417b1e724';
+import { renderScatter, AXES } from './scatter.js?v=1417b1e724';
+import { renderPicker } from './selector.js?v=1417b1e724';
+import { exportView } from './export-png.js?v=1417b1e724';
+import { initTheme, hasAdjustedColors } from './theme.js?v=1417b1e724';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=1417b1e724';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
   all: { test: () => true, name: 'All runs' },
   ceiling: { test: (r) => r.ceiling === true, name: 'Ceiling runs only' },
+  /* One row per vendor: its best `fixed` score, ties broken by the cheaper
+     run. RUNS never carries a superseded row — newestPerTier() filters those
+     out at boot — so "non-superseded" needs no test of its own here. Exists
+     to keep the Coverage view readable: the full board is 20+ rows of ticks,
+     this is one per lab. */
+  'best-per-lab': {
+    name: 'Best per lab',
+    select: (runs) => {
+      const bestByVendor = new Map();
+      runs.forEach((r) => {
+        const cur = bestByVendor.get(r.vendor);
+        const better = !cur
+          || r.fixed > cur.fixed
+          || (r.fixed === cur.fixed && (r.cost_usd ?? Infinity) < (cur.cost_usd ?? Infinity));
+        if (better) bestByVendor.set(r.vendor, r);
+      });
+      return new Set([...bestByVendor.values()].map((r) => r.slug));
+    },
+  },
   clear: { test: () => false, name: 'Nothing selected' },
 };
 
-/* The three views and the panels they live in. A fourth measure would mean an
-   axis spec in scatter.js and a row here — not a new renderer. */
+/** A preset's selected slugs. Most presets are a per-row test; "best per lab"
+    is a per-vendor pick that has to see every run at once. One entry point
+    either way, so applyPreset/detectPreset don't care which kind a preset is. */
+function presetSlugs(key, runs) {
+  const p = PRESETS[key];
+  return p.select ? p.select(runs) : new Set(runs.filter(p.test).map((r) => r.slug));
+}
+
+/* The four views and the panels they live in. Score-vs-cost and score-vs-time
+   share one axis-driven renderer (scatter.js) — a fifth x/y measure there
+   would mean an axis spec and a row here, not a new renderer. Coverage has no
+   axis: it is its own renderer (coverage.js), wired in below. */
 const VIEWS = {
   table: { panel: 'panel-table', tab: 'tab-table' },
   scatter: {
@@ -34,6 +64,10 @@ const VIEWS = {
   time: {
     panel: 'panel-time', tab: 'tab-time', axis: AXES.time,
     host: 'chart-time', legend: 'time-legend', empty: 'time-empty', note: 'time-axis-note',
+  },
+  coverage: {
+    panel: 'panel-coverage', tab: 'tab-coverage',
+    host: 'coverage-host', empty: 'coverage-empty', note: 'coverage-note',
   },
 };
 const CHART_VIEWS = ['scatter', 'time'];
@@ -57,6 +91,8 @@ const state = {
 let DATA = null;
 let RUNS = [];
 let SITE_URL = '';
+// set once at boot: whether any run on the board carries `fixed_bugs` at all
+let coverageEnabled = false;
 
 const NUMBER_WORD = ['no', 'one', 'Two', 'Three', 'Four', 'Five', 'Six'];
 
@@ -70,17 +106,25 @@ function selectedRuns() {
 
 function applyPreset(key) {
   state.preset = key;
-  state.selected = new Set(RUNS.filter(PRESETS[key].test).map((r) => r.slug));
+  state.selected = presetSlugs(key, RUNS);
 }
 
 function detectPreset() {
   for (const key of Object.keys(PRESETS)) {
-    const set = new Set(RUNS.filter(PRESETS[key].test).map((r) => r.slug));
+    const set = presetSlugs(key, RUNS);
     if (set.size === state.selected.size && [...set].every((s) => state.selected.has(s))) {
       return key;
     }
   }
   return null;
+}
+
+/* Coverage needs `fixed_bugs` on at least one run; older data won't have it
+   yet (see the data contract this view was built against). The tab is hidden
+   rather than shown pointing at an always-empty view, and a stale ?view=
+   link that names it anyway falls back to the table. */
+function sanitizeView() {
+  if (state.view === 'coverage' && !coverageEnabled) state.view = 'table';
 }
 
 function readUrl() {
@@ -364,6 +408,20 @@ function renderChart(key) {
   });
 }
 
+/** Coverage: which bugs each selected run fixed. Redrawn on every selection
+    change, because the column order and the summary counts are both a
+    property of the selection, not fixed facts about the data. */
+function renderCoverageView() {
+  const runs = selectedRuns();
+  const L = renderCoverage($('coverage-host'), runs, DATA.meta, DATA.glossary);
+  const note = $('coverage-note');
+  note.textContent = '';
+  if (!L) return;
+  note.appendChild(el('p', { class: 'chart__note', text: coverageOrderNote(L) }));
+  const summary = coverageSummaryNote(L);
+  if (summary) note.appendChild(el('p', { class: 'chart__note', text: summary }));
+}
+
 /* The picker is 25 runs deep and starts closed. Building it into the collapsed
    details put a few hundred words of markup between the reader and the board for
    nothing, so it is built when it is opened and dropped when it is shut. */
@@ -389,6 +447,9 @@ function renderViews() {
     $(VIEWS[k].host).hidden = empty;
     if (empty) $(VIEWS[k].legend).textContent = '';
   });
+  $('coverage-empty').hidden = !empty;
+  $('coverage-host').hidden = empty;
+  if (empty) $('coverage-note').textContent = '';
   $('export-png').disabled = empty;
   $('export-png').title = empty ? 'Select at least one run to export' : 'Download the current view as a PNG';
 
@@ -399,6 +460,7 @@ function renderViews() {
   renderKeys();
 
   if (!empty && VIEWS[state.view].axis) renderChart(state.view);
+  else if (!empty && state.view === 'coverage') renderCoverageView();
 
   const label = state.preset ? PRESETS[state.preset].name : 'Custom selection';
   $('picker-summary').textContent = '';
@@ -478,7 +540,9 @@ function wire() {
 
   $('picker').addEventListener('toggle', renderPickerIfOpen);
 
-  const tabs = [...document.querySelectorAll('.tab')];
+  // a hidden tab (Coverage, with no coverage data on the board) is not a stop
+  // on the keyboard cycle any more than it is a click target
+  const tabs = [...document.querySelectorAll('.tab')].filter((t) => !t.hidden);
   tabs.forEach((tab, i) => {
     tab.addEventListener('click', () => setView(tab.dataset.view));
     tab.addEventListener('keydown', (e) => {
@@ -524,6 +588,7 @@ function wire() {
 
   window.addEventListener('popstate', () => {
     readUrl();
+    sanitizeView();
     renderAll();
     setView(state.view);
   });
@@ -582,6 +647,12 @@ async function boot() {
 
   RUNS = newestPerTier(DATA.runs.filter((r) => !r.superseded)).map((r) => ({ ...r, slug: slugify(r.id) }));
 
+  // Coverage needs at least one run with per-bug data; hide the tab rather
+  // than open onto a view that can only ever say "no per-bug data available".
+  coverageEnabled = RUNS.some((r) => Array.isArray(r.fixed_bugs));
+  const coverageTab = $('tab-coverage');
+  if (coverageTab) coverageTab.hidden = !coverageEnabled;
+
   const board = document.getElementById('board');
   board.setAttribute('role', 'table');
   renderColgroup(board);
@@ -598,6 +669,7 @@ async function boot() {
   patchSchema();
 
   readUrl();
+  sanitizeView();
   wire();
   // a theme change repaints every run colour, so the whole board is rebuilt
   initTheme(() => renderAll());

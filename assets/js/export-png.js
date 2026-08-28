@@ -12,9 +12,10 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
-} from './format.js?v=8b9888d19c';
-import { scatterLayout, AXES } from './scatter.js?v=8b9888d19c';
-import { runColor, activeTheme } from './theme.js?v=8b9888d19c';
+} from './format.js?v=1417b1e724';
+import { scatterLayout, AXES } from './scatter.js?v=1417b1e724';
+import { coverageLayout, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=1417b1e724';
+import { runColor, activeTheme } from './theme.js?v=1417b1e724';
 
 const SCALE = 2;
 const PAD = 32;
@@ -436,6 +437,91 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
   return L;
 }
 
+/* ----------------------------------------------------------------- coverage
+
+   Same rows, same column order, same colours as the on-screen view — both
+   read them from the one pure coverageLayout(runs, meta), which knows nothing
+   about pixels. Only the geometry below (gaps, row heights) is canvas-only,
+   the way drawTable's rowH and drawScatter's plot size are; the DOM version
+   gets its geometry from CSS flexbox instead. The constants are shared with
+   the body-height estimate in exportView() so the two cannot drift apart. */
+
+const COV_GAP = 2;
+const COV_COLKEY_H = 6;
+const COV_LABEL_H = 20;
+const COV_TICK_H = 15;
+const COV_ROW_GAP = 12;
+const COV_TOP_GAP = 20;
+const COV_AFTER_KEY_GAP = 14;
+
+function drawCoverage(ctx, T, L, w) {
+  const left = PAD;
+  const plotW = w - PAD * 2;
+  let y = ctx.__y + COV_TOP_GAP;
+
+  const n = L.bugCount;
+  const cellW = Math.max(0.5, (plotW - (n - 1) * COV_GAP) / n);
+
+  // the repo strip: which repo each column belongs to, in the shared order —
+  // solid for repo 1, a faint tint for repo 2, echoing the hatch elsewhere
+  // without needing a pattern at sub-pixel tick width
+  let x = left;
+  L.order.forEach((bugIdx) => {
+    if (bugIdx <= L.repo1Count) {
+      ctx.fillStyle = T.rule;
+      ctx.fillRect(x, y, cellW, COV_COLKEY_H);
+    } else {
+      ctx.fillStyle = T.muted;
+      ctx.globalAlpha = 0.45;
+      ctx.fillRect(x, y, cellW, COV_COLKEY_H);
+      ctx.globalAlpha = 1;
+    }
+    x += cellW + COV_GAP;
+  });
+  y += COV_COLKEY_H + COV_AFTER_KEY_GAP;
+
+  L.rows.forEach(({ run, hasData, ticks }) => {
+    // label line: swatch, model + badge, fixed count at the right edge
+    ctx.fillStyle = runColor(run.color);
+    ctx.fillRect(left, y + 1, 10, 10);
+    const suffix = effortSuffix(run);
+    const badge = `${String(run.effort || '').toUpperCase()}${suffix ? ` · ${suffix}` : ''}`;
+    const countStr = `${fmtInt(run.fixed)}/${L.bugCount}`;
+    ctx.font = `12px ${SANS}`;
+    const countW = ctx.measureText(countStr).width;
+    const nameMaxW = Math.max(40, plotW - 26 - countW - 16);
+    ctx.font = `600 13px ${SANS}`;
+    const name = truncate(ctx, run.model, `600 13px ${SANS}`, nameMaxW);
+    text(ctx, name, left + 18, y + 10, `600 13px ${SANS}`, run.superseded ? T.muted : T.ink);
+    const nameW = ctx.measureText(name).width;
+    text(ctx, badge, left + 18 + nameW + 6, y + 9, `600 9px ${SANS}`, T.ink2);
+    text(ctx, countStr, left + plotW, y + 10, `12px ${SANS}`, T.muted, 'right');
+    y += COV_LABEL_H;
+
+    // tick line: one tick per bug, in the shared column order
+    if (hasData) {
+      let tx = left;
+      ticks.forEach((t) => {
+        if (t.hit) {
+          ctx.fillStyle = runColor(run.color);
+          ctx.fillRect(tx, y, cellW, COV_TICK_H);
+        } else {
+          ctx.strokeStyle = T.rule;
+          ctx.lineWidth = 1;
+          ctx.strokeRect(tx + 0.5, y + 0.5, Math.max(0.5, cellW - 1), COV_TICK_H - 1);
+        }
+        tx += cellW + COV_GAP;
+      });
+    } else {
+      text(ctx, 'No per-bug data available for this run.', left, y + COV_TICK_H - 4, `italic 11.5px ${SANS}`, T.muted);
+    }
+    y += COV_TICK_H + COV_ROW_GAP;
+  });
+
+  ctx.__y = y - COV_ROW_GAP;
+  return L;
+}
+
 /* -------------------------------------------------------------------- main */
 
 export async function exportView({
@@ -444,6 +530,10 @@ export async function exportView({
   if (document.fonts && document.fonts.ready) await document.fonts.ready;
   const T = theme();
   const isChart = Boolean(axis);
+  const isCoverage = view === 'coverage';
+  // computed once, used for the body-height estimate below and passed straight
+  // into drawCoverage — the same rows, order and counts either way
+  const covL = isCoverage ? coverageLayout(runs, meta) : null;
 
   const w = isChart ? 1100 : 1240;
   const sortCol = COLUMNS.find((c) => c.key === state.sort);
@@ -465,16 +555,22 @@ export async function exportView({
      under the table has to be on it: how the bars are scaled, and which of these
      dollar figures are bills. The cost sentence is generated from the runs on
      THIS card, exactly as the key generates it from the runs on screen. */
-  const costLine = !isChart || axis.id === 'cost'
+  // coverage has no cost sentence of its own — the caption there is the order
+  // note and the summary counts, added to the footer lines below instead
+  const costLine = (isChart ? axis.id === 'cost' : !isCoverage)
     ? segmentsText(costSentence(runs, glossary))
     : '';
   const footerLines = [
     isChart
       ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${axis.id === 'cost' ? 'Cost on a logarithmic axis' : 'Wall clock on a linear axis'}; the score axis stops above the board's best run, which is out of 105.`
-      : `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Sorted by ${sortLabel}.`,
+      : isCoverage
+        ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}.`
+        : `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Sorted by ${sortLabel}.`,
     'Score = planted bugs fixed, verified blind against a withheld answer key. Unplanted defects are real, but they are counted separately and never added to the score.',
     // the same sentence the page carries, because an exported PNG travels alone
-    isChart ? null : BAR_SCALE_NOTE,
+    isChart || isCoverage ? null : BAR_SCALE_NOTE,
+    isCoverage ? coverageOrderNote(covL) : null,
+    isCoverage ? coverageSummaryNote(covL) : null,
     costLine || null,
     siteUrl,
   ].filter(Boolean)
@@ -488,6 +584,11 @@ export async function exportView({
     bodyH = 20 + Math.round(plotW * 0.5) + 8
       + (defLines.length ? 14 + defLines.length * 15 - 4 : 0)
       + 16 + Math.ceil(runs.length / 3) * 17 + 16;
+  } else if (isCoverage) {
+    // the same rhythm drawCoverage() draws in, so the canvas is never too
+    // short (clipped) or too tall (a band of empty plate before the footer)
+    bodyH = COV_TOP_GAP + COV_COLKEY_H + COV_AFTER_KEY_GAP
+      + covL.rows.length * (COV_LABEL_H + COV_TICK_H + COV_ROW_GAP);
   } else {
     bodyH = 34 + 8 + 20 + 9 + runs.length * 50 + 20;
   }
@@ -506,11 +607,14 @@ export async function exportView({
   ctx.lineWidth = 1;
   ctx.strokeRect(0.5, 0.5, w - 1, h - 1);
 
-  const title = isChart ? axis.chartTitle : 'Leaderboard';
-  const subtitle = 'Planted bugs only — unplanted fixes are never added to the score.';
+  const title = isChart ? axis.chartTitle : isCoverage ? 'Coverage' : 'Leaderboard';
+  const subtitle = isCoverage
+    ? 'Which of the 105 planted bugs each run fixed, and where models overlap.'
+    : 'Planted bugs only — unplanted fixes are never added to the score.';
   ctx.__y = drawHeader(ctx, T, w, title, subtitle, { updatedLong: fmtDate(meta.updated) }, siteUrl);
 
   if (isChart) drawScatter(ctx, T, runs, allRuns, w, axis, defLines);
+  else if (isCoverage) drawCoverage(ctx, T, covL, w);
   else drawTable(ctx, T, runs, state, w);
 
   drawFooter(ctx, T, w, Math.max(ctx.__y + 10, h - footH), footerLines);
@@ -520,7 +624,7 @@ export async function exportView({
   const a = document.createElement('a');
   a.href = url;
   // the view and the theme are both baked into the file name, so two exports never collide
-  a.download = `bug-hunt-bench-${isChart ? axis.slug : 'leaderboard'}-${activeTheme()}-${meta.updated}.png`;
+  a.download = `bug-hunt-bench-${isChart ? axis.slug : isCoverage ? 'coverage' : 'leaderboard'}-${activeTheme()}-${meta.updated}.png`;
   document.body.appendChild(a);
   a.click();
   a.remove();

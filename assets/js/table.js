@@ -26,8 +26,8 @@
 import {
   COLUMNS, GROUPS, TOTALS, fmtCost, fmtWall, fmtInt,
   barRatio, barScales, effortSuffix, effortDefKey, defHref, el, svgEl, compareRuns,
-} from './format.js?v=8b9888d19c';
-import { runColor } from './theme.js?v=8b9888d19c';
+} from './format.js?v=1417b1e724';
+import { runColor } from './theme.js?v=1417b1e724';
 
 const MOBILE_LABEL = {
   fixed: 'Fixed of 105',
@@ -128,11 +128,14 @@ function rowTitle(run) {
    the clamped run, where the tool ran something lower than the badge asked for:
    that is a published correction and it stays on its own row. Either way the
    badge links at its definition, which reads in plain English, from the data. */
-function modelCell(run, glossary) {
-  const meta = [run.vendor, run.harness].filter(Boolean).join(' · ');
+/** The effort badge alone: the tier a run was asked for, linked at its
+    definition. Factored out of modelCell so any other view that shows a
+    run's identity next to its badge can use the same element rather than
+    rebuilding it — currently table.js here and coverage.js. */
+export function effortBadge(run, glossary) {
   const defKey = effortDefKey(run);
   const suffix = effortSuffix(run);
-  const badge = el('a', {
+  return el('a', {
     class: 'badge',
     href: defKey ? defHref(defKey) : null,
     title: (glossary && glossary[defKey]) || `Reasoning effort tier requested for this run: ${run.effort}`,
@@ -143,6 +146,11 @@ function modelCell(run, glossary) {
     el('span', { class: 'badge__tier', text: run.effort }),
     suffix ? el('span', { class: 'badge__note', text: suffix }) : null,
   ]);
+}
+
+function modelCell(run, glossary) {
+  const meta = [run.vendor, run.harness].filter(Boolean).join(' · ');
+  const badge = effortBadge(run, glossary);
 
   const body = el('span', { class: 'model__body' }, [
     el('span', { class: 'model__name' }, [run.model, ' ', badge]),
