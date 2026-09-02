@@ -6,10 +6,10 @@
     "repo1_total": 45,
     "repo2_total": 60,
     "survivors": 43,
-    "models": 20,
+    "models": 21,
     "bug_count": 105,
     "repo1_bug_count": 45,
-    "runs": 47,
+    "runs": 48,
     "updated": "2026-09-02",
     "source_repo": "https://github.com/phuryn/experiments/tree/main/bug-hunt-bench",
     "author": "Pawel Huryn",
@@ -1223,7 +1223,7 @@
       "effort": "high",
       "effort_status": "verified_ceiling",
       "date": "2026-08-24",
-      "color": "#2C6FE0",
+      "color": "#A0BEF1",
       "fixed": 22,
       "repo1_fixed": 8,
       "repo2_fixed": 14,
@@ -1264,7 +1264,7 @@
         99,
         100
       ],
-      "group_rank": 2
+      "group_rank": 102
     },
     {
       "id": "Kimi K3",
@@ -1414,6 +1414,55 @@
         102
       ],
       "group_rank": 101
+    },
+    {
+      "id": "Gemini 3.8 Flash",
+      "model": "Gemini 3.8 Flash",
+      "vendor": "Google",
+      "harness": "Antigravity CLI",
+      "effort": "high",
+      "effort_status": "verified_ceiling",
+      "date": "2026-09-02",
+      "color": "#2C6FE0",
+      "fixed": 20,
+      "repo1_fixed": 7,
+      "repo2_fixed": 13,
+      "partial": 1,
+      "claimed_only": 1,
+      "extras": 6,
+      "false_positive_fixes": 0,
+      "wall_min": 29.8,
+      "cost_usd": 9.78,
+      "cost_kind": "list",
+      "wall_note": null,
+      "ceiling": true,
+      "featured": true,
+      "superseded": null,
+      "caveat": null,
+      "note": null,
+      "fixed_bugs": [
+        13,
+        16,
+        20,
+        30,
+        33,
+        34,
+        45,
+        47,
+        60,
+        62,
+        76,
+        82,
+        83,
+        84,
+        92,
+        97,
+        98,
+        99,
+        100,
+        102
+      ],
+      "group_rank": 2
     },
     {
       "id": "GLM-5.3",
@@ -1613,7 +1662,7 @@
       "effort": "high",
       "effort_status": "verified_ceiling",
       "date": "2026-08-25",
-      "color": "#2C6FE0",
+      "color": "#A0BEF1",
       "fixed": 18,
       "repo1_fixed": 4,
       "repo2_fixed": 14,
@@ -1650,7 +1699,7 @@
         99,
         100
       ],
-      "group_rank": 2
+      "group_rank": 102
     },
     {
       "id": "Grok 4.5 (re-run Aug 6)",
@@ -1842,7 +1891,7 @@
       "effort": "high",
       "effort_status": "verified_ceiling",
       "date": "2026-08-28",
-      "color": "#2C6FE0",
+      "color": "#A0BEF1",
       "fixed": 16,
       "repo1_fixed": 4,
       "repo2_fixed": 12,
@@ -1877,7 +1926,7 @@
         99,
         102
       ],
-      "group_rank": 2
+      "group_rank": 102
     },
     {
       "id": "GPT-5.6 Terra (medium effort)",
