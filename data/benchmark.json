@@ -5,12 +5,12 @@
     "planted_total": 105,
     "repo1_total": 45,
     "repo2_total": 60,
-    "survivors": 43,
-    "models": 21,
+    "survivors": 40,
+    "models": 22,
     "bug_count": 105,
     "repo1_bug_count": 45,
-    "runs": 48,
-    "updated": "2026-09-02",
+    "runs": 49,
+    "updated": "2026-09-04",
     "source_repo": "https://github.com/phuryn/experiments/tree/main/bug-hunt-bench",
     "author": "Pawel Huryn",
     "author_url": "https://www.productcompass.pm",
@@ -41,9 +41,86 @@
     "One round per model per repo. Same-setting variance is real and measured: three Grok 4.5 runs on identical settings scored 16, 13 and 17.",
     "Wall clock is the same measure on every row: repo 1 plus repo 2 agent time, with dependency install and health checks excluded. Two things bend it, and both are marked on the score-and-time map. Three runs took their two repo legs concurrently - the sum is still like-for-like, but two agents sharing one machine and one API key contend, so those figures can run high rather than low. And one figure is adjusted: the retired-Gemini-CLI run excludes a 35-minute harness stall, the only number here that is not what the harness measured.",
     "Cost is not one kind of number: some figures are an actual bill, some are a token-count estimate at published list rates, one CLI only allows a reconstructed lower bound, and one run was free. The key under the board names which is which - they are not interchangeable, and none of them is a quote for what you would pay.",
-    "43 of the 105 bugs have survived every model in every run to date. The count moves as new runs land: it fell from 49 to 44 during the 27-28 August waves."
+    "40 of the 105 bugs have survived every model in every run to date. The count moves as new runs land: it fell from 49 to 44 during the 27-28 August waves."
   ],
   "runs": [
+    {
+      "id": "GPT-6 Astra (max effort)",
+      "model": "GPT-6 Astra",
+      "vendor": "OpenAI",
+      "harness": "Codex CLI",
+      "effort": "max",
+      "effort_status": "first_party",
+      "date": "2026-09-04",
+      "color": "#1B9E77",
+      "fixed": 48,
+      "repo1_fixed": 24,
+      "repo2_fixed": 24,
+      "partial": 0,
+      "claimed_only": 0,
+      "extras": 45,
+      "false_positive_fixes": 1,
+      "wall_min": 78.8,
+      "cost_usd": 31.21,
+      "cost_kind": "list",
+      "wall_note": null,
+      "ceiling": true,
+      "featured": true,
+      "superseded": null,
+      "caveat": null,
+      "note": null,
+      "fixed_bugs": [
+        13,
+        16,
+        20,
+        21,
+        22,
+        23,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        33,
+        34,
+        35,
+        36,
+        37,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        49,
+        50,
+        51,
+        60,
+        61,
+        62,
+        66,
+        68,
+        69,
+        71,
+        74,
+        76,
+        77,
+        82,
+        83,
+        84,
+        92,
+        95,
+        98,
+        99,
+        100,
+        102
+      ],
+      "group_rank": 0
+    },
     {
       "id": "Fable 5.1 (max effort)",
       "model": "Fable 5.1",
@@ -124,7 +201,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-08-01",
-      "color": "#1B9E77",
+      "color": "#45B090",
       "fixed": 42,
       "repo1_fixed": 19,
       "repo2_fixed": 23,
@@ -185,7 +262,7 @@
         100,
         102
       ],
-      "group_rank": 0
+      "group_rank": 100
     },
     {
       "id": "GPT-5.6 Sol (xhigh effort)",
@@ -195,7 +272,7 @@
       "effort": "xhigh",
       "effort_status": "first_party",
       "date": "2026-08-28",
-      "color": "#1B9E77",
+      "color": "#45B090",
       "fixed": 39,
       "repo1_fixed": 18,
       "repo2_fixed": 21,
@@ -253,7 +330,7 @@
         100,
         102
       ],
-      "group_rank": 1
+      "group_rank": 101
     },
     {
       "id": "GPT-5.6 Sol (re-run Jul 31)",
@@ -263,7 +340,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-07-31",
-      "color": "#1B9E77",
+      "color": "#45B090",
       "fixed": 34,
       "repo1_fixed": 13,
       "repo2_fixed": 21,
@@ -316,7 +393,7 @@
         99,
         102
       ],
-      "group_rank": 2
+      "group_rank": 102
     },
     {
       "id": "GPT-5.6 Luna (max effort)",
@@ -378,7 +455,7 @@
         99,
         100
       ],
-      "group_rank": 200
+      "group_rank": 300
     },
     {
       "id": "Fable 5.1",
@@ -450,7 +527,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-08-27",
-      "color": "#5AB99C",
+      "color": "#6FC2A9",
       "fixed": 32,
       "repo1_fixed": 16,
       "repo2_fixed": 16,
@@ -501,7 +578,7 @@
         99,
         102
       ],
-      "group_rank": 100
+      "group_rank": 200
     },
     {
       "id": "GPT-5.6 Sol",
@@ -511,7 +588,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-07-26",
-      "color": "#1B9E77",
+      "color": "#45B090",
       "fixed": 31,
       "repo1_fixed": 13,
       "repo2_fixed": 18,
@@ -561,7 +638,7 @@
         100,
         102
       ],
-      "group_rank": 2
+      "group_rank": 102
     },
     {
       "id": "Fable 5.1 (low effort)",
@@ -1058,7 +1135,7 @@
         99,
         102
       ],
-      "group_rank": 201
+      "group_rank": 301
     },
     {
       "id": "Grok 4.6 (medium)",
@@ -1374,7 +1451,7 @@
       "effort": "xhigh",
       "effort_status": "first_party",
       "date": "2026-08-28",
-      "color": "#5AB99C",
+      "color": "#6FC2A9",
       "fixed": 20,
       "repo1_fixed": 9,
       "repo2_fixed": 11,
@@ -1413,7 +1490,7 @@
         99,
         102
       ],
-      "group_rank": 101
+      "group_rank": 201
     },
     {
       "id": "Gemini 3.8 Flash",
@@ -1615,7 +1692,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-08-27",
-      "color": "#5AB99C",
+      "color": "#6FC2A9",
       "fixed": 18,
       "repo1_fixed": 7,
       "repo2_fixed": 11,
@@ -1652,7 +1729,7 @@
         99,
         102
       ],
-      "group_rank": 102
+      "group_rank": 202
     },
     {
       "id": "Gemini 3.7 Flash (high; Antigravity CLI retest)",
@@ -1936,7 +2013,7 @@
       "effort": "medium",
       "effort_status": "first_party",
       "date": "2026-08-27",
-      "color": "#5AB99C",
+      "color": "#6FC2A9",
       "fixed": 15,
       "repo1_fixed": 4,
       "repo2_fixed": 11,
@@ -1970,7 +2047,7 @@
         100,
         102
       ],
-      "group_rank": 103
+      "group_rank": 203
     },
     {
       "id": "Grok 4.6 (low)",
@@ -2142,7 +2219,7 @@
         84,
         99
       ],
-      "group_rank": 202
+      "group_rank": 302
     },
     {
       "id": "GLM-5.3 Flash",
@@ -2303,7 +2380,7 @@
         83,
         99
       ],
-      "group_rank": 203
+      "group_rank": 303
     },
     {
       "id": "Sonnet 5",
@@ -2449,7 +2526,7 @@
         83,
         99
       ],
-      "group_rank": 204
+      "group_rank": 304
     }
   ]
 }
