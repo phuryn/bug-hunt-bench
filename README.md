@@ -128,7 +128,7 @@ The answer keys, the seeded sources and the per-model diffs are withheld and are
 
 ### Can I run it on my own model, or reproduce a row?
 
-Not directly: the seeded repositories are withheld to keep the bench usable. What is public is everything needed to check a number — the exact prompts, every scoreboard and metrics row, per-bug coverage by index, the judge calibration, and the effort-dial probes. To get a model on the board, open an issue with the model, the harness it ships with, and the serving path; runs are added as models become reachable.
+Not directly: the seeded repositories are withheld to keep the bench usable. What is public is everything needed to check a number — the exact prompts, every scoreboard and metrics row, per-bug coverage by index, the judge calibration, and the effort-dial probes. To get a model on the board, tell me which model, which first-party CLI it ships with and which serving path (X: [@PawelHuryn](https://x.com/PawelHuryn), LinkedIn: [pawel-huryn](https://www.linkedin.com/in/pawel-huryn)); runs are added as models become reachable.
 
 ### Why is model X not on the board?
 
@@ -154,8 +154,10 @@ The count of bugs never fixed by any model in any run is in the header of the ta
 
 The runner, the answer keys, the seeded repositories and the judge transcripts live in a private repository. Numbers flow one way: runs are scored there, receipts are published here, the site is generated from the receipts. No figure on the board or in this README is typed by hand.
 
+**This repository does not accept contributions.** No pull requests, no issues: there is nothing here to edit by hand, and a hand edit would be overwritten on the next wave. Issues, wiki and discussions are switched off; pull requests are closed automatically. If a number is wrong or a model is missing, reach me on [X](https://x.com/PawelHuryn) or [LinkedIn](https://www.linkedin.com/in/pawel-huryn). Details: [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+
 ## Author and license
 
 Built and run by [Pawel Huryn](https://www.productcompass.pm) — [Product Compass](https://www.productcompass.pm), [X](https://x.com/PawelHuryn), [LinkedIn](https://www.linkedin.com/in/pawel-huryn). Related: [pm-skills](https://github.com/phuryn/pm-skills), agent skills for product managers.
 
-MIT. Use anything; a link back is appreciated. If a number in a post and a receipt here disagree, the receipt wins and I want to know.
+MIT. Use anything; a link back is appreciated. If a number in a post and a receipt here disagree, the receipt wins and I want to know: [X](https://x.com/PawelHuryn) or [LinkedIn](https://www.linkedin.com/in/pawel-huryn).

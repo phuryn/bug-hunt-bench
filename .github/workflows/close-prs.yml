@@ -1,0 +1,33 @@
+# GitHub cannot disable pull requests on a public repository. This closes them on arrival with a
+# pointer to CONTRIBUTING.md, so a PR never sits open looking like something that might be merged.
+# pull_request_target runs with repo permissions for PRs from forks; it never checks out or runs the
+# PR's code - it only calls the API.
+name: No pull requests
+
+on:
+  pull_request_target:
+    types: [opened, reopened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  close:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            await github.rest.issues.createComment({
+              owner, repo, issue_number,
+              body: [
+                'Thanks for the interest, but this repository does not accept pull requests.',
+                '',
+                'Every number here is generated from blind-judged verdicts by a private runner, so there is nothing to edit by hand: a change would be overwritten on the next wave. If a number is wrong, or a model is missing from the board, please reach out instead - see [CONTRIBUTING.md](https://github.com/' + owner + '/' + repo + '/blob/main/.github/CONTRIBUTING.md).',
+                '',
+                'Closing automatically.',
+              ].join('\n'),
+            });
+            await github.rest.pulls.update({ owner, repo, pull_number: issue_number, state: 'closed' });
