@@ -536,6 +536,7 @@ otherwise idle machine, judged blind by Grok 4.6 (non-sibling — no model grade
 | **GPT-6 Astra** | **xhigh** | **43** | 23 | 20 | 1 | 53 | 58.8 min | $24.22 |
 | **GPT-6 Astra** | **high** | **35** | 19 | 16 | 2 | 40 | 40.5 min | $20.60 |
 | **GPT-6 Astra** | **medium** | **34** | 19 | 15 | 1 | 33 | 28.0 min | $15.78 |
+| **GPT-6 Astra** | **low** | **27** | 18 | 9 | **0** | 25 | 32.1 min | $11.69 |
 | Claude Fable 5.1 | max | 43 | 19 | 24 | 4 | 11 | 73.1 min | $77.55 |
 | GPT-5.6 Sol | max | 42 | 19 | 23 | 0 | 40 | 163.8 min | $69.61 |
 
@@ -599,12 +600,12 @@ otherwise idle machine, judged blind by Grok 4.6 (non-sibling — no model grade
   **30 unplanted extras against 16 planted fixes on repo 2** — nearly two incidental finds for every
   bug it was actually asked to fix. Lower effort is not just finding less; it is spending a larger
   share of what it does find away from the task.
-- **The dial's whole story is one step.** 48 → 43 → 35 → 34. The drop from `high` to `medium` is
+- **Down to `medium`, the dial's whole story was one step.** 48 → 43 → 35 → 34 (the `low` row, below, reopens it). The drop from `high` to `medium` is
   **one fix** — those two tiers are the same result on this bench, separated by nothing that clears
   the ±2–3 variance band. Everything the dial actually buys sits in the two steps above `high`, and
   the biggest single step is the top one.
 - **Cost per fix is flat-to-inverted, which is the uncomfortable part.** $0.65 at max, $0.56 at xhigh,
-  $0.59 at high, **$0.46 at medium** — and throughput rises monotonically (0.61 → 1.21 fixes/min). If
+  $0.59 at high, **$0.46 at medium** — and throughput rises monotonically through `medium` (0.61 → 1.21 fixes/min; `low`, below, breaks the run). If
   you are buying fixes per dollar, `medium` wins outright. `max` is not the efficient choice; it is
   the choice you make when you want the 14 extra fixes and are willing to pay a premium per fix for
   them. That is a real decision, not a ranking.
@@ -615,9 +616,31 @@ otherwise idle machine, judged blind by Grok 4.6 (non-sibling — no model grade
   distribution shift, not a superset.
 - **No first-ever kills at `xhigh`** — the never-fixed count stays at 40. Every bug it fixed, some
   model had already fixed.
-- **Effort honesty across the sweep.** All four tiers are `first_party`: each was requested from the
+- **`low` is the second cliff.** 48 → 43 → 35 → 34 → **27**. After `high` and `medium` tied, the bottom
+  notch costs **7 fixes** — a step as large as `max` → `xhigh`. On this bench the dial has two steps that
+  matter, one at the top and one at the bottom, with a flat middle.
+- **Repo 2 falls through the floor.** Repo 1 barely moves (19 → 18); repo 2 goes 15 → **9**, the lowest
+  repo-2 figure of the five Astra rows and 15% of its planted bugs. Across the whole sweep repo 1 spans
+  24 → 18 while repo 2 spans 24 → 9. Whatever effort buys on this bench, it buys almost all of it on the
+  larger codebase.
+- **The honesty profile is clean again at the bottom.** Zero claimed-only, zero partials, zero
+  false-positive fixes — cleaner even than `max`, which had one false-positive fix — after claimed-only of
+  1 / 2 / 1 through the middle tiers. The drift toward incidental finds also stopped: 25 genuine extras
+  against 27 planted fixes, versus 53 against 43 at `xhigh`. Fewer of everything, but nothing claimed that
+  the diff did not do.
+- **Cheapest per fix, but no longer fastest.** $11.69 for 27 fixes is **$0.43 per fix**, the lowest of the
+  five — yet wall clock came in at 32.1 min, *above* `medium`'s 28.0, so throughput fell back to 0.84
+  fixes/min. It used fewer tokens than `medium` (7.6M vs 9.1M total) and took longer; this leg pair ran
+  mid-afternoon Central European time against `medium`'s 02:00 run, and wall clock remains the least
+  portable column here. Read the cost column from this row, not the clock.
+- **Level with Claude Fable 5.1 at the same tier, at 43% of the cost.** Astra `low` 27 vs Fable 5.1 `low`
+  29 — inside the variance band, a tie. The two split the repos in opposite directions: Astra 18/45 vs
+  Fable 13/45 on repo 1, Fable 16/60 vs Astra 9/60 on repo 2. Same lesson as the ceilings: a repo-level
+  result is not interchangeable with the combined number.
+- **No first-ever kills at `low`.** The never-fixed count stays at 39.
+- **Effort honesty across the sweep.** All five tiers are `first_party`: each was requested from the
   CLI and confirmed served (`model: gpt-6-astra`, `reasoning effort: <tier>`) before its first leg ran,
   with the probes filed under `effort-dial-probes/`. A tier the CLI would not serve was set to be
   skipped rather than quietly run at another effort; none had to be.
 - **Not solved.** 57 of 105 planted bugs survived a frontier model at its ceiling, and 39 have now
-  survived every model ever run here (40 after the `max` run; `medium` took one more).
+  survived every model ever run here (40 after the `max` run; `medium` took one more; `low` took none).
