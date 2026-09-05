@@ -8,13 +8,13 @@ separate in reasoning tokens; if it is INERT (grok-style silent clamp), all
 levels collapse to the same trajectory.
 """
 import json
+import os
 import statistics
-import subprocess
-import urllib.error
-import urllib.request
 from pathlib import Path
 
-ROOT = Path(subprocess.check_output(["git", "rev-parse", "--show-toplevel"], text=True).strip())
+import requests
+
+ROOT = Path(__file__).resolve().parents[2]
 SLUG = "deepseek/deepseek-v4-flash-0731"
 PROMPT = ("A 5x5 grid has its corners removed. In how many ways can you tile the remaining "
           "21 cells with exactly one L-tromino and six 1x3 straight trominoes? Reason step "
@@ -22,6 +22,9 @@ PROMPT = ("A 5x5 grid has its corners removed. In how many ways can you tile the
 
 
 def key():
+    env_key = os.environ.get("OPENROUTER_API_KEY")
+    if env_key:
+        return env_key.strip()
     for line in (ROOT / ".env").read_text(encoding="utf-8").splitlines():
         if line.startswith("OPENROUTER_API_KEY="):
             return line.split("=", 1)[1].strip()
@@ -38,16 +41,14 @@ def one(effort, seed):
             "messages": [{"role": "user", "content": PROMPT}]}
     if effort:
         body["reasoning"] = {"effort": effort}
-    req = urllib.request.Request("https://openrouter.ai/api/v1/chat/completions",
-                                 data=json.dumps(body).encode(),
-                                 headers={"Authorization": f"Bearer {KEY}",
-                                          "Content-Type": "application/json"},
-                                 method="POST")
+    headers = {"Authorization": f"Bearer {KEY}", "Content-Type": "application/json"}
     try:
-        with urllib.request.urlopen(req, timeout=600) as resp:
-            payload = json.load(resp)
-    except urllib.error.HTTPError as exc:
-        return f"HTTP {exc.code}: {exc.read(120).decode(errors='replace')[:120]}"
+        resp = requests.post("https://openrouter.ai/api/v1/chat/completions",
+                              data=json.dumps(body), headers=headers, timeout=600)
+        resp.raise_for_status()
+    except requests.exceptions.HTTPError as exc:
+        return f"HTTP {exc.response.status_code}: {exc.response.text[:120]}"
+    payload = resp.json()
     if "error" in payload:
         return f"API error: {json.dumps(payload['error'])[:120]}"
     usage = payload.get("usage", {})
