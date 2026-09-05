@@ -1,0 +1,6 @@
+level=   none  reasoning_tok=[31047, 25814, 27858, 22064, 8448]  mean=23046  min=8448 max=31047  wall_s=[584.1, 469.7, 533.1, 401.7, 177.4]
+level=    low  reasoning_tok=[6670, 12015, 1815, 4938, 13097]  mean=7707  min=1815 max=13097  wall_s=[128.6, 253.7, 44.0, 95.1, 278.7]
+level= medium  reasoning_tok=[24064, 23574, 30637, 15886, 21078]  mean=23048  min=15886 max=30637  wall_s=[492.7, 443.9, 614.0, 291.1, 401.8]
+level=   high  reasoning_tok=[44819, 36358, 14507, 26419, 12435]  mean=26908  min=12435 max=44819  wall_s=[797.4, 622.5, 251.1, 505.7, 222.6]
+
+separation ratio: 3.49x  — ~1x = INERT, >>1x = ACTIVE

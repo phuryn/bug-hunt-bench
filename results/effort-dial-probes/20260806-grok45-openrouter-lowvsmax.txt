@@ -1,0 +1,4 @@
+level=  low  reasoning_tok=[11149, 20161, 15027, 14429, 7891, 6101]  mean=12460  min=6101 max=20161  within-level spread=3.30x  wall_s=[221.3, 418.4, 294.1, 287.0, 159.5, 131.4]
+level=  max  reasoning_tok=[27509, 18232, 33447, 10956, 14821, 6754]  mean=18620  min=6754 max=33447  within-level spread=4.95x  wall_s=[491.6, 324.6, 673.1, 204.7, 260.8, 132.2]
+
+between-level ratio: 1.49x   probe spend: $1.15

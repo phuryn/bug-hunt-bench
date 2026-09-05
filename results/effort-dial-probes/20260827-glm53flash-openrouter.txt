@@ -1,0 +1,28 @@
+# z-ai/glm-5.3-flash via OpenRouter (Z.AI, first-party host) - reasoning-effort dial, 2026-08-27
+
+VERDICT: INERT. Same signature as the plain GLM-5.3 probe two days earlier, and as every other
+OpenRouter-served model on this board. The between-level ratio is 3.99x - the largest any OR-served
+model has read here - but it still does not clear the worst within-level spread (14.06x), which is
+the only test that matters. The `low` mean (4,481) is not a lower setting; it is three near-floor
+samples [1015, 1147, 1490] plus one 14,271 outlier, and its range (1,015-14,271) sits entirely
+inside `high`'s range (6,081-31,965). `none` (17,881) and `high` (17,701) are a dead heat. When the
+ranges nest and the spread within one level dwarfs the gap between levels, the effort string moved
+nothing - the model reasoned as much as it wanted on each call regardless of what was requested.
+
+Contrast with a REAL dial (grok-4.5 direct on xAI): 3.49x between on NON-overlapping low-vs-medium
+sample ranges. Here the ranges overlap, so 3.99x is noise, not separation.
+
+So the bench row for GLM-5.3 Flash reports DEFAULT effort (the Kimi / DeepSeek / Muse-OR / GLM-5.3
+convention). Reasoning was on - this endpoint refuses to run without it - but there is no working
+tier to set, and OpenRouter's dial was not relied on for the graded run. No label change: the
+featured GLM-5.3 Flash row was already filed as effort=default, effort_status=inert_default.
+
+n=4 per level, 32K max_tokens (enough headroom that no sample hit the ceiling). Levels probed:
+(none) = no reasoning field sent; low; high. Proxy: a local OpenRouter shim, provider pinned Z.AI.
+
+level=  (none)  reasoning_tok=[31949, 15885, 12083, 11606]  mean=17881  min=11606 max=31949  within-level=2.75x  wall_s=[713.0, 394.8, 319.0, 310.5]
+level=     low  reasoning_tok=[14271, 1015, 1147, 1490]  mean=4481  min=1015 max=14271  within-level=14.06x  wall_s=[404.0, 48.3, 51.6, 63.0]
+level=    high  reasoning_tok=[31965, 7321, 6081, 25437]  mean=17701  min=6081 max=31965  within-level=5.26x  wall_s=[761.9, 210.1, 196.4, 631.4]
+
+between-level ratio (max mean / min mean): 3.99x   (~1x = INERT, e.g. V4-Flash/OR 1.06x; >>1x = ACTIVE, e.g. Qwen/DashScope ~10x)
+worst within-level spread: 14.06x   (the between-level number means nothing unless it clears this)

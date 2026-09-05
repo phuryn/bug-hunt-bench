@@ -11,7 +11,8 @@
     "repo1_bug_count": 45,
     "runs": 52,
     "updated": "2026-09-05",
-    "source_repo": "https://github.com/phuryn/experiments/tree/main/bug-hunt-bench",
+    "source_repo": "https://github.com/phuryn/bug-hunt-bench/tree/main/results",
+    "repo_url": "https://github.com/phuryn/bug-hunt-bench",
     "author": "Pawel Huryn",
     "author_url": "https://www.productcompass.pm",
     "author_x": "https://x.com/PawelHuryn"

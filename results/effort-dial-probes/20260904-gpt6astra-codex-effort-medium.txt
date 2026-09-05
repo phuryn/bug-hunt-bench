@@ -1,0 +1,26 @@
+# 2026-09-05T01:56:03 local - effort preflight, tier medium
+binary: <HOME>\.vscode\extensions\openai.chatgpt-26.5901.22334-win32-x64\bin\windows-x86_64\codex.exe
+command: exec --skip-git-repo-check -s read-only -c model_reasoning_effort=medium -m gpt-6-astra Reply with exactly: TIEROK
+rc: 0
+output (tail):
+TIEROK
+Reading additional input from stdin...
+OpenAI Codex v0.153.0
+--------
+workdir: <WORKDIR>\Temp\output
+model: gpt-6-astra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 01a06ed9-b4bd-7bf1-9c55-c385a0838a68
+--------
+user
+Reply with exactly: TIEROK
+codex
+TIEROK
+tokens used
+7,036
+verdict: ACCEPTED - model+effort=medium served TIEROK
+

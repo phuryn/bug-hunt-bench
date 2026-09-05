@@ -220,6 +220,7 @@ function renderHero() {
   );
   $('hero-lede').textContent = m.subtitle;
   if (m.source_repo) $('source-link').href = m.source_repo;
+  if (m.repo_url && $('star-link')) $('star-link').href = m.repo_url;
 
   /* The 105-tick measure rule — the one place on this page where a colour means
      something on its own account rather than identifying a run.
@@ -270,7 +271,8 @@ function patchSchema() {
       json.url = SITE_URL;
       json.distribution.contentUrl = `${SITE_URL}data/benchmark.json`;
     }
-    if (DATA.meta.source_repo) json.sameAs = DATA.meta.source_repo;
+    const same = DATA.meta.repo_url || DATA.meta.source_repo;
+    if (same) json.sameAs = same;
     node.textContent = JSON.stringify(json, null, 2);
   } catch (err) {
     /* a malformed block is a build problem, not a runtime one — leave it alone */

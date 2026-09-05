@@ -1,0 +1,32 @@
+[
+  {
+    "comment": "Windows path to the private content repo the experiments ran against (any drive, any username, single or doubled separators)",
+    "pattern": "[A-Za-z]:[\\\\/]+Users[\\\\/]+[^\\\\/\"']+[\\\\/]+Desktop[\\\\/]+Workspace[\\\\/]+Editor",
+    "replace": "<WORKDIR>"
+  },
+  {
+    "comment": "Git-Bash form of the same path",
+    "pattern": "/[a-z]/Users/[^/\"']+/Desktop/Workspace/Editor",
+    "replace": "<WORKDIR>"
+  },
+  {
+    "comment": "Claude Code session-log folder slug for that checkout (~/.claude/projects/<slug>)",
+    "pattern": "[A-Za-z]--Users-[^-\"' ]+-Desktop-Workspace-Editor",
+    "replace": "SESSION-PROJECT-SLUG"
+  },
+  {
+    "comment": "Fallback: any other path under a user home directory keeps only its tail",
+    "pattern": "[A-Za-z]:[\\\\/]+Users[\\\\/]+[^\\\\/\"' ]+(?=[\\\\/])",
+    "replace": "<HOME>"
+  },
+  {
+    "comment": "Test-fixture dirs under Temp/ are named after the private app the experiments audit; the path prefix rules above stop at the repo root, so the app name survived downstream. Keep the fixture role, drop the name (wildcarded, so this file never spells the string it removes).",
+    "pattern": "Temp([\\\\/]+)[A-Za-z0-9_.-]+([\\\\/]+)(buggy|baseline|seeded)\\b",
+    "replace": "Temp\\1<APP>\\2\\3"
+  },
+  {
+    "comment": "Local bench-checkout root (no username in it, but still a machine path): keep only the tail. App names are fine to publish (Pawel, 2026-08-04); app CODE and app BUGS are not - that is a content rule enforced at review time, not a string rule.",
+    "pattern": "[A-Za-z]:[\\\\/]+GitHub",
+    "replace": "<GH-ROOT>"
+  }
+]

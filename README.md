@@ -1,380 +1,161 @@
-# Bug Hunt Bench — site
+# Bug Hunt Bench — which AI coding model fixes the most real bugs?
 
-The public site for **Bug Hunt Bench**: 105 real bugs planted in two production
-codebases, frontier coding models given one round per repo in their own native
-agentic CLI, and every diff graded blind against a withheld answer key.
+**105 real bugs, hidden in two production codebases. Frontier coding models — GPT-6, Claude, Grok, Gemini, DeepSeek, Kimi, GLM and more — get one round per repo in their own agentic CLI (Codex CLI, Claude Code, Grok CLI, Antigravity CLI) to find and fix what they can. Every diff is graded blind against a withheld answer key. The score counts planted bugs only.**
 
-Static HTML, CSS and vanilla ES modules. No build step, no framework, no bundler,
-no dependencies, no backend, no analytics. Open `index.html` through any local
-server and it runs.
+**Live board:** [bughunt.productcompass.pm](https://bughunt.productcompass.pm) · [Method, caveats and definitions](https://bughunt.productcompass.pm/method) · [Raw data](results/) · [Findings by wave](results/waves.md)
 
----
+If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
-## What is here
+<!-- leaderboard:start -->
+![Bug Hunt Bench leaderboard, the featured runs, updated Sep 5, 2026](assets/leaderboard.png?v=2026-09-05)
 
-```
-.
-├── index.html                 THE BOARD: markup, head, JSON-LD
-├── method.html                THE METHOD PAGE: method, caveats, definitions
-├── data/
-│   └── benchmark.json         GENERATED — the single source of every number
-├── assets/
-│   ├── css/site.css           all styles for both pages, incl. responsive + print
-│   ├── favicon.svg
-│   └── js/
-│       ├── theme-boot.js      classic, render-blocking: stamps the theme pre-paint
-│       ├── theme.js           theme state, the toggle, the dark run-colour rule
-│       ├── main.js            the board: boot, state, URL sync, section rendering
-│       ├── method.js          the method page: renders method/caveats/glossary
-│       ├── format.js          vocabularies, formatters, column model, DOM helpers
-│       ├── table.js           leaderboard table: colgroup, sortable head, rows
-│       ├── scatter.js         both maps — one layout function, two axis specs
-│       ├── selector.js        run picker (native checkboxes, grouped by vendor)
-│       └── export-png.js      canvas renderer for "Export this view (PNG)"
-├── netlify.toml               publish = repo root, no build command, /method rewrite
-├── _headers                   security headers, CSP, cache policy
-├── robots.txt
-├── sitemap.xml
-└── og-image.png               social card, 1200×630
-```
+**Updated Sep 5, 2026 · 52 scored runs · 22 models · 39 of 105 bugs have never been fixed by any model.**
 
-## Two pages, not a router
+**Current leader:** GPT-6 Astra at `max` effort — **48 / 105** (24/45 on repo 1, 24/60 on repo 2).
 
-`/` is the board and nothing else: masthead, headline, the 105-tick rule, the run
-picker, the table, the two maps, the export, and the key that makes the columns
-readable. `/method` is the argument: **The method**, **What this board does not
-tell you**, **Definitions**. Both are real HTML files sharing one stylesheet, one
-theme system and one masthead — there is no client-side router.
+**Best run per lab:** OpenAI: GPT-6 Astra (`max`) 48 · Anthropic: Fable 5.1 (`max`) 43 · xAI: Grok 4.6 (`xhigh`) 27 · Google: Gemini 3.7 Flash (`high`) 22 · Moonshot AI: Kimi K3 (`default`) 21 · Z.ai: GLM-5.3 (`default`) 19 · Alibaba: Qwen3.8-Max (`xhigh`) 19 · Tencent: Hy4 Preview (`high`) 18 · Meta: Muse Spark 1.2 (`xhigh`) 17 · DeepSeek: DeepSeek V4-Flash (`default`) 14
 
-The split cost no duplication, because the moved sections were never markup in the
-first place: `method`, `caveats` and `glossary` are rendered from
-`data/benchmark.json` by `method.js`, exactly as they were rendered by `main.js`
-before. Every term on the board that needs a definition links at the anchor for
-that definition (`/method#def-cost_bill`, `/method#caveat-2`), built by
-`defHref()` / `caveatHref()` in `format.js` and matched by the ids `method.js`
-stamps on each term. Nothing on the board hard-codes a `/method` URL.
+| # | Model | Harness | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Extras | Wall | Cost | Date |
+|--:|---|---|---|--:|--:|--:|--:|--:|--:|---|
+| 1 | GPT-6 Astra | Codex CLI | max | **48** | 24 | 24 | 45 | 79 min | $31.21 | 2026-09-04 |
+| 2 | GPT-6 Astra | Codex CLI | xhigh | **43** | 23 | 20 | 53 | 59 min | $24.22 | 2026-09-04 |
+| 3 | Fable 5.1 | Claude Code | max | **43** | 19 | 24 | 11 | 73 min | $77.55 | 2026-09-01 |
+| 4 | GPT-5.6 Sol | Codex CLI | max | **42** | 19 | 23 | 40 | 164 min | $69.61 | 2026-08-01 |
+| 5 | GPT-5.6 Sol | Codex CLI | xhigh | **39** | 18 | 21 | 59 | 126 min | $52.75 | 2026-08-28 |
+| 6 | GPT-6 Astra | Codex CLI | high | **35** | 19 | 16 | 40 | 40 min | $20.60 | 2026-09-04 |
+| 7 | GPT-6 Astra | Codex CLI | medium | **34** | 19 | 15 | 33 | 28 min | $15.78 | 2026-09-05 |
+| 8 | GPT-5.6 Sol | Codex CLI | high | **34** | 13 | 21 | 28 | 67 min | $33.92 | 2026-07-31 |
+| 9 | GPT-5.6 Luna | Codex CLI | max | **33** | 17 | 16 | 31 | 86 min | $1.80 | 2026-07-31 |
+| 10 | Fable 5.1 | Claude Code | high | **33** | 15 | 18 | 7 | 36 min | $41.52 | 2026-09-01 |
+| 11 | GPT-5.6 Terra | Codex CLI | max | **32** | 16 | 16 | 45 | 160 min | $27.98 | 2026-08-27 |
+| 12 | Fable 5.1 | Claude Code | low | **29** | 13 | 16 | 6 | 33 min | $27.27 | 2026-09-02 |
+| 13 | Fable 5 | Claude Code | max | **29** | 12 | 17 | 5 | 57 min | $104.49 | 2026-08-01 |
+| 14 | Grok 4.6 | Grok Build CLI (ACP) | xhigh | **27** | 8 | 19 | 16 | 41 min | $16.96 floor | 2026-08-28 |
+| 15 | Opus 5 | Claude Code | max | **27** | 13 | 14 | 2 | 60 min | $51.33 | 2026-08-01 |
+| 16 | Opus 5 | Claude Code | xhigh | **26** | 14 | 12 | 3 | 50 min | $59.59 | 2026-08-28 |
+| 17 | Opus 5 | Claude Code | medium | **24** | 11 | 13 | 4 | 30 min | $34.77 | 2026-08-27 |
+| 18 | Fable 5 | Claude Code | high | **24** | 9 | 15 | 3 | 31 min | $68.07 | 2026-07-26 |
+| 19 | GPT-5.6 Luna | Codex CLI | xhigh | **23** | 10 | 13 | 53 | 136 min | $2.50 | 2026-08-28 |
+| 20 | Grok 4.6 | Grok Build CLI (ACP) | high | **23** | 7 | 16 | 16 | 33 min | $15.73 floor | 2026-08-28 |
+| 21 | Grok 4.6 | Grok Build CLI (ACP) | medium | **22** | 9 | 13 | 11 | 26 min | $5.80 floor | 2026-08-28 |
+| 22 | Gemini 3.7 Flash | Gemini CLI (retired) + model-pinning gateway | high | **22** | 8 | 14 | 4 | 97 min | $8.43 | 2026-08-24 |
+| 23 | Kimi K3 | Claude Code / OpenRouter | default | **21** | 4 | 17 | 6 | 108 min | $25.27 | 2026-07-26 |
+| 24 | Opus 5 | Claude Code | high | **21** | 11 | 10 | 6 | 37 min | $38.77 | 2026-07-26 |
+| 25 | GPT-5.6 Terra | Codex CLI | xhigh | **20** | 9 | 11 | 29 | 57 min | $8.98 | 2026-08-28 |
+| 26 | Gemini 3.8 Flash | Antigravity CLI | high | **20** | 7 | 13 | 6 | 30 min | $9.78 | 2026-09-02 |
+| 27 | GLM-5.3 | Claude Code / OpenRouter | default | **19** | 8 | 11 | 4 | 67 min | $19.73 bill | 2026-08-25 |
+| 28 | Qwen3.8-Max | Claude Code / Alibaba API | xhigh | **19** | 5 | 14 | 6 | 148 min | $31.10 | 2026-08-03 |
+| 29 | Hy4 Preview | Claude Code / OpenRouter | high | **18** | 9 | 9 | 2 | 68 min | $3.13 bill | 2026-08-28 |
+| 30 | GPT-5.6 Terra | Codex CLI | high | **18** | 7 | 11 | 17 | 28 min | $5.89 | 2026-08-27 |
+| 31 | Grok 4.5 | Grok Build CLI (ACP) | high | **17** | 5 | 12 | 10 | 28 min | $8.50 floor | 2026-08-06 |
+| 32 | Muse Spark 1.2 | Claude Code / Meta API | xhigh | **17** | 6 | 11 | 12 | 36 min | $13.99 | 2026-08-06 |
+| 33 | Ox Alpha (stealth) | Claude Code / OpenRouter | default | **16** | 8 | 8 | 3 | 59 min | free | 2026-08-25 |
+| 34 | Gemini 3.7 Flash | Antigravity CLI | high | **16** | 4 | 12 | 2 | 23 min | $6.36 | 2026-08-28 |
+| 35 | GPT-5.6 Terra | Codex CLI | medium | **15** | 4 | 11 | 6 | 20 min | $3.87 | 2026-08-27 |
+| 36 | Grok 4.6 | Grok Build CLI (ACP) | low | **15** | 6 | 9 | 9 | 18 min | $4.14 floor | 2026-08-27 |
+| 37 | DeepSeek V4-Flash | Claude Code / OpenRouter | default | **14** | 6 | 8 | 0 | 48 min | $1.52 bill | 2026-08-01 |
+| 38 | Muse Spark 1.2 | Claude Code / OpenRouter | default | **14** | 3 | 11 | 3 | 65 min | $19.52 bill | 2026-08-06 |
+| 39 | GPT-5.6 Luna | Codex CLI | high | **13** | 5 | 8 | 22 | 64 min | $0.57 | 2026-07-31 |
+| 40 | GLM-5.3 Flash | Claude Code / OpenRouter | default | **13** | 6 | 7 | 4 | 57 min | $0.79 bill | 2026-08-27 |
+| 41 | DeepSeek V4-Pro | Claude Code / OpenRouter | default | **10** | 5 | 5 | 1 | 28 min | $5.54 bill | 2026-08-01 |
+| 42 | GPT-5.6 Luna | Codex CLI | medium | **9** | 5 | 4 | 5 | 15 min | $0.33 | 2026-08-27 |
+| 43 | Sonnet 5 | Claude Code | high | **9** | 1 | 8 | 4 | 33 min | $15.12 | 2026-07-26 |
+| 44 | Opus 4.8 | Claude Code | high | **9** | 2 | 7 | 1 | 35 min | $19.35 | 2026-07-26 |
+| 45 | GPT-5.6 Luna | Codex CLI | low | **4** | 0 | 4 | 1 | 6 min | $0.10 | 2026-08-27 |
 
-Netlify serves `method.html` at `/method` by itself, but the rule is written into
-`netlify.toml` anyway (a 200 rewrite plus a 301 off `/method.html`), because the
-canonical, the sitemap and every link on the board point at the extensionless
-path. Old `#method` / `#caveats` / `#glossary` links to the board still work:
-`main.js` forwards them to the matching section on `/method`.
+Extras are real, unplanted defects a model fixed on the way; they are counted and never added to the score. Costs are token estimates at published list rates unless tagged **bill** (an actual invoice or credits delta) or **floor** (a reconstructed lower bound). `default` effort means the serving path had no working effort dial; *ran lower* marks a run whose CLI quietly replaced the requested tier. Wall clock is repo 1 plus repo 2 agent time, dependency install excluded.
+7 superseded re-runs stay in the CSVs and on the [live board](https://bughunt.productcompass.pm/?preset=all) but are left off this table.
+<!-- leaderboard:end -->
 
-## Preview locally
+## What Bug Hunt Bench is
 
-Any static server works; the page fetches `data/benchmark.json`, so `file://`
-will not do.
+A benchmark of AI coding agents on the job they are actually sold for: reading an unfamiliar, real codebase and fixing what is wrong with it. Not a puzzle set, not a single-file task, not a synthetic repo.
 
-```bash
-cd bug-hunt-bench
-python -m http.server 8899
-# then open http://127.0.0.1:8899/
-```
+- **Two unrelated production codebases.** Repo 1 is a ~28K-line TypeScript VS Code extension (45 planted bugs). Repo 2 is a ~60K-line React / TypeScript LMS on Supabase Edge Functions and Clerk (60 planted bugs). Nothing is shared between them but the language.
+- **The bugs are real.** All 60 repo-2 bugs are regressions that actually shipped and were later fixed, each re-introduced from its own fix commit. On repo 1, 16 of the 45 are real reverted fixes and 29 were authored in the same style. The test suites were kept green when the bugs went in, so a passing suite points at nothing.
+- **Every model gets the identical prompt** ([repo 1](results/repo1-prompt.md), [repo 2](results/repo2-prompt.md)): find and fix as many planted bugs as you can, keep the checks green without weakening tests, write a `BUGS_FOUND.md`. One round per model per repo, no network, no git history, in the CLI its own vendor ships.
+- **The diff is the ground truth, not the report.** A model's own claim of what it fixed is not scored. An independent judge model compares the resulting diff against the withheld answer key without knowing which model produced it.
 
-## Where the numbers come from
+## How to read the score
 
-**Never hand-edit `data/benchmark.json`, and never type a number into the HTML.**
+- **Fixed /105** is the only number in the score: planted bugs whose fix the judge verified in the diff. No partial credit.
+- **Extras** are real defects a model fixed that nobody planted. They are real work — one model found 38 of them in a single wave — but the set has no answer key and no ceiling, so counting them would reward volume. They are tracked in their own column and never added.
+- **Claimed only** means the model's report named a bug that its diff does not fix. It is the failure mode this bench was built to catch, and it is why reports are not graded.
+- **Cost** is tagged by kind: a real bill, a token estimate at list rates, a reconstructed floor, or free. They are not interchangeable and none is a quote.
+- **Effort** is the reasoning tier the run was *served* at, not the tier that was requested. Where a CLI silently ran a lower tier the row says so; where an aggregator's effort parameter provably does nothing the row says `default`.
 
-The file is generated by `tools/build_bench_site_data.py` in the private `Editor`
-repo, which reads the public scoreboards at
-[`phuryn/experiments/bug-hunt-bench`](https://github.com/phuryn/experiments/tree/main/bug-hunt-bench)
-and writes `meta`, `method`, `glossary`, `caveats` and `runs`. To refresh the
-site: re-run that script, copy the regenerated `data/benchmark.json` here, commit.
+## FAQ
 
-Everything on the page — every score, bar, tick, axis, label, definition and
-caveat — is read from that file at runtime. The page contains no duplicated
-figures, which is why a data refresh needs no other edit.
+### Which AI coding model fixes the most bugs?
 
-A few strings are maintained by hand and are the only things that can drift.
-Every one of them is deliberately written without figures, so a data refresh
-cannot make them wrong:
+The table above is the answer as of its date, and the [live board](https://bughunt.productcompass.pm) is the same data with filters, two cost-and-time maps and a per-bug coverage view. Read the leader with its effort tier: a model at `max` and the same model at `medium` are different rows for a reason.
 
-| String | Where | When to touch it |
-|---|---|---|
-| `<title>` and `<meta name="description">` | `index.html`, `method.html` heads | Written without numbers so they cannot go stale. |
-| The bridge — "what this is" + the link to `/method` | `index.html` hero | Only if the setup itself changes. |
-| `lastmod` | `sitemap.xml` | Automatic — `build_bench_site_data.py` stamps every `<lastmod>` from `meta.updated` when it regenerates the data. |
-| Canonical / og / Twitter / robots / sitemap URLs | `index.html`, `method.html`, `robots.txt`, `sitemap.xml` | The site is at `https://bughunt.productcompass.pm/` (Netlify site `bughuntbench.netlify.app`, custom domain CNAME'd). The URL in every exported PNG is read from the canonical tag, so it follows automatically. |
+### Is this a real-world benchmark, or synthetic?
 
-`dateModified` and `url` inside the JSON-LD block are *also* patched at runtime
-from the data file, so the static values there are a fallback, not a
-maintenance burden.
+Real. The codebases are production repos with their own tests, docs and history; the bugs are shipped regressions re-introduced from their fix commits (all of repo 2, a third of repo 1); the task is the one a developer would give an agent. What is synthetic is only the *selection*: a fixed set of 105 defects, so that every model is measured against the same thing.
 
-## Reading the board (the rules the UI enforces)
+### Why is the score out of 105 and not a percentage?
 
-- **`fixed` out of 105 is the score.** It counts planted bugs only, verified blind.
-- **Every bar is scaled to the longest figure among the rows on screen; the score
-  is still out of 105.** The leading run fills its column and every other bar is
-  read as a share of the leader, which is the comparison a reader is actually
-  making. A 105-unit track put the whole board between 8% and 40% and flattened
-  the differences that matter; a fixed 100-unit reference was better and still
-  spent a third of the column on nothing. Filtering re-lengthens the survivors on
-  purpose — the scale describes what is displayed — and the printed value never
-  moves: `42/105` sits at the end of its own bar either way. The sentence that
-  says so lives once, as `BAR_SCALE_NOTE` in `format.js`, and is rendered both in
-  the key under the table and in the footer of the PNG export, because an
-  exported card travels on its own. Change it there and both move.
-- **Four bars, four scales, one rhythm.** Bar from the left edge of its column,
-  value printed at its end, as on the card. The score bar is the only one that
-  carries a run's colour; extras is a grey hatch at half height, scaled against
-  extras and never against the score; wall clock and cost are flat neutral grey.
-  All four scales come from `barScales()` over the rows being drawn, so the table
-  and the PNG export cannot disagree about the geometry. A missing figure and a
-  genuine zero both draw no bar at all — every other bar has a 2px floor so the
-  cheapest run still shows a tick, and that floor must not invent a mark for a
-  run worth nothing.
-- **The 105-tick rule is the one place a colour means something.** Every other
-  colour on the site identifies a run; these two identify a *state*. A bug fixed
-  by at least one model is a **hollow green** tick at two-thirds height; a bug
-  nothing has ever fixed is a **solid red** tick at full height. Red and green is
-  exactly the pair that collapses for a deuteranope and on a mono printer, so the
-  rule never leans on hue: fill and height carry the same distinction, and the
-  caption names both marks and shows each one inline, so there is no legend to
-  hunt for. The survivors are the story, so they get the heavier mark.
-  The two hues are `--tick-fixed` / `--tick-survivor`, one pair per theme, chosen
-  against the page surface with the data-viz palette validator rather than by eye:
-  light `#2b8f66` / `#9e2b20` (CVD ΔE 11.7, normal-vision 26.8, contrast 3.5:1 and
-  6.5:1 on `#eef0f3`), dark `#0b9360` / `#e15247` (CVD ΔE 8.1, normal-vision 27.5,
-  4.7:1 and 4.8:1 on `#101419`). Both clear the ΔE ≥ 8 gate; the second channel is
-  there because clearing it is not the same as a dichromat reading it at a glance.
-  Print re-declares the light pair, so paper never gets the dark steps.
-- **Six columns: model, fixed, extras, wall clock, cost, date.** What is *not* on
-  the grid is a decision. Partial and claimed-only are zero on most rows and were
-  never worth a column of their own; the repo 1 / repo 2 split is how the 105 bugs
-  are distributed, not a ranking, and it is not dashboard material. All three stay
-  in the data file, are defined on `/method`, and are named in the key under the
-  table. Partial and claimed-only are also still in the chart tooltip.
-- **A cell shows the number, not what kind of number it is.** The cost tag under
-  every dollar figure and the effort status beside every model name were the same
-  few words repeated down a column, and a word repeated twenty-five times is
-  something a reader steps over on the way to the figures. Both moved into the key
-  under the table, where `costSentence()` names the exceptions *for the rows on
-  screen* — "Costs are list-rate estimates unless noted: … Grok 4.6 is a
-  reconstructed lower bound … Ox Alpha was free" — built from the data, so a new
-  arm or a different selection rewrites the sentence rather than dating it. The
-  same sentence is baked into the PNG footer.
-- **There is no row detail and no `†`.** A caveat, a note or a supersession rides
-  on the model cell as a plain `title`: still there for anyone who wants it, no
-  marker, no layout cost, and nothing to expand. The wall-clock note rides on the
-  wall-clock cell the same way.
-- **A bent wall-clock figure is marked where it would mislead: on the map.**
-  Three runs have a `wall_note` in the data. On the score-vs-time map they get a
-  broken ring and a `*` on the label (`NOTE_MARK` in `format.js` — one glyph,
-  defined once), because that is where a reader compares minutes along an axis. In
-  the table the sentence is the cell's `title` and nothing is drawn: the grid stays
-  a grid. Neither mark is a colour, so both survive the run colour underneath, a
-  colourblind reader and a black-and-white print.
-- **Extras are never added to the score, anywhere.** They live in a column group
-  headed *Tracked, not scored*, drawn as a hatched grey ghost bar at half the
-  height of the score bar and scaled against the highest extras count on screen —
-  never against the score. `method[3]` is pulled out as a pull quote directly
-  under the table. The card puts extras in the *same* bar as the score, as a faded
-  second segment; the site deliberately does not, because on a page where anyone
-  can sort by extras that reads as one quantity.
-- **A `$` figure is not automatically a bill.** `cost_kind` is still on every row
-  in the data and still governs what the reader is told — but it is told once, in
-  the generated cost sentence in the key and in the PNG footer, instead of under
-  all twenty-five figures. The words are plain: *billed*, *list rate*, *lower
-  bound*, *free*, each linked at its own definition.
-- **The effort badge is the tier, and only the tier** — MAX / XHIGH / HIGH /
-  DEFAULT — linked at its definition, which reads in plain English straight from
-  the data file. The old two-word statuses ("first-party tier", "verified
-  ceiling", "inert default") asked a reader to hold two independent facts at once
-  and came back out scrambled as "inert ceiling", so they are off the grid: what
-  DEFAULT means is one sentence in the key. **One exception stays inline** — a
-  `clamped` run wears "ran lower" beside its badge, because that is a published
-  correction on a single row, and a key cannot carry a correction for a row nobody
-  scrolls to.
-- **Superseded runs stay reachable but out of the default view.** They are
-  excluded from the `featured` preset, tagged in the picker and in the table, and
-  carry their explanation in the row's `title`.
+Because 105 is the number of planted bugs and the two repos are not equally hard. A percentage would hide that repo 1 carries 45 of them and repo 2 carries 60, and that models rank differently on each — the per-repo columns are there because one repo was not enough to rank the middle of the field.
 
-## Linkable state
+### Why are extra fixes not counted?
 
-Selection, sort and view live in the query string:
+Some models "bug-max": they report a long list of real but irrelevant problems. Those fixes are often genuine, but the set has no answer key and no ceiling, so it cannot be scored reliably, and adding it would reward the model that touches the most files. Extras are counted, shown, and kept out of the score. On this board, zero false-positive fixes have been recorded on either repo: every extra any model applied was a real defect.
 
-```
-?preset=featured|all|ceiling|clear     a named preset
-?runs=<slug>,<slug>                    an explicit selection (slugs from run ids)
-?sort=<column key>&dir=asc|desc        table sort
-?view=table|scatter|time               active view (scatter = score vs cost)
-```
+### Who grades, and can a model grade its own work?
 
-`https://…/?preset=ceiling&sort=cost_usd&dir=asc&view=scatter` reloads exactly
-what you were looking at.
+An independent judge model grades each diff against the answer key, blind — it never sees which model produced the submission, and model names are redacted from the packet. No model grades itself or a sibling from the same lab: OpenAI arms are graded by Grok, everything else by GPT-5.5 through Codex. Whether the score depends on the judge was checked directly — all six early repo-1 arms reproduced exactly under a second judge from a different vendor — and the receipts are in [results/judge-calibration.md](results/judge-calibration.md).
 
-Every parameter is validated against the live model rather than trusted: a `sort`
-key that is no longer a column — an old `?sort=claimed_only` link — is simply not
-applied and the board opens on its default sort, and the rewritten URL drops it.
-A stale link has to degrade, never throw.
+### How noisy is a single run?
 
-## Themes
+One round per model per repo, so treat `fixed` as ±1 and extras as ±2. Same-setting variance has been measured: three Grok 4.5 runs on identical settings scored 16, 13 and 17. A one-fix gap between two rows is a tie. A five-fix gap is the first kind of lead on this board that clears its own variance band.
 
-Light is the default and is the theme that matches the printed card. Dark is
-selected, not flipped: its own surfaces, ink, hairlines and bar grey, chosen
-against the dark plate rather than derived from the light values by inversion.
-Everything that moves between themes is a custom property at the top of
-`site.css`. Paper is always light — the print block re-declares the light tokens
-even when the screen is dark.
+### Does reasoning effort (max, xhigh, high, medium) help?
 
-- **Order of precedence:** a stored choice wins; otherwise the OS setting; the OS
-  is followed live while the page is open until the reader picks something.
-- **No flash.** `assets/js/theme-boot.js` is the only classic, render-blocking
-  script on the page. It stamps `data-theme` on `<html>` before the first paint.
-  A module or a `defer`red script runs *after* the page has been painted, and an
-  inline `<script>` is not an option: the CSP has no `'unsafe-inline'`.
-- There is deliberately **no `@media (prefers-color-scheme: dark)` twin** of the
-  dark token block. `theme-boot.js` already resolves the OS preference, so the
-  media query could never win, and a second copy of those values would only be a
-  set of numbers waiting to drift. (Nothing on the page renders without
-  JavaScript anyway — see the `<noscript>` block.)
-- The toggle is a real `<button>` with `aria-pressed` and a stable accessible
-  name, so it is keyboard-reachable and announces its state.
+Where the dial is real, yes, and mostly at the top: on every first-party effort dial measured so far, the top tier scored highest and the step into it was usually the largest, while the middle tiers often sit within the ±1 noise of each other. Cost per fix does not necessarily rise with the tier. On aggregator paths (OpenRouter and similar) the effort parameter is frequently inert — accepted with HTTP 200 and applied nowhere — which is why those rows are labelled `default` rather than the tier that was requested. Each dial's numbers are in the table; the write-ups are in [results/waves.md](results/waves.md).
 
-### Run colours in dark
+### What do `default` and "ran lower" mean in the effort column?
 
-Run colours come from the data file and are tuned for the light surface, so they
-are used **verbatim** wherever they still work — in light, `runColor()` is a
-strict no-op. On the dark plate a colour has to be seen before it can identify a
-run, so `theme.js` applies one rule: if a hue falls below **2.2:1** against the
-dark data surface, keep its OKLCH hue angle, raise chroma to a floor of 0.06, and
-raise lightness until it clears **3.5:1**. It is a rule rather than a hand-written
-list so a future data refresh cannot slip an invisible colour onto the board
-unnoticed.
+`default`: the serving path had no working effort dial, so the model ran at whatever it runs at — verified by probing the path, not assumed. "Ran lower": a higher tier was requested and the CLI quietly substituted a lower one; the row is published as a correction with the evidence. A requested tier is not an applied tier, and the board only prints what was served. Probe outputs are filed under [results/effort-dial-probes/](results/effort-dial-probes/).
 
-On the current board that moves exactly two of twenty-one hues:
+### Are the costs real bills?
 
-| Run | Data hue | Dark variant | Contrast vs `--plate` |
-|---|---|---|---|
-| Grok 4.6 | `#1f242b` | `#5a7294` | 1.1:1 → 3.5:1 |
-| DeepSeek V4-Pro | `#2F3E9E` | `#536ace` | 1.9:1 → 3.6:1 |
+Some are. Each cost carries a kind: **bill** (an invoice or a credits delta), **list** (a token-count estimate at published rates — the case for subscription-covered CLI runs), **floor** (a reconstructed lower bound, where a CLI reports context occupancy rather than spend), or **free**. Listed and billed figures can diverge: one aggregator run listed at $1.26 billed $5.54 because a cache discount was never applied. Do not rank costs across kinds to the dollar.
 
-The chroma floor is what stops Grok 4.6 from being lifted straight into the grey
-family: its hue is a near-neutral slate, and a pure lightness lift lands it on top
-of Grok 4.5's `#5A6472` (ΔE 1.6, indistinguishable). With the floor applied the
-two Grok runs sit ΔE 5.8 apart — which is exactly where the light palette's own
-tightest pair sits (`#7FC0D8` ↔ `#9DC0F7`, ΔE 5.9). Dark is no worse separated
-than light, which is the bar that matters here; both rely on the same relief,
-described at the bottom of this file. Swatches and chart points also carry a
-hairline ring (`--chip-ring`) in both themes, which is what keeps a mark's edge
-visible on a surface close to its own value.
+### Could a model have seen the answers? Is the benchmark contaminated?
 
-## The two maps
+The answer keys, the seeded sources and the per-model diffs are withheld and are not in this repository — publishing them would burn both benches. During a run a model has no network access and no git history. Repo 1 is derived from a public open-source extension, so a model may know the *fixed* code; it cannot know which 45 defects were planted, and the field's repo-1 scores (2 to 24 of 45) do not suggest recall. Bug identifiers are never published either: per-bug coverage uses frozen indices, not ids.
 
-Both are the same renderer with a different axis spec (`AXES` in `scatter.js`);
-adding a third measure means adding a spec, not a chart.
+### Can I run it on my own model, or reproduce a row?
 
-- **Score vs cost — logarithmic x.** The board spans roughly two hundredfold, and
-  a linear axis would pile half the runs into the left margin. Two things have no
-  place on that axis and they are not the same claim, so the note says which: a
-  run with no cost figure, and a run that genuinely cost **zero**, which is a
-  known number a log axis cannot place.
-- **Score vs time — linear x.** Wall clock spans about 25 to 164 minutes: under
-  sevenfold, well inside one order of magnitude. Linear places every run honestly
-  and keeps the reading additive, which is how minutes are read; a log axis would
-  stretch the gaps at the fast end and squash them at the slow end for no gain.
-  The axis starts at zero, because on a duration axis zero is a real place.
+Not directly: the seeded repositories are withheld to keep the bench usable. What is public is everything needed to check a number — the exact prompts, every scoreboard and metrics row, per-bug coverage by index, the judge calibration, and the effort-dial probes. To get a model on the board, open an issue with the model, the harness it ships with, and the serving path; runs are added as models become reachable.
 
-Both mark the good corner (*cheap and strong*, *fast and strong*) and draw the
-frontier — runs no other selected run beats on both axes at once.
+### Why is model X not on the board?
 
-`caveats[1]` and `caveats[2]` are pulled out and drawn **inside the plate with the
-plot**, matched on their opening words with the generator's position as a
-fallback, so a reordered data file moves the right sentence rather than a
-confidently wrong one. On the time map that sentence is the definition of the
-measure — one measure on every row, both repo legs, install excluded — not a
-blanket disclaimer, because there is nothing blanket to disclaim; the two things
-that bend specific rows are marked on those rows. The exported PNG carries the
-first sentence of it plus, when any are shown, the count of flagged runs.
+Either it has not shipped a first-party agentic CLI or an API path that the harness can drive, or it has not been run yet. New models are usually run on launch day when access opens; a run is announced on the board with its date.
 
-## PNG export
+### Which bugs has nothing ever fixed?
 
-"Export this view (PNG)" renders the **current** view — the live selection, the
-live sort, the active tab, **the active theme** — onto a canvas at 2× and
-downloads it. Every colour is read from the live custom properties and run
-colours go through the same `runColor()` the page uses, so the exported card is
-the one on screen; the theme is in the file name so two exports never collide. It draws with
-the canvas 2D API rather than rasterising the SVG, because an `<img>`-loaded SVG
-cannot reach the page's web fonts and the chart's labels are positioned by
-measured text width; a silent font substitution would shift every label. The
-layout maths is shared with the on-screen chart (`scatterLayout()` in
-`scatter.js`), so the two cannot drift.
+The count of bugs never fixed by any model in any run is in the header of the table above, and the [Coverage view](https://bughunt.productcompass.pm/?view=coverage) on the live board shows exactly which indices each run fixed and where models overlap. The survivors are the interesting part of the set.
 
-Every export bakes in the title, the "planted bugs only — extras are never added
-to the score" line, the update date, the selection and sort, and the site URL —
-read from the canonical tag, so it follows the domain — which is what keeps a
-screenshot of a screenshot attributable. The cost-tag warning is printed only
-where a dollar figure is actually on the card. The three views land as
-`bug-hunt-bench-{leaderboard|score-vs-cost|score-vs-time}-{theme}-{date}.png`.
+### How do I cite this?
 
-## Deploy to Netlify
+> Huryn, P. *Bug Hunt Bench: 105 real bugs, two production repos, frontier coding models graded blind.* https://bughunt.productcompass.pm — data: https://github.com/phuryn/bug-hunt-bench
 
-1. Push this repo to GitHub (`phuryn/bug-hunt-bench`).
-2. In Netlify: **Add new site → Import an existing project** → pick the repo.
-3. Netlify reads `netlify.toml`: **build command empty, publish directory `.`**
-   (the repository root — there is nothing to compile, so there is no `/public`),
-   plus the `/method` rewrite and the `/data` shortcut.
-4. Deploy. `_headers` is picked up automatically for security headers and caching.
+## What is in this repository
 
-The CSP in `_headers` allows exactly what the page uses: same-origin scripts and
-styles, Google Fonts CSS from `fonts.googleapis.com`, font files from
-`fonts.gstatic.com`, and `data:`/`blob:` images for the favicon and the PNG
-export. If you self-host the fonts later, drop both Google hosts from the policy.
+| Path | What it is |
+|---|---|
+| [`results/`](results/) | The receipts. Scoreboards (combined and per repo), per-leg metrics with tokens, wall clock and cost, per-bug coverage by index, the exact prompts, judge calibration, effort-dial probes, and the wave-by-wave findings. See [results/README.md](results/README.md) for the column definitions. |
+| [`results/waves.md`](results/waves.md) | Findings, wave by wave, from the first seven-model run onward. |
+| [`data/benchmark.json`](data/benchmark.json) | Everything the site renders, generated from the scoreboards. Never edited by hand. |
+| `index.html`, `method.html`, `assets/` | The site itself: static HTML, CSS and vanilla ES modules, no build step. How it is built: [docs/site.md](docs/site.md). |
+| `assets/leaderboard.png`, `og-image.png` | The current leaderboard card, exported through the site's own PNG export on every update. |
 
-Assets are cached for a day with `stale-while-revalidate` rather than marked
-`immutable`, because there is no build step and therefore no content hashing in
-the filenames.
+The runner, the answer keys, the seeded repositories and the judge transcripts live in a private repository. Numbers flow one way: runs are scored there, receipts are published here, the site is generated from the receipts. No figure on the board or in this README is typed by hand.
 
-## Open Graph image
+## Author and license
 
-`og-image.png` sits at the repo root and both heads point at
-`https://bughunt.productcompass.pm/og-image.png` (1200×630) in the `og:image`
-and `twitter:image` tags. To refresh it: open the site **in the light theme**,
-select the featured runs, hit **Export this view (PNG)** and crop the top of the
-card to a 1200×630 ratio (the full export width, height = width × 630 / 1200).
-Light, because a social card is a thumbnail on somebody else's surface and has no
-way of knowing which theme that surface is in.
+Built and run by [Pawel Huryn](https://www.productcompass.pm) — [Product Compass](https://www.productcompass.pm), [X](https://x.com/PawelHuryn), [LinkedIn](https://www.linkedin.com/in/pawel-huryn). Related: [pm-skills](https://github.com/phuryn/pm-skills), agent skills for product managers.
 
-## Data licence
-
-The JSON-LD `Dataset` block declares **MIT - matching the source data in phuryn/experiments ("MIT. Use anything; a link back is appreciated.").
-not something carried in the data file — change or remove it in `index.html` if a
-different licence is intended.
-
-## Accessibility and browser notes
-
-- One `h1` per page, real headings, a real `<table>` with `<caption>`,
-  `<th scope>` and explicit ARIA roles (kept so the mobile card layout still reads
-  as a table).
-- The effort badge is a link at its own definition, with an explicit
-  `aria-label`: its tier and (on the clamped row) its two words are separate
-  elements with no whitespace between them, which a screen reader would otherwise
-  run together into one word.
-- Every sortable header is a button; `aria-sort` marks the active column and
-  focus returns to that button after the header re-renders.
-- Chart points are focusable with the same readout on focus as on hover, and the
-  leaderboard is the chart's table-view twin.
-- `prefers-reduced-motion` is respected. The print stylesheet drops the controls,
-  the tabs and the theme toggle, forces the light tokens on both pages (including
-  the tick rule's own pair) and tightens the outer gutters so the date column does
-  not clip on paper. Nothing on the board is behind a click any more, so paper
-  needs no expansion rule: the key prints with the table, and the key is where the
-  cost kinds and the effort badge are explained.
-- Colour is never the only channel: every swatch sits beside the run's name, in
-  the table, the picker, the chart labels and the chart legend, and every bar
-  prints its own value. Several of the per-model colours are close pairs (two
-  blues, gold vs terracotta), and they come from the data, so the text is what
-  carries identity. Run through a categorical-palette validator, twenty-one
-  data-supplied hues fail the colourblind-separation gates in *both* themes and
-  no re-ordering can fix that — which is why identity is carried by the labels
-  and the table view, and why the dark variants above are held to parity with
-  light rather than to a floor the source palette never met.
-
-## Changing CSS or JS
-
-Run `python stamp-assets.py` before committing. It appends a content hash to every local
-CSS/JS reference in the HTML, so a changed file becomes a changed URL. Without it a returning
-visitor gets the new HTML with a cached copy of the old script, and the board hangs on its
-loading state — that happened live on 2026-08-25. The script is idempotent; run it whenever
-`assets/` changes.
-
+MIT. Use anything; a link back is appreciated. If a number in a post and a receipt here disagree, the receipt wins and I want to know.

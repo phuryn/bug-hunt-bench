@@ -1,0 +1,7 @@
+level=   none  reasoning_tok=['HTTP 502: policy unavailable', 12790, 'ERR Remote end closed connection without response']  completion_tok=[None, 390, None]  mean=12790  wall_s=[None, 240.5, None]
+level=    low  reasoning_tok=[9973, 8025, 7138]  completion_tok=[442, 327, 378]  mean=8379  wall_s=[187.7, 137.3, 131.6]
+level= medium  reasoning_tok=[7620, 'ERR Remote end closed connection without response', 'ERR Remote end closed connection without response']  completion_tok=[1005, None, None]  mean=7620  wall_s=[150.8, None, None]
+level=   high  ['ERR Remote end closed connection without response', 'ERR Remote end closed connection without response', 'ERR Remote end closed connection without response']
+level=    max  ['HTTP 400: {"code":"invalid-argument","error":"Invalid reasoning effort."}', 'HTTP 400: {"code":"invalid-argument","error":"Invalid reasoning effort."}', 'HTTP 400: {"code":"invalid-argument","error":"Invalid reasoning effort."}']
+
+separation ratio: 1.68x  — ~1x = INERT, >>1x = ACTIVE

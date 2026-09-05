@@ -1,0 +1,19 @@
+# z-ai/glm-5.3 via OpenRouter (Z.AI) - reasoning-effort dial, 2026-08-25
+
+VERDICT: INERT. Ranges nest completely, within-level spread (17.5x) dwarfs the between-level
+difference (2.0x), and the ordering is inverted - `high` produced the LEAST reasoning of the three
+levels. Same signature as every other OpenRouter-served model probed on this board.
+
+max effort was requested for this arm; there is no working dial to set, so the bench row reports
+DEFAULT effort (the Kimi / DeepSeek / Muse-OR convention). n=4 per level, 32K max_tokens.
+
+NOTE ON THE FIRST ATTEMPT (void, not filed): max_tokens was 6000 and the none/low samples all
+landed on ~5,998 - the model was being truncated at the cap, not choosing to stop. A dial probe
+whose samples hit the token ceiling measures the ceiling. Re-run with 32K of room.
+
+level=  (none)  reasoning_tok=[3710, 16558, 13554, 20918]  mean=13685  min=3710 max=20918  within-level=5.64x  wall_s=[61.4, 226.5, 203.5, 313.0]
+level=     low  reasoning_tok=[8735, 20834, 7879, 1192]  mean=9660  min=1192 max=20834  within-level=17.48x  wall_s=[130.3, 333.0, 152.1, 28.3]
+level=    high  reasoning_tok=[2130, 4589, 3565, 16739]  mean=6756  min=2130 max=16739  within-level=7.86x  wall_s=[38.8, 80.0, 66.7, 273.8]
+
+between-level ratio (max mean / min mean): 2.03x  � ~1x = INERT (V4-Flash/OR was 1.06x), >>1x = ACTIVE (Qwen/DashScope was ~10x)
+worst within-level spread: 17.48x  � the between-level number means NOTHING unless it clears this. grok-4.5/OR read 1.49x between vs 4.95x within = noise; grok-4.5/xAI read 3.49x between on NON-OVERLAPPING low-vs-medium samples = real. Compare the sample RANGES, not just the means.

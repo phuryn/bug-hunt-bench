@@ -1,0 +1,4 @@
+effort=(none) reasoning_tok runs=[6027, 5748, 6219]  mean=5998
+effort=low    reasoning_tok runs=[6406, 5836, 6093]  mean=6112
+effort=high   reasoning_tok runs=[6174, 5928, 6049]  mean=6050
+effort=max    reasoning_tok runs=[6247, 6621, 6147]  mean=6338

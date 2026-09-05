@@ -169,6 +169,9 @@ a.wordmark:hover { color: var(--accent); }
   padding-bottom: 2px; border-bottom: 1px solid transparent;
 }
 .masthead__nav a:hover { color: var(--ink); border-bottom-color: var(--rule); }
+/* the star ask is the one nav item allowed to read as a request: ink, not muted, still no button chrome */
+.masthead__nav a.masthead__star { color: var(--ink); white-space: nowrap; }
+.masthead__nav a.masthead__star:hover { color: var(--accent); border-bottom-color: var(--accent); }
 /* the external link is nav, not a call to action: same weight as its neighbours
    (Pawel, 2026-08-25). The .masthead__out accent rule was removed, not overridden. */
 

@@ -38,6 +38,10 @@ function render(DATA) {
     const src = $('source-link');
     if (src) src.href = DATA.meta.source_repo;
   }
+  if (DATA.meta.repo_url) {
+    const star = $('star-link');
+    if (star) star.href = DATA.meta.repo_url;
+  }
 
   const body = $('method-body');
   body.textContent = '';

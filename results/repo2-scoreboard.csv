@@ -1,0 +1,53 @@
+model,harness,fixed_of_60,partial,claimed_only,genuine_extras,false_positive_fixes,wall_min,cost_usd_list_equiv
+GPT-5.6 Sol,Codex CLI,18,3,0,29,0,48.3,18.4
+Kimi K3,Claude Code / OpenRouter,17,0,3,6,0,45.5,15.84
+Fable 5,Claude Code,15,0,0,1,0,16.5,31.66
+Grok 4.5,Grok Build CLI (ACP),11,1,1,5,0,8.4,2.58
+Opus 5,Claude Code,10,0,3,5,0,20.0,22.88
+Sonnet 5,Claude Code,8,0,0,4,0,16.4,6.18
+Opus 4.8,Claude Code,7,1,0,1,0,17.4,8.68
+GPT-5.6 Sol (re-run Jul 31),Codex CLI,21,3,0,19,0,29.5,14.36
+GPT-5.6 Luna (max effort),Codex CLI,16,3,0,17,0,64.3,1.4
+GPT-5.6 Luna (high effort),Codex CLI,8,1,0,10,0,13.0,0.25
+DeepSeek V4-Flash,Claude Code / OpenRouter,4,1,0,2,0,15.5,0.39
+GPT-5.6 Sol (max effort),Codex CLI,23,3,0,19,0,79.6,37.08
+Fable 5 (max effort),Claude Code,17,0,0,4,0,32.9,65.61
+Opus 5 (max effort),Claude Code,14,2,3,1,0,26.2,26.55
+Grok 4.5 (high re-run - CLI has no max),Grok Build CLI (ACP),8,2,0,4,0,11.2,4.42
+DeepSeek V4-Flash 0731,Claude Code / OpenRouter,8,1,1,0,0,30.7,1.14
+DeepSeek V4-Pro,Claude Code / OpenRouter,5,0,0,1,0,14.6,0.56
+Qwen3.8-Max,Claude Code / Alibaba API,14,0,1,3,0,81.7,14.46
+"Muse Spark 1.2 (xhigh, Meta API)",Claude Code / Meta API,11,0,0,8,0,21.5,4.41
+Grok 4.5 (re-run Aug 6),Grok Build CLI (ACP),12,0,1,7,0,14.6,5.22
+"Muse Spark 1.2 (default effort, OpenRouter)",Claude Code / OpenRouter,11,0,0,2,0,39.7,10.03
+Grok 4.6 (xhigh),Grok Build CLI (ACP),17,2,0,8,0,16.7,11.44
+Gemini 3.7 Flash (high),Gemini CLI / Google API,14,0,0,4,0,45.1,4.05
+Gemini 3.7 Flash (high; Antigravity CLI retest),Antigravity CLI,14,2,0,11,0,28.5,5.91
+Ox Alpha (stealth; free),Claude Code / OpenRouter,8,1,1,2,0,28.6,0.0
+GLM-5.3,Claude Code / OpenRouter,11,1,0,3,0,32.8,9.46
+GLM-5.3 Flash,Claude Code / OpenRouter,7,0,0,3,0,28.8,0.5
+GPT-5.6 Luna (low effort),Codex CLI,4,1,0,0,0,3.0,0.05
+GPT-5.6 Luna (medium effort),Codex CLI,4,0,0,4,0,7.7,0.16
+Grok 4.6 (low),Grok Build CLI (ACP),9,3,0,7,0,10.3,1.99
+Grok 4.6 (medium),Grok Build CLI (ACP),16,0,0,10,0,11.2,7.05
+Opus 5 (medium effort),Claude Code,13,2,4,3,0,18.4,21.07
+GPT-5.6 Terra (max effort),Codex CLI,16,1,0,20,0,89.8,15.51
+GPT-5.6 Terra (high effort),Codex CLI,11,0,0,6,0,13.1,2.53
+GPT-5.6 Terra (medium effort),Codex CLI,11,0,0,4,0,9.4,1.73
+GPT-5.6 Luna (xhigh effort),Codex CLI,13,2,0,28,0,54.5,0.89
+Grok 4.6 (high),Grok Build CLI (ACP),16,0,0,12,0,18.1,7.68
+GPT-5.6 Terra (xhigh effort),Codex CLI,11,1,0,15,0,23.8,2.73
+Grok 4.6 (xhigh) seq,Grok Build CLI (ACP),19,0,0,12,0,22.0,10.12
+Grok 4.6 (medium) seq,Grok Build CLI (ACP),13,0,2,9,0,16.6,3.25
+Gemini 3.7 Flash seq,Antigravity CLI,12,1,0,1,0,13.2,4.11
+GPT-5.6 Sol (xhigh effort),Codex CLI,21,3,0,39,0,68.7,28.28
+Opus 5 (xhigh effort),Claude Code,12,1,4,1,0,27.6,35.07
+Hy4 Preview,Claude Code / OpenRouter,9,0,0,1,0,38.1,1.89
+Fable 5.1 (max effort),Claude Code,24,1,4,8,0,43.0,49.34
+Fable 5.1,Claude Code,18,1,0,4,0,18.6,22.5
+Fable 5.1 (low effort),Claude Code,16,0,1,4,0,19.8,15.72
+Gemini 3.8 Flash,Claude Code,13,1,1,6,0,16.6,4.77
+GPT-6 Astra (max effort),Codex CLI,24,0,0,22,1,41.6,16.14
+GPT-6 Astra (xhigh effort),Codex CLI,20,1,1,33,0,34.9,13.32
+GPT-6 Astra (high effort),Codex CLI,16,1,2,30,0,20.5,10.58
+GPT-6 Astra (medium effort),Codex CLI,15,1,1,24,0,14.1,6.88

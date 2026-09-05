@@ -1,0 +1,26 @@
+# 2026-09-04T23:53:40 local - effort preflight, tier xhigh
+binary: <HOME>\.vscode\extensions\openai.chatgpt-26.5901.22334-win32-x64\bin\windows-x86_64\codex.exe
+command: exec --skip-git-repo-check -s read-only -c model_reasoning_effort=xhigh -m gpt-6-astra Reply with exactly: TIEROK
+rc: 0
+output (tail):
+TIEROK
+Reading additional input from stdin...
+OpenAI Codex v0.153.0
+--------
+workdir: <WORKDIR>\Temp\output
+model: gpt-6-astra
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 01a06e69-a43e-76f2-9c02-3a0cdf2e1c63
+--------
+user
+Reply with exactly: TIEROK
+codex
+TIEROK
+tokens used
+7,036
+verdict: ACCEPTED - model+effort=xhigh served TIEROK
+

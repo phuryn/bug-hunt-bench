@@ -1,0 +1,727 @@
+[
+  {
+    "model": "grok-4.6",
+    "effort_requested": "xhigh",
+    "session_new": {
+      "sessionId": "019ff6c9-c14f-7ff2-a950-620574d61e0d",
+      "models": {
+        "currentModelId": "grok-4.6",
+        "availableModels": [
+          {
+            "modelId": "grok-4.6",
+            "name": "Grok 4.6",
+            "description": "SpaceXAI's latest frontier model",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "xhigh",
+              "reasoningEfforts": [
+                {
+                  "id": "xhigh",
+                  "value": "xhigh",
+                  "label": "Extra High Effort",
+                  "description": "Highest effort and reasoning level",
+                  "default": true
+                },
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Higher implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          },
+          {
+            "modelId": "grok-4.5",
+            "name": "Grok 4.5",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "high",
+              "reasoningEfforts": [
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Highest implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "currentWorkingDirectory": "<WORKDIR>\\Temp\\scripts",
+        "codebaseIndexed": [],
+        "isGitRepo": true,
+        "gitRoot": "<WORKDIR>",
+        "showNonGitWarning": false,
+        "feedbackEnabled": true,
+        "x.ai/sessionConfig": {
+          "options": [
+            {
+              "id": "grok-4.6",
+              "category": "model",
+              "label": "Grok 4.6",
+              "selected": true
+            },
+            {
+              "id": "grok-4.5",
+              "category": "model",
+              "label": "Grok 4.5",
+              "selected": false
+            },
+            {
+              "id": "xhigh",
+              "category": "mode",
+              "label": "Extra High Effort",
+              "description": "Highest effort and reasoning level",
+              "selected": true
+            },
+            {
+              "id": "high",
+              "category": "mode",
+              "label": "High Effort",
+              "description": "Higher implementation quality with extensive reasoning",
+              "selected": false
+            },
+            {
+              "id": "medium",
+              "category": "mode",
+              "label": "Medium Effort",
+              "description": "Balanced effort with standard implementation and testing",
+              "selected": false
+            },
+            {
+              "id": "low",
+              "category": "mode",
+              "label": "Low Effort",
+              "description": "Quick, fast implementations",
+              "selected": false
+            }
+          ]
+        },
+        "x.ai/sessionDetail": {
+          "sessionId": "019ff6c9-c14f-7ff2-a950-620574d61e0d",
+          "kind": "build",
+          "cwd": "<WORKDIR>\\Temp\\scripts",
+          "currentModelId": "grok-4.6"
+        },
+        "x.ai/schedulerBackgroundLoops": true
+      }
+    }
+  },
+  {
+    "model": "grok-4.6",
+    "effort_requested": "x-high",
+    "session_new": {
+      "sessionId": "019ff6c9-c996-77a2-b74a-279eefa4629e",
+      "models": {
+        "currentModelId": "grok-4.6",
+        "availableModels": [
+          {
+            "modelId": "grok-4.6",
+            "name": "Grok 4.6",
+            "description": "SpaceXAI's latest frontier model",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "high",
+              "reasoningEfforts": [
+                {
+                  "id": "xhigh",
+                  "value": "xhigh",
+                  "label": "Extra High Effort",
+                  "description": "Highest effort and reasoning level",
+                  "default": true
+                },
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Higher implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          },
+          {
+            "modelId": "grok-4.5",
+            "name": "Grok 4.5",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "high",
+              "reasoningEfforts": [
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Highest implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "currentWorkingDirectory": "<WORKDIR>\\Temp\\scripts",
+        "codebaseIndexed": [],
+        "isGitRepo": true,
+        "gitRoot": "<WORKDIR>",
+        "showNonGitWarning": false,
+        "feedbackEnabled": true,
+        "x.ai/sessionConfig": {
+          "options": [
+            {
+              "id": "grok-4.6",
+              "category": "model",
+              "label": "Grok 4.6",
+              "selected": true
+            },
+            {
+              "id": "grok-4.5",
+              "category": "model",
+              "label": "Grok 4.5",
+              "selected": false
+            },
+            {
+              "id": "xhigh",
+              "category": "mode",
+              "label": "Extra High Effort",
+              "description": "Highest effort and reasoning level",
+              "selected": false
+            },
+            {
+              "id": "high",
+              "category": "mode",
+              "label": "High Effort",
+              "description": "Higher implementation quality with extensive reasoning",
+              "selected": true
+            },
+            {
+              "id": "medium",
+              "category": "mode",
+              "label": "Medium Effort",
+              "description": "Balanced effort with standard implementation and testing",
+              "selected": false
+            },
+            {
+              "id": "low",
+              "category": "mode",
+              "label": "Low Effort",
+              "description": "Quick, fast implementations",
+              "selected": false
+            }
+          ]
+        },
+        "x.ai/sessionDetail": {
+          "sessionId": "019ff6c9-c996-77a2-b74a-279eefa4629e",
+          "kind": "build",
+          "cwd": "<WORKDIR>\\Temp\\scripts",
+          "currentModelId": "grok-4.6"
+        },
+        "x.ai/schedulerBackgroundLoops": true
+      }
+    }
+  },
+  {
+    "model": "grok-4.6",
+    "effort_requested": "max",
+    "session_new": {
+      "sessionId": "019ff6c9-d593-74e1-8a93-2ca02902b985",
+      "models": {
+        "currentModelId": "grok-4.6",
+        "availableModels": [
+          {
+            "modelId": "grok-4.6",
+            "name": "Grok 4.6",
+            "description": "SpaceXAI's latest frontier model",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "high",
+              "reasoningEfforts": [
+                {
+                  "id": "xhigh",
+                  "value": "xhigh",
+                  "label": "Extra High Effort",
+                  "description": "Highest effort and reasoning level",
+                  "default": true
+                },
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Higher implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          },
+          {
+            "modelId": "grok-4.5",
+            "name": "Grok 4.5",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "high",
+              "reasoningEfforts": [
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Highest implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "currentWorkingDirectory": "<WORKDIR>\\Temp\\scripts",
+        "codebaseIndexed": [],
+        "isGitRepo": true,
+        "gitRoot": "<WORKDIR>",
+        "showNonGitWarning": false,
+        "feedbackEnabled": true,
+        "x.ai/sessionConfig": {
+          "options": [
+            {
+              "id": "grok-4.6",
+              "category": "model",
+              "label": "Grok 4.6",
+              "selected": true
+            },
+            {
+              "id": "grok-4.5",
+              "category": "model",
+              "label": "Grok 4.5",
+              "selected": false
+            },
+            {
+              "id": "xhigh",
+              "category": "mode",
+              "label": "Extra High Effort",
+              "description": "Highest effort and reasoning level",
+              "selected": false
+            },
+            {
+              "id": "high",
+              "category": "mode",
+              "label": "High Effort",
+              "description": "Higher implementation quality with extensive reasoning",
+              "selected": true
+            },
+            {
+              "id": "medium",
+              "category": "mode",
+              "label": "Medium Effort",
+              "description": "Balanced effort with standard implementation and testing",
+              "selected": false
+            },
+            {
+              "id": "low",
+              "category": "mode",
+              "label": "Low Effort",
+              "description": "Quick, fast implementations",
+              "selected": false
+            }
+          ]
+        },
+        "x.ai/sessionDetail": {
+          "sessionId": "019ff6c9-d593-74e1-8a93-2ca02902b985",
+          "kind": "build",
+          "cwd": "<WORKDIR>\\Temp\\scripts",
+          "currentModelId": "grok-4.6"
+        },
+        "x.ai/schedulerBackgroundLoops": true
+      }
+    }
+  },
+  {
+    "model": "grok-4.6",
+    "effort_requested": "bogus_zzz",
+    "session_new": {
+      "sessionId": "019ff6c9-dd9a-7671-a9c8-378398db534f",
+      "models": {
+        "currentModelId": "grok-4.6",
+        "availableModels": [
+          {
+            "modelId": "grok-4.6",
+            "name": "Grok 4.6",
+            "description": "SpaceXAI's latest frontier model",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "high",
+              "reasoningEfforts": [
+                {
+                  "id": "xhigh",
+                  "value": "xhigh",
+                  "label": "Extra High Effort",
+                  "description": "Highest effort and reasoning level",
+                  "default": true
+                },
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Higher implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          },
+          {
+            "modelId": "grok-4.5",
+            "name": "Grok 4.5",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "high",
+              "reasoningEfforts": [
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Highest implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "currentWorkingDirectory": "<WORKDIR>\\Temp\\scripts",
+        "codebaseIndexed": [],
+        "isGitRepo": true,
+        "gitRoot": "<WORKDIR>",
+        "showNonGitWarning": false,
+        "feedbackEnabled": true,
+        "x.ai/sessionConfig": {
+          "options": [
+            {
+              "id": "grok-4.6",
+              "category": "model",
+              "label": "Grok 4.6",
+              "selected": true
+            },
+            {
+              "id": "grok-4.5",
+              "category": "model",
+              "label": "Grok 4.5",
+              "selected": false
+            },
+            {
+              "id": "xhigh",
+              "category": "mode",
+              "label": "Extra High Effort",
+              "description": "Highest effort and reasoning level",
+              "selected": false
+            },
+            {
+              "id": "high",
+              "category": "mode",
+              "label": "High Effort",
+              "description": "Higher implementation quality with extensive reasoning",
+              "selected": true
+            },
+            {
+              "id": "medium",
+              "category": "mode",
+              "label": "Medium Effort",
+              "description": "Balanced effort with standard implementation and testing",
+              "selected": false
+            },
+            {
+              "id": "low",
+              "category": "mode",
+              "label": "Low Effort",
+              "description": "Quick, fast implementations",
+              "selected": false
+            }
+          ]
+        },
+        "x.ai/sessionDetail": {
+          "sessionId": "019ff6c9-dd9a-7671-a9c8-378398db534f",
+          "kind": "build",
+          "cwd": "<WORKDIR>\\Temp\\scripts",
+          "currentModelId": "grok-4.6"
+        },
+        "x.ai/schedulerBackgroundLoops": true
+      }
+    }
+  },
+  {
+    "model": "grok-4.6",
+    "effort_requested": "high",
+    "session_new": {
+      "sessionId": "019ff6c9-e595-7931-8312-26cf8280fefb",
+      "models": {
+        "currentModelId": "grok-4.6",
+        "availableModels": [
+          {
+            "modelId": "grok-4.6",
+            "name": "Grok 4.6",
+            "description": "SpaceXAI's latest frontier model",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "high",
+              "reasoningEfforts": [
+                {
+                  "id": "xhigh",
+                  "value": "xhigh",
+                  "label": "Extra High Effort",
+                  "description": "Highest effort and reasoning level",
+                  "default": true
+                },
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Higher implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          },
+          {
+            "modelId": "grok-4.5",
+            "name": "Grok 4.5",
+            "_meta": {
+              "totalContextTokens": 500000,
+              "agentType": "grok-build-plan",
+              "supportsReasoningEffort": true,
+              "reasoningEffort": "high",
+              "reasoningEfforts": [
+                {
+                  "id": "high",
+                  "value": "high",
+                  "label": "High Effort",
+                  "description": "Highest implementation quality with extensive reasoning",
+                  "default": true
+                },
+                {
+                  "id": "medium",
+                  "value": "medium",
+                  "label": "Medium Effort",
+                  "description": "Balanced effort with standard implementation and testing",
+                  "default": false
+                },
+                {
+                  "id": "low",
+                  "value": "low",
+                  "label": "Low Effort",
+                  "description": "Quick, fast implementations",
+                  "default": false
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "_meta": {
+        "currentWorkingDirectory": "<WORKDIR>\\Temp\\scripts",
+        "codebaseIndexed": [],
+        "isGitRepo": true,
+        "gitRoot": "<WORKDIR>",
+        "showNonGitWarning": false,
+        "feedbackEnabled": true,
+        "x.ai/sessionConfig": {
+          "options": [
+            {
+              "id": "grok-4.6",
+              "category": "model",
+              "label": "Grok 4.6",
+              "selected": true
+            },
+            {
+              "id": "grok-4.5",
+              "category": "model",
+              "label": "Grok 4.5",
+              "selected": false
+            },
+            {
+              "id": "xhigh",
+              "category": "mode",
+              "label": "Extra High Effort",
+              "description": "Highest effort and reasoning level",
+              "selected": false
+            },
+            {
+              "id": "high",
+              "category": "mode",
+              "label": "High Effort",
+              "description": "Higher implementation quality with extensive reasoning",
+              "selected": true
+            },
+            {
+              "id": "medium",
+              "category": "mode",
+              "label": "Medium Effort",
+              "description": "Balanced effort with standard implementation and testing",
+              "selected": false
+            },
+            {
+              "id": "low",
+              "category": "mode",
+              "label": "Low Effort",
+              "description": "Quick, fast implementations",
+              "selected": false
+            }
+          ]
+        },
+        "x.ai/sessionDetail": {
+          "sessionId": "019ff6c9-e595-7931-8312-26cf8280fefb",
+          "kind": "build",
+          "cwd": "<WORKDIR>\\Temp\\scripts",
+          "currentModelId": "grok-4.6"
+        },
+        "x.ai/schedulerBackgroundLoops": true
+      }
+    }
+  }
+]

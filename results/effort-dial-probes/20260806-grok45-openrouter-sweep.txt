@@ -1,0 +1,7 @@
+level=  (none)  reasoning_tok=[7899, 18071, 'ERR Expecting value: line 1025 column 1 (char 5632)']  mean=12985  wall_s=[148.9, 339.8]
+level=     low  reasoning_tok=['ERR Expecting value: line 537 column 1 (char 2948)', 9786, 15186]  mean=12486  wall_s=[185.7, 289.0]
+level=  medium  reasoning_tok=[8385, 11192, 28329]  mean=15969  wall_s=[155.3, 189.0, 529.7]
+level=    high  reasoning_tok=[17167, 5461, 16682]  mean=13103  wall_s=[339.4, 99.7, 284.3]
+level=     max  reasoning_tok=['ERR Expecting value: line 2889 column 1 (char 15884)', 16481, 29244]  mean=22862  wall_s=[311.4, 515.7]
+
+separation ratio (max mean / min mean): 1.83x  — ~1x = INERT (V4-Flash/OR was 1.06x), >>1x = ACTIVE (Qwen/DashScope was ~10x)

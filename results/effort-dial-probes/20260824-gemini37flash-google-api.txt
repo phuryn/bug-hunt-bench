@@ -1,0 +1,8 @@
+level=  (none)  thoughts_tok=[3489, 4076, 4076, 4076, 3489]  mean=3841  min=3489 max=4076  within-level=1.17x  wall_s=[13.3, 17.3, 16.8, 18.4, 13.9]
+level=     low  thoughts_tok=[1721, 1721, 1721, 2352, 2352]  mean=1973  min=1721 max=2352  within-level=1.37x  wall_s=[14.5, 7.9, 14.2, 23.5, 10.5]
+level=  medium  thoughts_tok=[3489, 4076, 4076, 3489, 4076]  mean=3841  min=3489 max=4076  within-level=1.17x  wall_s=[20.8, 19.6, 17.1, 17.3, 15.3]
+level=    high  thoughts_tok=[7438, 6482, 6482, 6482, 7438]  mean=6864  min=6482 max=7438  within-level=1.15x  wall_s=[24.7, 22.0, 25.1, 25.0, 24.4]
+level=   xhigh  ['HTTP 400: {\n  "error": {\n    "code": 400,\n    "message": "Invalid value at \'generation_config.thinking_config.thinking_level\' (typ', 'HTTP 400: {\n  "error": {\n    "code": 400,\n    "message": "Invalid value at \'generation_config.thinking_config.thinking_level\' (typ', 'HTTP 400: {\n  "error": {\n    "code": 400,\n    "message": "Invalid value at \'generation_config.thinking_config.thinking_level\' (typ', 'HTTP 400: {\n  "error": {\n    "code": 400,\n    "message": "Invalid value at \'generation_config.thinking_config.thinking_level\' (typ', 'HTTP 400: {\n  "error": {\n    "code": 400,\n    "message": "Invalid value at \'generation_config.thinking_config.thinking_level\' (typ']
+
+between-level ratio (max mean / min mean): 3.48x  � ~1x = INERT (V4-Flash/OR was 1.06x), >>1x = ACTIVE (Qwen/DashScope was ~10x)
+worst within-level spread: 1.37x  � the between-level number means NOTHING unless it clears this. grok-4.5/OR read 1.49x between vs 4.95x within = noise; grok-4.5/xAI read 3.49x between on NON-OVERLAPPING low-vs-medium samples = real. Compare the sample RANGES, not just the means.

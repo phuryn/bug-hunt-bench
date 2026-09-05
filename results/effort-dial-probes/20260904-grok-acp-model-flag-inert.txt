@@ -1,0 +1,26 @@
+# 2026-09-04 local - is the JUDGE's model selectable? (judge lane)
+
+Harness: the ACP bridge -> `grok agent --reasoning-effort high -m <model> stdio`
+Prompt : Reply with exactly this JSON and nothing else: {"ok": true, "probe": "judge-path"}
+
+requested -m                 served modelId   verdict file written
+---------------------------  ---------------  -------------------
+grok-4.5                     grok-4.6         yes, valid JSON
+grok-4.6                     grok-4.6         yes, valid JSON
+grok-9.9-nonexistent         grok-4.6         yes, valid JSON
+
+VERDICT: the -m flag is INERT through this bridge. A nonexistent model id neither errors nor changes
+what runs. So `judge_model` in every summary written before today recorded a REQUEST, not what graded
+the work - the judge-lane version of exactly the lie rule 1 exists to catch on the arm side.
+
+Blast radius, checked not assumed: zero published runs affected. Across every scoring dir in both
+benches, no arm whose name contains "grok" was ever routed to the grok judge, so the no-self-judging
+rule held in fact even though the guard was comparing against a string that did not describe reality.
+
+Fixed the same day:
+- the scorer records the server's own modelId as `judge_model_served` (summary.json + summary.csv)
+  and warns on stderr when it differs from the configured model.
+- the grok judge in the Astra wave configs now names grok-4.6, so the pre-judging sibling guard - which
+  cannot know the served model, because it runs before any judge is invoked - compares against reality.
+
+Side note: the Grok CLI authenticates separately from the xAI HTTP API, so the judge path does not depend on API credits.

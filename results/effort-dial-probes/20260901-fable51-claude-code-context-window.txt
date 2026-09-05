@@ -1,0 +1,52 @@
+# claude-fable-5-1 via Claude Code CLI 2.1.251 - context-window honesty, 2026-09-01
+
+VERDICT: the model string must be `claude-fable-5-1[1m]`, not `claude-fable-5-1`.
+
+This is not an effort probe. It is the same class of defect as the CODEX_HOME bug caught on
+2026-08-29 (an arm that looked configured and ran unconfigured): a setting the runner never
+asserts, that silently degrades the run rather than failing it.
+
+Claude Fable 5.1 shipped after this CLI build, so the CLI has no entry for it in its model table.
+Its fallback is to ASSUME a 200K context window and drive auto-compact against that assumption.
+Claude Fable 5.1 actually has a 1M window. An unmodified arm would therefore autocompact roughly
+five times earlier than the model requires, on a bench whose runs read 25-55M cached tokens - i.e.
+exactly the autocompact-thrash failure mode already on this board's failure-mode list, and it would
+have been invisible in the metrics row: no error, no non-zero exit, just a worse score and an
+inflated wall clock that would have been read as "Fable 5.1 is slower".
+
+The `[1m]` suffix is the CLI's own documented remedy and is already the board's convention
+(the hy4preview arm uses `claude-opus-5[1m]`). With it, the 200K assumption line disappears.
+The remaining `unrecognized_model` tag is cosmetic - it reports that the name is absent from the
+CLI's table, not that anything about the request was rejected. Both invocations returned normal
+completions, so acceptance alone proves nothing here; the difference is only visible in the warning.
+
+EVIDENCE - identical prompt, same CLI, same minute, only the model string differs:
+
+  $ claude -p --model 'claude-fable-5-1' --effort high "Reply: A"
+  "claude-fable-5-1" is not a model this version of Claude Code recognizes, so auto-compact will
+  keep this session within 200k tokens (the context window it assumes). If the model accepts more,
+  append [1m] to the model name for 1M; to make it recognized, map it in the modelOverrides setting
+  or update Claude Code; CLAUDE_CODE_DISABLE_UNKNOWN_MODEL_WINDOW_ENFORCEMENT=1 restores the
+  previous wait-for-the-API behavior.
+  [claude-code:unrecognized_model] {"model":"claude-fable-5-1","query_source":"sdk"}
+  <normal completion>
+
+  $ claude -p --model 'claude-fable-5-1[1m]' --effort high "Reply: A"
+  [claude-code:unrecognized_model] {"model":"claude-fable-5-1[1m]","query_source":"sdk"}
+  <normal completion>
+
+  Difference: the 200K-assumption sentence is present in the first and absent in the second.
+
+Vendor ground truth (platform.claude.com models overview, fetched 2026-09-01): context window 1M
+tokens, max output 128K, default effort `high`, `claude-fable-5-1`.
+
+EFFORT LABEL for the bench row: effort="high", effort_status="first_party".
+`--effort {low,medium,high,xhigh,max}` is a documented first-party enum in this CLI and the tier was
+requested explicitly; it is NOT probed as binding on this serving path, so `first_party` is the
+honest ceiling of the claim - not `verified`. Note `high` is also Claude Fable 5.1's documented
+default, so this row does not depend on the dial having moved anything.
+
+DELIBERATELY NOT CHANGED: the CLI was left at 2.1.251, the same build as every recent Opus and Luna
+row on this board. Upgrading to 2.1.257 (installed alongside) to get native recognition would have
+swapped the harness underneath the comparison and confounded Fable 5.1 vs Fable 5 with a CLI change.
+The `[1m]` suffix fixes the window without touching the harness.
