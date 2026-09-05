@@ -1,0 +1,72 @@
+# meta/muse-spark-1.3 via OpenRouter (provider Meta, the only one listed) - reasoning-effort dial, 2026-09-05
+
+VERDICT: INERT. Seven levels probed (parameter omitted, minimal, low, medium, high, xhigh, max), n=5 each
+(max n=3), 32K max_tokens so no sample hit the cap. Every adjacent pair of levels OVERLAPS in range, no pair
+separates (exact Mann-Whitney two-sided p >= 0.095 everywhere), the ordering is NON-MONOTONIC (the
+omitted-parameter baseline reasons the MOST on average; xhigh reasons less than medium and high), and the
+between-level ratio (2.38x on means) sits far inside the worst within-level spread (6.53x). Same signature as
+muse-spark-1.2 on this path (n=3, 2026-08-06) and every other OpenRouter-served model probed on this board.
+`minimal` is not a switch either: 2,394-9,784 reasoning tokens on the hard prompt, overlapping every other level.
+
+TWO THINGS CHANGED SINCE AUGUST, and one of them retires a rule of thumb:
+1. OpenRouter now VALIDATES `reasoning.effort` at the gateway against a global enum
+   (max|xhigh|high|medium|low|minimal|none): `bogus_zzz` and `ultra` -> HTTP 400 "Invalid option: expected one
+   of ...", and `none` -> HTTP 400 "Reasoning is mandatory for this endpoint and cannot be disabled." In August
+   a garbage value returned 200 on this same path. So the rule of thumb recorded on 2026-08-06 - "garbage value
+   -> 400 = somebody validates it = the dial is real" - NO LONGER DISCRIMINATES ON OPENROUTER: a 400 there proves
+   OpenRouter's schema validator ran, not that the provider applied the value. Measuring is the only test left.
+2. `max` is ACCEPTED on OpenRouter (200) although Meta's first-party endpoint 400-rejects it (first-party enum:
+   low|medium|high|xhigh). On OpenRouter, `max` lands inside xhigh's range (8,532-10,442 vs 6,170-10,951) -
+   consistent with the value being translated or dropped before it reaches Meta.
+
+Meta first-party (api.meta.ai/v1/messages, `output_config.effort`) for muse-spark-1.3: still HTTP 402
+"Billing verification failed" on 2026-09-05 - unchanged since 2026-08-06. That is the path where the dial was
+shown to validate loudly and separate (1.2, 2026-08-06); it remains unavailable.
+
+Consequence for the bench: an OpenRouter-served Muse Spark 1.3 arm runs at DEFAULT effort whatever the request
+says; it must be published `effort=default`, `effort_status=inert_default`, never as xhigh or max.
+
+Tool: the effort probe --transport openrouter --model meta/muse-spark-1.3 --provider Meta --max-tokens 32000
+(temperature 0, seed 7, streaming; the default hard prompt = the corner-cut 5x5 tromino tiling count).
+Discriminator = reasoning_tokens from usage.completion_tokens_details; correctness of the answer is irrelevant.
+
+## Samples (reasoning tokens per call)
+level=  (none)  reasoning_tok=[5716, 27684, 9162, 13056, 24465]  mean=16017  min=5716 max=27684  within-level=4.84x  wall_s=[54.6, 215.6, 71.6, 109.2, 200.5]
+level=     low  reasoning_tok=[2940, 19194, 7566, 3391, 5878]  mean=7794  min=2940 max=19194  within-level=6.53x  wall_s=[29.7, 161.7, 77.0, 33.7, 49.9]
+level=  medium  reasoning_tok=[28658, 4600, 10241, 10018, 7368]  mean=12177  min=4600 max=28658  within-level=6.23x  wall_s=[231.9, 39.2, 85.2, 86.9, 62.9]
+level=    high  reasoning_tok=[11626, 7587, 7717, 25378, 6752]  mean=11812  min=6752 max=25378  within-level=3.76x  wall_s=[93.9, 66.1, 68.6, 199.3, 65.4]
+level=   xhigh  reasoning_tok=[8132, 9199, 10951, 7415, 6170]  mean=8373  min=6170 max=10951  within-level=1.77x  wall_s=[50.5, 74.3, 64.8, 48.0, 45.0]
+level= minimal  reasoning_tok=[7910, 9784, 5648, 7870, 2394]  mean=6721  min=2394 max=9784  within-level=4.09x  wall_s=[67.4, 87.4, 57.1, 66.0, 27.1]
+level=     max  reasoning_tok=[9861, 10442, 8532]  mean=9612  min=8532 max=10442  within-level=1.22x  wall_s=[50.3, 54.7, 44.1]
+
+## Stats (range separation + exact Mann-Whitney U on adjacent levels)
+   level  n     min  median     max     mean  within  samples
+  (none)  5    5716   13056   27684    16017   4.84x  [5716, 9162, 13056, 24465, 27684]
+ minimal  5    2394    7870    9784     6721   4.09x  [2394, 5648, 7870, 7910, 9784]
+     low  5    2940    5878   19194     7794   6.53x  [2940, 3391, 5878, 7566, 19194]
+  medium  5    4600   10018   28658    12177   6.23x  [4600, 7368, 10018, 10241, 28658]
+    high  5    6752    7717   25378    11812   3.76x  [6752, 7587, 7717, 11626, 25378]
+   xhigh  5    6170    8132   10951     8373   1.77x  [6170, 7415, 8132, 9199, 10951]
+     max  3    8532    9861   10442     9612   1.22x  [8532, 9861, 10442]
+
+adjacent pairs: ranges overlap? | U | exact two-sided p
+   (none) vs minimal  overlap=YES  U=4.0/25  p=0.095  mean ratio=0.42x
+  minimal vs low      overlap=YES  U=11.0/25  p=0.841  mean ratio=1.16x
+      low vs medium   overlap=YES  U=18.0/25  p=0.310  mean ratio=1.56x
+   medium vs high     overlap=YES  U=13.0/25  p=1.000  mean ratio=0.97x
+     high vs xhigh    overlap=YES  U=10.0/25  p=0.690  mean ratio=0.71x
+    xhigh vs max      overlap=YES  U=11.0/15  p=0.393  mean ratio=1.15x
+
+monotonic by mean across ['(none)', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max']: False
+between-level (max mean / min mean): 2.38x | worst within-level: 6.53x
+
+## Validation test (max_tokens 16, trivial prompt "Reply with exactly: OK")
+bogus_zzz -> 400 {"error":{"message":"reasoning.effort: Invalid option: expected one of \"max\"|\"xhigh\"|\"high\"|\"medium\"|\"low\"|\"minimal\"|\"none\"","code":400}}
+ultra     -> 400 (same message)
+none      -> 400 {"error":{"message":"Reasoning is mandatory for this endpoint and cannot be disabled.","code":400}}
+minimal   -> 200 provider=Meta model=meta/muse-spark-1.3 reasoning_tokens=13 (trivial prompt; not comparable to the sweep)
+max       -> 200 - the first attempt (max_tokens 8000) ran into the cap at 7,997 reasoning tokens and is VOID; re-run above with 32K room
+
+## Meta first-party check
+POST https://api.meta.ai/v1/messages model=muse-spark-1.3 output_config.effort=low -> 402 billing_error
+"Billing verification failed. Please check your payment method."
