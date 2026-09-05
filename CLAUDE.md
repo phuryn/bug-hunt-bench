@@ -29,7 +29,9 @@ The README leaderboard block (between the `leaderboard:start/end` markers), `ass
 
 - **No build step, no framework, no npm, no `node_modules`.** Plain HTML, CSS and vanilla ES
   modules. A contributor can open `index.html` and a static host can serve the folder as-is.
-- **No database, no backend, no auth, no analytics, no cookies.**
+- **No database, no backend, no auth.** The one third-party script is Microsoft Clarity
+  (`assets/js/clarity.js`, session analytics; sets Clarity's own cookies). Its hosts are the
+  only non-Google entries in the CSP.
 - One dependency-free exception: `stamp-assets.py`, which runs at deploy (see below).
 
 ## Layout
@@ -41,6 +43,7 @@ data/benchmark.json GENERATED upstream - read only
 assets/css/site.css all styles, both themes, responsive + print
 assets/js/
   theme-boot.js     render-blocking, stamps data-theme before first paint (no flash)
+  clarity.js        Microsoft Clarity snippet, async (a file, because no 'unsafe-inline')
   theme.js          theme state, toggle, dark-mode colour rule
   main.js           boot, state, URL sync, hero, selector wiring
   method.js         renders method.html from the same JSON

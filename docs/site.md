@@ -7,7 +7,8 @@ codebases, frontier coding models given one round per repo in their own native
 agentic CLI, and every diff graded blind against a withheld answer key.
 
 Static HTML, CSS and vanilla ES modules. No build step, no framework, no bundler,
-no dependencies, no backend, no analytics. Open `index.html` through any local
+no dependencies, no backend. The only third-party code is the Microsoft Clarity
+analytics snippet (`assets/js/clarity.js`). Open `index.html` through any local
 server and it runs.
 
 ---
@@ -25,6 +26,7 @@ server and it runs.
 │   ├── favicon.svg
 │   └── js/
 │       ├── theme-boot.js      classic, render-blocking: stamps the theme pre-paint
+│       ├── clarity.js         Microsoft Clarity snippet, loaded async (file, not inline: CSP)
 │       ├── theme.js           theme state, the toggle, the dark run-colour rule
 │       ├── main.js            the board: boot, state, URL sync, section rendering
 │       ├── method.js          the method page: renders method/caveats/glossary
@@ -319,8 +321,12 @@ where a dollar figure is actually on the card. The three views land as
 
 The CSP in `_headers` allows exactly what the page uses: same-origin scripts and
 styles, Google Fonts CSS from `fonts.googleapis.com`, font files from
-`fonts.gstatic.com`, and `data:`/`blob:` images for the favicon and the PNG
-export. If you self-host the fonts later, drop both Google hosts from the policy.
+`fonts.gstatic.com`, `data:`/`blob:` images for the favicon and the PNG export,
+and Microsoft Clarity's hosts (`https://*.clarity.ms`, `https://c.bing.com`) in
+`script-src`, `img-src` and `connect-src` — Microsoft's documented allowlist,
+applied per directive rather than to `default-src`. If you self-host the fonts
+later, drop both Google hosts; if you remove Clarity, drop its two hosts and
+`assets/js/clarity.js` together.
 
 Assets are cached for a day with `stale-while-revalidate` rather than marked
 `immutable`, because there is no build step and therefore no content hashing in
