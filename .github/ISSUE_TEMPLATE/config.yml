@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: The live board
+    url: https://bughunt.productcompass.pm
+    about: The current leaderboard, cost and time maps, and per-bug coverage.
+  - name: Method, caveats and definitions
+    url: https://bughunt.productcompass.pm/method
+    about: How runs are graded, what the effort and cost tags mean, and what the bench cannot tell you.

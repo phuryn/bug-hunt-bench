@@ -25,7 +25,7 @@ jobs:
               body: [
                 'Thanks for the interest, but this repository does not accept pull requests.',
                 '',
-                'Every number here is generated from blind-judged verdicts by a private runner, so there is nothing to edit by hand: a change would be overwritten on the next wave. If a number is wrong, or a model is missing from the board, please reach out instead - see [CONTRIBUTING.md](https://github.com/' + owner + '/' + repo + '/blob/main/.github/CONTRIBUTING.md).',
+                'Every number here is generated from blind-judged verdicts by a private runner, so there is nothing to edit by hand: a change would be overwritten on the next wave. If a number is wrong, or a model is missing from the board, please [open an issue](https://github.com/' + owner + '/' + repo + '/issues/new/choose) instead - see [CONTRIBUTING.md](https://github.com/' + owner + '/' + repo + '/blob/main/.github/CONTRIBUTING.md).',
                 '',
                 'Closing automatically.',
               ].join('\n'),
