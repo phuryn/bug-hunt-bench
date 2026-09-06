@@ -30,6 +30,7 @@ see grok-4.5 below.
 | 2026-08-06 | grok-4.5 | OpenRouter `x-ai/grok-4.5` | **INERT** — accepts every string incl. `max`, no measurable effect | `20260806-grok45-openrouter-*.txt` |
 | 2026-08-04 | deepseek-v4-flash-0731 | OpenRouter | INERT (1.06x) — killed the commissioned max arm | `20260807-deepseek-v4-flash-0731-openrouter.log` (+ the probe script used, `.py`) |
 | 2026-08-03 | qwen3.8-max | DashScope Anthropic gateway | ACTIVE (~10x) | not retained |
+| 2026-09-07 | gpt-5.6-sol | Codex CLI 0.153.0 (`model_reasoning_effort=medium`) | **ACCEPTED** — requested explicitly and echoed back in the CLI's own session header (`reasoning effort: medium`) before the leg started; a documented first-party enum, not probed for magnitude → row is `first_party` | `20260907-gpt56sol-codex-effort-medium.txt` |
 
 ## Reading a probe: the between-level number means nothing on its own
 

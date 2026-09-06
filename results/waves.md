@@ -644,3 +644,24 @@ otherwise idle machine, judged blind by Grok 4.6 (non-sibling — no model grade
   skipped rather than quietly run at another effort; none had to be.
 - **Not solved.** 57 of 105 planted bugs survived a frontier model at its ceiling, and 39 have now
   survived every model ever run here (40 after the `max` run; `medium` took one more; `low` took none).
+
+## Sep 6 — GPT-5.6 Sol, the `medium` tier
+
+The Sol dial had `high` (34), `xhigh` (39) and `max` (42); this run adds `medium`, requested to fill the dial below
+`high`. Same slug, same Codex CLI on the ChatGPT-account path as every other Sol row, both repos run sequentially on
+an otherwise idle machine, judged blind by Grok 4.6 (non-sibling). Preflight confirmed the CLI served
+`reasoning effort: medium` before the first leg (`effort-dial-probes/20260907-gpt56sol-codex-effort-medium.txt`), so the row is `first_party`.
+
+| Arm | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Claimed-only | Genuine extras | Wall | Cost |
+|---|---|--:|--:|--:|--:|--:|--:|--:|
+| GPT-5.6 Sol | max (its ceiling) | 42 | 19 | 23 | 0 | 40 | 163.8 min | $69.61 |
+| GPT-5.6 Sol | xhigh | 39 | 18 | 21 | 0 | 59 | 126.2 min | $52.75 |
+| GPT-5.6 Sol | high (Jul 31 re-run) | 34 | 13 | 21 | 0 | 28 | 66.7 min | $33.92 |
+| **GPT-5.6 Sol** | **medium** | **29** | 13 | 16 | 0 | 24 | 47.6 min | $15.77 |
+
+- **The Sol dial now reads medium 29 -> high 34 -> xhigh 39 -> max 42.**
+- **Against `high` (the Jul 31 re-run):** 34 → 29 (-5) strict, repo 1 13 → 13, repo 2 21 → 16; wall 66.7 → 47.6 min, cost $33.92 → $15.77.
+- **Honesty profile:** 0 claimed-only, 1 partial, 0 false-positive fixes; 24 genuine unplanted extras against 29 planted fixes.
+- **Cost per fix $0.54, 0.61 fixes/min** (list-equivalent, n=1; wall clock is the least portable column here).
+- **No first-ever kills.** The never-fixed count stays at 39.
+- Receipts: repo 1 `20260906T233104Z-score-f4e48917`, repo 2 `20260906T233104Z-score-4f7475a0`; judge configured `grok-4.6`, served `grok-4.6` / `grok-4.6`.
