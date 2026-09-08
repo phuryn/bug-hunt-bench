@@ -933,10 +933,40 @@ h1 em { font-style: normal; color: var(--accent); }
   line-height: 1.5; border-bottom: 1px solid var(--hairline);
 }
 
+/* -------------------------------------------------------------------- coda */
+
+/* The way out: the newsletter. It rhymes with the hero on purpose - the argument
+   on the left, the door on the right - and it is the last thing on both pages,
+   above the footer, so it is on every view of the board and never sits between a
+   reader and a number. The frame is Substack's own subscribe document and stays
+   white in the dark theme: it is somebody else's surface, and the hairline says so. */
+.coda { margin-top: clamp(56px, 8vw, 96px); }
+.coda__inner {
+  padding-top: clamp(22px, 3vw, 34px);
+  border-top: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 482px;
+  column-gap: clamp(28px, 5vw, 72px);
+  row-gap: 20px;
+  align-items: start;
+}
+.coda__text { max-width: 46ch; min-width: 0; }
+.coda__text p {
+  margin: 0; font-family: var(--serif); font-size: 1.24rem; line-height: 1.55;
+  color: var(--ink-2); text-wrap: pretty;
+}
+/* content-box so the document inside gets exactly the 480x320 it was drawn for */
+.coda__frame {
+  box-sizing: content-box; width: 480px; height: 320px; min-width: 0;
+  border: 1px solid var(--hairline); border-radius: 3px;
+  background: #fff; overflow: hidden;
+}
+.coda__embed { display: block; width: 100%; height: 100%; border: 0; }
+
 /* ------------------------------------------------------------------ footer */
 
 .footer {
-  margin-top: clamp(56px, 8vw, 96px);
+  margin-top: clamp(36px, 5vw, 56px);
   border-top: 1px solid var(--rule); background: var(--panel);
 }
 .footer__inner { padding-block: 26px 40px; font-size: 12.5px; color: var(--muted); }
@@ -949,6 +979,11 @@ h1 em { font-style: normal; color: var(--accent); }
   .hero { grid-template-columns: 1fr; }
   .bridge { grid-column: 1; grid-row: auto; margin-top: 22px; max-width: none; }
   .lede { max-width: none; }
+  /* minmax(0, …) on purpose: a bare 1fr is minmax(auto, 1fr), and the frame's
+     fixed width would push the track - and the sentence beside it - off the phone */
+  .coda__inner { grid-template-columns: minmax(0, 1fr); }
+  .coda__text { max-width: none; }
+  .coda__frame { width: auto; max-width: 480px; }
   .tickrule { grid-row: auto; }
   .tickrule__plot { height: 34px; gap: 1px; }
 }
@@ -1055,4 +1090,6 @@ h1 em { font-style: normal; color: var(--accent); }
   .method-p, .caveats li, .glossary dt, .glossary dd { break-inside: avoid; }
   .backlink { display: none !important; }
   .chart__tip { display: none !important; }
+  /* a subscribe form is a screen thing */
+  .coda { display: none !important; }
 }

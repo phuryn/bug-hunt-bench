@@ -32,7 +32,9 @@ The README leaderboard block (between the `leaderboard:start/end` markers), `ass
 - **No database, no backend, no auth, no cookies.** The one third-party script is Microsoft
   Clarity (`assets/js/clarity.js`, session analytics) with cookies disabled in its project
   settings - verified 2026-09-05: zero cookies after the tag loads and beacons. Its hosts are
-  the only non-Google entries in the CSP.
+  the only non-Google entries in the CSP, bar one: `frame-src` allows the subscribe form at the
+  foot of both pages, which is Substack's own document (`www.productcompass.pm/embed`) on its
+  own origin, with its own scripts and cookies. None of that reaches this site's pages.
 - One dependency-free exception: `stamp-assets.py`, which runs at deploy (see below).
 
 ## Layout

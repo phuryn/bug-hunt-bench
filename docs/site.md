@@ -8,8 +8,9 @@ agentic CLI, and every diff graded blind against a withheld answer key.
 
 Static HTML, CSS and vanilla ES modules. No build step, no framework, no bundler,
 no dependencies, no backend. The only third-party code is the Microsoft Clarity
-analytics snippet (`assets/js/clarity.js`). Open `index.html` through any local
-server and it runs.
+analytics snippet (`assets/js/clarity.js`) and, at the foot of both pages, Substack's
+own subscribe form in a frame (`www.productcompass.pm/embed`). Open `index.html`
+through any local server and it runs.
 
 ---
 
@@ -48,7 +49,9 @@ server and it runs.
 picker, the table, the two maps, the export, and the key that makes the columns
 readable. `/method` is the argument: **The method**, **What this board does not
 tell you**, **Definitions**. Both are real HTML files sharing one stylesheet, one
-theme system and one masthead — there is no client-side router.
+theme system and one masthead — there is no client-side router. Both end on the
+same coda: one serif sentence about the newsletter and Substack's subscribe frame,
+above the footer, so it sits on every view and never between a reader and a number.
 
 The split cost no duplication, because the moved sections were never markup in the
 first place: `method`, `caveats` and `glossary` are rendered from
@@ -96,6 +99,7 @@ cannot make them wrong:
 |---|---|---|
 | `<title>` and `<meta name="description">` | `index.html`, `method.html` heads | Written without numbers so they cannot go stale. |
 | The bridge — "what this is" + the link to `/method` | `index.html` hero | Only if the setup itself changes. |
+| The coda — the newsletter sentence beside the subscribe frame | `index.html`, `method.html`, above the footer | Only if the newsletter's pitch changes. The same sentence closes the README. |
 | `lastmod` | `sitemap.xml` | Automatic — `build_bench_site_data.py` stamps every `<lastmod>` from `meta.updated` when it regenerates the data. |
 | Canonical / og / Twitter / robots / sitemap URLs | `index.html`, `method.html`, `robots.txt`, `sitemap.xml` | The site is at `https://bughunt.productcompass.pm/` (Netlify site `bughuntbench.netlify.app`, custom domain CNAME'd). The URL in every exported PNG is read from the canonical tag, so it follows automatically. |
 
@@ -324,9 +328,11 @@ styles, Google Fonts CSS from `fonts.googleapis.com`, font files from
 `fonts.gstatic.com`, `data:`/`blob:` images for the favicon and the PNG export,
 and Microsoft Clarity's hosts (`https://*.clarity.ms`, `https://c.bing.com`) in
 `script-src`, `img-src` and `connect-src` — Microsoft's documented allowlist,
-applied per directive rather than to `default-src`. If you self-host the fonts
+applied per directive rather than to `default-src` — and Substack's subscribe
+document from `www.productcompass.pm` in `frame-src` (without it the coda's frame
+is blocked: `default-src 'self'` is the fallback). If you self-host the fonts
 later, drop both Google hosts; if you remove Clarity, drop its two hosts and
-`assets/js/clarity.js` together.
+`assets/js/clarity.js` together; if you remove the coda, drop `frame-src`.
 
 Assets are cached for a day with `stale-while-revalidate` rather than marked
 `immutable`, because there is no build step and therefore no content hashing in

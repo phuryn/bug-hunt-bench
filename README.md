@@ -162,4 +162,6 @@ The runner, the answer keys, the seeded repositories and the judge transcripts l
 
 Built and run by [Pawel Huryn](https://www.productcompass.pm) — [Product Compass](https://www.productcompass.pm), [X](https://x.com/PawelHuryn), [LinkedIn](https://www.linkedin.com/in/pawel-huryn). Related: [pm-skills](https://github.com/phuryn/pm-skills), agent skills for product managers.
 
+Subscribe to [The Product Compass](https://www.productcompass.pm/subscribe), his newsletter on AI for product managers and builders. Same standards as this board: hands-on, no hype, nothing that was not run first.
+
 MIT. Use anything; a link back is appreciated. If a number in a post and a receipt here disagree, the receipt wins and I want to know: [open an issue](https://github.com/phuryn/bug-hunt-bench/issues/new/choose).

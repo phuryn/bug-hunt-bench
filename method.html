@@ -13,7 +13,7 @@
 
 <!-- Same render-blocking theme stamp as the board: both pages share the theme,
      and a reader who picked dark on one must not get a white flash on the other. -->
-<script src="/assets/js/theme-boot.js?v=07af07f3fb"></script>
+<script src="/assets/js/theme-boot.js?v=55dd8b15f6"></script>
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Bug Hunt Bench">
@@ -36,11 +36,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=07af07f3fb">
+<link rel="stylesheet" href="/assets/css/site.css?v=55dd8b15f6">
 
-<script type="module" src="/assets/js/method.js?v=07af07f3fb"></script>
+<script type="module" src="/assets/js/method.js?v=55dd8b15f6"></script>
 <!-- Microsoft Clarity analytics. A file, not an inline block: the CSP has no 'unsafe-inline'. -->
-<script src="/assets/js/clarity.js?v=07af07f3fb" async></script>
+<script src="/assets/js/clarity.js?v=55dd8b15f6" async></script>
 </head>
 <body>
 <a class="skip-link" href="#method">Skip to the method</a>
@@ -102,6 +102,20 @@
       <p>The method, the caveats and the definitions are drawn in the browser from a single JSON file, so nothing here is typed twice. You can read the same text straight from the source: <a href="/data/benchmark.json">data/benchmark.json</a>, or the <a href="https://github.com/phuryn/bug-hunt-bench/tree/main/results">public scoreboards</a>.</p>
     </section>
   </noscript>
+  <!-- The coda: the newsletter, last on the page and above the footer, so it is on
+       every view and never between a reader and a number. The frame is Substack's
+       own subscribe document (allowed by frame-src in _headers); the link in the
+       sentence is the way in for anyone whose browser blocks third-party frames. -->
+  <section class="coda wrap" aria-label="Subscribe to The Product Compass">
+    <div class="coda__inner">
+      <div class="coda__text">
+        <p>Bug Hunt Bench is run by Pawel Huryn, who writes <a href="https://www.productcompass.pm/subscribe">The Product Compass</a>, a newsletter on AI for product managers and builders. Same standards as this board: hands-on, no hype, nothing that was not run first.</p>
+      </div>
+      <div class="coda__frame">
+        <iframe class="coda__embed" src="https://www.productcompass.pm/embed" width="480" height="320" title="Subscribe to The Product Compass" loading="lazy" scrolling="no"></iframe>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="footer">

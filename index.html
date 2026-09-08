@@ -15,7 +15,7 @@
      <html> before the first paint, so a dark-theme visitor never sees a white
      flash. It is a file rather than an inline block because the CSP has no
      'unsafe-inline'. -->
-<script src="/assets/js/theme-boot.js?v=07af07f3fb"></script>
+<script src="/assets/js/theme-boot.js?v=55dd8b15f6"></script>
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bug Hunt Bench">
@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=07af07f3fb">
+<link rel="stylesheet" href="/assets/css/site.css?v=55dd8b15f6">
 
 <!-- dateModified and url are patched at runtime from data/benchmark.json; keep the static values in sync anyway. -->
 <script type="application/ld+json" id="dataset-schema">
@@ -76,9 +76,9 @@
   ]
 }
 </script>
-<script type="module" src="/assets/js/main.js?v=07af07f3fb"></script>
+<script type="module" src="/assets/js/main.js?v=55dd8b15f6"></script>
 <!-- Microsoft Clarity analytics. A file, not an inline block: the CSP has no 'unsafe-inline'. -->
-<script src="/assets/js/clarity.js?v=07af07f3fb" async></script>
+<script src="/assets/js/clarity.js?v=55dd8b15f6" async></script>
 </head>
 <body>
 <a class="skip-link" href="#leaderboard">Skip to the leaderboard</a>
@@ -221,6 +221,20 @@
       <p>The table and the charts are drawn in the browser from a single JSON file, so no number on this page is hand-typed. You can read the same numbers straight from the source: <a href="/data/benchmark.json">data/benchmark.json</a>, or the <a href="https://github.com/phuryn/bug-hunt-bench/tree/main/results">public scoreboards</a>. The <a href="/method">method page</a> reads from the same file.</p>
     </section>
   </noscript>
+  <!-- The coda: the newsletter, last on the page and above the footer, so it is on
+       every view and never between a reader and a number. The frame is Substack's
+       own subscribe document (allowed by frame-src in _headers); the link in the
+       sentence is the way in for anyone whose browser blocks third-party frames. -->
+  <section class="coda wrap" aria-label="Subscribe to The Product Compass">
+    <div class="coda__inner">
+      <div class="coda__text">
+        <p>Bug Hunt Bench is run by Pawel Huryn, who writes <a href="https://www.productcompass.pm/subscribe">The Product Compass</a>, a newsletter on AI for product managers and builders. Same standards as this board: hands-on, no hype, nothing that was not run first.</p>
+      </div>
+      <div class="coda__frame">
+        <iframe class="coda__embed" src="https://www.productcompass.pm/embed" width="480" height="320" title="Subscribe to The Product Compass" loading="lazy" scrolling="no"></iframe>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="footer">
