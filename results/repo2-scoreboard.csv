@@ -55,3 +55,4 @@ GPT-6 Astra (low effort),Codex CLI,9,0,0,16,0,13.8,4.55
 GPT-5.6 Sol (medium effort),Codex CLI,16,0,0,16,0,21.9,7.01
 DeepSeek V4.1 Flash (max effort),Claude Code / DeepSeek API,10,0,0,3,0,17.2,0.46
 DeepSeek V4.1 Flash (high effort),Claude Code / DeepSeek API,10,1,0,2,0,11.7,0.13
+"DeepSeek V4-Pro (max effort, DeepSeek API)",Claude Code / DeepSeek API,8,1,0,3,0,17.6,1.0

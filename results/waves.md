@@ -674,7 +674,7 @@ an otherwise idle machine, judged blind by Grok 4.6 (non-sibling). Preflight con
 - **No first-ever kills.** The never-fixed count stays at 39.
 - Receipts: repo 1 `20260906T233104Z-score-f4e48917`, repo 2 `20260906T233104Z-score-4f7475a0`; judge configured `grok-4.6`, served `grok-4.6` / `grok-4.6`.
 
-## Sep 10 — DeepSeek V4.1 Flash on DeepSeek's own API, at `max` and `high`
+## Sep 10 — DeepSeek on its own API: V4.1 Flash at `max` and `high`, and V4-Pro at `max`
 
 DeepSeek's newest Flash generation, run the day the arm was built. Two things separate this row from the three
 DeepSeek rows already on the board: it ran on **DeepSeek's own Anthropic-compatible endpoint** rather than through
@@ -738,3 +738,43 @@ The same arm one tier down, run straight after `max` on the same endpoint and th
   against zero of each at `max`. At n=1 per tier that is a handful of bugs, not a property of the tier.
 - **No first-ever kills** at either tier. The never-fixed count stays at **39**.
 - Receipts: repo 1 `20260910T110628Z-score-a675eb58`, repo 2 `20260910T110628Z-score-ccbd08ed`.
+
+### The older flagship, on the same first-party path: V4-Pro at `max`
+
+DeepSeek serves exactly two model ids on its own API, and the other one is V4-Pro (model version
+V4-Pro-0813) — the previous flagship, and already on this board from Aug 1 through OpenRouter at an inert
+default effort. Running it here puts the two DeepSeek generations on the same endpoint, the same day, with
+a dial in front of both.
+
+| Arm | Path | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Genuine extras | Wall | Cost |
+|---|---|---|--:|--:|--:|--:|--:|--:|
+| **DeepSeek V4.1 Flash** | DeepSeek API | max | **24** | 14 | 10 | 7 | 42.6 min | $1.08 |
+| **DeepSeek V4.1 Flash** | DeepSeek API | high | **19** | 9 | 10 | 4 | 26.1 min | $0.31 |
+| **DeepSeek V4-Pro** | DeepSeek API | max | **16** | 8 | 8 | 4 | 37.2 min | $1.89 |
+| DeepSeek V4-Pro | OpenRouter | default (inert) | 10 | 5 | 5 | 1 | 27.6 min | $5.54 |
+
+- **The newer Flash beats the older Pro flagship at every tier tried, and costs less doing it.** Flash at
+  `max` scores 24 to Pro's 16 for 57% of the money; Flash at `high` scores 19 for 16% of it. On this bench
+  the generation gap is worth more than the model class.
+- **Pro is not simply a weaker Flash, though.** Of its 16 fixes, 14 are also in Flash-max's 24 — it
+  contributes exactly **2** bugs Flash-max missed. Whatever Pro is better at, this bench barely sees it.
+- **The first-party path is worth 6 fixes to Pro** over its own OpenRouter row (16 vs 10), on the same
+  model version. Some of that is the effort dial and some is the serving path; one run each cannot say how
+  it splits.
+- **Its effort label is `first_party`, not `verified`, and that is deliberate.** A high-vs-max thinking
+  sweep on Pro itself came out **inconclusive at n=3**: means 51.1K vs 85.1K characters, but a between-level
+  ratio of 1.66x against a worst within-level spread of 1.78x, with the two ranges overlapping. The
+  identical sweep on V4.1 Flash the same hour was cleanly disjoint. Same vendor, same endpoint, same hour,
+  two different answers — which is the whole reason a magnitude claim is not allowed to travel from one
+  model to another on a shared path. The path-level facts still hold for both: the endpoint 400-rejects an
+  invented tier, and the served model id is read back on every gate call.
+- **Read the served-model check as load-bearing, not ceremony.** DeepSeek's own pricing page says the
+  `deepseek-v4-pro` id starts routing to V4.1 Flash on **2026-09-14**. This run is 09-10 and every gate call
+  read back `deepseek-v4-pro`, so this row measures Pro. After that date the same arm would quietly become a
+  Flash arm.
+- **The cost is a bill with an asterisk, stated on the row.** $1.89 is a real prepaid-credits delta for the
+  arm; the per-repo split is that bill allocated by each leg's token value at list, because a runner bug
+  metered the individual legs against the wrong account. Both metrics rows carry the correction.
+- **No first-ever kills.** The never-fixed count stays at **39**.
+- Receipts: repo 1 `20260910T123108Z-score-45be0cf5`, repo 2 `20260910T123108Z-score-11df16a8`; effort
+  evidence in [effort-dial-probes/20260910-dsv4pro-deepseek-effort.txt](effort-dial-probes/20260910-dsv4pro-deepseek-effort.txt).

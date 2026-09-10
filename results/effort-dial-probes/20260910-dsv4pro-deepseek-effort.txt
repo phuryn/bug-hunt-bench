@@ -1,0 +1,67 @@
+DeepSeek V4-Pro — does the effort dial bind on the Pro model?
+Probed 2026-09-10 for the dsv4promax / dsv4prohigh arms (Claude Code -> DeepSeek's own Anthropic API).
+
+WHY THIS FILE EXISTS, GIVEN THE FLASH PROBE ALREADY EXISTS
+A dial is a property of the SERVING PATH, so everything the V4.1 Flash probe established about the path
+carries over unchanged: Claude Code 2.1.267 sends `--effort` as `output_config.effort`, and DeepSeek's
+endpoint 400-validates that enum (an invented tier is rejected and the accept-list is named in the
+error), so a silent clamp is not available to it. What does NOT carry over is the MAGNITUDE claim -
+"max reasons more than high" was measured on deepseek-flash, and a different model on the same path can
+saturate at a different place. So the Pro arms got their own sweep before their legs ran.
+
+Companion receipt: 20260910-dsv41flash-deepseek-effort.txt (the path, the wire capture, the enum).
+
+
+1. THE LAUNCH GATE, PER ARM  (re-run before every leg, refuses to launch on failure)
+------------------------------------------------------------------------------------
+    output_config.effort = max / high  -> HTTP 200, served model = deepseek-v4-pro
+    output_config.effort = bogus_zzz   -> HTTP 400, unknown variant, enum listed
+    served model readback              == deepseek-v4-pro on every call
+
+The third check is not ceremony here. DeepSeek's own pricing page says the `deepseek-v4-pro` id starts
+routing to V4.1 Flash on 2026-09-14. These runs are 09-10 and the readback still says Pro on every
+call, so these rows measure Pro. After the switch the same arm would silently become a Flash arm, and
+the gate is what would catch that.
+
+
+2. MAGNITUDE SWEEP — does max reason more than high ON PRO?
+------------------------------------------------------------
+Same endpoint, same shipped body shape, same hard combinatorics prompt as the Flash sweep, max_tokens
+32000, n=3, measured in thinking CHARACTERS. Run BETWEEN arms, never inside a leg's balance bracket, so
+it cannot land in a published bill. Sampling spanned a restart (a long non-streaming response had its
+connection reset mid-read; the run driver now retries transport errors and carries over samples already paid
+for rather than re-buying them).
+
+    effort=high  [ 65112,  36623,  51688]   mean 51141   range 36623-65112   within-level 1.78x
+    effort=max   [ 60433,  92674, 102105]   mean 85070   range 60433-102105  within-level 1.69x
+
+    between-level 1.66x  |  worst within-level 1.78x  |  ranges OVERLAP (max's floor 60433 sits inside
+    high's band, which tops out at 65112)
+
+=> INCONCLUSIVE at n=3. The between-level ratio does not clear the worst within-level spread, which is
+   the reading standard this board uses, so the honest label for both Pro rows is `first_party` - a
+   documented first-party enum, requested explicitly and accepted on the wire - and NOT `verified`.
+   That is a publishable state; the alternative is upgrading a label on a hunch.
+
+   Note what this does NOT say. It does not say the dial is inert on Pro: the means separate 1.66x in
+   the expected direction, and the sample is small. It says n=3 cannot tell the two apart here.
+
+CONTRAST, same day, same path, the other model: on deepseek-flash the same sweep came out DISJOINT
+(high 23960-35104, max 59923-96590), which is why the Flash rows carry `verified` / `verified_ceiling`
+and the Pro rows do not. Same vendor, same endpoint, same hour, two different answers - which is the
+whole reason a magnitude claim is not allowed to travel between models.
+
+Pro also reasons more than Flash at the SAME requested tier (high: mean 51141 vs 30480), so the tiers
+are not a shared absolute scale across the two models either.
+
+
+3. WHAT THE BENCH LEGS THEMSELVES SAY
+--------------------------------------
+Filled in after the arms ran - the run pair is a second, coarser reading of the same question, at n=1
+per tier but on 105 real bugs rather than a toy prompt.
+
+    (see the Sep 10 wave section in the public results/waves.md for the scores)
+
+
+FILES
+  The raw captures and the probe scripts are kept unpublished; the numbers above are the receipt.
