@@ -58,3 +58,5 @@ DeepSeek V4.1 Flash (high effort),Claude Code / DeepSeek API,19,9,10,4,26.1,0.31
 "DeepSeek V4-Pro (max effort, DeepSeek API)",Claude Code / DeepSeek API,16,8,8,4,37.2,1.89
 "DeepSeek V4-Pro (high effort, DeepSeek API)",Claude Code / DeepSeek API,13,4,9,1,26.6,1.08
 Fable 5.1 (medium effort),Claude Code,21,8,13,3,23.0,17.46
+Opus 4.8 (max effort),Claude Code,15,6,9,3,108.8,52.07
+Sonnet 5 (max effort),Claude Code,9,3,6,3,61.3,24.04

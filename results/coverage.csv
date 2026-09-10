@@ -46,6 +46,7 @@ Grok 4.5,Grok Build CLI (ACP),high,16,16 20 30 37 40 47 50 60 62 71 76 83 84 99 
 Gemini 3.7 Flash seq,Antigravity CLI,high,16,20 30 43 45 47 50 60 71 76 82 83 92 97 98 99 102
 GPT-5.6 Terra (medium effort),Codex CLI,medium,15,20 28 30 39 47 71 76 77 82 84 97 98 99 100 102
 Grok 4.6 (low),Grok Build CLI (ACP),low,15,13 16 20 30 33 34 47 49 50 76 83 84 92 99 100
+Opus 4.8 (max effort),Claude Code,max,15,13 16 20 30 33 34 47 49 50 76 83 84 92 99 100
 DeepSeek V4-Flash 0731,Claude Code / OpenRouter,default,14,13 20 25 30 39 43 50 67 71 76 83 92 97 99
 "Muse Spark 1.2 (default effort, OpenRouter)",Claude Code / OpenRouter,default,14,20 30 43 47 60 71 76 77 83 84 92 97 99 102
 GPT-5.6 Luna (high effort),Codex CLI,high,13,16 17 20 30 43 47 49 62 76 77 83 84 99
@@ -56,5 +57,6 @@ DeepSeek V4-Pro,Claude Code / OpenRouter,default,10,13 16 20 39 43 76 77 83 84 9
 GPT-5.6 Luna (medium effort),Codex CLI,medium,9,20 22 30 37 43 76 77 83 99
 Sonnet 5,Claude Code,high,9,22 66 70 71 76 77 83 97 99
 Opus 4.8,Claude Code,high,9,20 30 50 60 71 76 83 92 99
+Sonnet 5 (max effort),Claude Code,max,9,33 34 43 76 83 92 97 99 100
 DeepSeek V4-Flash,Claude Code / OpenRouter,default,8,20 30 39 43 47 71 84 99
 GPT-5.6 Luna (low effort),Codex CLI,low,4,76 77 83 99
