@@ -674,7 +674,7 @@ an otherwise idle machine, judged blind by Grok 4.6 (non-sibling). Preflight con
 - **No first-ever kills.** The never-fixed count stays at 39.
 - Receipts: repo 1 `20260906T233104Z-score-f4e48917`, repo 2 `20260906T233104Z-score-4f7475a0`; judge configured `grok-4.6`, served `grok-4.6` / `grok-4.6`.
 
-## Sep 10 — DeepSeek V4.1 Flash at `max`, on DeepSeek's own API
+## Sep 10 — DeepSeek V4.1 Flash on DeepSeek's own API, at `max` and `high`
 
 DeepSeek's newest Flash generation, run the day the arm was built. Two things separate this row from the three
 DeepSeek rows already on the board: it ran on **DeepSeek's own Anthropic-compatible endpoint** rather than through
@@ -716,3 +716,25 @@ whose effort label is something other than `inert_default`. Both repos sequentia
 - **No first-ever kills.** The never-fixed count stays at **39**.
 - Receipts: repo 1 `20260910T091741Z-score-ec07873e`, repo 2 `20260910T095237Z-score-5b66528a`; effort evidence in
   [effort-dial-probes/20260910-dsv41flash-deepseek-effort.txt](effort-dial-probes/20260910-dsv41flash-deepseek-effort.txt).
+
+### The tier below: `high`
+
+The same arm one tier down, run straight after `max` on the same endpoint and the same day.
+
+| Arm | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Claimed-only | Partials | Genuine extras | Wall | Cost |
+|---|---|--:|--:|--:|--:|--:|--:|--:|--:|
+| **DeepSeek V4.1 Flash** | **max** (its ceiling) | **24** | 14 | 10 | 0 | 0 | 7 | 42.6 min | $1.08 |
+| **DeepSeek V4.1 Flash** | **high** (its default) | **19** | 9 | 10 | 2 | 3 | 4 | 26.1 min | $0.31 |
+
+- **The dial is worth 5 strict fixes — and all five are on repo 1.** 14/45 → 9/45, while repo 2 is *identical*
+  at 10/60. Two repos, one dial, and only one of them registers it.
+- **`max` is not simply `high` plus more.** It found 9 bugs `high` missed, but `high` found **4** that `max`
+  missed. Effort levels catch different bugs on this bench, the same way Luna's `high` and `max` did in July;
+  a tier sweep is not a nested sequence.
+- **The extra spend is visible in the work, not just the score.** 42.6 min vs 26.1, 240K output tokens vs 160K,
+  82M cached reads vs 57M, $1.08 vs $0.31. The `max` row costs 3.5x for a 26% score gain — the same shape of
+  bargain the board keeps finding at the top of every dial.
+- **The honesty profile moves the wrong way at the cheaper tier**: 3 partials and 2 claimed-only at `high`
+  against zero of each at `max`. At n=1 per tier that is a handful of bugs, not a property of the tier.
+- **No first-ever kills** at either tier. The never-fixed count stays at **39**.
+- Receipts: repo 1 `20260910T110628Z-score-a675eb58`, repo 2 `20260910T110628Z-score-ccbd08ed`.
