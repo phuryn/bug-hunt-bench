@@ -55,12 +55,41 @@ Pro also reasons more than Flash at the SAME requested tier (high: mean 51141 vs
 are not a shared absolute scale across the two models either.
 
 
+ADDENDUM — two more `max` samples, and the verdict gets firmer, not weaker
+--------------------------------------------------------------------------
+The sweep ran a second time when the arm was re-launched (the high legs had to be re-run after a
+machine-wide tool hook denied every call the model made). It drew two further `max` samples:
+
+    effort=max, all five  [ 60433,  92674, 102105,  45019,  46166]   mean 69279   range 45019-102105
+    effort=high, n=3      [ 65112,  36623,  51688]                   mean 51141   range 36623-65112
+
+    between-level 1.35x  |  worst within-level 2.27x  |  ranges overlap heavily
+
+Both new draws land BELOW high's maximum. At n=5 the between-level ratio falls from 1.66x to 1.35x
+while the within-level spread rises to 2.27x, so the gap is further from clearing than it was at n=3.
+Whatever `max` does to this model, eight samples cannot see it in thinking volume. The `first_party`
+label on both Pro rows stands, and would have been wrong to upgrade on the n=3 reading.
+
+The bench legs are the coarser second reading of the same question: see the Sep 10 wave section.
+
+
 3. WHAT THE BENCH LEGS THEMSELVES SAY
 --------------------------------------
-Filled in after the arms ran - the run pair is a second, coarser reading of the same question, at n=1
-per tier but on 105 real bugs rather than a toy prompt.
+A second, coarser reading of the same question: n=1 per tier, but on 105 real planted bugs instead of
+a toy prompt, and scored blind by a non-sibling judge.
 
-    (see the Sep 10 wave section in the public results/waves.md for the scores)
+    effort=max    16/105  (8/45 and 8/60)   4 genuine extras   37.2 min   $1.89
+    effort=high   13/105  (4/45 and 9/60)   1 genuine extra    26.6 min   $1.08
+
+Every column moves in the direction the tier predicts: more fixes, more unplanted extras found on the
+way, more wall-clock, more money. So the dial is doing SOMETHING to this model on this path even though
+eight thinking-volume samples could not see it - which is a useful reminder that thinking characters
+are a proxy for effort and not effort itself.
+
+It is still n=1 per tier. One draw each from a distribution nobody has characterised cannot carry a
+`verified` label, and the split by repo is a good illustration of why: high loses four fixes on repo 1
+and GAINS one on repo 2 against max. A dial that were cleanly binding would not be expected to do that.
+Both rows stay `first_party`.
 
 
 FILES

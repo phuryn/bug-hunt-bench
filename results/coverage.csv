@@ -49,6 +49,7 @@ DeepSeek V4-Flash 0731,Claude Code / OpenRouter,default,14,13 20 25 30 39 43 50 
 "Muse Spark 1.2 (default effort, OpenRouter)",Claude Code / OpenRouter,default,14,20 30 43 47 60 71 76 77 83 84 92 97 99 102
 GPT-5.6 Luna (high effort),Codex CLI,high,13,16 17 20 30 43 47 49 62 76 77 83 84 99
 GLM-5.3 Flash,Claude Code / OpenRouter,default,13,20 26 27 30 39 43 50 71 76 83 97 99 102
+"DeepSeek V4-Pro (high effort, DeepSeek API)",Claude Code / DeepSeek API,high,13,20 25 30 43 50 60 71 76 83 84 97 98 99
 Grok 4.5 (high re-run - CLI has no max),Grok Build CLI (ACP),high,13,20 29 30 33 34 47 49 50 62 76 84 99 100
 DeepSeek V4-Pro,Claude Code / OpenRouter,default,10,13 16 20 39 43 76 77 83 84 99
 GPT-5.6 Luna (medium effort),Codex CLI,medium,9,20 22 30 37 43 76 77 83 99

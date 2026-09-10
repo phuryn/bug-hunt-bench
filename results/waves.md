@@ -674,7 +674,7 @@ an otherwise idle machine, judged blind by Grok 4.6 (non-sibling). Preflight con
 - **No first-ever kills.** The never-fixed count stays at 39.
 - Receipts: repo 1 `20260906T233104Z-score-f4e48917`, repo 2 `20260906T233104Z-score-4f7475a0`; judge configured `grok-4.6`, served `grok-4.6` / `grok-4.6`.
 
-## Sep 10 — DeepSeek on its own API: V4.1 Flash at `max` and `high`, and V4-Pro at `max`
+## Sep 10 — DeepSeek on its own API: V4.1 Flash and V4-Pro, each at `max` and at `high`
 
 DeepSeek's newest Flash generation, run the day the arm was built. Two things separate this row from the three
 DeepSeek rows already on the board: it ran on **DeepSeek's own Anthropic-compatible endpoint** rather than through
@@ -762,9 +762,12 @@ a dial in front of both.
   model version. Some of that is the effort dial and some is the serving path; one run each cannot say how
   it splits.
 - **Its effort label is `first_party`, not `verified`, and that is deliberate.** A high-vs-max thinking
-  sweep on Pro itself came out **inconclusive at n=3**: means 51.1K vs 85.1K characters, but a between-level
-  ratio of 1.66x against a worst within-level spread of 1.78x, with the two ranges overlapping. The
-  identical sweep on V4.1 Flash the same hour was cleanly disjoint. Same vendor, same endpoint, same hour,
+  sweep on Pro itself **never separated**. At n=3 it was already inconclusive — means 51.1K vs 85.1K
+  characters, but a between-level ratio of 1.66x against a worst within-level spread of 1.78x, ranges
+  overlapping. Two further `max` draws taken when the arm was relaunched moved it **further from clearing,
+  not closer**: at n=5 the between-level ratio falls to 1.35x while the within-level spread rises to 2.27x,
+  and both new draws land below `high`'s maximum. The identical sweep on V4.1 Flash the same hour was
+  cleanly disjoint. Same vendor, same endpoint, same hour,
   two different answers — which is the whole reason a magnitude claim is not allowed to travel from one
   model to another on a shared path. The path-level facts still hold for both: the endpoint 400-rejects an
   invented tier, and the served model id is read back on every gate call.
@@ -778,3 +781,39 @@ a dial in front of both.
 - **No first-ever kills.** The never-fixed count stays at **39**.
 - Receipts: repo 1 `20260910T123108Z-score-45be0cf5`, repo 2 `20260910T123108Z-score-11df16a8`; effort
   evidence in [effort-dial-probes/20260910-dsv4pro-deepseek-effort.txt](effort-dial-probes/20260910-dsv4pro-deepseek-effort.txt).
+
+### And Pro one tier down: `high`
+
+The fourth and last arm of the wave closes the square — both DeepSeek models, both tiers, one endpoint,
+one day.
+
+| Arm | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Genuine extras | Wall | Cost (real bill) |
+|---|---|--:|--:|--:|--:|--:|--:|
+| **DeepSeek V4.1 Flash** | max | **24** | 14 | 10 | 7 | 42.6 min | $1.08 |
+| **DeepSeek V4.1 Flash** | high | **19** | 9 | 10 | 4 | 26.1 min | $0.31 |
+| **DeepSeek V4-Pro** | max | **16** | 8 | 8 | 4 | 37.2 min | $1.89 |
+| **DeepSeek V4-Pro** | high | **13** | 4 | 9 | 1 | 26.6 min | $1.08 |
+
+- **The dial costs Pro 3 strict fixes and saves 43% of the money** — 13/105 against 16, $1.08 against
+  $1.89, 26.6 minutes against 37.2. Every column moves in the direction the tier predicts, including the
+  unplanted extras (1 against 4). That matters more than the size of it: the toy thinking-volume sweep on
+  this model could not tell the two tiers apart in eight samples, and the bench pair can. Thinking
+  characters are a proxy for effort, and on this model the proxy is the thing that failed, not the dial.
+- **It still is not a `verified` label, and the repo split is why.** `high` loses four fixes on repo 1
+  (8/45 → 4/45) and *gains* one on repo 2 (8/60 → 9/60). A cleanly binding dial would not be expected to
+  do that, and at n=1 per tier there is no way to separate a real tier effect from one draw's luck.
+- **`max` is not `high` plus more, on Pro either.** The two tiers share 11 fixes; `max` found 5 that
+  `high` missed and `high` found **2** that `max` missed. Their union is 18, two more than the better of
+  them alone — the same pattern the Flash pair and Luna's July sweep both showed.
+- **Against the newer generation it barely registers.** Of Pro-high's 13 fixes, **12** are already in
+  Flash-max's 24; it contributes exactly one bug that row missed. Flash at `high` scores 19 for $0.31 —
+  the same money bracket, six more fixes.
+- **Honesty profile: 0 partials, 2 claimed-only, 1 genuine extra**, and one further change classified
+  cosmetic, which is neither a fix nor a defect and is counted nowhere.
+- **This arm was run twice, and the first run is not in these numbers.** A machine-wide tool hook on the
+  bench host pointed at a script that had been moved, so every tool call the model made was denied: it
+  diagnosed a broken environment, wrote no report, changed no file, and exited 0 after 160 seconds. The
+  row looked clean. Both legs were voided and re-run, and the runner now refuses to record a leg that
+  produced neither a report nor a single changed file — an environment fault should be loud, not a 0/105.
+- **No first-ever kills.** The never-fixed count stays at **39**.
+- Receipts: repo 1 `20260910T134027Z-score-ad44c383`, repo 2 `20260910T134027Z-score-d186e7cf`.
