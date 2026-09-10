@@ -6,11 +6,11 @@
     "repo1_total": 45,
     "repo2_total": 60,
     "survivors": 39,
-    "models": 22,
+    "models": 23,
     "bug_count": 105,
     "repo1_bug_count": 45,
-    "runs": 54,
-    "updated": "2026-09-06",
+    "runs": 55,
+    "updated": "2026-09-10",
     "source_repo": "https://github.com/phuryn/bug-hunt-bench/tree/main/results",
     "repo_url": "https://github.com/phuryn/bug-hunt-bench",
     "author": "Pawel Huryn",
@@ -60,7 +60,7 @@
       "partial": 0,
       "claimed_only": 0,
       "extras": 45,
-      "false_positive_fixes": 1,
+      "false_positive_fixes": 0,
       "wall_min": 78.8,
       "cost_usd": 31.21,
       "cost_kind": "list",
@@ -1294,6 +1294,59 @@
       "group_rank": 201
     },
     {
+      "id": "DeepSeek V4.1 Flash (max effort)",
+      "model": "DeepSeek V4.1 Flash",
+      "vendor": "DeepSeek",
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "max",
+      "effort_status": "verified_ceiling",
+      "date": "2026-09-10",
+      "color": "#5A3EC8",
+      "fixed": 24,
+      "repo1_fixed": 14,
+      "repo2_fixed": 10,
+      "partial": 0,
+      "claimed_only": 0,
+      "extras": 7,
+      "false_positive_fixes": 0,
+      "wall_min": 42.6,
+      "cost_usd": 1.08,
+      "cost_kind": "bill",
+      "wall_note": null,
+      "ceiling": true,
+      "featured": true,
+      "superseded": null,
+      "caveat": "The endpoint deserializer also accepts an undocumented `ultra`, which DeepSeek own docs never mention (they give none|low|high|max, default high). Sampled n=4 it straddles both high and max and resolves to neither, and nothing in that sample exceeds max band - so `max` is the top of the documented dial and nothing measured reasons more than it, which is what the ceiling label claims. Which tier `ultra` aliases is unresolved and left that way rather than guessed.",
+      "note": "DeepSeek newest Flash generation, benchmarked on DeepSeek OWN Anthropic-compatible API - no aggregator, no proxy. Claude Code puts --effort on the wire as output_config.effort; the endpoint 400-rejects an invented tier and names its enum, and a thinking-volume sweep separates the tiers with DISJOINT ranges (high mean 30.5K chars, max mean 83.6K, n=3), so max was applied and not merely requested. Cost is a real bill, not an estimate: DeepSeek sells prepaid credit, so each leg is charged at the balance drop across it. $1.08 of real credit for 24/105 - the same score as Fable 5 and as Opus 5 at medium. Those two are list estimates and this is a bill, so read the gap as an order of magnitude and not as a ratio.",
+      "fixed_bugs": [
+        13,
+        20,
+        21,
+        22,
+        23,
+        25,
+        27,
+        28,
+        29,
+        30,
+        33,
+        34,
+        43,
+        45,
+        50,
+        60,
+        70,
+        76,
+        83,
+        84,
+        92,
+        97,
+        98,
+        99
+      ],
+      "group_rank": 0
+    },
+    {
       "id": "Opus 5 (medium effort)",
       "model": "Opus 5",
       "vendor": "Anthropic",
@@ -2448,7 +2501,7 @@
         97,
         99
       ],
-      "group_rank": 106
+      "group_rank": 206
     },
     {
       "id": "Muse Spark 1.2 (default effort, OpenRouter)",
@@ -2627,7 +2680,7 @@
       "effort": "default",
       "effort_status": "inert_default",
       "date": "2026-08-01",
-      "color": "#5A3EC8",
+      "color": "#8773D7",
       "fixed": 10,
       "repo1_fixed": 5,
       "repo2_fixed": 5,
@@ -2656,7 +2709,7 @@
         84,
         99
       ],
-      "group_rank": 6
+      "group_rank": 106
     },
     {
       "id": "GPT-5.6 Luna (medium effort)",
@@ -2807,7 +2860,7 @@
         84,
         99
       ],
-      "group_rank": 106
+      "group_rank": 206
     },
     {
       "id": "GPT-5.6 Luna (low effort)",

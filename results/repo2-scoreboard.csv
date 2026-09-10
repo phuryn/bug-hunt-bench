@@ -47,9 +47,10 @@ Fable 5.1 (max effort),Claude Code,24,1,4,8,0,43.0,49.34
 Fable 5.1,Claude Code,18,1,0,4,0,18.6,22.5
 Fable 5.1 (low effort),Claude Code,16,0,1,4,0,19.8,15.72
 Gemini 3.8 Flash,Claude Code,13,1,1,6,0,16.6,4.77
-GPT-6 Astra (max effort),Codex CLI,24,0,0,22,1,41.6,16.14
+GPT-6 Astra (max effort),Codex CLI,24,0,0,22,0,41.6,16.14
 GPT-6 Astra (xhigh effort),Codex CLI,20,1,1,33,0,34.9,13.32
 GPT-6 Astra (high effort),Codex CLI,16,1,2,30,0,20.5,10.58
 GPT-6 Astra (medium effort),Codex CLI,15,1,1,24,0,14.1,6.88
 GPT-6 Astra (low effort),Codex CLI,9,0,0,16,0,13.8,4.55
 GPT-5.6 Sol (medium effort),Codex CLI,16,0,0,16,0,21.9,7.01
+DeepSeek V4.1 Flash (max effort),Claude Code / DeepSeek API,10,0,0,3,0,17.2,0.46

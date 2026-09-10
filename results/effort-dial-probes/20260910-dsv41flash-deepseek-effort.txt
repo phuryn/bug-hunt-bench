@@ -1,0 +1,107 @@
+DeepSeek V4.1 Flash — where the effort dial actually is
+Probed 2026-09-10 for the dsv41flashmax arm (Claude Code -> DeepSeek's own Anthropic-compatible API).
+
+WHY THIS FILE EXISTS
+The arm was first built on OpenRouter and moved to DeepSeek's first-party API before it ran. Two
+different serving paths, three different effort mechanisms, and only one of them is the mechanism
+the bench actually ships. That is the whole lesson of rule 1 restated: probe the wire you will use.
+
+
+1. WHAT CLAUDE CODE PUTS ON THE WIRE  (captured against a mock Anthropic endpoint)
+------------------------------------------------------------------------------------------------
+CLI 2.1.267, `claude -p hi --model deepseek-flash[1m] --effort <tier>`, body captured verbatim:
+
+    "model":          "deepseek-flash"                      <- the [1m] suffix is STRIPPED on the wire
+    "output_config":  {"effort": "max"}                     <- THIS is the effort dial
+    "thinking":       {"type":"adaptive","display":"omitted"}   <- no budget_tokens, ever
+    "max_tokens":     32000
+    "context_management": {"edits":[{"type":"clear_thinking_20251015","keep":"all"}]}
+
+Diffing the full bodies for --effort low vs high vs max: exactly one field changes, output_config.effort
+(plus the session uuid). So `thinking.budget_tokens` is NOT how this CLI expresses effort, and any probe
+of budget_tokens describes a path the bench never takes. The [1m] suffix only sets the CLI's own context
+assumption (the dsv4flash autocompact-thrash lesson) and never reaches the provider.
+
+
+2. DOES THE PROVIDER VALIDATE THE TIER?  (DeepSeek /anthropic/v1/messages, first-party)
+---------------------------------------------------------------------------------------
+    output_config.effort = "max"        -> HTTP 200, served model = deepseek-flash
+    output_config.effort = "bogus_zzz"  -> HTTP 400
+        {"error":{"message":"Failed to deserialize the JSON body into the target type:
+          output_config.effort: unknown variant `bogus_zzz`, expected one of
+          `low`, `medium`, `high`, `xhigh`, `ultra`, `max` ..."}}
+    output_config.effort = "ultra"      -> HTTP 200 (accepted; a compat alias, see below)
+
+The endpoint REJECTS an invented tier and names its enum in the error. That is the loud-validation
+case: a silent clamp of the grok45max kind (ask for max, get high, publish a dial effect that never
+happened) is not possible here. DeepSeek's own docs give the real dial as none | low | high | max,
+default high, with `minimal` mapped to low and `medium` / `xhigh` mapped to high — so the deserializer
+list above is the accept-list including compat aliases, not six distinct tiers.
+
+Verdict for the arm: effort=max is a FIRST-PARTY tier, requested explicitly, accepted on the wire,
+and impossible to substitute silently. The runner re-runs both halves of this check as a launch gate before every leg.
+
+
+3. MAGNITUDE SWEEP — does max reason more than high on this path?
+-----------------------------------------------------------------
+Same endpoint, same shipped body shape, hard combinatorics prompt, max_tokens 32000, n=3.
+Measured in thinking CHARACTERS (the endpoint returns thinking blocks; chars avoid the token-counter
+rounding), run AFTER the bench legs so the legs' prepaid-balance deltas stayed a clean bill.
+
+    effort=(omitted)  [31965, 87208, 76113]   mean 65095
+    effort=none       HTTP 400 x3  <- see below
+    effort=high       [23960, 32377, 35104]   mean 30480   range 23960-35104
+    effort=max        [59923, 94315, 96590]   mean 83609   range 59923-96590
+
+high vs max: ranges DISJOINT (max's smallest sample is 1.7x high's largest), 2.74x on means, against a
+worst within-level spread of 2.73x driven by the omitted baseline; within high it is 1.47x and within max
+1.61x. Same evidentiary standard the gemini-3.8-flash row was labelled on (disjoint ranges at n=3).
+=> THE DIAL BINDS. `max` is not a request that lands on `high`.
+
+Two things this sweep also settles:
+
+  * `none` is REJECTED on this path (HTTP 400, same unknown-variant error as a bogus tier). DeepSeek's
+    docs list none|low|high|max, but `none` belongs to their OpenAI-compatible `reasoning_effort`, not to
+    the Anthropic-compatible `output_config.effort` the CLI uses. Thinking cannot be switched off here.
+  * the OMITTED baseline is not `high`. Its mean (65095) sits between high and max with a 2.7x spread,
+    so at n=3 all that can be said is that leaving the field out does NOT reproduce `high`, and the arm
+    is therefore right to assert the tier explicitly rather than rely on a default.
+
+`ultra` is in the endpoint's accept-list (section 2) though DeepSeek's docs never mention it. Sampled
+n=4: [75696, 29243, 87357, 50062], mean ~60.6K, range 29243-87357 — it straddles BOTH high and max and
+resolves to neither at this n. What it is not: a tier above max (nothing in the sample exceeds max's
+band, and its mean sits below max's). So `max` remains the top of the documented dial (none|low|high|max)
+and nothing measured reasons more than it, which is what a `ceiling` claim on the published row needs.
+Which tier `ultra` aliases is UNRESOLVED and left that way rather than guessed.
+
+
+4. THE OPENROUTER PATH, FOR CONTRAST — why the arm moved
+---------------------------------------------------------
+Same model through OpenRouter (deepseek/deepseek-v4.1-flash, endpoint deepseek-v4.1-flash-20260910,
+sole host DeepSeek, provider pinned). Two mechanisms, n=5 each, hard combinatorics prompt:
+
+ (a) /chat/completions  reasoning.effort  none | low | medium | high        [reasoning tokens]
+        none    [ 8705, 10788,  6964, 32000, 21244]  mean 15940   within-level 4.60x
+        low     [16564, 10713,  9707, 32000, 19281]  mean 17653   within-level 3.30x
+        medium  [32000,  3504, 14510, 24551, 32000]  mean 21313   within-level 9.13x
+        high    [20598, 25643, 16142, 19207, 20034]  mean 20325   within-level 1.59x
+        between-level 1.34x against a worst within-level spread of 9.13x; every adjacent pair
+        indistinguishable (exact Mann-Whitney: none/low p=0.75, low/medium p=0.69, medium/high
+        p=0.79, none/high p=0.55). Several samples clipped at the 32K max_tokens ceiling.
+        => INERT, same as the V4-Flash-0731 reading of 2026-08-04.
+
+ (b) /v1/messages  thinking.budget_tokens  1024 | 8192 | 28000              [thinking chars]
+        1024    [14905, 15942, 17115, 16822, 17615]  mean 16480   within-level 1.18x
+        8192    [39068, 43026, 34942, 18124, 45921]  mean 36216   within-level 2.53x
+        28000   [18210, 26004, 89556, 58437, 90431]  mean 56528   within-level 4.97x
+        1024 vs 8192: ranges disjoint, U=0, p=0.008  -> binds
+        8192 vs 28000: overlapping, U=8, p=0.42      -> saturated
+        => binds at the bottom only, and (see section 1) it is not what the CLI sends anyway.
+
+Neither OpenRouter mechanism would have supported an effort label better than `default`. The
+first-party endpoint reads the field the CLI actually sends and validates it, which is why the
+measured row runs there.
+
+
+FILES
+  The raw captures and the probe scripts are kept unpublished; the numbers above are the receipt.

@@ -551,10 +551,18 @@ otherwise idle machine, judged blind by Grok 4.6 (non-sibling — no model grade
   on the other. Whatever changed generation-to-generation, it did not change uniformly across these
   two repos, and a single combined number hides that.
 - **A clean honesty profile, and it is the cleanest here.** **Zero claimed-only on both repos**, zero
-  partials, one false-positive fix. Astra's own report listed 112 fixes (48 + 64); 48 landed on planted
+  partials, zero false-positive fixes. Astra's own report listed 112 fixes (48 + 64); 48 landed on planted
   bugs, 45 more were genuine defects the answer key never planted, and *not one* was a bug it named
   that its diff failed to fix. Fable 5.1 at max leaked four of those on repo 2. This is the failure
   mode the bench grades diffs to catch, and Astra did not exhibit it.
+**Correction (Sep 10):** the repo-2 row for Astra at `max` originally carried `1` in
+`false_positive_fixes`, and the two paragraphs above said so. That number came from the judge's one
+`COSMETIC` extra on that leg — a CSS comment relocated with no behavioural change. `false_positive_fixes`
+means a *fix applied to something that was not a bug*; `COSMETIC` is a third bucket, neither fix nor
+defect, and every other wave on this board has excluded it (see the Jul 31 wave, which names two such
+changes and still reports zero). The row and both paragraphs now read zero. **No arm has ever applied a
+false-positive fix on either repo.**
+
 - **Fastest-per-point on the board, and by a wide margin on cost.** It ran in **48% of Sol's wall
   clock at 45% of its list cost**, despite Astra's per-token rates being higher than Sol's. Against
   Fable 5.1 it is marginally slower (78.9 vs 73.1 min) at **40% of the cost**.
@@ -624,7 +632,7 @@ otherwise idle machine, judged blind by Grok 4.6 (non-sibling — no model grade
   24 → 18 while repo 2 spans 24 → 9. Whatever effort buys on this bench, it buys almost all of it on the
   larger codebase.
 - **The honesty profile is clean again at the bottom.** Zero claimed-only, zero partials, zero
-  false-positive fixes — cleaner even than `max`, which had one false-positive fix — after claimed-only of
+  false-positive fixes — as at `max`, once that row was corrected (below) — after claimed-only of
   1 / 2 / 1 through the middle tiers. The drift toward incidental finds also stopped: 25 genuine extras
   against 27 planted fixes, versus 53 against 43 at `xhigh`. Fewer of everything, but nothing claimed that
   the diff did not do.
@@ -665,3 +673,46 @@ an otherwise idle machine, judged blind by Grok 4.6 (non-sibling). Preflight con
 - **Cost per fix $0.54, 0.61 fixes/min** (list-equivalent, n=1; wall clock is the least portable column here).
 - **No first-ever kills.** The never-fixed count stays at 39.
 - Receipts: repo 1 `20260906T233104Z-score-f4e48917`, repo 2 `20260906T233104Z-score-4f7475a0`; judge configured `grok-4.6`, served `grok-4.6` / `grok-4.6`.
+
+## Sep 10 — DeepSeek V4.1 Flash at `max`, on DeepSeek's own API
+
+DeepSeek's newest Flash generation, run the day the arm was built. Two things separate this row from the three
+DeepSeek rows already on the board: it ran on **DeepSeek's own Anthropic-compatible endpoint** rather than through
+an aggregator, and that endpoint exposes an effort dial that **actually binds** — so this is the first DeepSeek row
+whose effort label is something other than `inert_default`. Both repos sequential, judged blind by Codex `gpt-5.5`
+(non-sibling), which never saw the model's name.
+
+| Arm | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Genuine extras | Wall | Cost (real bill) |
+|---|---|--:|--:|--:|--:|--:|--:|
+| **DeepSeek V4.1 Flash** | **max** (its ceiling) | **24** | 14 | 10 | 7 | 42.6 min | **$1.08** |
+| DeepSeek V4-Flash `-0731` | default (inert) | 14 | 6 | 8 | 0 | 48.5 min | $1.52 |
+| DeepSeek V4-Pro | default (inert) | 10 | 5 | 5 | 1 | 27.6 min | $5.54 |
+
+- **The generation gain is large: 14 → 24 strict fixes (+71%)** over the `-0731` revision, and 2.4x V4-Pro, on the
+  same prompts and the same judging. It ties **Fable 5** and **Opus 5 at `medium`** on strict fixes and clears
+  **Opus 5 at `high`** (21) — but those three are list estimates and this is a bill, so read the cost gap as an
+  order of magnitude and not as a ratio.
+- **The repo split inverts.** Every earlier DeepSeek row was flat or repo-2-leaning; this one is **14/45 on repo 1
+  against 10/60 on repo 2**. Its repo-1 leg ranks 13th of 55 runs, ahead of every Grok and every Gemini row; its
+  repo-2 leg is mid-table. The two repos keep declining to agree about the middle of the field.
+- **The effort dial is real here, and only here.** Claude Code 2.1.267 puts `--effort` on the wire as
+  `output_config.effort` (mock-endpoint capture), the field DeepSeek documents as `none|low|high|max`; the endpoint
+  **400-rejects an invented tier and names its enum**, so a silent clamp is not available to it. A thinking-volume
+  sweep on the shipped body separates the tiers with **disjoint ranges** — `high` 24.0–35.1K characters (mean 30.5K),
+  `max` 59.9–96.6K (mean 83.6K), n=3. Through OpenRouter the same model's `reasoning.effort` is **inert**: four
+  levels, every adjacent pair indistinguishable (Mann-Whitney p ≥ 0.55), which is exactly why the measured row is
+  not there. A dial is a property of the serving path, not of the model.
+- **One loose end, published as loose.** The endpoint's deserializer also accepts an undocumented `ultra`. Sampled
+  n=4 it straddles both `high` and `max` and resolves to neither, and nothing in that sample exceeds `max`'s band —
+  so `max` remains the top of the documented dial and nothing measured reasons more than it, which is what the
+  `verified_ceiling` label claims. Which tier `ultra` aliases is unresolved and left that way rather than guessed.
+- **Honesty profile: zero claimed-only on both repos, zero partials, zero false-positive fixes**, with 7 genuine
+  unplanted extras against 24 planted fixes. One further change was classified cosmetic — added explanatory
+  comments, no behaviour — which is neither a fix nor a defect and is not counted anywhere.
+- **The cost is a bill, not an estimate.** DeepSeek sells prepaid credit and publishes no usage counter, so the
+  runner snapshots the balance before and after each leg and charges the leg at the drop: $0.62 + $0.46. A list
+  estimate would have been ambiguous anyway — DeepSeek halves its rates off-peak, so the same run costs two
+  different amounts depending on the clock.
+- **No first-ever kills.** The never-fixed count stays at **39**.
+- Receipts: repo 1 `20260910T091741Z-score-ec07873e`, repo 2 `20260910T095237Z-score-5b66528a`; effort evidence in
+  [effort-dial-probes/20260910-dsv41flash-deepseek-effort.txt](effort-dial-probes/20260910-dsv41flash-deepseek-effort.txt).

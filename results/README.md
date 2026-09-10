@@ -22,7 +22,7 @@ place, marked.
 - **partial** — the diff touches the bug but does not fix it. Not counted.
 - **claimed_only** — the model's report names a bug its diff does not fix. Not counted; the reason reports are not graded.
 - **extras** — real, unplanted defects the model fixed on the way. Counted, shown, never added to the score.
-- **false_positive_fixes** — "fixes" of things that were not bugs. Zero on every run so far.
+- **false_positive_fixes** — "fixes" of things that were not bugs. Zero on every run so far. Not to be confused with the judge's **cosmetic** bucket: a no-op change such as a moved comment or a style tweak, which is neither a fix nor a defect and is excluded from this column (one Astra row briefly counted one; corrected 2026-09-10, see `waves.md`).
 - **cost** kinds — `bill` (an invoice or credits delta), `list` (token estimate at published rates), `floor` (reconstructed lower bound), `free`. Never rank across kinds to the dollar.
 - **effort** and its status — `verified_ceiling` (dial probed as binding and the tier is the top one offered), `verified` (probed as binding), `first_party` (a documented first-party enum, requested explicitly, not probed), `clamped` (the CLI quietly served a lower tier; published as a correction), `inert_default` (the serving path's effort parameter provably does nothing; the row says `default`).
 - **exit** in the metrics files — `0` is a clean leg. A non-zero row is a `VOID` leg kept as the receipt for its replacement.
