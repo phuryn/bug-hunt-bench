@@ -27,6 +27,7 @@ Grok 4.6 (medium),Grok Build CLI (ACP),medium,23,16 20 30 33 34 43 45 47 49 50 6
 Grok 4.6 (high),Grok Build CLI (ACP),high,23,13 16 20 30 33 34 43 47 49 50 60 62 76 77 82 83 84 92 95 98 99 100 102
 Grok 4.6 (medium) seq,Grok Build CLI (ACP),medium,22,13 16 20 30 33 34 39 43 45 47 49 50 60 62 76 83 84 92 98 99 100 102
 Gemini 3.7 Flash (high),Gemini CLI (retired) + model-pinning gateway,high,22,16 20 28 30 33 34 43 45 47 50 51 60 62 66 69 71 76 82 84 97 99 100
+Fable 5.1 (medium effort),Claude Code,medium,21,13 16 20 30 36 39 43 45 47 60 70 71 76 80 82 83 84 92 99 100 102
 Kimi K3,Claude Code / OpenRouter,default,21,20 25 30 43 49 50 51 60 62 69 71 76 77 83 84 91 92 97 98 99 102
 Opus 5,Claude Code,high,21,16 20 21 22 27 30 33 34 39 43 45 47 50 60 70 71 76 83 92 98 99
 GPT-5.6 Terra (xhigh effort),Codex CLI,xhigh,20,16 20 25 30 33 34 35 43 44 47 62 71 76 77 83 84 97 98 99 102

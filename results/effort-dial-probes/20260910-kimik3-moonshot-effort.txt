@@ -1,0 +1,100 @@
+Kimi K3 — is the effort dial live on Moonshot's own Anthropic-compatible endpoint?
+Probed 2026-09-10 for the kimik3max / kimik3high arms (Claude Code -> https://api.moonshot.ai/anthropic).
+
+WHY THIS PROBE IS LOAD-BEARING RATHER THAN A FORMALITY
+On DeepSeek and on Z.ai the endpoint 400-rejects an invented tier and names its accept-list, so a tier
+being accepted is itself evidence that the field was read. Moonshot's endpoint does not do that:
+
+    output_config.effort = max        -> HTTP 200
+    output_config.effort = high       -> HTTP 200
+    output_config.effort = low        -> HTTP 200
+    output_config.effort = bogus_zzz  -> HTTP 200      <-- an invented tier is accepted too
+
+That is the signature this board treats as worthless. An endpoint that answers 200 to any string
+cannot be said to have applied the one it was asked for. So on this path acceptance proves nothing and
+the entire question falls to MAGNITUDE: does the model actually reason more when asked for more?
+
+Moonshot's docs give reasoning_effort as low|high|max with DEFAULT max.
+
+
+1. METHOD
+----------
+Same prompt, same body shape and the same unit (thinking characters) as this week's DeepSeek sweeps, so
+the vendors are directly comparable. max_tokens 32000, n=3 per tier, tiers interleaved round by round
+rather than run in blocks, so that any drift in the service over the hour is spread across all three
+levels instead of landing on one of them.
+
+STREAMED, and that is not a convenience. The first attempt called the endpoint non-streaming: the `low`
+sample answered in 192s and the first `high` sample then hung for THIRTY-ONE MINUTES with the vendor's
+balance flat throughout - not thinking, stuck. Claude Code streams every call it makes, so
+non-streaming was never the mechanism this probe is supposed to measure. Streaming both fixed the hang
+and satisfied what rule 1 actually asks for: probe the mechanism you will ship.
+
+`low` is included on purpose even though no arm ships it. It widens the expected gap - if even
+low-against-max cannot separate, the finding is much stronger than a high-against-max null.
+
+
+2. RESULT — no pair separates, and one pair runs backwards
+-----------------------------------------------------------
+    effort=low   [11413, 18983, 23742]   mean 18046   range 11413-23742   within-level 2.08x
+    effort=high  [14409, 16955, 18956]   mean 16773   range 14409-18956   within-level 1.32x
+    effort=max   [17330, 23393, 25285]   mean 22003   range 17330-25285   within-level 1.46x
+
+    worst within-level spread: 2.08x
+
+     low -> high    0.93x between   ranges overlap   => INCONCLUSIVE (and pointing the wrong way)
+    high -> max     1.31x between   ranges overlap   => INCONCLUSIVE
+     low -> max     1.22x between   ranges overlap   => INCONCLUSIVE
+
+=> The requested tier cannot be shown to change anything on this path. `low` outreasons `high` on the
+   means, every range overlaps every other range, and the largest between-level ratio available
+   (1.31x) is well inside the worst within-level spread (2.08x). Eight of the nine samples sit between
+   11K and 25K characters regardless of what was asked for.
+
+   Read what this does and does not say. It does NOT prove the field is discarded - proving a negative
+   needs more than nine samples. It says that on the only path an arm can use, with the only evidence
+   this path admits, there is nothing to support an effort label. Given the endpoint also accepts an
+   invented tier, the evidential position here is identical to the aggregator rows the board already
+   reports as DEFAULT effort, and these rows are reported the same way.
+
+
+3. THIS CONTRADICTS AN EARLIER READING, AND THE EARLIER READING LOSES
+----------------------------------------------------------------------
+An earlier session recorded K3's `output_config.effort` on this same endpoint as cleanly ACTIVE - three
+non-overlapping bands - while `thinking.budget_tokens` on the same endpoint was ignored. That reading
+does not reproduce. It is not being reconciled or averaged with this one: a dial is a property of the
+serving path AT THE TIME YOU SHIP, vendors change routing and defaults without announcement, and the
+measurement that governs a row is the one taken next to the run. This sweep ran in the same hour as the
+arms it gates.
+
+The general lesson is the one that keeps recurring on this board: a magnitude claim does not travel.
+Not between models on one path (V4.1 Flash separated cleanly the same week while V4-Pro did not, same
+vendor, same endpoint, same hour), and not across time on one model either.
+
+
+4. WHAT THE ARMS DO ABOUT IT
+------------------------------
+    Kimi K3, Moonshot API   -> published as DEFAULT effort. Moonshot documents the default as `max`,
+                               so the run is very probably at the vendor's top tier - but it is there
+                               by default and not because the request was honoured, and the row says
+                               so rather than claiming a tier it cannot evidence.
+
+    Kimi K3 at `high`       -> NOT RUN as a tier row. With no dial to move, a `high` arm would be the
+                               same run under a different label. It would be defensible only as a
+                               repeat measurement of variance at one setting, which is a different
+                               deliverable and was not what was asked for.
+
+The launch gate for the arm that does run is deliberately weakened to match: it checks that the tier is
+accepted and that the served model reads back, it records that an invented tier is accepted too, and it
+refuses to start at all unless this receipt is on disk. A gate that announces its weakness beats one
+that looks strong and is not.
+
+
+5. COST
+--------
+52,646 tokens across nine samples plus two warm-ups, on Moonshot's prepaid balance. Drawn between arms,
+never inside a leg's billing bracket, so no published cost figure contains any of it.
+
+
+FILES
+  The raw captures and the probe scripts are kept unpublished; the numbers above are the receipt.
