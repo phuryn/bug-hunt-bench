@@ -18,10 +18,20 @@ Companion receipt: 20260910-dsv41flash-deepseek-effort.txt (the path, the wire c
     output_config.effort = bogus_zzz   -> HTTP 400, unknown variant, enum listed
     served model readback              == deepseek-v4-pro on every call
 
-The third check is not ceremony here. DeepSeek's own pricing page says the `deepseek-v4-pro` id starts
-routing to V4.1 Flash on 2026-09-14. These runs are 09-10 and the readback still says Pro on every
-call, so these rows measure Pro. After the switch the same arm would silently become a Flash arm, and
-the gate is what would catch that.
+CORRECTION, same day: the third check is WEAKER than this file first claimed, and the claim is
+withdrawn. It originally said the readback would catch DeepSeek retiring the `deepseek-v4-pro` id into
+V4.1 Flash on 2026-09-14. It would not. The readback ECHOES THE ID YOU ASKED FOR rather than reporting
+the model that answered - demonstrated on an alias the vendor documents as legacy: `deepseek-v4-flash`
+is documented to route to the current flash model, a temperature-0 prompt returns output byte-identical
+to `deepseek-flash` (same sha1, same token count) while `deepseek-v4-pro` differs on the same prompt,
+and yet the readback for the alias dutifully says `deepseek-v4-flash`. A readback gate sails straight
+through a re-route.
+
+What does establish it is the GREEDY FINGERPRINT, and it establishes it more firmly than the readback
+ever could: at temperature 0 on a fixed prompt, this arm's model and the flash model produce different
+text today, so these rows measure Pro. That rests on behaviour rather than on a label the vendor
+controls, and it is the check that would fire on 09-14. The readback is kept as a cheap first filter -
+it catches a typo or a dead id - and demoted to that.
 
 
 2. MAGNITUDE SWEEP — does max reason more than high ON PRO?

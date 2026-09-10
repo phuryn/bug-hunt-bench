@@ -771,10 +771,16 @@ a dial in front of both.
   two different answers — which is the whole reason a magnitude claim is not allowed to travel from one
   model to another on a shared path. The path-level facts still hold for both: the endpoint 400-rejects an
   invented tier, and the served model id is read back on every gate call.
-- **Read the served-model check as load-bearing, not ceremony.** DeepSeek's own pricing page says the
-  `deepseek-v4-pro` id starts routing to V4.1 Flash on **2026-09-14**. This run is 09-10 and every gate call
-  read back `deepseek-v4-pro`, so this row measures Pro. After that date the same arm would quietly become a
-  Flash arm.
+- **Correction (same day): the served-model readback does not do what this section first said it did.**
+  It was published here as the thing that would catch DeepSeek retiring the `deepseek-v4-pro` id into V4.1
+  Flash on **2026-09-14**. It would not: the field echoes the id you *asked for*, not the model that
+  answered. Demonstrated on a legacy alias the vendor documents — `deepseek-v4-flash` is documented to route
+  to the current flash model, and at temperature 0 it returns output byte-identical to `deepseek-flash`
+  (same sha1, same token count) while `deepseek-v4-pro` differs on the same prompt — yet the readback for
+  the alias still reports `deepseek-v4-flash`. What *does* establish which model answered is that greedy
+  fingerprint, and by it this row measures Pro: run today, its model and the flash model produce different
+  text. That is a stronger claim than the retracted one, because it rests on behaviour rather than on a
+  label the vendor controls. **The scores did not move; only the evidence for them did.**
 - **The cost is a bill with an asterisk, stated on the row.** $1.89 is a real prepaid-credits delta for the
   arm; the per-repo split is that bill allocated by each leg's token value at list, because a runner bug
   metered the individual legs against the wrong account. Both metrics rows carry the correction.
