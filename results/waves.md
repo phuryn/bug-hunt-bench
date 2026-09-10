@@ -887,8 +887,8 @@ is archived in favour of this one.
 ### The finding with no row: Moonshot's own CLI costs ~3x Claude Code
 
 Kimi K3 has one first-party agent — `kimi-cli` (PyPI 1.50.0, MoonshotAI/kimi-cli), which runs headless
-and was wired into the bench as a new harness. The point was to isolate **the harness**: same model,
-same vendor, same key, same Open Platform API, only the agent loop changes.
+and was wired into the bench as a new harness. The intent was to isolate **the harness**. It does not
+isolate it, and the correction is below the table — read both together.
 
 One leg is enough to report the result:
 
@@ -901,6 +901,31 @@ One leg is enough to report the result:
 be proven from here, because kimi-cli reports no token counts on any surface — not its stream-json, not
 `kimi export`, not its logs — but the shape fits absent prompt caching: the Claude Code leg read 25.9M
 *cached* tokens at $0.30/MTok, and uncached those bill at $3.00.
+
+**Correction (same day): this is not a controlled harness comparison, and it was first published as
+one.** Two things differ besides the agent loop.
+
+- **The API surface is not the same.** Claude Code ran against `api.moonshot.ai/anthropic`
+  (Anthropic-compatible); kimi-cli runs against `api.moonshot.ai/v1` (OpenAI-compatible). Different
+  request shapes and plausibly different server-side caching.
+- **The effort request is not the same.** Claude Code put `output_config.effort=max` on the wire.
+  kimi-cli sends either nothing or a hardcoded `high` — it pins `with_thinking("high")` when the model
+  carries a thinking capability and otherwise omits the field, and which branch fires depends on a
+  capability flag in the generated config. Neither was verified on the wire.
+
+Both rows would still be *labelled* default effort under this board's rules, because neither tier is
+verifiable on this endpoint — the magnitude sweep could not separate low from high from max, and the
+endpoint returns 200 for an invented tier. But identical labels do not make identical requests, and the
+first version of this section leaned on the labels to claim an isolation it never had.
+
+What survives is still worth knowing: **run K3 the way Moonshot ships it and the way Claude Code ships
+it, and the first costs 2.9x the second for the same benchmark work in the same wall time.** That is a
+comparison of two shipped configurations end to end, not a measurement of the agent loop.
+
+And the gap is most likely not an effort artifact: closing $16.89 of it with thinking alone would need
+roughly 1.1M extra output tokens at $15/MTok inside 52 minutes, which is not plausible. Most likely
+real, most likely caching — and "most likely" is the strongest thing one leg with no token counts can
+support.
 
 The second leg was never run, so there is no 105-score and no row on the board. That is a deliberate
 call: the headline was already measured by the leg that finished, and the missing leg would have bought
