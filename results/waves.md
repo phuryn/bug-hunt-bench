@@ -823,3 +823,110 @@ one day.
   produced neither a report nor a single changed file — an environment fault should be loud, not a 0/105.
 - **No first-ever kills.** The never-fixed count stays at **39**.
 - Receipts: repo 1 `20260910T134027Z-score-ad44c383`, repo 2 `20260910T134027Z-score-d186e7cf`.
+
+## The Sep 10-11 wave — a dial that does not rank, a first-party route that only saves money, and a vendor CLI that costs triple
+
+Seven arms in one day across four vendors, run cross-provider in parallel for the first time. Three
+separate findings, and the third one never became a row.
+
+### Fable 5.1's effort dial is not an ordering
+
+With `xhigh` added, all five tiers exist at one run each:
+
+| Tier | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Wall | Cost (list) |
+|---|--:|--:|--:|--:|--:|
+| low | **29** | 13 | 16 | 33.2 min | $27.27 |
+| medium | **21** | 8 | 13 | 23.0 min | $17.46 |
+| high | **33** | 15 | 18 | 36.3 min | $41.52 |
+| xhigh | **29** | 13 | 16 | 59.5 min | $40.42 |
+| **max** | **43** | 19 | 24 | 73.1 min | $77.55 |
+
+The four tiers below `max` span twelve points **in no order at all** — `xhigh` lands below `high` and
+exactly level with `low`, and `medium` is the worst of the five. Only `max` separates, ten clear of the
+best of the rest.
+
+The `medium` run is the one worth opening up, because a suspiciously low score is also the shape of a
+broken run. It was not broken: both legs exited success, no truncation, no permission denials, no tool
+errors. The cause is in the **tool mix**. At `medium` the model worked almost entirely through the
+shell — 83 Bash calls against 3 Reads and *zero* Edits or Greps on repo 1. At `low` it read the code
+instead: 44 Reads, 20 Greps, 16 Edits. The billing shape agrees: 4.0M cached-read tokens at `medium`
+against 19.7M at `low`, because a session that never reads files into context has little context to
+re-send. Fewer bugs found is what you would expect from a model that barely looked at the code.
+
+Read against the board's own variance evidence — one model at one setting scoring 16, 13 and 17 — a
+twelve-point spread across four single runs is entirely consistent with noise. That *is* the finding:
+if noise can produce this ordering, the ordering carries no information. The effort column is the thing
+readers most often take as a ranking, and across the middle of this dial it is not one.
+
+### Anthropic's other two: max buys six bugs, or nothing
+
+| Row | Fixed /105 | vs its own default row |
+|---|--:|---|
+| Opus 4.8 (max) | **15** | default was 9 — up six, on both repos |
+| Sonnet 5 (max) | **9** | default was 9 — **identical** |
+
+Sonnet 5's totals match at default and at max; only the split moved (1/45 + 8/60 → 3/45 + 6/60), which
+is two bugs onto repo 1 and two off repo 2. Cost roughly doubled for it, $24.05 against $15.12. Opus
+4.8's six-bug gain is real but leaves it near the bottom of the frontier field, and $52.07 for 15 fixes
+is the worst cost-per-fix of any Anthropic row on this board.
+
+### GLM-5.3 first-party: same score, 1.65x faster, cheaper
+
+| Route | Effort | Fixed /105 | Wall | Cost |
+|---|---|--:|--:|--:|
+| OpenRouter | default (inert) | **19** | 66.7 min | $19.73 |
+| **Z.ai's own API** | max | **19** | **40.4 min** | **$15.93** |
+
+Two variables moved at once — the serving path *and* the requested tier — and the score did not move at
+all. Everything else did. Z.ai's endpoint 400-rejects an invented effort value and names its accept-list
+(`none, minimal, low, medium, high, xhigh, max`), so unlike an aggregator that shrugs and returns 200,
+this route demonstrably **read** the field. A field being read is not a dial being turned, and no
+magnitude probe was run, so the row claims an accepted tier and not a measured one. The aggregator row
+is archived in favour of this one.
+
+### The finding with no row: Moonshot's own CLI costs ~3x Claude Code
+
+Kimi K3 has one first-party agent — `kimi-cli` (PyPI 1.50.0, MoonshotAI/kimi-cli), which runs headless
+and was wired into the bench as a new harness. The point was to isolate **the harness**: same model,
+same vendor, same key, same Open Platform API, only the agent loop changes.
+
+One leg is enough to report the result:
+
+| Harness | Repo 1 leg | Wall | Cost (real vendor bill) |
+|---|---|--:|--:|
+| Claude Code → Moonshot | complete | 50.1 min | **$8.95** |
+| **Kimi CLI → Moonshot** | complete | 52.5 min | **$25.84** |
+
+**Moonshot's own CLI cost 2.9x Claude Code for the same work at the same speed.** The mechanism cannot
+be proven from here, because kimi-cli reports no token counts on any surface — not its stream-json, not
+`kimi export`, not its logs — but the shape fits absent prompt caching: the Claude Code leg read 25.9M
+*cached* tokens at $0.30/MTok, and uncached those bill at $3.00.
+
+The second leg was never run, so there is no 105-score and no row on the board. That is a deliberate
+call: the headline was already measured by the leg that finished, and the missing leg would have bought
+a publishable number rather than a new insight, at roughly $36.
+
+Two things this arm taught that are worth more than the score:
+
+- **A vendor CLI can be the expensive way to run its own model.** "First-party" is a claim about
+  provenance, not about efficiency, and on this evidence the two came apart badly.
+- **A harness can fail on the machine's locale.** The first attempt died at 26.2 minutes and $6.60 on
+  `UnicodeEncodeError: 'charmap' codec can't encode '\u2194'` — kimi-cli is Python, Python picks the
+  *locale* codec when stdout is a pipe, and this machine is `cp1250`. The first arrow character the
+  agent printed killed the run, with a report already on disk. Neither the model nor the benchmark
+  failed. That leg was voided rather than scored, because a run cut off mid-hunt produces a partial
+  report and any score would understate it.
+
+### And two notes on method, both of which cost real money to learn
+
+- **Cross-provider legs may now run in parallel; same-provider legs may not.** Two arms on one vendor
+  key share a rate limit and, worse, share a billing meter — a balance bracket taken around one leg
+  would swallow the other's spend. Contended legs disclose it in their own notes, because a wall figure
+  that quietly contains someone else's run is worse than a slow one.
+- **A prepaid balance that clamps at zero cannot meter the leg that empties it.** Moonshot's
+  `available_balance` is `max(0, cash + voucher)`; it stops at zero while the account spends into
+  overdraft. One leg was billed $10.63 against roughly $17.4 actually spent, and the row looked
+  ordinary. Reading the *signed* balance settles it, and the vendor-independent cross-check — token math
+  at list prices — agreed with the signed truth to 0.47%. Beware the vendor console as referee, too:
+  Moonshot's "today" is a Beijing day, so a European evening run straddles two dates and neither column
+  is the arm.
