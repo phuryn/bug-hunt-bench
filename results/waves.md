@@ -966,10 +966,24 @@ Alibaba now publishes an Anthropic-compatible endpoint of its own, so this one g
 | Row | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Wall | Cost (list) |
 |---|---|--:|--:|--:|--:|--:|
 | Qwen3.8-Flash | low | **23** | 11 | 12 | 98.1 min | $1.37 |
+| Qwen3.8-Flash | max | **26** | 13 | 13 | 97.3 min | $1.81 |
 
 23/105 for $1.37 lands between the two DeepSeek V4.1 Flash rows ($0.31 for 19, $1.08 for 24) and above
 models costing twenty times more. The honesty profile is one of the better ones on the board: 23 strict
 matches, **zero partials**, 3 claimed-only across both repos, 7 genuine unplanted extras.
+
+Both tiers were run because the pair is the finding: **max buys three points over low for 32% more
+money and the same wall clock.** The max row's honesty profile is slightly worse (26 strict, but 3
+partials against low's zero) and its extras are identical at 7. Whatever the extra thinking is doing, it
+is not producing a different class of work — the same story the dial probe below tells in tokens,
+arrived at independently from the scores.
+
+One caveat belongs on the max row rather than in a footnote: **repo 1 is a retry.** The first attempt at
+that exact setting made 70 successful tool calls across 73 turns with zero permission denials, then
+wrote *"Let me check a few remaining details before fixing…"* and ended its turn having written no
+report. The retry scored 13/45 in 42.5 minutes, so it was a fluke and not a property — but a top-effort
+run that silently stops on one repo in two attempts is a reliability signal, and the published wall and
+cost cover the retry only.
 
 Before the arm was written, the endpoint was checked for the whole protocol rather than assumed to
 speak it — "Anthropic-compatible" is a claim, not a guarantee. It returns real `tool_use` blocks with

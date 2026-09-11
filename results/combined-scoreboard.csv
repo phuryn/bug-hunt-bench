@@ -63,3 +63,4 @@ Sonnet 5 (max effort),Claude Code,9,3,6,3,61.3,24.04
 Fable 5.1 (xhigh effort),Claude Code,29,13,16,4,59.5,40.42
 "GLM-5.3 (max effort, Z.ai API)",Claude Code / Z.ai API,19,9,10,2,40.4,15.93
 Qwen3.8-Flash (low effort),Claude Code / Alibaba API,23,11,12,7,98.1,1.37
+Qwen3.8-Flash (max effort),Claude Code / Alibaba API,26,13,13,7,97.3,1.81
