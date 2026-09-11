@@ -1059,3 +1059,45 @@ whose scores are untouched — 19/105 then, 19/105 now.
 The general lesson is the one this board keeps relearning: **a benchmark row records a serving path, not
 a model.** Two of these three errors were invisible until a second row ran the same vendor a different
 way, and none of them would have been caught by re-reading the first row more carefully.
+
+### So Qwen3.8-Max was re-run first-party — and the path was worth nine points
+
+The corrections above fixed the labels. They could not fix the cost, because the problem was not
+arithmetic. So the model was re-run on the same endpoint the Flash rows ship on. Same model, same
+harness, same two repos, same laptop, one hop removed:
+
+| Qwen3.8-Max | Score /105 | Repo 1 /45 | Repo 2 /60 | Wall | Cost (list) | $/point |
+|---|--:|--:|--:|--:|--:|--:|
+| via proxy → OpenRouter (Aug 3) | 19 | 5 | 14 | 148.1 min | $33.30 | $1.75 |
+| **Alibaba's own endpoint (Sep 11)** | **28** | **13** | **15** | **103.4 min** | **$26.29** | **$0.94** |
+
+**Nine points more, for a fifth less money and a third less time.** Almost all of the gain is in repo 1
+(5/45 → 13/45), which is also the leg the old path handled worst.
+
+The mechanism is legible in the token columns, and it is not subtle:
+
+| | via OpenRouter | Alibaba direct |
+|---|--:|--:|
+| uncached input tokens | 8,282,777 | **1,716** |
+| uncached share of prompt | 12.94% | **0.0019%** |
+| cache reads | 54,863,213 | 90,944,691 |
+| output tokens | 136,426 | **168,395** |
+
+Caching that keeps working means the model keeps its context instead of rebuilding it. Output went **up
+23%** while wall time went **down 30%** — it spent its time thinking rather than re-reading, and the
+prompt tokens it did re-send fell by a factor of ~5,000.
+
+One caution against over-reading it: scores move between runs on this board, and a single pair cannot
+cleanly separate a path effect from ordinary variance — nine points is large, but it is n=1 against n=1.
+What the pair establishes *beyond* variance is the cost and token behaviour, where a ~5,000× gap is not
+a coin flip. The Aug 3 row is marked superseded rather than deleted; it remains the receipt for what an
+aggregator hop costs.
+
+The effort tier on the new row is `verified_ceiling`, and for once on a Qwen row that is fully earned:
+the endpoint 400-rejects an invented tier and names its accept-list, and a probe on this exact path
+separates the dial's bottom from its top (low 3,835–5,161 output tokens against high 9,946–14,061, no
+overlap). It also **saturates exactly like Flash** — high, xhigh and max are mutually indistinguishable
+with means that fall as the nominal tier rises. Two different models, one vendor, the same two-rung
+shape, which points at Alibaba's serving rather than at either model. And the accept-list here
+(low/medium/high/xhigh/max) **contradicts the QwenCloud doc** the superseded row's tier claim rested on
+(low/medium/xhigh, with high→xhigh) — one more reason that claim was never safe.

@@ -64,3 +64,4 @@ Fable 5.1 (xhigh effort),Claude Code,29,13,16,4,59.5,40.42
 "GLM-5.3 (max effort, Z.ai API)",Claude Code / Z.ai API,19,9,10,2,40.4,15.93
 Qwen3.8-Flash (low effort),Claude Code / Alibaba API,23,11,12,7,98.1,1.37
 Qwen3.8-Flash (max effort),Claude Code / Alibaba API,26,13,13,7,97.3,1.81
+"Qwen3.8-Max (max effort, Alibaba API)",Claude Code / Alibaba API,28,13,15,6,103.4,26.29

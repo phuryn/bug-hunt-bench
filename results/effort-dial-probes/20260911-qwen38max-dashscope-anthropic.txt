@@ -1,0 +1,35 @@
+qwen3.8-max effort magnitude probe - 2026-09-11 17:36
+endpoint https://dashscope-intl.aliyuncs.com/apps/anthropic/v1/messages  (streamed)
+n=3 per tier, max_tokens=32000, one fixed multi-step reasoning prompt
+
+low     rep1: out_tok=  3835 think_chars=   5079 text_chars=  2513 stop=end_turn wall=63.6s
+low     rep2: out_tok=  5161 think_chars=   7584 text_chars=  2357 stop=end_turn wall=84.5s
+low     rep3: out_tok=  4490 think_chars=   6445 text_chars=  2628 stop=end_turn wall=75.7s
+medium  rep1: out_tok=  7475 think_chars=  12440 text_chars=  2688 stop=end_turn wall=125.7s
+medium  rep2: out_tok=  5283 think_chars=   9194 text_chars=  2000 stop=end_turn wall=90.5s
+medium  rep3: out_tok=  6470 think_chars=  10554 text_chars=  2501 stop=end_turn wall=110.3s
+high    rep1: out_tok=  9946 think_chars=  22686 text_chars=  2762 stop=end_turn wall=210.8s
+high    rep2: out_tok= 14061 think_chars=  32976 text_chars=  2746 stop=end_turn wall=295.2s
+high    rep3: out_tok= 13258 think_chars=  31179 text_chars=  2047 stop=end_turn wall=284.5s
+xhigh   rep1: out_tok=  8266 think_chars=  18552 text_chars=  1562 stop=end_turn wall=175.7s
+xhigh   rep2: out_tok= 19309 think_chars=  46408 text_chars=  2338 stop=end_turn wall=432.9s
+xhigh   rep3: out_tok= 14042 think_chars=  32761 text_chars=  2322 stop=end_turn wall=324.8s
+max     rep1: out_tok= 14902 think_chars=  35163 text_chars=  2919 stop=end_turn wall=353.7s
+max     rep2: out_tok= 12641 think_chars=  30641 text_chars=  1735 stop=end_turn wall=298.8s
+max     rep3: out_tok=  6542 think_chars=  13050 text_chars=  2150 stop=end_turn wall=149.6s
+
+thinking tokens are inside out_tok; compare RANGES, not just means - a between-tier gap
+means nothing until it clears the worst within-tier spread
+
+tier         mean     min     max  within x  trunc   n
+low          4495    3835    5161      1.35      0   3
+medium       6409    5283    7475      1.41      0   3
+high        12422    9946   14061      1.41      0   3
+xhigh       13872    8266   19309      2.34      0   3
+max         11362    6542   14902      2.28      0   3
+
+worst within-tier spread: 2.34x
+between-tier mean ratio:  3.09x  (lowest mean 4495, highest 13872)
+means in tier order: low=4495, medium=6409, high=12422, xhigh=13872, max=11362
+monotonic across tiers: False
+between-tier gap clears within-tier spread: True

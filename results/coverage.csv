@@ -15,6 +15,7 @@ GPT-5.6 Sol (medium effort),Codex CLI,medium,29,13 16 20 22 28 29 30 33 34 37 39
 Fable 5.1 (low effort),Claude Code,low,29,13 16 20 22 28 29 30 33 34 37 39 41 43 47 49 50 60 62 71 76 77 82 83 84 97 98 99 100 102
 Fable 5.1 (xhigh effort),Claude Code,xhigh,29,13 16 20 22 28 29 30 33 34 37 39 41 43 47 49 50 60 62 71 76 77 82 83 84 97 98 99 100 102
 Fable 5 (max effort),Claude Code,max,29,16 20 22 25 28 29 30 39 41 43 44 45 47 49 50 60 62 71 76 77 82 83 84 92 97 98 99 100 102
+"Qwen3.8-Max (max effort, Alibaba API)",Claude Code / Alibaba API,max,28,13 20 22 25 26 27 29 30 39 40 41 43 44 47 49 50 59 60 61 71 76 78 83 92 97 99 100 102
 GPT-6 Astra (low effort),Codex CLI,low,27,13 16 20 22 25 26 29 30 33 34 35 36 39 40 41 43 44 45 49 50 68 77 83 98 99 100 102
 Grok 4.6 (xhigh) seq,Grok Build CLI (ACP),xhigh,27,13 16 20 29 30 39 43 45 47 49 50 60 62 70 71 76 77 82 83 84 89 91 92 98 99 100 102
 Grok 4.6 (xhigh),Grok Build CLI (ACP),xhigh,27,13 16 20 25 29 30 33 34 37 43 47 49 50 52 60 62 71 76 77 83 84 91 92 98 99 100 102
