@@ -955,3 +955,66 @@ Two things this arm taught that are worth more than the score:
   at list prices — agreed with the signed truth to 0.47%. Beware the vendor console as referee, too:
   Moonshot's "today" is a Beijing day, so a European evening run straddles two dates and neither column
   is the arm.
+
+## The Sep 11 wave — a cheap model on its vendor's own endpoint, and a dial with two rungs pretending to be five
+
+### Qwen3.8-Flash, first-party at last
+
+Every previous Qwen row on this board went Claude Code -> local proxy -> OpenRouter -> Alibaba.
+Alibaba now publishes an Anthropic-compatible endpoint of its own, so this one goes straight there.
+
+| Row | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Wall | Cost (list) |
+|---|---|--:|--:|--:|--:|--:|
+| Qwen3.8-Flash | low | **23** | 11 | 12 | 98.1 min | $1.37 |
+
+23/105 for $1.37 lands between the two DeepSeek V4.1 Flash rows ($0.31 for 19, $1.08 for 24) and above
+models costing twenty times more. The honesty profile is one of the better ones on the board: 23 strict
+matches, **zero partials**, 3 claimed-only across both repos, 7 genuine unplanted extras.
+
+Before the arm was written, the endpoint was checked for the whole protocol rather than assumed to
+speak it — "Anthropic-compatible" is a claim, not a guarantee. It returns real `tool_use` blocks with
+the right `stop_reason`, continues correctly from a `tool_result`, streams the full SSE event sequence,
+returns thinking blocks, and — the expensive one to get wrong — **honours `cache_control`**: 6,769
+tokens written cold, read warm on two consecutive calls. That last check is why this row costs a dollar
+instead of three; the Kimi K3 wave established that a missing cache is a ~3x bill.
+
+### The dial binds at the bottom and saturates at the top
+
+n=3 per tier on the surface the arm actually ships on, 32K cap, nothing truncated:
+
+| Tier | Mean output tok | Range | Within-tier spread |
+|---|--:|--:|--:|
+| low | 3,557 | 3,152–3,830 | 1.22x |
+| medium | 4,579 | 3,967–5,658 | 1.43x |
+| high | 19,329 | 13,933–27,933 | 2.00x |
+| xhigh | 17,934 | 12,523–24,778 | 1.98x |
+| max | 16,121 | 13,767–19,431 | 1.41x |
+
+**The dial is real — and it has two rungs, not five.** `low` and `medium` sit in bands that do not
+overlap the top three at all, and the 5.43x spread between the lowest and highest means clears the
+worst within-tier spread of 2.00x. But `high`, `xhigh` and `max` are mutually indistinguishable: their
+ranges overlap almost entirely and their means *fall* as the nominal tier rises, which is noise rather
+than an inversion. Asking this model for `max` buys roughly 4.5x the thinking of `low` and nothing
+measurable over `high`.
+
+The endpoint is a good citizen about it, which is what made the measurement possible: it 400-rejects an
+invented effort value and names its accept-list. Worth noting the two DashScope surfaces do **not**
+share one — the OpenAI-compatible surface also takes `none` and `minimal`, the Anthropic one rejects
+both. A dial is per serving path, so only the path the arm ships on was probed.
+
+### Two methods notes, both of which cost something to learn
+
+- **The greedy fingerprint does not work on this endpoint.** The board reaches for it to resolve tier
+  and model aliases: temperature 0, fixed prompt, compare bytes. Here four *identical* `xhigh` calls at
+  temperature 0 returned four **different** thinking hashes, while the text hash stayed stable. Thinking
+  is non-deterministic on this path, so a byte comparison reports a difference whether or not there is
+  one. Distributions can tell tiers apart; hashes cannot. A first pass at the alias question was
+  discarded for exactly this reason, after the control was run.
+- **A run that produces nothing is not automatically a broken bench.** The harness voids any leg that
+  writes no report and changes no file, a guard added after a machine-wide hook denied every tool call
+  and a leg exited 0 in 160 seconds having done nothing. A Qwen leg tripped it for the opposite reason:
+  25 minutes, 73 turns, **70 successful tool calls and zero permission denials**, and then the model
+  wrote "Let me check a few remaining details before fixing..." and ended its turn. The environment was
+  healthy; the model simply narrated its next step instead of taking it. That is a result, not a bench
+  fault, and voiding it hid a real failure behind an infrastructure label. The guard now reads the
+  stream for tool-call health and only voids when the environment actually looks broken.
