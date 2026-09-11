@@ -52,7 +52,7 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 33 | Gemini 3.8 Flash | Antigravity CLI | high | **20** | 7 | 13 | 6 | 30 min | $9.78 | 2026-09-02 |
 | 34 | DeepSeek V4.1 Flash | Claude Code / DeepSeek API | high | **19** | 9 | 10 | 4 | 26 min | $0.31 bill | 2026-09-10 |
 | 35 | GLM-5.3 | Claude Code / Z.ai API | max | **19** | 9 | 10 | 2 | 40 min | $15.93 | 2026-09-10 |
-| 36 | Qwen3.8-Max | Claude Code / OpenRouter | xhigh | **19** | 5 | 14 | 6 | 148 min | $31.10 | 2026-08-03 |
+| 36 | Qwen3.8-Max | Claude Code / OpenRouter | xhigh | **19** | 5 | 14 | 6 | 148 min | $33.30 | 2026-08-03 |
 | 37 | Hy4 Preview | Claude Code / OpenRouter | high | **18** | 9 | 9 | 2 | 68 min | $3.13 bill | 2026-08-28 |
 | 38 | GPT-5.6 Terra | Codex CLI | high | **18** | 7 | 11 | 17 | 28 min | $5.89 | 2026-08-27 |
 | 39 | Grok 4.5 | Grok Build CLI (ACP) | high | **17** | 5 | 12 | 10 | 28 min | $8.50 floor | 2026-08-06 |

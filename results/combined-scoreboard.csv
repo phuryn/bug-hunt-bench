@@ -16,7 +16,7 @@ Opus 5 (max effort),Claude Code,27,13,14,2,60.0,51.33
 Grok 4.5 (high re-run - CLI has no max),Grok Build CLI (ACP),13,5,8,5,25.4,10.94
 DeepSeek V4-Flash 0731,Claude Code / OpenRouter,14,6,8,0,48.5,1.74
 DeepSeek V4-Pro,Claude Code / OpenRouter,10,5,5,1,27.6,1.26
-Qwen3.8-Max,Claude Code / Alibaba API,19,5,14,6,148.1,31.1
+Qwen3.8-Max,Claude Code / OpenRouter,19,5,14,6,148.2,33.3
 "Muse Spark 1.2 (xhigh, Meta API)",Claude Code / Meta API,17,6,11,12,35.7,13.99
 Grok 4.5 (re-run Aug 6),Grok Build CLI (ACP),17,5,12,10,27.9,8.5
 "Muse Spark 1.2 (default effort, OpenRouter)",Claude Code / OpenRouter,14,3,11,3,65.2,19.52

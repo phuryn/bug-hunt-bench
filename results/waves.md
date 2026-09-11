@@ -1032,3 +1032,30 @@ both. A dial is per serving path, so only the path the arm ships on was probed.
   healthy; the model simply narrated its next step instead of taking it. That is a result, not a bench
   fault, and voiding it hid a real failure behind an infrastructure label. The guard now reads the
   stream for tool-call health and only voids when the environment actually looks broken.
+
+### What the Flash rows exposed about the Qwen3.8-Max row
+
+Putting a clean first-party Qwen row next to the old aggregator-routed one made three things visible
+that nobody would have gone looking for. All three were corrections to the **Aug 3 Qwen3.8-Max row**,
+whose scores are untouched — 19/105 then, 19/105 now.
+
+1. **The harness label was wrong.** It said `Claude Code / Alibaba API`. It never called Alibaba's API:
+   the path was Claude Code → local proxy → OpenRouter → Alibaba, the same as the Kimi K3, Ox Alpha and
+   GLM-5.3 rows, which all say `Claude Code / OpenRouter`. It was the only aggregator-routed row on the
+   board claiming a direct vendor API.
+2. **The effort status was overstated.** It shipped `verified_ceiling`. No probe receipt for it exists;
+   the claim rested on Alibaba's documented enum plus a check that thinking was live. That is
+   `first_party` under this board's own vocabulary — `verified_ceiling` requires a probe that separates
+   the levels, which is exactly what the Flash rows now have and this row does not.
+3. **Cache writes were priced at zero, and half the row was a routing artifact.** The $2.20 correction
+   ($31.10 → $33.30) is the small part: OpenRouter lists `qwen3.8-max-0902` cache writes at $2.50/MTok,
+   and a sweep of its catalogue found **Qwen is the only family on this board it charges a cache-write
+   fee for** — DeepSeek, Z.ai, Moonshot, Tencent and Meta publish none, so `$0.00` was right everywhere
+   else and wrong only here. The large part is this: **12.94% of that row's prompt tokens — 8,282,777
+   of them, $16.57, half the row — were billed as uncached input.** The two Flash rows, same harness,
+   same laptop, against Alibaba's own endpoint, re-billed **0.002%**. A ~5,000× difference in cache-miss
+   rate is not a model property. Read that row's cost as the price of the path, not the price of Qwen.
+
+The general lesson is the one this board keeps relearning: **a benchmark row records a serving path, not
+a model.** Two of these three errors were invisible until a second row ran the same vendor a different
+way, and none of them would have been caught by re-reading the first row more carefully.
