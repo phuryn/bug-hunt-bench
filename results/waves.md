@@ -1563,7 +1563,7 @@ the one that quit fastest.
 ### Meta's own agent driving Meta's own model
 
 **Muse Spark 1.3 in Muse Code — 18 of 105, $9.53, 53.3 minutes, 17 genuine extras, zero
-claimed-only on either repo.** Muse Code 0.1.0 runs the loop, picks the tools and decides when to
+claimed-only on either repo.** Muse Code runs the loop, picks the tools and decides when to
 stop; Meta's model answers it. This is the eighth distinct harness on the board and the first Meta
 one — the same experiment Codex CLI runs for OpenAI, Grok Build CLI for xAI and Gemini CLI for
 Google.
@@ -1574,6 +1574,14 @@ seventeen looks like a harness result. It is not: the **model version, the harne
 the effort all differ** between those two rows. What the pair shows is two shipped stacks, a year
 apart, landing in the same place. Isolating the harness would need the same model on both, and
 Meta's own endpoint answers 402 here, so that run does not exist yet.
+
+> **Correction.** This section originally named the harness **Muse Code 0.1.0**. That was wrong, and
+> it was wrong the moment it was written: **muse self-updates.** Its own update notice records
+> `0.1.0-R708.1 -> 1.1.1-R2514.1`, with the new binary written at 19:37:53 — *before* both legs that
+> produced this score (19:56 and 20:49). **The row ran on 1.1.1-R2514.1.** The version is no longer
+> typed anywhere: the runner now captures `muse --version` at run time and records it in the row,
+> because a hand-written version string cannot survive a harness that replaces itself between two
+> legs of the same arm.
 
 | | score | cost | wall | genuine extras | claimed-only |
 |---|---:|---:|---:|---:|---:|
@@ -1590,6 +1598,45 @@ consistent thing across all three Meta rows.
 side-agent alongside the main one, so the turn count and the token bill both include work no Claude
 Code row on this board does. That is part of what a harness row measures, and it is why the cost
 column is not comparable to a Claude Code row of the same model even when the model is identical.
+
+**And that side agent thinks at its own fixed effort, which the dial does not reach**
+([receipt](effort-dial-probes/20260912-musecode-cli-effort-vs-wire.txt)). Recording every request
+body a run puts on the wire, on one three-step task, n=1 per tier:
+
+| asked `--reasoning-effort` | main-loop calls | side-agent calls |
+|---|---|---|
+| `minimal` | minimal ×4 | low ×2, high ×2 |
+| `max` | max ×4 | low ×3, high ×3 |
+
+**Move the flag and only the main loop moves.** The observer sits at low and high either way — its
+tiers are fixed by role, not scaled by the dial. So on the `max` run, **4 of 10 calls carried the
+tier the flag asked for** and six did not. That does not make an effort label wrong, but it narrows
+what it describes: on any Muse Code row, an effort label is a claim about **the main loop**, which is
+the agent that does the work, and not about every call the row is billed for. It does not touch the
+score above — this row runs through OpenRouter, which drops the effort field for every agent alike,
+so it asserts no tier at all.
+
+**The same capture killed a claim published earlier that day.** A first-party probe found that
+Meta's API refuses `ultra` outright, and the receipt concluded that a run launched at `ultra` "would
+have failed rather than run higher." It would not. It would have **run, and run lower**:
+
+```
+$ muse exec --reasoning-effort ultra
+tbh: reasoning effort ultra is not available (gate ultra_reasoning_effort is closed); using xhigh
+```
+
+Exit code 0, a complete run, and `xhigh` on the wire — **one tier below `max`**. The endpoint never
+refuses `ultra` because the CLI never sends it, and the substitution appears on stderr only: not in
+`--json`, not in the exit code, not in the response. **An API's accept-list does not tell you what a
+CLI sends, any more than a CLI's accept-list tells you what an endpoint serves.** Probing one end and
+reasoning to the other is how a silent downgrade got published as a loud failure.
+
+`ultra` is not really a dial notch either. It is a remote **feature gate** — `ultra_reasoning_effort`
+sits in the binary's gate list beside `workflow_api_v2_rollout` and `subscription_launch` — and the
+same token turns up as `ultra_auto_guidance`, one of the harness's `WorkflowLaunchTriggerSource`
+values, in a binary carrying `workflow` 3,290 times and `subagent` 1,804 times. On an entitled
+account it would plausibly measure an orchestration mode rather than a thinking budget, which is not
+a thing that belongs in an effort column under any label.
 
 **Two harness bugs had to be fixed before this row could exist, and both changed what ran.**
 Neither is a property of the model. The launcher that starts the Meta-API shim inside WSL **had

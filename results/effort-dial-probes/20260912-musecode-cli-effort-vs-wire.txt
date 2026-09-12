@@ -1,0 +1,91 @@
+What does Muse Code's --reasoning-effort actually put on the wire? - 2026-09-12
+
+VERDICT: THE FLAG GOVERNS ONE AGENT OUT OF SEVERAL, AND ONE OF ITS VALUES SILENTLY RUNS LOWER THAN
+ASKED. Two separate findings, both measured at the request body rather than inferred from a CLI's
+own account of itself:
+
+  1. `--reasoning-effort ultra` does NOT error and does NOT run higher. It runs at xhigh - one tier
+     BELOW max - and announces the downgrade on stderr only. Exit code 0.
+  2. Muse Code fires a reminder-observer side agent at FIXED efforts the flag does not touch. On a
+     three-step task at `max`, 4 of 10 calls carried max; the other 6 carried low and high.
+
+Both matter for the same reason: an effort label on a harness row is a claim about a run, and in
+this harness a run is not one agent at one tier.
+
+METHOD. muse 1.1.1-R2514.1, `muse exec --json --api-key-stdin --base-url <tap>/v1 --model
+muse-spark-1.3 --yolo --disable-web-tools --no-foreign-personal-context --user-input-auto-resolve
+--reasoning-effort <tier>`. The tap is a local forwarder that records `reasoning.effort` from every
+request body and forwards the turn to https://api.meta.ai unchanged - it rewrites nothing and the
+runs complete normally (rc=0, files written). The meter this board runs during scored runs reports
+byte SIZES, which is enough to bill a run and not enough to settle this; a claim about what an
+endpoint RECEIVED has to be sourced from the request.
+
+-------------------------------------------------------------------- 1. THE ultra GATE
+
+    $ muse exec ... --reasoning-effort ultra
+    tbh: reasoning effort ultra is not available (gate ultra_reasoning_effort is closed); using xhigh
+    rc=0
+
+    asked ultra   ->  ON THE WIRE: xhigh
+    asked max     ->  ON THE WIRE: max
+    asked xhigh   ->  ON THE WIRE: xhigh
+    asked minimal ->  ON THE WIRE: minimal
+
+THE FAILURE MODE IS THE INTERESTING PART. A refused flag is harmless - you see the error and pick
+another tier. This one accepts the flag, writes one line to stderr, exits 0, and produces a complete
+run at a tier you did not ask for and which is LOWER than the highest the endpoint would have served.
+A harness reading --json gets no signal at all: the downgrade is not in the event stream, not in the
+exit code, and not in the response. A row run this way would carry an effort label that no artifact
+in the run contradicts and that is nevertheless false.
+
+`ultra_reasoning_effort` IS A REMOTE FEATURE GATE, NOT A TIER. In the binary it sits in a
+feature-config gate list beside `workflow_api_v2_rollout`, `subscription_launch`,
+`provider_tool_switch`, `hook_selected_skills` and `native_connector_delivery`, resolved remotely
+with a local override path. So whether `ultra` means anything is an ACCOUNT property, not a model
+property - the same command on an entitled account may put something else on the wire entirely, and
+this receipt cannot say what.
+
+AND `ultra` IS ENTANGLED WITH WORKFLOW LAUNCHING, WHICH IS WHY IT IS NOT A DIAL NOTCH. Weaker
+evidence than the above - binary strings, not runtime behaviour, and labelled as such - but the same
+token appears as `ultra_auto_guidance`, a member of `WorkflowLaunchTriggerSource` alongside
+`explicit_user_ask`, `cli_headless`, `skill_directed` and `guidance_auto`, together with
+`UltraActivationTick`, `SupersededUltraAutoGuidance` and `DoNotWakeUltraAutoGuidance`. The binary
+carries `workflow` 3,290 times and `subagent` 1,804 times. Whatever Ultra is in this product, it is
+wired to automatic workflow launch, and an entitled `ultra` run would plausibly be measuring an
+orchestration mode rather than a thinking budget. That is not a row this board can put in an effort
+column, and if it is ever run it belongs under a different label.
+
+Note the API's own view, from the sibling receipt: api.meta.ai refuses `ultra` outright as an
+unknown variant. The endpoint never sees it because the CLI never sends it.
+
+--------------------------------------------- 2. THE FLAG SETS THE MAIN LOOP, NOT THE RUN
+
+Identical three-step file task, every request body recorded, n=1 per tier:
+
+    asked      main-loop calls        side-agent calls              total
+    minimal    minimal x4             low x2, high x2                8
+    max        max x4                 low x3, high x3               10
+    ultra      xhigh x5               low x3, high x4, medium x1    13
+
+THE CONTROL IS THE FIRST TWO ROWS. Moving the flag from minimal to max moved the main loop from
+minimal to max and left the side agent EXACTLY where it was - low and high, in the same proportion.
+The side agent's tiers are fixed by role, not scaled by the dial. A single-turn prompt run the same
+way produced four calls at four different tiers - one at the asked tier, plus low, minimal and high -
+so minimal is in the fixed set too.
+
+The side-agent calls identify themselves in the request body. Their instructions begin "You are a
+goal reminder: you are NOT the agent doing the task" and "You watch another agent and decide ONE
+thing: did it verify what it will report as done", and their user turn begins "You are a reminder
+observer for the main agent. Do not answer the user. Record exactly one decision this round". The
+main-loop calls carry the Muse Code system prompt and the growing conversation (n_input 2, 6, 10,
+14 across the four turns); the observer calls carry one or two items and never grow.
+
+WHAT THIS CHANGES FOR THE BOARD. A Muse Code row's effort label is true of the MAIN LOOP and of
+nothing else, and roughly 60% of the calls in these probes were not governed by it. That does not
+invalidate the label - the main loop is what does the work, and its tier is asserted, validated and
+echoed on the first-party route - but the label has to say which agent it describes. Both Muse Code
+arm notes now say so. It also explains a cost column that never looked like a single-agent run.
+
+WHAT THIS RECEIPT DOES NOT SHOW. Nothing here measures whether any of it changes output quality, and
+n=1 per tier on a toy task supports none of that. It shows what the harness SENDS. Whether the
+side agent helps, hurts or does nothing is a separate question this board has not asked.

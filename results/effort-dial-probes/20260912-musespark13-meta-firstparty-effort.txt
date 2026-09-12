@@ -6,11 +6,23 @@ the applied value inside the response object rather than leaving acceptance to b
 the strongest first-party effort evidence on this board: every other validated endpoint here proves
 it READ the field by refusing bad values, and this one also says what it DID with a good one.
 
-AND THE CEILING IS max, NOT ultra - WHICH THE HARNESS ITSELF DISAGREES WITH. Muse Code's own
---reasoning-effort help advertises `none|minimal|low|medium|high|xhigh|max|ultra`. Meta's API
-refuses `ultra` as an unknown variant and refuses `none` as unsupported for this model. So the CLI
-offers two tiers the endpoint will not serve, and a run launched at `ultra` would have failed rather
-than run higher. A flag's accept-list is the CLI's, not the endpoint's.
+AND THE CEILING IS max, NOT ultra. Muse Code's own --reasoning-effort help advertises
+`none|minimal|low|medium|high|xhigh|max|ultra`. Meta's API refuses `ultra` as an unknown variant and
+refuses `none` as unsupported for this model, so neither is a tier this endpoint serves.
+
+CORRECTION, 2026-09-12, SAME DAY: THIS RECEIPT ORIGINALLY DREW THE WRONG CONCLUSION FROM THAT.
+It said "a run launched at `ultra` would have failed rather than run higher." That is false, and the
+error is worth more than the sentence it replaces. Measured at the request body (receipt:
+20260912-musecode-cli-effort-vs-wire.txt), `muse exec --reasoning-effort ultra` does not fail: it
+prints `reasoning effort ultra is not available (gate ultra_reasoning_effort is closed); using
+xhigh` to stderr, exits 0, and puts xhigh on the wire - ONE TIER BELOW max. The endpoint never
+refuses `ultra` because the CLI never sends it. Nothing in --json, the exit code or the response
+records the substitution.
+
+So the original lesson survives inverted and doubled. An API's accept-list does not tell you what a
+CLI SENDS, any more than a CLI's accept-list tells you what an endpoint SERVES. Probing one end and
+reasoning to the other is how this receipt published a silent downgrade as a loud failure. The only
+reliable answer came from recording the request body.
 
 POST https://api.meta.ai/v1/responses, model muse-spark-1.3, reasoning:{effort:...}, n=1 each.
 
