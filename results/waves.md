@@ -1703,3 +1703,55 @@ does not exist here, so a medium row is not available to be run — and `max` is
 documented default, which means a `default` run and a `max` run on this path are the same run. The
 row asserts the tier rather than relying on that.
 
+
+### Meta's own agent, on Meta's own endpoint, at the top of the dial
+
+**33 of 105, $19.83, 102 minutes, 16 genuine extras, zero claimed-only on either repo.** Muse Spark
+1.3 in Muse Code 1.1.1, straight onto `api.meta.ai` at an asserted `max` — no aggregator anywhere in
+the path. It is **the best Meta result on this board by fifteen points**, and it ties GPT-5.6 Luna
+at max and Fable 5.1 for **11th of 72 rows**.
+
+**The harness result is the one worth stopping on.** Of 33 rows here driven by a vendor's own agent
+rather than by Claude Code, exactly two kinds have cleared 30: Codex CLI, and this.
+
+| harness | best row | score |
+|---|---|---:|
+| Codex CLI | GPT-6 Astra (max) | 48/105 |
+| **Muse Code** | **Muse Spark 1.3 (max, Meta API)** | **33/105** |
+| Grok Build CLI (ACP) | Grok 4.6 (xhigh) | 27/105 |
+| Gemini CLI | Gemini 3.7 Flash (high) | 22/105 |
+| Antigravity CLI | Gemini 3.7 Flash (high) | 18/105 |
+
+**And now the part the number invites and the evidence will not support.** The same model in the
+same harness scored **18/105 through OpenRouter** a day earlier. This row is 33. Nearly double —
+and **two things changed at once**:
+
+| | route | effort |
+|---|---|---|
+| Muse Spark 1.3 — 18/105 | OpenRouter | dropped in transit (`inert_default`) |
+| Muse Spark 1.3 — 33/105 | Meta first-party | `max`, validated and echoed back |
+
+The pair brackets a whole stack change and isolates neither half. This board holds a control
+pointing each way. **GLM-5.3 made the same aggregator-to-first-party-at-max move and scored 19/105
+on both sides** — moved by zero. **Qwen3.8-Max gained nine points on the same kind of move**, and
+there the mechanism was visible in the token columns: uncached input fell from 12.94% of prompt
+tokens to 0.0019%, so the model stopped rebuilding its context. The run that would settle this one
+is a single leg on this endpoint at the measured default of `high`. It does not exist yet, and until
+it does, **read 33 as where this stack lands, not as what `max` bought.**
+
+**It killed a survivor.** One planted bug on repo 2 had gone unfixed by every one of the 84 distinct
+arms that came before it; this run fixed it, and the survivor count drops **39 → 38 of 105**. First
+blood on that one after fourteen months of attempts.
+
+**Zero claimed-only, on all three Meta rows now.** Sixteen genuine unplanted defects found across
+the two repos, 14 of 45 on repo 1 and 19 of 60 plus 3 partials on repo 2, and not one reported fix
+that had not actually been made. That honesty profile is the most consistent thing about Meta's rows
+here, and it survived the model getting twice as effective.
+
+**One caveat that belongs next to the score rather than under it.** `max` is asserted, validated in
+two layers and echoed back applied — but it describes **the main loop**, not the run. Muse Code's
+reminder-observer side agent runs at a fixed `low`/`high` the flag does not reach, and on a
+three-step probe at `max`, 4 of 10 calls carried `max`. The harness section above has the table. No
+other row on this board has needed that distinction, because no other harness here runs a second
+agent.
+
