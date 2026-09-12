@@ -1,0 +1,35 @@
+qwen3.8-max FIELD CONTROL on Alibaba's own endpoint - 2026-09-12 10:25
+endpoint https://dashscope-intl.aliyuncs.com/apps/anthropic/v1/messages  model qwen3.8-max  (streamed)
+n=3 per condition, max_tokens=32000, same prompt as the OpenRouter probe
+conditions run in PARALLEL, reps sequential within a condition
+
+no_field         rep1: out_tok= 11586 think_chars= 26697 text_chars= 2685 stop=end_turn wall=261.0s
+reasoning_low    rep1: out_tok= 14304 think_chars= 33748 text_chars= 1748 stop=end_turn wall=318.1s
+native_thinking  rep1: out_tok= 14903 think_chars= 34867 text_chars= 2763 stop=end_turn wall=342.5s
+reasoning_high   rep1: out_tok= 16519 think_chars= 43027 text_chars= 1516 stop=end_turn wall=391.4s
+native_thinking  rep2: out_tok= 10063 think_chars= 22149 text_chars= 2008 stop=end_turn wall=223.8s
+no_field         rep2: out_tok= 14680 think_chars= 35356 text_chars= 2782 stop=end_turn wall=332.5s
+reasoning_high   rep2: out_tok= 13168 think_chars= 33868 text_chars= 2844 stop=end_turn wall=314.0s
+reasoning_low    rep2: out_tok= 19734 think_chars= 47982 text_chars= 3324 stop=end_turn wall=442.2s
+native_thinking  rep3: out_tok= 10542 think_chars= 25683 text_chars= 2471 stop=end_turn wall=251.0s
+no_field         rep3: out_tok= 17343 think_chars= 42986 text_chars= 2747 stop=end_turn wall=404.1s
+reasoning_high   rep3: out_tok= 13306 think_chars= 31805 text_chars= 1953 stop=end_turn wall=306.7s
+reasoning_low    rep3: out_tok= 14478 think_chars= 32783 text_chars= 3099 stop=end_turn wall=334.7s
+
+condition            mean     min     max  within x   n
+reasoning_low       16172   14304   19734      1.38   3
+reasoning_high      14331   13168   16519      1.25   3
+no_field            14536   11586   17343      1.50   3
+native_thinking     11836   10063   14903      1.48   3
+
+worst within-condition spread: 1.50x
+reasoning low vs high mean ratio: 1.13x
+reasoning.effort here: INERT (as expected - output_config.effort is the field that binds on this surface)
+
+THE CONTROL: native thinking here = 11836, on OpenRouter = 5468 (range 4197-7637).
+  no_field here = 14536, on OpenRouter = 15714.
+  If native thinking is low on BOTH paths, the low number is the MODEL's handling of
+  the Anthropic thinking field, and the OR probe's native_thinking row says nothing
+  about the path. If it differs, the OR number is path-specific.
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-qwen38max-dashscope-fields-control.txt

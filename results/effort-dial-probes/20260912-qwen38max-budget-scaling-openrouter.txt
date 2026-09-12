@@ -1,0 +1,26 @@
+qwen3.8-max thinking.budget_tokens SCALING probe - 2026-09-12 10:31
+endpoint https://openrouter.ai/api/v1/messages  model qwen/qwen3.8-max-0902  (streamed)
+n=3 per budget, max_tokens=32000, same prompt as the main probe
+question: is budget_tokens a DIAL (output tracks it) or a SWITCH (read once, then ignored)?
+
+budget_24000  rep1: out_tok=  3053 think_chars=  4039 text_chars= 2183 stop=end_turn wall=57.3s
+budget_8000   rep1: out_tok=  3956 think_chars=  5574 text_chars= 2248 stop=end_turn wall=73.1s
+budget_2000   rep1: out_tok=  7490 think_chars= 13592 text_chars= 1905 stop=end_turn wall=137.0s
+budget_8000   rep2: out_tok=  3469 think_chars=  4678 text_chars= 2267 stop=end_turn wall=65.9s
+budget_24000  rep2: out_tok=  4551 think_chars=  6806 text_chars= 2309 stop=end_turn wall=86.5s
+budget_2000   rep2: out_tok=  4478 think_chars=  6010 text_chars= 2805 stop=end_turn wall=79.9s
+budget_24000  rep3: out_tok=  4729 think_chars=  8131 text_chars= 1950 stop=end_turn wall=92.2s
+budget_8000   rep3: out_tok=  6780 think_chars= 11804 text_chars= 2820 stop=end_turn wall=126.4s
+budget_2000   rep3: out_tok=  4914 think_chars=  6998 text_chars= 2551 stop=end_turn wall=89.3s
+
+budget            mean     min     max  within x   n
+budget_2000       5627    4478    7490      1.67   3
+budget_8000       4735    3469    6780      1.95   3
+budget_24000      4111    3053    4729      1.55   3
+
+worst within-budget spread: 1.95x
+2000 vs 24000 mean ratio: 0.73x (12x the budget requested)
+VERDICT: budget_tokens is a SWITCH, not a dial - a 12x budget change did not clear
+         the within-condition noise. Say 'the endpoint reads the field', NOT 'binds'.
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-qwen38max-budget-scaling-openrouter.txt

@@ -1093,14 +1093,48 @@ model at the same setting has swung 6 points on repo 1 elsewhere on this board (
 11 / 8 / 14). A systematic path effect should have moved both repos, and it didn't. Read 28/105 as this
 model's number on a clean path — not as evidence that the hop is worth nine points.
 
-**Postscript, Sep 12 — the Aug 3 row's effort tier was inert, and that one is our fault.** It asked
-OpenRouter for `high`. A probe on that exact surface (n=3 per condition) put `low` at 14,532 mean
-output tokens, `high` at 17,503, and *no effort field at all* at 15,714 — a 1.20× spread against a
-1.82× worst within-condition spread, ranges overlapping. The field does nothing there. Worse, the same
-probe shows Anthropic's native `thinking` **does** bind on that surface (mean 5,468, non-overlapping),
-and our shim was deleting `thinking` in order to install `reasoning.effort` — removing the one control
-that worked. The row is now `inert_default`, matching every other aggregator-routed row here, and the
-shims no longer drop the native field. Scores unchanged.
+**Postscript, Sep 12 — the Aug 3 row's effort tier was inert.** It asked OpenRouter for `high`. A
+probe on that exact surface (n=3 per condition) put `low` at 14,532 mean output tokens, `high` at
+17,503, and *no effort field at all* at 15,714 — a 1.20× spread against a 1.82× worst within-condition
+spread, ranges overlapping. The field does nothing there. The row is now `inert_default`, matching
+every other aggregator-routed row here. Scores unchanged.
+
+**Correction, same day, to the paragraph above.** For a few hours this postscript also said that
+Anthropic's native `thinking` field *binds* on that surface and that our shim had "removed the one
+control that worked" by deleting it. Both halves were wrong, and the error is worth keeping visible
+because it is the same one this board exists to catch — reading a single measurement as a dial.
+
+The first probe tested exactly one budget value, which can only show a field is *read*. Three values
+([receipt](../experiments/effort-dial-probes/20260912-qwen38max-budget-scaling-openrouter.txt), n=3
+each) show what it actually does:
+
+| `thinking.budget_tokens` | mean output tokens | range |
+|---|---|---|
+| 2,000 | 5,627 | 4,478–7,490 |
+| 8,000 | 4,735 | 3,469–6,780 |
+| 24,000 | 4,111 | 3,053–4,729 |
+| *field absent* | *15,714* | *11,507–19,020* |
+
+Twelve times the budget moved the mean **0.73×** — the wrong way, and well inside a 1.95× worst
+within-condition spread. `budget_tokens` is not a dial on this path, it is a switch, and what it does
+is *suppress*: sending the field in any form costs about two thirds of the model's thinking, while the
+number attached to it is ignored.
+
+So the shim's `pop("thinking")` was not a bug that cost the Aug 3 run anything. It was, by accident,
+the configuration that produced the **most** thinking available on that path — because with `thinking`
+gone and `reasoning.effort` inert, the request fell through to the endpoint default. The row ran at
+that default, which is why `inert_default` was and remains the right label. What changed is only the
+story attached to it: the harness did not throw away a working control, and this was not "our fault"
+in the way the earlier wording claimed. The shims have been reverted to dropping the field, with the
+three-budget receipt in the comment.
+
+**And the suppression is the hop, not the model.** Running the identical four conditions against
+Alibaba's own endpoint
+([control](../experiments/effort-dial-probes/20260912-qwen38max-dashscope-fields-control.txt)), native
+`thinking` produced 10,063–14,903 output tokens — no overlap with the 4,197–7,637 the same field
+produced through OpenRouter, and fully overlapping Alibaba's own no-field baseline. Direct, the field
+does nothing much. Through the aggregator, it cuts thinking by roughly two thirds. One path could not
+have told those apart, which is why the control was run.
 
 The Aug 3 row is superseded rather than deleted; it remains the receipt for what an aggregator hop
 costs in tokens.
