@@ -1093,6 +1093,15 @@ model at the same setting has swung 6 points on repo 1 elsewhere on this board (
 11 / 8 / 14). A systematic path effect should have moved both repos, and it didn't. Read 28/105 as this
 model's number on a clean path — not as evidence that the hop is worth nine points.
 
+**Postscript, Sep 12 — the Aug 3 row's effort tier was inert, and that one is our fault.** It asked
+OpenRouter for `high`. A probe on that exact surface (n=3 per condition) put `low` at 14,532 mean
+output tokens, `high` at 17,503, and *no effort field at all* at 15,714 — a 1.20× spread against a
+1.82× worst within-condition spread, ranges overlapping. The field does nothing there. Worse, the same
+probe shows Anthropic's native `thinking` **does** bind on that surface (mean 5,468, non-overlapping),
+and our shim was deleting `thinking` in order to install `reasoning.effort` — removing the one control
+that worked. The row is now `inert_default`, matching every other aggregator-routed row here, and the
+shims no longer drop the native field. Scores unchanged.
+
 The Aug 3 row is superseded rather than deleted; it remains the receipt for what an aggregator hop
 costs in tokens.
 

@@ -1,5 +1,29 @@
-qwen3.8-max effort probe on the OPENROUTER path - 2026-09-12 08:40
-endpoint https://openrouter.ai/api/v1/messages  model qwen/qwen3.8-max-0902
-n=3 per condition, max_tokens=32000, same fixed prompt as the DashScope probe
+qwen3.8-max effort probe on the OPENROUTER path - 2026-09-12 09:00
+endpoint https://openrouter.ai/api/v1/messages  model qwen/qwen3.8-max-0902  (streamed)
+n=3 per condition, max_tokens=32000, same prompt as the DashScope probe
 
-reasoning_low    rep1: out_tok= 23465 think_chars= 56410 text_chars= 2911 stop=end_turn wall=477.7s
+reasoning_low    rep1: out_tok= 16402 think_chars= 38664 text_chars= 2999 stop=end_turn wall=351.5s
+reasoning_low    rep2: out_tok= 13212 think_chars= 31678 text_chars= 2336 stop=end_turn wall=277.1s
+reasoning_low    rep3: out_tok= 13983 think_chars= 32955 text_chars= 2440 stop=end_turn wall=286.4s
+reasoning_high   rep1: out_tok= 16324 think_chars= 37679 text_chars= 3242 stop=end_turn wall=332.9s
+reasoning_high   rep2: out_tok= 15949 think_chars= 38020 text_chars= 3117 stop=end_turn wall=336.3s
+reasoning_high   rep3: out_tok= 20237 think_chars= 51086 text_chars= 1861 stop=end_turn wall=429.8s
+no_field         rep1: out_tok= 16617 think_chars= 39864 text_chars= 2800 stop=end_turn wall=371.7s
+no_field         rep2: out_tok= 19020 think_chars= 45099 text_chars= 1731 stop=end_turn wall=419.2s
+no_field         rep3: out_tok= 11507 think_chars= 25367 text_chars= 2700 stop=end_turn wall=256.6s
+native_thinking  rep1: out_tok=  4197 think_chars=  5673 text_chars= 2745 stop=end_turn wall=81.1s
+native_thinking  rep2: out_tok=  7637 think_chars= 13113 text_chars= 2566 stop=end_turn wall=140.2s
+native_thinking  rep3: out_tok=  4571 think_chars=  7259 text_chars= 2810 stop=end_turn wall=89.7s
+
+condition            mean     min     max  within x   n
+reasoning_low       14532   13212   16402      1.24   3
+reasoning_high      17503   15949   20237      1.27   3
+no_field            15714   11507   19020      1.65   3
+native_thinking      5468    4197    7637      1.82   3
+
+worst within-condition spread: 1.82x
+reasoning low vs high mean ratio: 1.20x  (ranges overlap: True)
+VERDICT: reasoning.effort is INERT - low and high are within noise of each other on OpenRouter's Anthropic surface for this model
+         no_field mean 15714 vs low 14532 vs high 17503 - if all three are level, the Aug 3 row ran at the endpoint default and its label should be inert_default
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-qwen38max-openrouter-anthropic.txt
