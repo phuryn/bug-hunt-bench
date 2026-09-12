@@ -1,0 +1,24 @@
+qwen3.8-max thinking.budget_tokens SCALING to n=9 - 2026-09-12 11:42 - ABORTED, NO DATA
+
+What it was for: the three-value budget sweep (2,000 / 8,000 / 24,000 through OpenRouter's
+Anthropic-compatible /v1/messages) is the probe that RETRACTED a claim we had already published
+the same morning, and it was the last table on this finding still standing at n=3. This run was
+18 fresh calls, 6 per budget, to bring it to nine runs per value like everything else.
+
+What happened: all 18 calls returned HTTP 402 billing_error - insufficient credits - and all 18
+gave up after five attempts each. The account had been spent by the 24-call n=9 pass that ran
+immediately before this one (see 20260912-qwen38max-all-n9.txt). Zero measurements were taken;
+no partial data exists to pool.
+
+    budget_2000   x6   HTTP 402 on every attempt
+    budget_8000   x6   HTTP 402 on every attempt
+    budget_24000  x6   HTTP 402 on every attempt
+
+Consequence for the published finding, stated plainly in results/waves.md rather than left for a
+reader to notice: the RANKING of the three budgets remains measured at three samples per value and
+should be read as unmeasured. The claim that survives at n=9 - that sending the field at all
+suppresses thinking on this path, while the number attached to it is ignored - does not rest on
+this table. It rests on 20260912-qwen38max-all-n9.txt, where the 24,000 condition is nine runs
+against a nine-run baseline with disjoint ranges.
+
+The full 90-line error log is not reproduced here; it is ninety copies of the same 402.
