@@ -9,13 +9,13 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
-} from './format.js?v=55dd8b15f6';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=55dd8b15f6';
-import { renderScatter, AXES } from './scatter.js?v=55dd8b15f6';
-import { renderPicker } from './selector.js?v=55dd8b15f6';
-import { exportView } from './export-png.js?v=55dd8b15f6';
-import { initTheme, hasAdjustedColors } from './theme.js?v=55dd8b15f6';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=55dd8b15f6';
+} from './format.js?v=37126e2520';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=37126e2520';
+import { renderScatter, AXES } from './scatter.js?v=37126e2520';
+import { renderPicker, refreshGroups } from './selector.js?v=37126e2520';
+import { exportView } from './export-png.js?v=37126e2520';
+import { initTheme, hasAdjustedColors } from './theme.js?v=37126e2520';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=37126e2520';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -544,6 +544,10 @@ function onToggleRun(slug, on) {
   if (on) state.selected.add(slug);
   else state.selected.delete(slug);
   state.preset = detectPreset();
+  /* the vendor and model headings are checkboxes now, so they have to follow a
+     single run's toggle - in place, because rebuilding the picker here would
+     destroy the checkbox the reader is standing on */
+  refreshGroups(state.selected);
   renderViews();
   writeUrl();
 }

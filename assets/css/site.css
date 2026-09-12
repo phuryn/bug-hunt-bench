@@ -355,18 +355,49 @@ h1 em { font-style: normal; color: var(--accent); }
   padding: 0 0 7px; width: 100%;
   border-bottom: 1px solid var(--hairline); margin-bottom: 7px;
 }
-.vendor-toggle {
-  font: inherit; font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--muted);
-  background: none; border: 0; padding: 0; cursor: pointer; text-align: left;
+/* The vendor heading is a CHECKBOX, not a button: a button can only act, a
+   checkbox also reports - all, some (indeterminate), none. Same at model level. */
+.vendor {
+  display: flex; align-items: center; gap: 7px; cursor: pointer; width: 100%;
 }
-.vendor-toggle:hover { color: var(--accent); }
+.vendor__box, .group__box {
+  margin: 0; width: 13px; height: 13px; flex: none; accent-color: var(--accent);
+}
+.vendor__name {
+  font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+}
+.vendor__count, .group__count {
+  margin-left: auto; font-size: 10.5px; color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.vendor:hover .vendor__name, .vendor:hover .vendor__count { color: var(--accent); }
+
+/* One model's effort ladder, or one small vendor inside OTHER. */
+.group { margin: 0; }
+.group > summary {
+  display: flex; align-items: center; gap: 7px; padding: 4px 0;
+  cursor: pointer; list-style: none; font-size: 12.5px; color: var(--ink-2);
+}
+.group > summary::-webkit-details-marker { display: none; }
+.group > summary:hover { color: var(--ink); }
+.group__name { line-height: 1.3; min-width: 0; }
+.group__name::after {
+  content: ""; display: inline-block; width: 5px; height: 5px; margin-left: 7px;
+  border-right: 1.2px solid var(--muted); border-bottom: 1.2px solid var(--muted);
+  transform: translateY(-2px) rotate(-45deg); transition: transform 120ms ease;
+}
+.group[open] > summary .group__name::after { transform: translateY(-3px) rotate(45deg); }
+.group > summary:has(.group__box:checked) .group__name { color: var(--ink); font-weight: 500; }
+.group .run { padding-left: 20px; }
 
 .run {
   display: grid; grid-template-columns: 13px 9px 1fr; align-items: start;
   gap: 0 7px; padding: 4px 0; cursor: pointer; font-size: 12.5px;
   color: var(--ink-2);
 }
+.run--nosw { grid-template-columns: 13px 1fr; }
+.run__name--tier { font-size: 12px; letter-spacing: 0.01em; }
 .run:hover { color: var(--ink); }
 .run input { margin: 3px 0 0; width: 13px; height: 13px; accent-color: var(--accent); }
 .swatch {
