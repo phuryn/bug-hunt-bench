@@ -1559,3 +1559,47 @@ paying a judge to read an empty packet and tell us so.
 no measurable bug-finding at this end of the market: both sizes score zero, and the larger one is
 the one that quit fastest.
 
+
+### Meta's own agent driving Meta's own model
+
+**Muse Spark 1.3 in Muse Code — 18 of 105, $9.53, 53.3 minutes, 17 genuine extras, zero
+claimed-only on either repo.** Muse Code 0.1.0 runs the loop, picks the tools and decides when to
+stop; Meta's model answers it. This is the eighth distinct harness on the board and the first Meta
+one — the same experiment Codex CLI runs for OpenAI, Grok Build CLI for xAI and Gemini CLI for
+Google.
+
+**The comparison you will want to make is the one to avoid.** The board's other Meta row is Muse
+Spark 1.2 in Claude Code, on Meta's own endpoint, at a genuine xhigh — 17 of 105. Eighteen against
+seventeen looks like a harness result. It is not: the **model version, the harness, the route and
+the effort all differ** between those two rows. What the pair shows is two shipped stacks, a year
+apart, landing in the same place. Isolating the harness would need the same model on both, and
+Meta's own endpoint answers 402 here, so that run does not exist yet.
+
+| | score | cost | wall | genuine extras | claimed-only |
+|---|---:|---:|---:|---:|---:|
+| Muse Spark 1.3 — Muse Code / OpenRouter | 18/105 | $9.53 | 53.3 min | 17 | 0 |
+| Muse Spark 1.2 — Claude Code / Meta API, xhigh | 17/105 | $13.99 | 35.7 min | 12 | — |
+| Muse Spark 1.2 — Claude Code / OpenRouter, default | 14/105 | $19.52 | 65.2 min | 3 | — |
+
+**Read the last two columns, not the first.** Seventeen genuine extras — real defects nobody
+planted — against six planted-bug fixes on repo 1 and twelve on repo 2, and **not one claimed-only
+fix on either repo**: it never reported a fix it had not made. That honesty profile is the most
+consistent thing across all three Meta rows.
+
+**Muse Code is chattier than a single agent loop by design.** It runs a reminder-observer
+side-agent alongside the main one, so the turn count and the token bill both include work no Claude
+Code row on this board does. That is part of what a harness row measures, and it is why the cost
+column is not comparable to a Claude Code row of the same model even when the model is identical.
+
+**Two harness bugs had to be fixed before this row could exist, and both changed what ran.**
+Neither is a property of the model. The launcher that starts the Meta-API shim inside WSL **had
+never once worked** — it backgrounded the shim inside a session that is torn down the instant the
+launching shell exits, so the shim died before it could create its own log file, and a four-second
+readiness guess reported success anyway. Less visibly, the shim was not asking upstream for a
+stream: Muse Code requests one with an `Accept` header, OpenRouter reads the body, so every turn
+arrived as a single blob when generation finished — and **Muse Code kills a run whose model stream
+has been idle for 180 seconds**, on a route that routinely takes 200 to 230 seconds per call. The
+first attempt at this row was billed for a response it never saw. Both legs here ran with both
+fixes in place, and the repo-1 leg was re-run from scratch after it was found to have started three
+minutes before the second fix landed.
+

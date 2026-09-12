@@ -6,10 +6,10 @@
     "repo1_total": 45,
     "repo2_total": 60,
     "survivors": 39,
-    "models": 27,
+    "models": 28,
     "bug_count": 105,
     "repo1_bug_count": 45,
-    "runs": 69,
+    "runs": 70,
     "updated": "2026-09-12",
     "source_repo": "https://github.com/phuryn/bug-hunt-bench/tree/main/results",
     "repo_url": "https://github.com/phuryn/bug-hunt-bench",
@@ -2514,6 +2514,53 @@
       "group_rank": 102
     },
     {
+      "id": "Muse Spark 1.3 (default effort, Muse Code)",
+      "model": "Muse Spark 1.3",
+      "vendor": "Meta",
+      "harness": "Muse Code / OpenRouter",
+      "effort": "default",
+      "effort_status": "inert_default",
+      "date": "2026-09-12",
+      "color": "#D6336C",
+      "fixed": 18,
+      "repo1_fixed": 6,
+      "repo2_fixed": 12,
+      "partial": 1,
+      "claimed_only": 0,
+      "extras": 17,
+      "false_positive_fixes": 0,
+      "wall_min": 53.3,
+      "cost_usd": 9.53,
+      "cost_kind": "bill",
+      "wall_note": null,
+      "ceiling": false,
+      "featured": false,
+      "superseded": null,
+      "caveat": "One run. Effort is the provider default and the aggregator hop is PROVEN inert rather than assumed: Muse Code defaults its reasoning effort to high and sends it, OpenRouter drops it, and four receipts at n=9 on this exact path show all four tiers plus no-field overlapping, with bogus_zzz returning HTTP 200 while a bad model id returns 400. Meta's own endpoint 400-rejects an invalid effort string, so the break is localised to the OpenRouter hop - the same first-party-real / aggregator-inert split already on file for Muse Spark 1.2. The route is an aggregator because Meta's own endpoint answers 402 here, billing verification failed, which is also why cost is a REAL OpenRouter credits delta rather than a list estimate. The benchmark repos were re-installed from the same lockfile inside Linux before the agent started, because the Windows install lays down win32 binaries Linux node cannot execute and an agent that cannot run the suite is solving a different task than every other row.",
+      "note": "The first row on this board driven by a vendor's OWN agent rather than by Claude Code. Muse Code 0.1.0 runs the loop, picks the tools and decides when to stop, and Meta's model answers it - the same experiment the Kimi CLI row runs for Moonshot. *** DO NOT READ THIS AS A HARNESS A/B AGAINST THE OTHER META ROW *** The board's only other Meta row is Muse Spark 1.2 in Claude Code, on Meta's own endpoint, at a genuine xhigh (17/105). Against this row the MODEL VERSION, the HARNESS, the ROUTE and the EFFORT all differ, so the pair is a comparison of two stacks as shipped and not an isolation of any one of them. Muse Code is chattier than a single agent loop by design: it runs a reminder-observer side-agent alongside the main one, so the turn count and the token bill both include work no Claude Code row does. *** WHY THIS ROW NEEDED TWO HARNESS FIXES BEFORE IT COULD EXIST *** Neither is a property of the model and both are disclosed because they changed what ran. First, the launcher that starts the Meta-API shim inside WSL had never once worked - it backgrounded the shim inside a session that is torn down the instant the launching shell exits, so the shim died before it could create its own log file. Second, and less visibly, the shim was not asking upstream for a stream: Muse Code requests one with an Accept header, OpenRouter reads the body, so every turn arrived as a single blob when generation finished - and Muse Code kills a run whose model stream has been idle for 180 seconds, on a route that routinely takes 200 to 230 seconds per call. The first attempt at this arm was billed for a response it never saw. Both legs of this row ran with both fixes in place.",
+      "fixed_bugs": [
+        20,
+        25,
+        30,
+        41,
+        43,
+        45,
+        49,
+        50,
+        71,
+        76,
+        77,
+        84,
+        95,
+        96,
+        98,
+        99,
+        100,
+        102
+      ],
+      "group_rank": 6
+    },
+    {
       "id": "Grok 4.5 (re-run Aug 6)",
       "model": "Grok 4.5",
       "vendor": "xAI",
@@ -2567,7 +2614,7 @@
       "effort": "xhigh",
       "effort_status": "verified_ceiling",
       "date": "2026-08-06",
-      "color": "#D6336C",
+      "color": "#EDA3BD",
       "fixed": 17,
       "repo1_fixed": 6,
       "repo2_fixed": 11,
@@ -2603,7 +2650,7 @@
         99,
         102
       ],
-      "group_rank": 1
+      "group_rank": 101
     },
     {
       "id": "Ox Alpha (stealth; free)",
@@ -3012,7 +3059,7 @@
       "effort": "default",
       "effort_status": "inert_default",
       "date": "2026-08-06",
-      "color": "#D6336C",
+      "color": "#EDA3BD",
       "fixed": 14,
       "repo1_fixed": 3,
       "repo2_fixed": 11,
@@ -3045,7 +3092,7 @@
         99,
         102
       ],
-      "group_rank": 6
+      "group_rank": 106
     },
     {
       "id": "GPT-5.6 Luna (high effort)",
