@@ -1374,9 +1374,9 @@ model and by nothing else: same harness, same endpoint, same two repos, same lap
 
 ### The harness has a floor, and this wave fell through it
 
-Six arms were commissioned. **One produced a row.** Chasing the other five is the useful part of
-this wave, because three of them died on a Claude Code failure this board had not seen once in 105
-published rows:
+Six arms were commissioned. **Only one produced a row on the first two passes.** Chasing the other
+five is the useful part of this wave, because three of them died on a Claude Code failure this board
+had not seen once in 105 published rows:
 
 ```
 terminal_reason = rapid_refill_breaker
