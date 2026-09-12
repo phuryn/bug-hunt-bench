@@ -1108,17 +1108,18 @@ The first probe tested exactly one budget value, which can only show a field is 
 ([receipt](../experiments/effort-dial-probes/20260912-qwen38max-budget-scaling-openrouter.txt), n=3
 each) show what it actually does:
 
-| `thinking.budget_tokens` | mean output tokens | range |
-|---|---|---|
-| 2,000 | 5,627 | 4,478–7,490 |
-| 8,000 | 4,735 | 3,469–6,780 |
-| 24,000 | 4,111 | 3,053–4,729 |
-| *field absent* | *15,714* | *11,507–19,020* |
+| `thinking.budget_tokens` | mean output tokens | range | n |
+|---|---|---|---|
+| 2,000 | 5,627 | 4,478–7,490 | 3 |
+| 8,000 | 4,735 | 3,469–6,780 | 3 |
+| 24,000 | 4,111 | 3,053–4,729 | 3 |
+| *field absent* | *13,339* | *9,673–19,020* | *6* |
 
 Twelve times the budget moved the mean **0.73×** — the wrong way, and well inside a 1.95× worst
 within-condition spread. `budget_tokens` is not a dial on this path, it is a switch, and what it does
-is *suppress*: sending the field in any form costs about two thirds of the model's thinking, while the
-number attached to it is ignored.
+is *suppress*: sending the field in any form costs roughly two thirds of the model's thinking, while
+the number attached to it is ignored. Every budget's *maximum* still lands below the baseline's
+*minimum*.
 
 So the shim's `pop("thinking")` was not a bug that cost the Aug 3 run anything. It was, by accident,
 the configuration that produced the **most** thinking available on that path — because with `thinking`
@@ -1131,10 +1132,28 @@ three-budget receipt in the comment.
 **And the suppression is the hop, not the model.** Running the identical four conditions against
 Alibaba's own endpoint
 ([control](../experiments/effort-dial-probes/20260912-qwen38max-dashscope-fields-control.txt)), native
-`thinking` produced 10,063–14,903 output tokens — no overlap with the 4,197–7,637 the same field
-produced through OpenRouter, and fully overlapping Alibaba's own no-field baseline. Direct, the field
-does nothing much. Through the aggregator, it cuts thinking by roughly two thirds. One path could not
-have told those apart, which is why the control was run.
+`thinking` produced far more output than the same field through OpenRouter, and fully overlapped
+Alibaba's own no-field baseline. Direct, the field does nothing much. Through the aggregator, it cuts
+thinking by roughly two thirds. One path could not have told those apart, which is why the control was
+run.
+
+**Re-measured at n=6, because a claim this size should not rest on three samples.** Both conditions
+the finding leans on were taken to six runs on both routes
+([receipt](../experiments/effort-dial-probes/20260912-qwen38max-thinking-n6.txt), 12 fresh calls
+pooled with the originals):
+
+| route | `budget_tokens: 24,000` | no field at all | n each |
+|---|---|---|---|
+| through OpenRouter | **4,973** (3,568–7,637) | 13,339 (9,673–19,020) | 6 |
+| straight to Alibaba | 13,514 (10,063–15,977) | 14,681 (11,586–17,442) | 6 |
+
+All three verdicts survive, and the cross-route gap *widened* — 2.72× against a 2.14× worst
+within-cell spread, up from 2.16×. Through OpenRouter the field costs **63%** of the model's thinking
+(ranges disjoint); direct to Alibaba it is indistinguishable from sending nothing (ranges overlap).
+
+The honest cost of the bigger sample: the no-field baseline through OpenRouter was **15,714** at n=3
+and is **13,339** at n=6 — three samples had overestimated it by 18%. The conclusions do not move, but
+every figure above is the six-run one, and the earlier three-run numbers should not be quoted.
 
 The Aug 3 row is superseded rather than deleted; it remains the receipt for what an aggregator hop
 costs in tokens.

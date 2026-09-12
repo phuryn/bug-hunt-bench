@@ -1,0 +1,47 @@
+qwen3.8-max thinking-budget finding at n=6 - 2026-09-12 11:08
+12 fresh calls, ALL CONCURRENT; pooled with 3 prior samples per cell from the 09-12 receipts
+identical prompt / model / endpoint / max_tokens=32000 as those runs
+
+openrouter native_thinking new1: out_tok=  3568 think_chars=  4644 text_chars= 2260 stop=end_turn wall=72.6s
+openrouter native_thinking new2: out_tok=  3630 think_chars=  5393 text_chars= 2226 stop=end_turn wall=74.4s
+openrouter native_thinking new3: out_tok=  6238 think_chars= 10460 text_chars= 2662 stop=end_turn wall=118.6s
+openrouter no_field        new2: out_tok=  9673 think_chars= 22303 text_chars= 2491 stop=end_turn wall=227.2s
+openrouter no_field        new1: out_tok=  9820 think_chars= 22129 text_chars= 2512 stop=end_turn wall=227.5s
+alibaba    no_field        new1: out_tok= 12680 think_chars= 28743 text_chars= 1920 stop=end_turn wall=289.6s
+openrouter no_field        new3: out_tok= 13398 think_chars= 29981 text_chars= 2555 stop=end_turn wall=302.8s
+alibaba    no_field        new2: out_tok= 14356 think_chars= 34156 text_chars= 2974 stop=end_turn wall=331.6s
+alibaba    native_thinking new1: out_tok= 14613 think_chars= 34135 text_chars= 3081 stop=end_turn wall=334.9s
+alibaba    native_thinking new3: out_tok= 14991 think_chars= 38448 text_chars= 1908 stop=end_turn wall=365.5s
+alibaba    native_thinking new2: out_tok= 15977 think_chars= 38902 text_chars= 2854 stop=end_turn wall=375.3s
+alibaba    no_field        new3: out_tok= 17442 think_chars= 43500 text_chars= 2051 stop=end_turn wall=400.8s
+
+POOLED SAMPLES (prior 3 + new 3)
+  openrouter native_thinking n=6  [3568, 3630, 4197, 4571, 6238, 7637]
+  openrouter no_field        n=6  [9673, 9820, 11507, 13398, 16617, 19020]
+  alibaba    native_thinking n=6  [10063, 10542, 14613, 14903, 14991, 15977]
+  alibaba    no_field        n=6  [11586, 12680, 14356, 14680, 17343, 17442]
+
+path       condition           mean     min     max  within x   n
+openrouter native_thinking     4973    3568    7637      2.14   6
+openrouter no_field           13339    9673   19020      1.97   6
+alibaba    native_thinking    13514   10063   15977      1.59   6
+alibaba    no_field           14681   11586   17442      1.51   6
+
+worst within-cell spread at n=6: 2.14x
+
+CLAIM A - the suppression is the PATH, not the model
+  thinking budget: OpenRouter [3568, 3630, 4197, 4571, 6238, 7637]  vs  Alibaba [10063, 10542, 14613, 14903, 14991, 15977]
+  ranges DISJOINT; means 4973 vs 13514 = 2.72x, against a 2.14x worst within-cell spread
+  VERDICT: HOLDS at n=6
+
+CLAIM B - on OpenRouter, sending the field costs ~65% of the thinking
+  OpenRouter: thinking budget [3568, 3630, 4197, 4571, 6238, 7637]  vs  no field [9673, 9820, 11507, 13398, 16617, 19020]
+  ranges DISJOINT; 4973 vs 13339 = 63% less
+  VERDICT: HOLDS at n=6
+
+CONTROL - on Alibaba the same field should do nothing
+  Alibaba: thinking budget [10063, 10542, 14613, 14903, 14991, 15977]  vs  no field [11586, 12680, 14356, 14680, 17343, 17442]
+  ranges OVERLAP; 13514 vs 14681
+  VERDICT: still no detectable effect (as expected)
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-qwen38max-thinking-n6.txt
