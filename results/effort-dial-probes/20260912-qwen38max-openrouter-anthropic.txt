@@ -1,0 +1,5 @@
+qwen3.8-max effort probe on the OPENROUTER path - 2026-09-12 08:40
+endpoint https://openrouter.ai/api/v1/messages  model qwen/qwen3.8-max-0902
+n=3 per condition, max_tokens=32000, same fixed prompt as the DashScope probe
+
+reasoning_low    rep1: out_tok= 23465 think_chars= 56410 text_chars= 2911 stop=end_turn wall=477.7s

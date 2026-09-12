@@ -1060,7 +1060,7 @@ The general lesson is the one this board keeps relearning: **a benchmark row rec
 a model.** Two of these three errors were invisible until a second row ran the same vendor a different
 way, and none of them would have been caught by re-reading the first row more carefully.
 
-### So Qwen3.8-Max was re-run first-party — and the path was worth nine points
+### So Qwen3.8-Max was re-run first-party
 
 The corrections above fixed the labels. They could not fix the cost, because the problem was not
 arithmetic. So the model was re-run on the same endpoint the Flash rows ship on. Same model, same
@@ -1071,9 +1071,6 @@ harness, same two repos, same laptop, one hop removed:
 | via proxy → OpenRouter (Aug 3) | 19 | 5 | 14 | 148.1 min | $33.30 | $1.75 |
 | **Alibaba's own endpoint (Sep 11)** | **28** | **13** | **15** | **103.4 min** | **$26.29** | **$0.94** |
 
-**Nine points more, for a fifth less money and a third less time.** Almost all of the gain is in repo 1
-(5/45 → 13/45), which is also the leg the old path handled worst.
-
 The mechanism is legible in the token columns, and it is not subtle:
 
 | | via OpenRouter | Alibaba direct |
@@ -1083,35 +1080,21 @@ The mechanism is legible in the token columns, and it is not subtle:
 | cache reads | 54,863,213 | 90,944,691 |
 | output tokens | 136,426 | **168,395** |
 
-Caching that keeps working means the model keeps its context instead of rebuilding it. Output went **up
-23%** while wall time went **down 30%** — it spent its time thinking rather than re-reading, and the
-prompt tokens it did re-send fell by a factor of ~5,000.
+**The cost finding is solid.** Both rows are priced from the same book — OpenRouter's own
+Alibaba-endpoint listing — so the comparison is rate-neutral: per token the two paths cost the same and
+the $7 is entirely token volume. Caching that keeps working means the model keeps its context instead
+of rebuilding it, which is why output rose 23% while wall time fell 30%. This is **not** a claim that
+OpenRouter charges more. It is that the same work cost more through the hop, because prompt caching
+degraded across it. Both figures are list estimates, not bills.
 
-**This is not a claim that OpenRouter charges more, and the table should not be read that way.** Both
-rows are priced from the *same* book — OpenRouter's own Alibaba-endpoint listing, $2.00 in / $2.50
-cache-write / $0.25 cache-read / $6.00 out per MTok — so the comparison is rate-neutral by
-construction. OpenRouter lists exactly one upstream for this model, and it is Alibaba, at Alibaba's
-rates. Per token the two paths cost the same; the $7 is **entirely token volume**. The honest sentence
-is *routing through the aggregator cost more for the same work because prompt caching degraded across
-the hop* — not *the aggregator is more expensive*.
+**The score jump is not solid, and should not be read as caused by the path.** Nine points is n=1
+against n=1, and it is almost entirely one repo: repo 1 went 5→13 while repo 2 moved by one. The same
+model at the same setting has swung 6 points on repo 1 elsewhere on this board (Opus 5 at medium:
+11 / 8 / 14). A systematic path effect should have moved both repos, and it didn't. Read 28/105 as this
+model's number on a clean path — not as evidence that the hop is worth nine points.
 
-Worth saying who is **not** to blame, since the obvious suspect is the local shim: it is a dumb
-passthrough. It rewrites the model id and swaps `thinking` for `reasoning.effort`, forwards the
-untouched Anthropic body to OpenRouter's Anthropic-compatible path, and never reads or strips
-`cache_control`. The breakpoints reached the aggregator intact. Provider load-balancing across cold
-caches is also ruled out for the model as listed today — one endpoint, no fan-out. The most likely
-remaining mechanism is that Alibaba's own endpoint caches the whole prompt implicitly, while only the
-explicit breakpoints survive the relay, leaving the tail of every request to be billed fresh.
-
-Two limits on all of it: both figures are **list estimates, not bills** (no credits delta was captured
-for the Aug 3 run), and OpenRouter's credit fee is modelled in neither, so a real-money comparison
-would be slightly wider than the one above.
-
-One caution against over-reading it: scores move between runs on this board, and a single pair cannot
-cleanly separate a path effect from ordinary variance — nine points is large, but it is n=1 against n=1.
-What the pair establishes *beyond* variance is the cost and token behaviour, where a ~5,000× gap is not
-a coin flip. The Aug 3 row is marked superseded rather than deleted; it remains the receipt for what an
-aggregator hop costs.
+The Aug 3 row is superseded rather than deleted; it remains the receipt for what an aggregator hop
+costs in tokens.
 
 The effort tier on the new row is `verified_ceiling`, and for once on a Qwen row that is fully earned:
 the endpoint 400-rejects an invented tier and names its accept-list, and a probe on this exact path
