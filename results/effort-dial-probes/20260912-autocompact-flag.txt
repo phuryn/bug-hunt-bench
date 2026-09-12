@@ -1,16 +1,18 @@
 Does --autocompact <tokens> move the auto-compaction trigger? - 2026-09-12
 
-*** CORRECTED THE SAME EVENING: INERT HERE, LIVE THROUGH A SHIM. This pair ran on Anthropic's own
-route, and on that route the verdict below holds. It does NOT generalise. Through the OpenRouter
-shim the flag is honoured and sets the trigger to roughly a QUARTER of the declared value - the same
-gpt-oss-20b arm compacted at 52,023/57,418 unflagged and at 24,514 with 100,000 declared, and
-gpt-oss-120b at 23,863-26,498 with the same declaration, six times in one leg, then the breaker. The
-likely reading is that the CLI ignores a declaration it can beat with a window it already knows, and
-uses one when it knows nothing. Practical consequence, which is the opposite of the intent the flag
-was added with: declaring a model's REAL window through a shim SHRINKS its working context. See
-20260912-autocompact-flag-through-shim.txt. ***
+*** THIS HEADER HAS BEEN WRONG ONCE ALREADY, AND BOTH VERSIONS ARE KEPT. For about an hour on the
+evening of 2026-09-12 it read "INERT HERE, LIVE THROUGH A SHIM" and said the flag sets the trigger to
+roughly a QUARTER of the declared value off-route. The evidence was a natural experiment: the same
+gpt-oss-20b arm compacting at 52,023/57,418 unflagged and at 24,514 four hours later with 100,000
+declared. Then the controlled version ran - same fixture as this pair, same shim, same upstream, only
+the declaration varying - and produced 89,061/86,871/86,059 against 86,706/86,111/86,063. A tenfold
+difference in the declared window, six triggers inside a 3,000-token band. THE FLAG IS INERT ON BOTH
+ROUTES; the verdict below generalises after all, and the arm-level reading had more than one variable
+in it. See 20260912-autocompact-flag-through-shim.txt. What that leaves genuinely unexplained - why
+shim ARMS compact at ~25K when the same setup on this fixture compacts at ~87K - is recorded there as
+unexplained rather than guessed at. ***
 
-VERDICT (this route only): INERT. Both runs compacted in the same region despite a 10x difference in the declared window, so the flag is not what sets the trigger and the re-runs need a different fix.
+VERDICT (confirmed on both routes): INERT. Both runs compacted in the same region despite a 10x difference in the declared window, so the flag is not what sets the trigger and the re-runs need a different fix.
 
 Same job both runs: read 6 files of 1900 lines each with the Read tool, in order, nothing
 else. Same model (claude-haiku-4-5-20251001), same fixture, same machine, sequential.

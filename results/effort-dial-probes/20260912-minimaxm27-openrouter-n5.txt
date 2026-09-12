@@ -1,0 +1,78 @@
+Effort-dial probe: minimax/minimax-m2.7 via OpenRouter, provider pinned to Minimax - 2026-09-12 20:24
+endpoint https://openrouter.ai/api/v1/messages  max_tokens=32000  n=5 per condition, 25 calls, all concurrent
+Surface is OpenRouter's Anthropic-compatible /v1/messages because that is the path the bench
+arm ships on (Claude Code -> local shim -> OpenRouter). A verdict measured on
+/chat/completions would not transfer - a dial is a property of the serving path.
+The arm itself asserts NO tier; this probe exists to say whether one was available.
+
+nested_high  rep3: out_tok=  5983 think_tok=  4923 text_chars= 2845 think_chars= 15834 cost=$0.0072 stop=end_turn wall=133.7s
+nested_high  rep2: out_tok=  7283 think_tok=  6230 text_chars= 3051 think_chars= 18317 cost=$0.0087 stop=end_turn wall=154.8s
+nested_high  rep1: out_tok=  8249 think_tok=  7065 text_chars= 3189 think_chars= 21427 cost=$0.0098 stop=end_turn wall=173.5s
+flat_high    rep2: out_tok=  7188 think_tok=  6041 text_chars= 3177 think_chars= 17948 cost=$0.0086 stop=end_turn wall=157.4s
+no_field     rep1: out_tok=  7273 think_tok=  6118 text_chars= 3457 think_chars= 19733 cost=$0.0087 stop=end_turn wall=160.0s
+nested_high  rep4: out_tok=  8116 think_tok=  7106 text_chars= 2935 think_chars= 23172 cost=$0.0097 stop=end_turn wall=186.0s
+flat_high    rep5: out_tok=  7863 think_tok=  6615 text_chars= 3397 think_chars= 19141 cost=$0.0094 stop=end_turn wall=165.8s
+flat_low     rep5: out_tok=  8582 think_tok=  7199 text_chars= 4125 think_chars= 22514 cost=$0.0102 stop=end_turn wall=182.7s
+flat_low     rep2: out_tok=  9175 think_tok=  8172 text_chars= 2776 think_chars= 24057 cost=$0.0109 stop=end_turn wall=191.0s
+nested_low   rep3: out_tok=  9697 think_tok=  8311 text_chars= 3896 think_chars= 26790 cost=$0.0116 stop=end_turn wall=209.2s
+nested_high  rep5: out_tok=  9094 think_tok=  7532 text_chars= 4495 think_chars= 22198 cost=$0.0108 stop=end_turn wall=195.4s
+no_field     rep3: out_tok=  8033 think_tok=  7039 text_chars= 2669 think_chars= 25158 cost=$0.0096 stop=end_turn wall=172.3s
+no_field     rep5: out_tok=  7916 think_tok=  6686 text_chars= 3693 think_chars= 21351 cost=$0.0094 stop=end_turn wall=169.1s
+flat_high    rep1: out_tok= 10130 think_tok=  8886 text_chars= 3431 think_chars= 27140 cost=$0.0121 stop=end_turn wall=205.0s
+flat_low     rep1: out_tok= 10810 think_tok=  9809 text_chars= 2763 think_chars= 30451 cost=$0.0129 stop=end_turn wall=225.4s
+nested_low   rep2: out_tok= 12279 think_tok= 11064 text_chars= 3878 think_chars= 34303 cost=$0.0146 stop=end_turn wall=246.5s
+flat_low     rep4: out_tok= 10808 think_tok=  9610 text_chars= 3302 think_chars= 30720 cost=$0.0129 stop=end_turn wall=228.3s
+no_field     rep4: out_tok= 10144 think_tok=  8855 text_chars= 3587 think_chars= 27423 cost=$0.0121 stop=end_turn wall=228.2s
+flat_high    rep4: out_tok= 11914 think_tok= 10859 text_chars= 3062 think_chars= 34066 cost=$0.0142 stop=end_turn wall=239.8s
+nested_low   rep4: out_tok= 12426 think_tok= 11402 text_chars= 3501 think_chars= 37442 cost=$0.0148 stop=end_turn wall=271.3s
+nested_low   rep1: out_tok= 14571 think_tok= 13548 text_chars= 2698 think_chars= 40199 cost=$0.0174 stop=end_turn wall=293.4s
+nested_low   rep5: out_tok= 13327 think_tok= 12203 text_chars= 3176 think_chars= 42442 cost=$0.0159 stop=end_turn wall=287.7s
+flat_low     rep3: out_tok= 14643 think_tok= 13355 text_chars= 4122 think_chars= 41872 cost=$0.0174 stop=end_turn wall=298.0s
+no_field     rep2: out_tok= 13629 think_tok= 12466 text_chars= 3384 think_chars= 42231 cost=$0.0162 stop=end_turn wall=286.1s
+flat_high    rep3: out_tok= 15823 think_tok= 14694 text_chars= 3233 think_chars= 46736 cost=$0.0188 stop=end_turn wall=344.9s
+
+OUTPUT TOKENS (reasoning + answer; the primary measure)
+condition        mean     min     max  within x   n
+nested_low      12460    9697   14571      1.50   5
+nested_high      7745    5983    9094      1.52   5
+flat_low        10803    8582   14643      1.71   5
+flat_high       10583    7188   15823      2.20   5
+no_field         9399    7273   13629      1.87   5
+
+THINKING TOKENS reported separately by this endpoint (cross-check)
+nested_low   mean  11305  range   8311- 13548
+nested_high  mean   6571  range   4923-  7532
+flat_low     mean   9629  range   7199- 13355
+flat_high    mean   9419  range   6041- 14694
+no_field     mean   8232  range   6118- 12466
+
+worst within-condition spread: 2.20x  (the noise floor any gap must clear)
+
+nested spelling  reasoning.effort
+   low 9697-14571   high 5983-9094   means 1.61x   ranges DISJOINT
+   -> ranges separate but the gap does not clear the noise floor - a tie
+flat spelling    reasoning_effort
+   low 8582-14643   high 7188-15823   means 1.02x   ranges OVERLAP
+   -> no detectable effect
+
+WHERE IS THE DEFAULT? baseline (no field) 7273-13629, mean 9399
+   nested_low     9697- 14571  vs baseline: overlaps -> indistinguishable from sending nothing
+   nested_high    5983-  9094  vs baseline: overlaps -> indistinguishable from sending nothing
+   flat_low       8582- 14643  vs baseline: overlaps -> indistinguishable from sending nothing
+   flat_high      7188- 15823  vs baseline: overlaps -> indistinguishable from sending nothing
+
+VALIDATION - does this path even look at the field? (the decisive half)
+  bogus nested  reasoning={effort: bogus_zzz}  -> HTTP 200 (accepted)
+  bogus flat    reasoning_effort=bogus_zzz     -> HTTP 200 (accepted)
+  CONTROL: bad model id                        -> HTTP 400  {"type":"error","error":{"type":"invalid_request_error","message":"minimax/minimax-m2.7-does-not-exist is not a valid model ID","error_type":"invalid_request"},"request_id":"gen-1789237840-6bKR59cJubJMwO7oAlxg"}
+  An endpoint that 400-rejects an invented tier cannot silently clamp. A 200 on bogus while
+  the bad model id 400s means the effort field is accepted and never read.
+
+VERDICT: no detectable effect on either spelling at n=5, with the baseline measured at
+  the same n. Combined with the validation result above this supports `inert_default`.
+  Standing caveat: n samples cannot prove a field does nothing, only that any effect is
+  smaller than the noise - and ranges can only WIDEN with n, so this can still fail later.
+
+probe spend, exact from usage.cost: $0.3040 over 25 calls
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-minimaxm27-openrouter-n5.txt

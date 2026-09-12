@@ -1429,37 +1429,54 @@ around 62,000; Sonnet 5 (1,000,000) compacted **five times in one run, between 2
 a fixed trigger size survives it.
 
 **Through a proxy the harness hands the run far less, and the proxy arms scattered** — gpt-oss-120b
-compacting at 23,863-26,498 (six times in one leg, then the breaker) while gpt-oss-20b, the same
-model id on the same host through the same proxy, compacted at 52,023 and 57,418. That looked
-unexplained for an hour. It is the same arm four hours apart, and the difference between the two
-readings is one flag: `--autocompact 100000` was added at 17:57, the 52K leg ran at 17:46 without it
-and the 24,514 leg ran at 19:26 with it.
+compacting at 23,863–26,498 (six times in one leg, then the breaker) while gpt-oss-20b, the same
+model id on the same host through the same proxy, compacted at 52,023 and 57,418.
 
-So `--autocompact` is **not** inert — it is inert on Anthropic's own route, where the CLI already
-knows the real window and ignores a declaration it can beat, and **live through a proxy**, where the
-CLI knows nothing. And what it sets is not the trigger but the window the trigger is a fraction of.
-One rule covers every number on this page:
+**An earlier version of this section explained that, and the explanation was wrong. It is retracted
+here rather than quietly edited.** The two gpt-oss-20b numbers are the same arm four hours apart with
+one flag landing in between — `--autocompact 100000` was added at 17:57, the 52K leg ran at 17:46
+without it, the 24,514 leg ran at 19:26 with it — so the flag was written up as inert first-party and
+**live through a proxy**, setting the window at a quarter of the declared value. Then the controlled
+version ran: same fixture as the first-party pair, same proxy, same upstream model and host, varying
+only the declaration
+([receipt](effort-dial-probes/20260912-autocompact-flag-through-shim.txt)).
 
-> Compaction fires at roughly a quarter to a third of the context window **the CLI believes it has**.
+| `--autocompact`, through a proxy | compacted at |
+|---|---|
+| `100000` | 89,061 / 86,871 / 86,059 |
+| `1000000` | 86,706 / 86,111 / 86,063 |
 
-| What the CLI believes | Compacts at |
+Six triggers inside a 3,000-token band across a tenfold difference in what was declared. **The flag
+is inert on both routes.** The arm-level comparison that said otherwise had four hours, two passes
+and a repo re-run in it as well as the flag; a controlled pair beats a natural experiment.
+
+**So the proxy scatter is unexplained, and this page says so rather than filling it in.** The same
+model, proxy, host and flag compacted at 23,863–26,498 inside the bench arm and at 86,059–89,061 on
+the probe fixture — six triggers each, both clusters tight, a 3.4× gap. Part of any single gap is an
+artefact of how the number is read (the counter is sampled after a turn finishes, so it carries
+whatever that turn added), but that does not stretch to 3.4× between two tight clusters. Something
+about the arm moves where this harness compacts and nothing measured here says what.
+
+What does survive is the first-party half, which is the controlled one:
+
+> On Anthropic's own route, compaction fires at roughly a third of the model's real context window.
+
+| What the CLI knows | Compacts at |
 |---|---|
 | the truth, first-party — 200K model | ~62,000 |
-| the truth, first-party — 1M models | 284,197 – 302,629 |
-| its own fallback, proxy, nothing declared | 52,023 – 84,796 (back-solves to a ~200K belief) |
-| a declaration of `100000`, proxy | ~24,500 |
-| a declaration of `[1m]`, proxy | ~292,000 |
+| the truth, first-party — 1M models | 284,197 – 312,465 |
+| nothing, proxy, fallback belief | 23,863 – 84,796 (spread unexplained) |
 
-**And the lever only helps by lying.** Declaring MiniMax's real 204,800 would set its trigger around
-51,000–61,000 — the budget it already died in. Declaring Nemotron's real 262,144 gives 65,000–79,000
-against the 52,252–76,434 it already had. Telling the harness the truth about either model changes
-nothing, because the fallback was already approximately true. Only overstating the window buys room.
+**And there is no lever.** With the flag inert on both routes, there is no way to tell this harness a
+window short of the `[1m]` model-string suffix — and MiniMax's real window is 204,800, Nemotron's
+262,144, so `[1m]` would overstate them four to five times and let the harness run the context past
+what the model can accept. The fallback belief of ~200,000 was already approximately true for both.
+Telling the harness the truth about either model changes nothing; lying to it is the thing this board
+does not do.
 
-The same inversion caught the gpt-oss arms going the other way. They were given `--autocompact
-100000` that morning to protect a 131,072-token model from a 200,000-token assumption; what it did
-was halve a working context that was never in danger — unflagged they compact around 55K and never
-approach their ceiling — and the 120b thrashed to death inside the 25K it was left with. The flag is
-off both arms now.
+The gpt-oss arms were given `--autocompact 100000` that morning to protect a 131,072-token model from
+a 200,000-token assumption. It could not have protected them, because it does nothing — so the flag
+is off both arms, which costs nothing and is the honest configuration either way.
 
 **Either way the arms were handed a working context this repo needs more than**, compacted from 56K
 down to 25K, had it refilled by three ordinary file reads, and the harness stopped itself. That is

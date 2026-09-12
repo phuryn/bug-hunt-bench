@@ -1,0 +1,41 @@
+Is --autocompact inert through a shim too? - 2026-09-12
+
+VERDICT: INERT HERE TOO, and it overturns a claim published a few hours ago. First triggers 89,061
+against 86,706 across a tenfold difference in the declared window, and all six triggers across the
+two runs sit inside 86,059-89,061. The flag is inert on BOTH routes. The arm-level reading that said
+otherwise - gpt-oss-20b at 52,023/57,418 unflagged and 24,514 flagged, four hours apart - was a
+natural experiment with more than one variable in it, and this controlled pair beats it.
+
+WHAT THAT LEAVES UNEXPLAINED, SAID PLAINLY RATHER THAN PAPERED OVER. The same upstream model, the
+same shim, the same flag and the same host compacted at 23,863-26,498 inside the bench arm and at
+86,059-89,061 here. Six triggers in each case, both clusters tight, a 3.4x gap between them. So
+something about the ARM configuration - not the flag, not the route, not the model - moves the point
+at which this harness compacts, and nothing measured today says what. `pre_tokens` is read after a
+turn completes, so part of any single gap is just the size of the turn that crossed the line; a 3.4x
+gap between two tight six-sample clusters is not that.
+
+WHAT SURVIVES. The first-party pair (Haiku 4.5 at ~62,000, Sonnet 5 five times between 292,063 and
+312,465, same fixture) still shows the trigger scaling with the model's real context window. The
+breaker is still reproducible on Anthropic's own route. And the two held arms still have no
+configuration worth re-running - if anything more firmly, because the one lever that might have given
+them a bigger budget does nothing on either route.
+
+Same fixture and same job as the first-party pair (20260912-autocompact-flag.txt):
+read 6 files of 1,900 lines with the Read tool, in order, nothing else. The only
+change is the route - Claude Code pointed at the local shim, upstream openai/gpt-oss-120b, host Groq.
+Sequential, and started only once the wave chain was idle so no arm absorbs the cost.
+
+  A-100k  --autocompact 100000   rc=1  wall=45.0s  Read calls=5
+          compactions (pre_tokens -> post_tokens): [(89061, 25156), (86871, 23470), (86059, 23023)]
+          result: {"subtype": "success", "is_error": true, "num_turns": 9, "terminal_reason": "rapid_refill_breaker"}
+
+  B-1m    --autocompact 1000000  rc=1  wall=42.0s  Read calls=5
+          compactions (pre_tokens -> post_tokens): [(86706, 22982), (86111, 23447), (86063, 23083)]
+          result: {"subtype": "success", "is_error": true, "num_turns": 9, "terminal_reason": "rapid_refill_breaker"}
+
+WHY THIS WAS RUN. --autocompact was measured inert on 2026-09-12 in a controlled pair on
+Anthropic's own route. Hours later a gpt-oss-120b leg through the OpenRouter shim compacted
+six times at 23,863-26,498 with --autocompact 100000 set - a quarter of the declared value,
+and a much tighter cluster than gpt-oss-20b's 52,023/57,418 on the identical host and flag.
+A flag that does nothing should not do that, and 'inert' had only been measured on the other
+route. Two arms of the wave are held unpublished on the answer.

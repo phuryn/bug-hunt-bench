@@ -1,10 +1,12 @@
 Why two arms killed themselves on 2026-09-12, and the two wrong answers on the way to the right one
 
-*** THIS RECEIPT HAS CORRECTED ITSELF TWICE AND THE FALSE TRAILS ARE KEPT ON PURPOSE. Version 1
-blamed a missing count_tokens endpoint. Version 2 blamed a missing context declaration on the arm.
-Both were consistent with everything known at the time and both are wrong. The measured answer is in
-WHAT ACTUALLY GOVERNS. The file keeps its original name because the route asymmetry it was opened to
-record is real - it is just not the cause of anything here. ***
+*** THIS RECEIPT HAS CORRECTED ITSELF THREE TIMES AND THE FALSE TRAILS ARE KEPT ON PURPOSE.
+Version 1 blamed a missing count_tokens endpoint. Version 2 blamed a missing context declaration on
+the arm. Version 3 said `--autocompact` was inert first-party and live through a shim. All three were
+consistent with everything known at the time and all three are wrong. What is measured, and what is
+still open, is in WHAT ACTUALLY GOVERNS and in THE SHIM HALF below. The file keeps its original name
+because the route asymmetry it was opened to record is real - it is just not the cause of anything
+here. ***
 
 THE SYMPTOM. Two arms of the Sep 12 wave ended themselves with a harness breaker rather than a model
 error:
@@ -96,8 +98,10 @@ What every number in this file fits, instead, is one rule:
     200,000-token model      ->   47,677 -  74,087      (Haiku 4.5, first-party, probed today)
     shim, no declaration     ->   52,023 -  84,796      (the fallback is the 200K one)
 
-THE SHIM HALF LOOKED UNEXPLAINED FOR AN HOUR, AND THEN EXPLAINED ITSELF. Laid out, the proxy arms
-scattered in a way no belief about the window accounted for:
+THE SHIM HALF LOOKED EXPLAINED FOR AN HOUR, AND THEN A CONTROL KILLED THE EXPLANATION. This is
+version 3 of this section and the version it replaces is quoted in full, because it was published.
+
+Laid out, the proxy arms scatter in a way no belief about the window accounts for:
 
     gpt-oss-120b   repo 1   25,319                            (window 131,072)
     gpt-oss-120b   repo 2   23,863 / 24,681 / 24,932 /
@@ -106,39 +110,57 @@ scattered in a way no belief about the window accounted for:
     MiniMax M2.7   repo 1   64,667 / 70,114 / 84,796          (window 204,800)
     Nemotron       repo 1   23 triggers, 52,252 - 76,434      (window 262,144)
 
-The two gpt-oss-20b readings are the same arm on the same repo four hours apart, and the difference
-between them is one flag. `--autocompact 100000` was committed at 17:57; the 52,023/57,418 leg
-started at 17:46 and did not have it, and the 24,514 leg ran at 19:26 and did.
+THE READING THAT WAS PUBLISHED AND IS NOW RETRACTED. The two gpt-oss-20b numbers are the same arm on
+the same repo four hours apart, and one flag landed in between: `--autocompact 100000` was committed
+at 17:57, the 52,023/57,418 leg started at 17:46 without it and the 24,514 leg ran at 19:26 with it.
+gpt-oss-120b, carrying the same flag, sat at 23,863-26,498. A quarter of 100,000, twice over. The
+conclusion drawn was that the flag is inert on Anthropic's own route - where the CLI already knows
+the real window and ignores a declaration it can beat - and LIVE through a shim, where it knows
+nothing, setting not the trigger but the window the trigger is a fraction of.
 
-    gpt-oss-20b    unflagged            52,023 / 57,418
-    gpt-oss-20b    --autocompact 100000 24,514
-    gpt-oss-120b   --autocompact 100000 23,863 - 26,498
+WHAT KILLED IT. The controlled version, run at 20:32 on the same fixture the first-party pair used,
+through the same shim, with the same upstream model and host, varying only the declaration
+(20260912-autocompact-flag-through-shim.txt):
 
-So the flag is NOT inert. It is inert on Anthropic's own route - where the controlled pair was run,
-and where the CLI already knows the real window and ignores a declaration it can beat - and it is
-LIVE through a shim, where the CLI knows nothing. And what it sets is not the trigger but the window
-the trigger is a fraction of: declare 100,000 and the run compacts at roughly 25,000.
+    --autocompact 100000     89,061 / 86,871 / 86,059
+    --autocompact 1000000    86,706 / 86,111 / 86,063
 
-That unifies every number in this file into one rule with one lever:
+Six triggers inside a 3,000-token band across a tenfold difference in what was declared. The flag is
+inert on BOTH routes. The arm-level comparison was a natural experiment with more than one variable
+in it - four hours, two passes, a re-run of a repo whose state and transcript differ - and a
+controlled pair beats a natural experiment every time.
 
-    compaction fires at roughly a quarter to a third of the window THE CLI BELIEVES IT HAS
+WHAT IS NOW GENUINELY OPEN, STATED AS OPEN. The same model, the same shim, the same host and the same
+flag compacted at 23,863-26,498 inside the bench arm and at 86,059-89,061 on the probe fixture. Six
+triggers in each case, both clusters tight, a 3.4x gap between them. Something about the ARM - not
+the flag, not the route, not the model - moves where this harness compacts, and nothing measured
+today says what. Part of any single gap is an artefact: `pre_tokens` is read after a turn completes,
+so it carries whatever that turn added, and a bench turn and a file-read turn are not the same size.
+That artefact does not stretch to 3.4x between two tight six-sample clusters. It is written here as
+unexplained because it is unexplained.
 
-    believes the truth (first-party)      200K model -> ~62K     1M models -> 284,197 - 302,629
-    believes its fallback (shim, silent)  -> ~52,000 - 85,000, which back-solves to a ~200K belief
-    believes a declaration (shim, flag)   100,000 -> ~24,500      [1m] -> ~292,000
+WHAT SURVIVES ALL THREE CORRECTIONS:
 
-THE CRUEL PART, AND IT IS THE WHOLE ANSWER FOR THE TWO DEAD ARMS. The lever only helps by LYING.
-Declaring MiniMax M2.7's real 204,800 would set its trigger at ~51,000-61,000 - which is the budget
-it already died in. Declaring Nemotron's real 262,144 gives ~65,000-79,000, against the 52,252-76,434
-it already had. Telling the harness the truth about either model changes nothing, because the
-fallback was already approximately true. Only overstating the window buys room, and overstating it is
-the thing this board does not do.
+    compaction fires at roughly a third of the window THE CLI BELIEVES IT HAS, first-party
 
-It also inverts the reasoning that put the flag on the gpt-oss arms this morning. Those arms were
-given `--autocompact 100000` to protect a 131,072-token model from a 200,000-token assumption. What
-it actually did was halve a working context that was never in danger - unflagged they compact at ~55K
-and never approach their ceiling - and the 120b thrashed to death inside the 25K it was left with.
-The flag is off both arms now, and the runner comment says why in the place someone would look.
+    believes the truth (first-party)      200K model -> ~62K     1M models -> 284,197 - 312,465
+    believes its fallback (shim, silent)  -> ~24,000 - 85,000, and the spread inside that is open
+
+THE WHOLE ANSWER FOR THE TWO DEAD ARMS IS UNCHANGED, AND FIRMER. There is no lever. Declaring
+MiniMax M2.7's real 204,800 or Nemotron's real 262,144 does nothing at all now that the flag is known
+inert on both routes, and the fallback belief of 200,000 was already approximately true for MiniMax
+and only a quarter short for Nemotron. The only configuration that would buy either arm more room is
+`[1m]`, which overstates their windows by four to five times and would let the harness run the
+context past what the model can actually accept. Telling the harness the truth changes nothing;
+lying to it is the thing this board does not do.
+
+It also disposes of the reasoning that put the flag on the gpt-oss arms this morning, though not the
+way version 3 said. Those arms were given `--autocompact 100000` to protect a 131,072-token model
+from a 200,000-token assumption. The flag could not have done that, because it does nothing - so the
+protection was never real, and taking it off costs nothing. Whether it also HARMED them is exactly
+the open question above: their 24,514 and 23,863-26,498 readings are real and they are low, but the
+flag is now the one explanation ruled out. The flag is off both arms and they are being re-run
+without it, which is the right configuration either way.
 
 And the shim arms were not misconfigured in the sense of version 2 either. Their fallback belief of
 200,000 is very nearly CORRECT for MiniMax M2.7 (204,800) and understates Nemotron 3 Ultra (262,144)
