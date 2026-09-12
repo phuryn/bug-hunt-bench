@@ -69,3 +69,4 @@ Qwen3.8-Flash (max effort),Claude Code / Alibaba API,26,13,13,7,97.3,1.81
 gpt-oss-120b,Claude Code / OpenRouter,0,0,0,1,3.7,0.13
 gpt-oss-20b,Claude Code / OpenRouter,0,0,0,0,3.8,0.11
 "Muse Spark 1.3 (default effort, Muse Code)",Muse Code / OpenRouter,18,6,12,17,53.3,9.53
+"GLM-5.3 Flash (max effort, Z.ai API)",Claude Code / Z.ai API,19,10,9,4,58.4,0.94

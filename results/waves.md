@@ -1603,3 +1603,56 @@ first attempt at this row was billed for a response it never saw. Both legs here
 fixes in place, and the repo-1 leg was re-run from scratch after it was found to have started three
 minutes before the second fix landed.
 
+
+### GLM-5.3 Flash, first-party: the small one catches the big one
+
+**19 of 105 for 94 cents.** GLM-5.3 Flash on Z.ai's own Anthropic-compatible endpoint, no
+aggregator and no proxy, at an asserted `max` — the same path and the same tier as the full-size
+GLM-5.3 row, so the two sizes differ by model and nothing else.
+
+| | score | cost | wall | effort |
+|---|---:|---:|---:|:--|
+| GLM-5.3 — Z.ai, max | 19/105 | $15.93 | 40.4 min | setting |
+| **GLM-5.3 Flash — Z.ai, max** | **19/105** | **$0.94** | 58.4 min | setting |
+| GLM-5.3 — OpenRouter | 19/105 | $19.73 | 66.7 min | dropped in transit |
+| GLM-5.3 Flash — OpenRouter | 13/105 | $0.79 | 57.1 min | dropped in transit |
+
+**Flash matches its full-size sibling for a sixteenth of the money.** It is slower — 58 minutes
+against 40 — so the trade is wall clock, not capability.
+
+**And the obvious story about the other jump is wrong.** Flash went 13 → 19 moving from OpenRouter
+to first-party-at-max, which invites the reading that the tier now binds and bought six points. The
+control on this very page argues against it: **the full-size model scored 19 on both routes** — the
+same change of route and tier moved it by zero. Each of these is a single run, no repeat exists for
+either Flash leg, and a six-point move at n=1 does not clear the run-to-run spread measured
+elsewhere on this board. Read 19 as where Flash lands first-party, not as what `max` bought.
+
+**Why this row is two days late, and it was not an oversight.** The first-party pass on Sep 10 tried
+Flash *first* and got HTTP 429 on that key, so the receipt was written against the full-size model
+and Flash kept its aggregator row. The 429 is gone.
+
+**The probe nearly published the exact opposite, and that near-miss is the transferable part**
+([receipt](effort-dial-probes/20260912-glm53flash-zai-anthropic.txt)). The first pass sent
+`reasoning_effort` at the top level — **Z.ai's own documented field name**. Every tier returned 200,
+including an invented `bogus_zzz`, while a bad model id returned 400. Textbook inert dial. The
+verdict written was *NOT VALIDATED — TREAT AS INERT*, and a row shipped on it would have said the
+dial does not bind here.
+
+It was wrong because **Claude Code does not send that field.** On an Anthropic-compatible route it
+sends `output_config.effort`, and that is what this endpoint validates — hard:
+
+| `output_config.effort` | GLM-5.3 Flash | GLM-5.3 |
+|---|:--|:--|
+| `low` / `high` / `max` | 200 | 200 |
+| `none` / `minimal` / `medium` / `xhigh` | 400 | 400 |
+| `bogus_zzz` | 400 | 400 |
+| *(bad model id)* | 400, different code | 400, different code |
+
+> A validation probe has to send **the field the harness sends.** Probing the vendor's documented
+> field name tests a path the arm will never take, and the answer it gives is about that path.
+
+Two things fall out of the table. The dial on this family is **exactly three tiers** — `medium`
+does not exist here, so a medium row is not available to be run — and `max` is also Z.ai's
+documented default, which means a `default` run and a `max` run on this path are the same run. The
+row asserts the tier rather than relying on that.
+

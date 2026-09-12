@@ -1,0 +1,64 @@
+Does Meta's OWN endpoint read the effort field, and how high does it actually go? - 2026-09-12
+
+VERDICT: VALIDATED IN TWO LAYERS, AND IT ECHOES THE TIER IT APPLIED. api.meta.ai rejects an
+invented effort string, rejects a tier that exists in the schema but not for this model, and returns
+the applied value inside the response object rather than leaving acceptance to be inferred. That is
+the strongest first-party effort evidence on this board: every other validated endpoint here proves
+it READ the field by refusing bad values, and this one also says what it DID with a good one.
+
+AND THE CEILING IS max, NOT ultra - WHICH THE HARNESS ITSELF DISAGREES WITH. Muse Code's own
+--reasoning-effort help advertises `none|minimal|low|medium|high|xhigh|max|ultra`. Meta's API
+refuses `ultra` as an unknown variant and refuses `none` as unsupported for this model. So the CLI
+offers two tiers the endpoint will not serve, and a run launched at `ultra` would have failed rather
+than run higher. A flag's accept-list is the CLI's, not the endpoint's.
+
+POST https://api.meta.ai/v1/responses, model muse-spark-1.3, reasoning:{effort:...}, n=1 each.
+
+    reasoning.effort      result
+    none                  400   reasoning_effort 'none' is not supported for model
+                                'muse-spark-1.3'. Supported values: [minimal, low, medium,
+                                high, xhigh, max]
+    minimal               200   response echoes reasoning:{effort:minimal}
+    low                   200   response echoes reasoning:{effort:low}
+    medium                200   response echoes reasoning:{effort:medium}
+    high                  200   response echoes reasoning:{effort:high}
+    xhigh                 200   response echoes reasoning:{effort:xhigh}
+    max                   200   response echoes reasoning:{effort:max}
+    ultra                 400   `reasoning.effort`: unknown variant `ultra`, expected one of
+                                `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `max`
+    bogus_zzz             400   same unknown-variant shape as ultra
+
+    controls
+    field omitted         200   response echoes reasoning:{effort:high}
+    model muse-spark-1.3-zzz    404  model_not_found
+
+READ THE TWO REJECTIONS SEPARATELY, BECAUSE THEY ARE DIFFERENT MECHANISMS. `ultra` and `bogus_zzz`
+fail SCHEMA validation - the API's enum has seven members and neither is one of them. `none` passes
+the schema and then fails a PER-MODEL support check, which names the six tiers this model serves.
+Two independent layers, and the bad-model control fails as a 404 rather than a 400, so neither
+effort rejection can be explained away as a generally malformed request.
+
+THE DEFAULT IS high, AND THAT IS MEASURED RATHER THAN DOCUMENTED. Omit the field entirely and the
+response comes back carrying reasoning:{effort:high}. It happens to agree with what Muse Code's CLI
+help says its own default is, but the two facts are independent - the CLI's default is what it
+SENDS, the echo is what the endpoint APPLIED - and on this board only the second one counts.
+
+WHAT THIS CHANGES FOR THE BOARD. The published Muse Spark 1.3 row runs through OpenRouter, where the
+same field is dropped in transit: four receipts at n=9 on that path show every tier plus no-field
+overlapping, and bogus_zzz returning HTTP 200 while a bad model id returns 400. That row is
+therefore labelled inert_default and its effort column is a fact about the ROUTE. The same model on
+the same harness through Meta's own endpoint can assert a tier, because here the field is read,
+refused when wrong, and reported back when right.
+
+WHY THE ROUTE ONLY BECAME AVAILABLE TODAY. Meta's endpoint answered HTTP 402 - billing verification
+failed - to the key this board had, which is the entire reason the first Muse Code row went through
+an aggregator and why that row says in as many words that it is NOT a harness A/B. A subscription
+account was authenticated on this machine on 2026-09-12 via the device-code flow (muse login), and
+the credential muse stores is what these probes and the first-party arm use. It is read at run time
+from muse's own auth file rather than copied anywhere, so a refreshed token cannot leave an arm
+pointing at a stale one.
+
+A NOTE ON WHAT THIS RECEIPT DOES NOT SHOW. Nothing here measures whether minimal, high and max
+produce different work. It shows the field is read and the tier is applied. Magnitude is a separate
+run and a separate receipt, and until one exists the status for an arm on this path is first_party,
+not verified.
