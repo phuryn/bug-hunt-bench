@@ -66,3 +66,5 @@ Qwen3.8-Flash (low effort),Claude Code / Alibaba API,12,0,0,4,0,55.2,0.7
 Qwen3.8-Flash (max effort),Claude Code / Alibaba API,13,3,0,4,0,56.9,1.19
 "Qwen3.8-Max (max effort, Alibaba API)",Claude Code / Alibaba API,15,2,3,4,0,57.2,17.98
 "Qwen3.8-27B (xhigh effort, Alibaba API)",Claude Code / Alibaba API,9,0,2,1,0,22.0,3.61
+gpt-oss-120b,Claude Code / OpenRouter,0,0,0,1,0,2.6,0.11
+gpt-oss-20b,Claude Code / OpenRouter,0,0,0,0,0,2.9,0.08

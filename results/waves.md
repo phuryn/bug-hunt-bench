@@ -1503,3 +1503,59 @@ even create its log file. It is held open from the Windows side now, and the rea
 poll rather than a four-second guess — a guess that fails is indistinguishable from a component that
 is genuinely broken.
 
+
+### Two zeros, eleven cents, and what it takes to publish one
+
+The gpt-oss pair — 120b and 20b, OpenAI's open weights on Groq, the same host and the same proxy so
+the pair differs by parameter count and nothing else — are the **first rows on this board to score
+zero.** Sixty-seven rows in, the floor was 4 of 105.
+
+| | repo 1 | repo 2 | total | genuine extras | wall | cost |
+|---|---:|---:|---:|---:|---:|---:|
+| gpt-oss-120b | 0/45 | 0/60 | **0/105** | 1 | 3.7 min | $0.13 |
+| gpt-oss-20b | 0/45 | 0/60 | **0/105** | 0 | 3.8 min | $0.11 |
+
+The cost and the score are the same fact. Both finished the whole benchmark in under four minutes
+because neither engaged with it. **gpt-oss-20b did not run out of anything — it decided it was
+finished.** Fifty-five seconds and eighteen shell calls into repo 1 it reported that the public APIs
+were all exercised by the test suite, that type checking and the tests passed, and that no bugs were
+found that require a code change. Its prompt says, in as many words, that bugs have been
+*deliberately planted*, that the suite passes anyway, and that some tests which would have caught a
+planted bug were **neutralised when it was planted**. It used a green suite as proof of a clean repo
+after being told a green suite proves nothing.
+
+gpt-oss-120b is the more interesting failure. On repo 1 it made eight tool calls in 64 seconds and
+stopped with nothing. On repo 2 it did real work — 33 turns, five edits, and a complete bug report
+with file, symptom, root cause and patch for every entry — and then **printed that report into the
+transcript instead of writing it to the path the prompt names.** The report exists; it is just not
+where the task said to put it.
+
+**That leg is scored on its diff, and lifting the report out of the transcript was refused.** This
+board's rule is that the diff is ground truth and the report is intent evidence, so a submission
+with changes and no report file has all the ground truth and is missing only the secondary evidence.
+Judged on the diff it fixed none of the 60 planted bugs, found one genuine issue nobody planted, and
+one cosmetic. Writing the file on the model's behalf would have been doing the part of the task it
+failed.
+
+**A zero has to be proved not to be a measuring fault, and this one is the third attempt.** The
+section above this one is about four arms in the same wave that could *not* be measured — so a zero
+published carelessly here would be indistinguishable from those. Pass 1 ran before the harness
+carried any context declaration. Pass 2 ran carrying `--autocompact 100000`, a flag since measured
+inert on both routes. Both were discarded and their rows dropped before pass 3 ran. **Pass 3 carries
+no flag and is mechanically clean on all four legs**: `terminal_reason=completed`, zero
+auto-compactions, no breaker, no truncation, not one denied tool call.
+
+**And the harness had to learn the difference between a model that failed and a bench that failed.**
+It already voids a leg whose *environment* broke and scores a leg whose *model* broke — it reads the
+transcript and counts successful tool calls against permission denials rather than trusting an exit
+code. But the scorer could not see any of that: from inside it, an untouched repo with no report is
+identical whether the agent never started or ran cleanly and found nothing, and it defaulted to
+`not_run` and emitted no totals. **So a model that genuinely failed produced no row at all**, which
+is the exact opposite of what this board is for. The runner now hands its conclusion to the scorer
+directly, and a verified-healthy leg that produced nothing is scored as the zero it is — without
+paying a judge to read an empty packet and tell us so.
+
+**What the pair says about scale.** Nothing, and that is the finding. Six times the parameters buys
+no measurable bug-finding at this end of the market: both sizes score zero, and the larger one is
+the one that quit fastest.
+
