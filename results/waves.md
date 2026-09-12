@@ -20,7 +20,7 @@ Strict fixes only — no partial credit. [combined-scoreboard.csv](combined-scor
 
 **63 of the 105 bugs survived every model** in this seven-model wave (60 after the Jul 31 wave,
 54 after the Aug 1 max wave, 53 after the DeepSeek follow-up, **52 after the Aug 3 wave**,
-still 52 after Aug 6-7, **51 after the Aug 12 Grok 4.6 wave**, **40 after the Sep 4 GPT-6 Astra wave**, and **39 after the Sep 5 Astra dial sweep** — see each wave's section below for the kills). Zero false-positive fixes from any arm on either repo: every
+still 52 after Aug 6-7, **51 after the Aug 12 Grok 4.6 wave**, 49 after the Aug 24-25 wave, **45 after the Aug 27-28 ladders**, **40 after the Sep 4 GPT-6 Astra wave**, and **39 after the Sep 5 Astra dial sweep** — see each wave's section below for the kills). Zero false-positive fixes from any arm on either repo: every
 extra fix any model applied was a genuine unplanted defect.
 
 Per-repo detail: [repo1-scoreboard.csv](repo1-scoreboard.csv) · [repo2-scoreboard.csv](repo2-scoreboard.csv).
@@ -425,6 +425,124 @@ request unless told not to; pinning keeps the row single-path.
   14.06x within-level spread; the `low` range nests inside `high`): `effort-dial-probe-glm53flash.txt`.
 - **Caveat.** Sequential legs, so wall clock is comparable to the other sequential rows only.
   Provider pinned with fallbacks off, so the number is one serving path, not a blend.
+
+## Aug 27-28 — four effort ladders finished, and the dial turns out to have no single shape
+
+*Written on Sep 12, not on the day.* Sixteen rows landed across these two days and never got a
+section. `bench_golive.py` — which refuses to push a row the wave log does not mention — was written
+on Sep 4, a week later, so this is precisely the gap it exists to close, reconstructed from the
+receipts. (The seventeenth row of Aug 27, GLM-5.3 Flash, has its own section above.)
+
+| Arm | Harness | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Genuine extras | Wall | Cost |
+|---|---|---|--:|--:|--:|--:|--:|--:|
+| **GPT-5.6 Sol** | Codex CLI | xhigh | **39** | 18 | 21 | 59 | 126.2 min | $52.75 |
+| **GPT-5.6 Terra** | Codex CLI | max | **32** | 16 | 16 | 45 | 159.7 min | $27.98 |
+| **Grok 4.6** seq | Grok Build CLI | xhigh | **27** | 8 | 19 | 16 | 41.1 min | $16.96 |
+| **Opus 5** | Claude Code | xhigh | **26** | 14 | 12 | 3 | 49.9 min | $59.59 |
+| **Opus 5** | Claude Code | medium | **24** | 11 | 13 | 4 | 30.5 min | $34.77 |
+| **GPT-5.6 Luna** | Codex CLI | xhigh | **23** | 10 | 13 | 53 | 135.6 min | $2.50 |
+| **Grok 4.6** | Grok Build CLI | high | **23** | 7 | 16 | 16 | 33.0 min | $15.73 |
+| **Grok 4.6** seq | Grok Build CLI | medium | **22** | 9 | 13 | 11 | 26.5 min | $5.80 |
+| **GPT-5.6 Terra** | Codex CLI | xhigh | **20** | 9 | 11 | 29 | 56.6 min | $8.98 |
+| **Hy4 Preview** | Claude Code / OpenRouter | default | **18** | 9 | 9 | 2 | 67.5 min | $3.13 billed |
+| **GPT-5.6 Terra** | Codex CLI | high | **18** | 7 | 11 | 17 | 28.1 min | $5.89 |
+| **Gemini 3.7 Flash** seq | Antigravity CLI | high | **16** | 4 | 12 | 2 | 22.7 min | $6.36 |
+| **GPT-5.6 Terra** | Codex CLI | medium | **15** | 4 | 11 | 6 | 20.2 min | $3.87 |
+| **Grok 4.6** | Grok Build CLI | low | **15** | 6 | 9 | 9 | 18.0 min | $4.14 |
+| **GPT-5.6 Luna** | Codex CLI | medium | **9** | 5 | 4 | 5 | 15.4 min | $0.33 |
+| **GPT-5.6 Luna** | Codex CLI | low | **4** | 0 | 4 | 1 | 5.8 min | $0.10 |
+
+Costs are list-equivalent except Hy4 Preview, which is a real OpenRouter credits delta.
+**Survivors went 49 to 45.** Four repo-2 bugs fell for the first time: two to Sol at `xhigh`, one to
+Opus 5 at `medium`, one to Grok 4.6 at `xhigh`. Zero false-positive fixes from any of the sixteen arms.
+
+### The dial is not one thing. It is four different things.
+
+Filling in the missing rungs finished four ladders at once, and laid side by side they do not
+describe the same instrument:
+
+| Model | low | medium | high | xhigh | max | Top rung buys |
+|---|--:|--:|--:|--:|--:|--:|
+| **GPT-5.6 Luna** | 4 | 9 | 13 | 23 | **33** | +10 |
+| **GPT-5.6 Terra** | — | 15 | 18 | 20 | **32** | +12 |
+| **GPT-5.6 Sol** | — | — | 34 | 39 | **42** | +3 |
+| **Opus 5** | — | 24 | 21 | 26 | **27** | +1 |
+| **Grok 4.6** | 15 | 22 | 23 | **27** | — | +4 |
+
+- **On OpenAI's two cheap models the last rung is most of the model.** Terra climbs 15 → 18 → 20
+  across three tiers — five points for 2.3x the money — and then jumps **twelve** points on the
+  fourth. Luna does the same thing one tier lower down. Benchmark either at `high` and stop, and you
+  have measured something that scores like a small model; at `max` both land in the top six of this
+  board. Sol, the expensive sibling, has the flat version of the same curve (+3 at the top), which
+  is what a model already near its ceiling at `high` should look like.
+- **Opus 5's dial is not an ordering at all.** `medium` scored 24 and `high` scored 21 — the middle
+  rung beat the one above it by three points, and the whole dial spans six points across a 1.7x cost
+  range. The Fable 5.1 sweep reached the same conclusion two weeks later by a different route, and
+  it is why this board stopped treating a tier as a rank.
+- **Grok 4.6 has a dead rung.** `medium` 22 and `high` 23 are the same number by this board's own
+  variance standard. The money between them ($5.80 against $15.73) is not.
+- **A tier's cost is not ordered by its name.** Luna at `max` scored 33 for **$1.80** in 85.7
+  minutes; Luna at `xhigh` scored 23 for **$2.50** in 135.6 minutes. The better tier was cheaper and
+  faster. n=1 per cell and the two runs are four weeks apart, so read that as a caution against
+  pricing a tier from its label, not as a repeatable inversion — though the plausible mechanism, a
+  model that reasons better finishing in fewer turns, is the same one the Qwen first-party re-run
+  demonstrated later.
+
+### Three sequential re-runs: the concurrency caveat costs wall time, not score
+
+Rows before this point ran their two repo legs concurrently, which makes wall clock incomparable to
+a single-machine run. Three arms were re-run with sequential legs, to find out whether concurrency
+had been buying anything besides speed:
+
+| Arm | Concurrent | Sequential | Delta |
+|---|--:|--:|--:|
+| Grok 4.6 `xhigh` | 27 (Aug 12) | 27 (Aug 28) | 0 |
+| Grok 4.6 `medium` | 23 (Aug 14) | 22 (Aug 28) | −1 |
+| Gemini 3.7 Flash `high` | 18 (Aug 25) | 16 (Aug 28) | −2 |
+
+**Every pair agrees inside this board's measured same-setting spread.** Three for three is not proof,
+but it is the strongest evidence available that the concurrent rows were measuring the model and not
+the scheduler — so the sequential rows replaced them on the board and the dotted originals were
+retired rather than deleted. What did move was cost: Grok's `medium` leg billed $13.35 concurrent
+against $5.80 sequential. Retry and re-read traffic under contention is a real bill, and it is
+charged to whoever runs two agents at once.
+
+### Hy4 Preview, day one — and an effort label that took two weeks to catch
+
+Tencent shipped Hunyuan 4 preview (MoE, 49B active of 770B, built for coding agents and tool use)
+and it ran the full battery the same day through OpenRouter, pinned to its single host, with the
+proxy absorbing day-one 429s and 404s. **18/105 for $3.13 of real billed credits** — the cheapest
+paid row above 17 on the board at the time. On repo 1 it claimed ten fixes and nine survived the
+answer key.
+
+**The effort label on this row was wrong for two weeks, and the correction is the interesting part.**
+It shipped as `high / first_party`, on the reasonable grounds that Tencent documents
+`reasoning_effort` as a *binary* switch — `high`, the default, or `no_think` — so there is no higher
+tier to ask for and no scale to climb. That reasoning is about the model. The row is about a
+**serving path**, and the path was never checked. Probing it on Sep 12 at n=3 per condition, on the
+same OpenRouter `/v1/messages` surface the arm shipped on, found:
+
+- both spellings of the field overlap the no-field baseline, and the **baseline is the highest band
+  of the five** — mean 13,520 output tokens with nothing sent, against 8,243 for nested `high`;
+- `reasoning_effort: bogus_zzz` returns **HTTP 200** on both spellings, while an invented model id
+  on the same endpoint returns 400. An endpoint that validates cannot silently clamp; one that
+  accepts an invented tier is not reading the field at all.
+
+So the row now reads `default / inert_default`, like every other aggregator-routed row here. It is
+still at the model's ceiling — but because Tencent's *default* is the top of a two-position switch,
+which is a fact about Tencent's serving rather than about this run. Receipt:
+[effort-dial-probes/20260912-hy4preview-openrouter.txt](effort-dial-probes/20260912-hy4preview-openrouter.txt).
+
+### One more pattern, visible only with a whole ladder on the page
+
+**Unplanted defects scale with effort far harder than planted ones do.** Luna found **1** genuine
+extra at `low` and **53** at `xhigh` — same model, same two repos, same prompt. Terra went 6 → 17 →
+29 → 45. Meanwhile the Claude Code rows at comparable scores found two or three (Opus 5 at `xhigh`:
+26 planted fixes, 3 extras). That is a temperament difference between harnesses and models, not a
+scoring artifact — the score counts strict fixes to *planted* bugs only, so a model auditing beyond
+the brief gains nothing on the board for doing it. Every one of those extras was checked by hand and
+not one was a false positive.
+
 
 ## Sep 1-2 — Claude Fable 5.1, day one, the full dial
 

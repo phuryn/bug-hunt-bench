@@ -1,0 +1,46 @@
+Muse Spark 1.3 reasoning.effort probe - 2026-09-12 12:23
+endpoint https://openrouter.ai/api/v1/messages  model meta/muse-spark-1.3
+n=3 per condition, max_tokens=32000, one identical prompt
+PRIMARY MEASURE: usage.output_tokens_details.thinking_tokens - this model REDACTS its
+reasoning text (redacted_thinking blocks), but reports the token count, so thinking is
+measured directly rather than inferred from total output.
+OpenRouter advertises reasoning / reasoning_effort / include_reasoning for this model;
+this probe tests whether the tier is APPLIED, which the advertisement cannot show.
+
+effort_low   rep3: think_tok=  2310 out_tok=  3384 text_chars= 2454 cost=$0.0143 blocks=redacted_thinking+text+thinking stop=end_turn wall=20.7s
+effort_low   rep1: think_tok=  2852 out_tok=  3894 text_chars= 2395 cost=$0.0164 blocks=redacted_thinking+text+thinking stop=end_turn wall=25.1s
+effort_high  rep1: think_tok=  2805 out_tok=  3867 text_chars= 2370 cost=$0.0163 blocks=redacted_thinking+text+thinking stop=end_turn wall=27.0s
+effort_high  rep3: think_tok=  3203 out_tok=  4231 text_chars= 2322 cost=$0.0178 blocks=redacted_thinking+text+thinking stop=end_turn wall=28.1s
+no_field     rep1: think_tok=  2945 out_tok=  4051 text_chars= 2707 cost=$0.0171 blocks=redacted_thinking+text+thinking stop=end_turn wall=29.1s
+effort_low   rep2: think_tok=  3319 out_tok=  4481 text_chars= 2762 cost=$0.0190 blocks=redacted_thinking+text+thinking stop=end_turn wall=29.8s
+effort_high  rep2: think_tok=  3257 out_tok=  4383 text_chars= 2666 cost=$0.0185 blocks=redacted_thinking+text+thinking stop=end_turn wall=29.9s
+no_field     rep3: think_tok=  3674 out_tok=  4709 text_chars= 2254 cost=$0.0200 blocks=redacted_thinking+text+thinking stop=end_turn wall=31.9s
+no_field     rep2: think_tok=  3660 out_tok=  4817 text_chars= 2584 cost=$0.0204 blocks=redacted_thinking+text+thinking stop=end_turn wall=32.3s
+
+THINKING TOKENS (the primary measure)
+condition        mean     min     max  within x   n
+effort_low       2827    2310    3319      1.44   3
+effort_high      3088    2805    3257      1.16   3
+no_field         3426    2945    3674      1.25   3
+
+TOTAL OUTPUT TOKENS (cross-check)
+effort_low   mean   3919  range   3384-  4481
+effort_high  mean   4160  range   3867-  4383
+no_field     mean   4525  range   4051-  4817
+
+worst within-condition spread: 1.44x  (the noise floor any gap must clear)
+
+DOES THE EFFORT WORD BIND?
+  baseline (no field) 2945-3674
+  effort_low   2310-3319  vs baseline: overlaps -> no detectable effect
+  effort_high  2805-3257  vs baseline: overlaps -> no detectable effect
+  low vs high: 1.09x means, ranges OVERLAP
+
+VERDICT: NO DETECTABLE EFFECT at n=3. This is NOT yet `inert_default`.
+  Three samples can catch a big effect; they cannot prove a field does nothing, and
+  OpenRouter documents a second spelling (`reasoning_effort: "high"`) that this probe
+  did not send. Try that spelling and a larger n before labelling the row.
+
+probe spend, exact from usage.cost: $0.1597 over 9 calls
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-musespark13-effort-openrouter.txt

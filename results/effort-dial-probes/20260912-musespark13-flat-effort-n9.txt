@@ -1,0 +1,89 @@
+Muse Spark 1.3 flat `reasoning_effort` to n=9, with a MEDIUM rung - 2026-09-12 12:29
+endpoint https://openrouter.ai/api/v1/messages  model meta/muse-spark-1.3
+27 fresh calls, all concurrent, pooled with every sample already on disk
+targets: flat_low +6  flat_medium +9  flat_high +6  no_field +6
+identical prompt / max_tokens=32000 as both earlier Muse Spark probes
+MEDIUM is the point of this run: two rungs show a difference, three show whether it is a
+dial or a switch. At n=3 low separated from high BACKWARDS, by 314 tokens, with a gap that
+did not clear its own within-condition spread - not reportable without this.
+
+flat_low     new1: think_tok=  2931 out_tok=  4035 text_chars= 2634 cost=$0.0170 stop=end_turn wall=28.7s
+flat_low     new5: think_tok=  2976 out_tok=  4089 text_chars= 2429 cost=$0.0172 stop=end_turn wall=27.5s
+flat_low     new2: think_tok=  4029 out_tok=  5284 text_chars= 2858 cost=$0.0223 stop=end_turn wall=34.3s
+flat_low     new3: think_tok=  3309 out_tok=  4400 text_chars= 2644 cost=$0.0185 stop=end_turn wall=34.6s
+flat_low     new4: think_tok=  3263 out_tok=  4389 text_chars= 2634 cost=$0.0185 stop=end_turn wall=32.9s
+flat_medium  new2: think_tok=  3086 out_tok=  4170 text_chars= 2433 cost=$0.0176 stop=end_turn wall=26.0s
+flat_low     new6: think_tok=  3736 out_tok=  4874 text_chars= 2836 cost=$0.0205 stop=end_turn wall=32.4s
+flat_medium  new1: think_tok=  3310 out_tok=  4518 text_chars= 2735 cost=$0.0190 stop=end_turn wall=31.6s
+flat_medium  new3: think_tok=  3163 out_tok=  4478 text_chars= 3157 cost=$0.0189 stop=end_turn wall=33.9s
+flat_medium  new7: think_tok=  3169 out_tok=  4237 text_chars= 2586 cost=$0.0180 stop=end_turn wall=28.5s
+flat_medium  new5: think_tok=  3538 out_tok=  4641 text_chars= 2526 cost=$0.0196 stop=end_turn wall=37.1s
+flat_high    new3: think_tok=  2535 out_tok=  3574 text_chars= 2459 cost=$0.0151 stop=end_turn wall=24.7s
+flat_medium  new6: think_tok=  3616 out_tok=  4772 text_chars= 2509 cost=$0.0201 stop=end_turn wall=37.4s
+flat_high    new1: think_tok=  3101 out_tok=  4068 text_chars= 2238 cost=$0.0171 stop=end_turn wall=31.0s
+flat_medium  new4: think_tok=  3834 out_tok=  5046 text_chars= 2621 cost=$0.0213 stop=end_turn wall=43.5s
+flat_medium  new9: think_tok=  4305 out_tok=  5556 text_chars= 2925 cost=$0.0234 stop=end_turn wall=37.2s
+flat_medium  new8: think_tok=  4091 out_tok=  5347 text_chars= 2843 cost=$0.0225 stop=end_turn wall=42.9s
+flat_high    new4: think_tok=  3365 out_tok=  4504 text_chars= 2629 cost=$0.0190 stop=end_turn wall=36.6s
+no_field     new2: think_tok=  3124 out_tok=  4344 text_chars= 2705 cost=$0.0183 stop=end_turn wall=29.3s
+no_field     new1: think_tok=  3550 out_tok=  4573 text_chars= 2273 cost=$0.0193 stop=end_turn wall=31.6s
+flat_high    new6: think_tok=  3567 out_tok=  4876 text_chars= 2927 cost=$0.0205 stop=end_turn wall=33.9s
+flat_high    new5: think_tok=  3531 out_tok=  4864 text_chars= 3106 cost=$0.0205 stop=end_turn wall=36.6s
+no_field     new3: think_tok=  3210 out_tok=  4394 text_chars= 2622 cost=$0.0185 stop=end_turn wall=32.2s
+no_field     new5: think_tok=  2924 out_tok=  3915 text_chars= 2265 cost=$0.0165 stop=end_turn wall=29.8s
+no_field     new6: think_tok=  3356 out_tok=  4412 text_chars= 2406 cost=$0.0186 stop=end_turn wall=30.3s
+flat_high    new2: think_tok=  4403 out_tok=  5674 text_chars= 2878 cost=$0.0239 stop=end_turn wall=50.4s
+no_field     new4: think_tok=  3857 out_tok=  5113 text_chars= 2975 cost=$0.0215 stop=end_turn wall=37.1s
+
+POOLED THINKING TOKENS
+  flat_low     n=9  [2931, 2976, 3263, 3309, 3335, 3736, 3996, 4029, 5111]
+  flat_medium  n=9  [3086, 3163, 3169, 3310, 3538, 3616, 3834, 4091, 4305]
+  flat_high    n=9  [2461, 2535, 2688, 3021, 3101, 3365, 3531, 3567, 4403]
+  no_field     n=9  [2924, 2945, 3124, 3210, 3356, 3550, 3660, 3674, 3857]
+
+condition        mean     min     max  within x   n
+flat_low         3631    2931    5111      1.74   9
+flat_medium      3568    3086    4305      1.40   9
+flat_high        3185    2461    4403      1.79   9
+no_field         3366    2924    3857      1.32   9
+
+worst within-condition spread at n=9: 1.79x  (the floor any gap must clear)
+
+1. DOES LOW STILL SEPARATE FROM HIGH, AT n=9?
+   low  2931-5111   high 2461-4403
+   ranges OVERLAP; means 3631 vs 3185 = 1.14x against a 1.79x noise floor
+   COLLAPSED at n=9 - the n=3 separation was noise. The field shows no effect.
+
+2. DIAL OR SWITCH? where does MEDIUM land?
+   low 3631  medium 3568  high 3185 (means)
+   MONOTONE (descending) - consistent with a real dial, three rungs in order
+   medium vs low:  ranges OVERLAP
+   medium vs high: ranges OVERLAP
+
+3. WHERE IS THE DEFAULT? (does anything bracket the no-field baseline?)
+   baseline 2924-3857 (mean 3366)
+   flat_low     2931-5111  vs baseline: overlaps -> indistinguishable from sending nothing
+   flat_medium  3086-4305  vs baseline: overlaps -> indistinguishable from sending nothing
+   flat_high    2461-4403  vs baseline: overlaps -> indistinguishable from sending nothing
+
+probe spend, exact from usage.cost: $0.5234 over 27 new calls
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-musespark13-flat-effort-n9.txt
+
+---
+BEFORE QUOTING THE "MONOTONE (descending)" LINE ABOVE - a caution about this script's own output.
+
+That line fires on the ORDER OF THE MEANS alone and says "consistent with a real dial". Here it is
+printed directly beneath "COLLAPSED at n=9", which is the line that actually matters, and the two
+read as if they disagree. They do not. Every range overlaps every other range, so the ordering of
+the means carries no information: with a 1.79x within-condition spread and a 1.14x gap between the
+widest-separated pair, three means will land in SOME order whatever the field does, and one of the
+six possible orders is "descending". Getting it is a 1-in-6 coincidence, not evidence.
+
+The monotonicity test is only meaningful once the endpoints separate. That check should have been
+gated on the separation result rather than printed unconditionally, and it is a fair example of the
+thing this whole series keeps re-learning: a statistic that is computed whether or not it is
+applicable will eventually be quoted in a context where it is not.
+
+THE VERDICT IS THE OVERLAP. No spelling and no tier of `reasoning.effort` / `reasoning_effort`
+changed how much this model thinks on this path, at nine runs per condition.

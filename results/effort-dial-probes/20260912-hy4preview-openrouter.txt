@@ -1,0 +1,68 @@
+Effort-dial probe: tencent/hy4-preview via OpenRouter, provider pinned to (unpinned) - 2026-09-12 17:15
+endpoint https://openrouter.ai/api/v1/messages  max_tokens=32000  n=3 per condition, 15 calls, all concurrent
+Surface is OpenRouter's Anthropic-compatible /v1/messages because that is the path the bench
+arm ships on (Claude Code -> local shim -> OpenRouter). A verdict measured on
+/chat/completions would not transfer - a dial is a property of the serving path.
+The arm itself asserts NO tier; this probe exists to say whether one was available.
+
+flat_low     rep1: out_tok=  5822 think_tok=  5347 text_chars= 1315 think_chars= 16418 cost=$0.0145 stop=end_turn wall=106.9s
+nested_low   rep2: out_tok=  6651 think_tok=  6028 text_chars= 1845 think_chars= 19097 cost=$0.0166 stop=end_turn wall=123.6s
+nested_high  rep1: out_tok=  6873 think_tok=  6263 text_chars= 1792 think_chars= 19599 cost=$0.0171 stop=end_turn wall=124.9s
+nested_high  rep2: out_tok=  7099 think_tok=  6559 text_chars= 1519 think_chars= 21111 cost=$0.0177 stop=end_turn wall=128.9s
+flat_low     rep2: out_tok=  7075 think_tok=  6558 text_chars= 1457 think_chars= 21317 cost=$0.0176 stop=end_turn wall=130.7s
+nested_low   rep1: out_tok=  9019 think_tok=  8318 text_chars= 2079 think_chars= 25787 cost=$0.0224 stop=end_turn wall=165.0s
+flat_low     rep3: out_tok=  8400 think_tok=  7804 text_chars= 1791 think_chars= 24833 cost=$0.0209 stop=end_turn wall=152.7s
+flat_high    rep3: out_tok=  8720 think_tok=  8162 text_chars= 1643 think_chars= 25982 cost=$0.0217 stop=end_turn wall=158.7s
+no_field     rep2: out_tok=  9636 think_tok=  8987 text_chars= 1888 think_chars= 26970 cost=$0.0240 stop=end_turn wall=171.2s
+flat_high    rep2: out_tok=  9869 think_tok=  9274 text_chars= 1739 think_chars= 29581 cost=$0.0245 stop=end_turn wall=177.5s
+nested_high  rep3: out_tok= 10758 think_tok= 10127 text_chars= 1904 think_chars= 30978 cost=$0.0267 stop=end_turn wall=190.5s
+no_field     rep1: out_tok= 11995 think_tok= 11462 text_chars= 1533 think_chars= 37627 cost=$0.0298 stop=end_turn wall=216.7s
+flat_high    rep1: out_tok= 13846 think_tok= 12973 text_chars= 2620 think_chars= 40794 cost=$0.0344 stop=end_turn wall=231.8s
+no_field     rep3: out_tok= 18931 think_tok= 17904 text_chars= 2889 think_chars= 53727 cost=$0.0470 stop=end_turn wall=310.1s
+nested_low   rep3: out_tok= 21641 think_tok= 20690 text_chars= 2724 think_chars= 65282 cost=$0.0537 stop=end_turn wall=351.1s
+
+OUTPUT TOKENS (reasoning + answer; the primary measure)
+condition        mean     min     max  within x   n
+nested_low      12437    6651   21641      3.25   3
+nested_high      8243    6873   10758      1.57   3
+flat_low         7099    5822    8400      1.44   3
+flat_high       10811    8720   13846      1.59   3
+no_field        13520    9636   18931      1.96   3
+
+THINKING TOKENS reported separately by this endpoint (cross-check)
+nested_low   mean  11678  range   6028- 20690
+nested_high  mean   7649  range   6263- 10127
+flat_low     mean   6569  range   5347-  7804
+flat_high    mean  10136  range   8162- 12973
+no_field     mean  12784  range   8987- 17904
+
+worst within-condition spread: 3.25x  (the noise floor any gap must clear)
+
+nested spelling  reasoning.effort
+   low 6651-21641   high 6873-10758   means 1.51x   ranges OVERLAP
+   -> no detectable effect
+flat spelling    reasoning_effort
+   low 5822-8400   high 8720-13846   means 1.52x   ranges DISJOINT
+   -> ranges separate but the gap does not clear the noise floor - a tie
+
+WHERE IS THE DEFAULT? baseline (no field) 9636-18931, mean 13520
+   nested_low     6651- 21641  vs baseline: overlaps -> indistinguishable from sending nothing
+   nested_high    6873- 10758  vs baseline: overlaps -> indistinguishable from sending nothing
+   flat_low       5822-  8400  vs baseline: SEPARATES
+   flat_high      8720- 13846  vs baseline: overlaps -> indistinguishable from sending nothing
+
+VALIDATION - does this path even look at the field? (the decisive half)
+  bogus nested  reasoning={effort: bogus_zzz}  -> HTTP 200 (accepted)
+  bogus flat    reasoning_effort=bogus_zzz     -> HTTP 200 (accepted)
+  CONTROL: bad model id                        -> HTTP 400  {"type":"error","error":{"type":"invalid_request_error","message":"tencent/hy4-preview-does-not-exist is not a valid model ID","error_type":"invalid_request"},"request_id":"gen-1789226469-7KBC90Tj6Mzpa1YBvf8J"}
+  An endpoint that 400-rejects an invented tier cannot silently clamp. A 200 on bogus while
+  the bad model id 400s means the effort field is accepted and never read.
+
+VERDICT: no detectable effect on either spelling at n=3, with the baseline measured at
+  the same n. Combined with the validation result above this supports `inert_default`.
+  Standing caveat: n samples cannot prove a field does nothing, only that any effect is
+  smaller than the noise - and ranges can only WIDEN with n, so this can still fail later.
+
+probe spend, exact from usage.cost: $0.3887 over 15 calls
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-hy4preview-openrouter.txt

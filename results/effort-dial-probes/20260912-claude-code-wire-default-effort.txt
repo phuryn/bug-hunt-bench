@@ -1,0 +1,45 @@
+What does Claude Code put on the wire when --effort is NOT passed? - 2026-09-12
+
+WHY THIS EXISTS. The board is about to publish a wave described as "default effort", and until now
+"default" meant "we did not pass the flag". That is an assumption about a CLI, and this board's whole
+premise is that a requested tier is not an applied tier - which cuts both ways: an UNrequested tier is
+not an absent tier either. So the flag was measured instead of assumed.
+
+METHOD. A logging pass-through on 127.0.0.1:8805 forwards verbatim to Alibaba's Anthropic-compatible
+endpoint and writes down every top-level request field except the conversation. Claude Code was then
+run twice against it on the same trivial prompt and the same model: once with no --effort flag at all,
+once with --effort max. Same CLI, same endpoint, same call shape a bench arm uses.
+
+RESULT. Claude Code ALWAYS asserts a tier. There is no "send nothing" mode.
+
+  no --effort flag   ->  main call  output_config.effort = "xhigh"
+  --effort max       ->  main call  output_config.effort = "max"
+  both               ->  title side-call  output_config.effort = "high"  (independent of the flag)
+
+WHAT FOLLOWS, and it is not cosmetic:
+
+  1. On a FIRST-PARTY endpoint that implements output_config.effort - Alibaba's does, and 400-rejects
+     an invented value while naming its accept-list - an unflagged Claude Code run is an XHIGH run.
+     Calling such a row "default effort" would be wrong in the direction that flatters it: it reads as
+     a model doing well without being pushed, when it was pushed to the second-highest tier offered.
+  2. On an AGGREGATOR that does not implement the field, the same unflagged run really is the provider
+     default, because the tier is dropped in transit rather than applied. "Default" is a fact about the
+     ROUTE, not about the flag.
+  3. `effort="default"` in an arm definition now means exactly one thing - the flag is omitted - and the
+     runner enforces it. What the route then does with the CLI's own assertion is a separate question
+     that each row has to answer with its own evidence.
+
+RAW - every field except messages / system / tools / context_management, in call order:
+  REQ#1 /v1/messages?beta=true
+    {"max_tokens": 32000, "model": "qwen3.8-27b", "output_config": {"effort": "high", "format": {"schema": {"additionalProperties": false, "properties": {"title": {"type": "string"}}, "required": ["title"], "type": "object"}, "type": "json_schema"}}, "stream": true}
+  REQ#2 /v1/messages?beta=true
+    {"max_tokens": 32000, "model": "qwen3.8-27b", "output_config": {"effort": "xhigh"}, "stream": true, "thinking": {"display": "omitted", "type": "adaptive"}}
+  REQ#3 /v1/messages?beta=true
+    {"max_tokens": 32000, "model": "qwen3.8-27b", "output_config": {"effort": "high", "format": {"schema": {"additionalProperties": false, "properties": {"title": {"type": "string"}}, "required": ["title"], "type": "object"}, "type": "json_schema"}}, "stream": true}
+  REQ#4 /v1/messages?beta=true
+    {"max_tokens": 32000, "model": "qwen3.8-27b", "output_config": {"effort": "max"}, "stream": true, "thinking": {"display": "omitted", "type": "adaptive"}}
+
+REQ#1/REQ#2 are the unflagged run (title side-call, then the real call). REQ#3/REQ#4 are the
+--effort max run. `thinking` arrives as {"display": "omitted", "type": "adaptive"} on the main call in
+both runs and is absent from the side-call, so the tier - not the thinking block - is what the flag
+moves.

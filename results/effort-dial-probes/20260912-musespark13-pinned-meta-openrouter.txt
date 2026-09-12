@@ -1,0 +1,132 @@
+Muse Spark 1.3 - provider PINNED to Meta, does effort still do nothing? 2026-09-12 12:50
+endpoint https://openrouter.ai/api/v1/messages  model meta/muse-spark-1.3
+pin: provider={only:[meta], allow_fallbacks:false}
+
+THE PIN IS A NO-OP FOR ROUTING AND THAT IS ITSELF THE FIRST RESULT: OpenRouter lists exactly
+ONE endpoint for this model (provider_name=Meta, tag=meta, ctx 1,048,576). There is no
+second provider to have been load-balanced onto, so routing variance cannot explain the
+earlier null, and every earlier probe was already hitting Meta. The pin is sent anyway to
+make that explicit and to make any re-route fail loudly instead of silently.
+
+==============================================================================
+PART 1 - VALIDATION. Does an INVALID effort string get rejected?
+  Meta's own endpoint 400-rejects bad effort values (verified on Muse Spark 1.2, Aug 2026).
+  Through OpenRouter, a 200 here means the field never reached Meta - because Meta is the
+  ONLY upstream, so a value Meta would reject must have been dropped before it got there.
+==============================================================================
+  HTTP 200  pinned   reasoning_effort=bogus_zzz                        think_tok=191    cost=$0.00088  served_by=lookup failed: HTTPError
+  HTTP 200  pinned   reasoning.effort=bogus_zzz                        think_tok=205    cost=$0.00093  served_by=lookup failed: HTTPError
+  HTTP 200  unpinned reasoning_effort=bogus_zzz                        think_tok=229    cost=$0.00104  served_by=lookup failed: HTTPError
+  HTTP 200  unpinned reasoning.effort=bogus_zzz                        think_tok=286    cost=$0.00128  served_by=lookup failed: HTTPError
+  HTTP 200  pinned   reasoning_effort=high  (control: a VALID value)   think_tok=183    cost=$0.00084  served_by=lookup failed: HTTPError
+  HTTP 400  pinned   model=meta/does-not-exist (control: does ANYTHING get rejected?) {"type":"error","error":{"type":"invalid_request_error","message":"meta/does-not-exist-zzz is not a valid model ID","error_type":"invalid_request"},"r
+
+==============================================================================
+PART 2 - MAGNITUDE, pinned, n=3. Expected to replicate the unpinned n=9 null, since it is
+  the same upstream. Here to answer the question literally, not to discover anything.
+==============================================================================
+pin_high   rep3: think_tok=  3115 out_tok=  4287 cost=$0.0181 stop=end_turn
+pin_none   rep3: think_tok=  3307 out_tok=  4301 cost=$0.0181 stop=end_turn
+pin_low    rep3: think_tok=  3088 out_tok=  4268 cost=$0.0180 stop=end_turn
+pin_high   rep1: think_tok=  3425 out_tok=  4582 cost=$0.0193 stop=end_turn
+pin_high   rep2: think_tok=  3303 out_tok=  4613 cost=$0.0194 stop=end_turn
+pin_low    rep1: think_tok=  3776 out_tok=  4839 cost=$0.0204 stop=end_turn
+pin_none   rep1: think_tok=  4075 out_tok=  5124 cost=$0.0216 stop=end_turn
+pin_none   rep2: think_tok=  3359 out_tok=  4661 cost=$0.0196 stop=end_turn
+pin_low    rep2: think_tok=  3888 out_tok=  4883 cost=$0.0206 stop=end_turn
+
+condition      mean     min     max  within x   n
+pin_low        3584    3088    3888      1.26   3
+pin_high       3281    3115    3425      1.10   3
+pin_none       3580    3307    4075      1.23   3
+
+  worst within-condition spread: 1.26x
+  low 3088-3888  vs  high 3115-3425  ->  OVERLAP - same null as unpinned
+  low vs baseline:  overlaps
+  high vs baseline: overlaps
+
+magnitude spend, exact from usage.cost: $0.1752 over 9 calls
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-musespark13-pinned-meta-openrouter.txt
+
+---
+FOLLOW-UP: the served-provider lookup, which failed inline above (the generation record lags the
+response by a few seconds, so the immediate query 404s - retried with backoff).
+
+  call id        gen-1789210268-rUIky6vQwMa6OroRel3t   (pinned, reasoning_effort=bogus_zzz)
+  provider_name  Meta
+  model          meta/muse-spark-1.3-20260902          <- the slug resolves to a DATED SNAPSHOT
+  finish         completed
+  reasoning tok  234
+
+So the upstream is confirmed per-request, not merely from the catalogue listing: Meta served a
+request carrying an invented effort string, and returned 200.
+
+Worth recording the snapshot id separately. `meta/muse-spark-1.3` is a moving pointer to
+`meta/muse-spark-1.3-20260902`; a probe run after that pointer moves is measuring a different
+serving path, and this is exactly why the Aug 3 Qwen row was NOT re-probed (its unlisted slug no
+longer resolves to what it ran on).
+
+CONCLUSION - WHERE THE FIELD DIES, AND WHY THE PIN COULD NOT HAVE HELPED
+
+  1. OpenRouter lists ONE endpoint for this model: Meta. Confirmed by the endpoints API and by the
+     per-request lookup above. There was never a second provider to be routed onto, so the pin is a
+     no-op and provider variance cannot explain the null.
+  2. An invented effort string returns HTTP 200 through OpenRouter on BOTH documented spellings,
+     pinned and unpinned.
+  3. OpenRouter is not simply permissive: the same request shape with a bad MODEL id returns a clean
+     400. It validates what it handles.
+  4. Meta's own endpoint 400-REJECTS invalid effort strings - verified on Muse Spark 1.2 in Aug 2026,
+     where `max`, `ultra`, `none` and `minimal` were all rejected and low/high separated cleanly
+     (1,055 / 1,738 / 1,999 thinking tokens).
+
+  (2) + (4), given (1), can only be reconciled one way: the effort field never reaches Meta. If it
+  did, Meta would reject `bogus_zzz` the way it does on its own endpoint. OpenRouter accepts the
+  parameter, does not forward it, and Meta serves its default every time.
+
+  That is a stronger result than the magnitude null. Magnitude can only say the dial did not move;
+  this says which hop broke it. The dial is not absent from the model - it is absent from the path.
+
+PRACTICAL CONSEQUENCE. Any Muse Spark 1.3 arm routed through OpenRouter runs at DEFAULT thinking
+whatever the harness asks for, and must carry effort_status `inert_default` with effort `default`.
+The honest-looking alternative - recording the tier that was requested - would put a number in the
+effort column that no part of the system ever applied.
+
+---
+ARE THERE OTHER PATHS AT ALL? Checked 2026-09-12, after the above.
+
+Provider counts from OpenRouter's endpoints API, whole Muse family:
+
+    muse-spark-1.3               1 endpoint   Meta
+    muse-spark-1.3-contributor   1 endpoint   Meta
+    muse-spark-1.2               1 endpoint   Meta
+    muse-spark-1.2-contributor   1 endpoint   Meta
+    muse-spark-1.1               1 endpoint   Meta
+    muse-glimmer-30b             4 endpoints  DeepInfra, Fireworks, Phala, Together
+
+The contrast is the point. Glimmer is open-weights and four independent hosts serve it; every Spark
+model is served by Meta alone. Spark is closed, so there is no third-party inference provider to try -
+not a gap in our account coverage, an absence in the market. None of the other keys on this machine
+(DashScope, DeepSeek, Moonshot, Z.ai, xAI, Gemini, OpenAI, Anthropic) serve Meta frontier models.
+
+Two candidate paths remained. Both tested, both closed:
+
+  1. META DIRECT - still HTTP 402, "Billing verification failed. Please check your payment method."
+     Byte-identical to the failure recorded on 2026-08-06, which is why the 1.2 arm was routed through
+     OpenRouter in the first place. This is the ONLY path where the dial is known to work (1.2:
+     low 1,055 / high 1,738 / xhigh 1,999, invalid tiers 400-rejected), and it has been unavailable
+     for five weeks.
+
+  2. THE CONTRIBUTOR TIER on OpenRouter - a genuinely different serving path, ~12x cheaper
+     ($0.10/$0.20 per MTok against $1.25/$4.25). Same result: `bogus_zzz` returns HTTP 200 on both
+     spellings. The effort field is dropped there too.
+
+So the answer is that there is nothing left to test. Every reachable path to this model runs at
+default thinking, and the one path that honours the dial is behind a payment failure.
+
+A WARNING ABOUT THE CHEAP TIER, because a 12x discount on a $10 bench run is a tempting thing to
+reach for. Meta's contributor tier buys that discount with permission to train on prompts AND
+completions; the standard tier is contractually excluded from training (verified 2026-08-06 from live
+rate-limit headers when the 1.2 arm was priced). Fine for a throwaway maths word problem like the one
+in these probes. Disqualifying for a bench arm, because repo 2 is client code that this board is
+required to keep unpublished - a discount does not buy the right to hand it to a training set.

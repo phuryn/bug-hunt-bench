@@ -40,7 +40,7 @@ DeepSeek V4.1 Flash (high effort),Claude Code / DeepSeek API,high,19,13 16 20 22
 "GLM-5.3 (max effort, Z.ai API)",Claude Code / Z.ai API,max,19,13 16 20 22 29 30 39 40 43 50 60 70 71 76 83 92 97 98 99
 GLM-5.3,Claude Code / OpenRouter,default,19,16 20 25 26 29 30 40 43 49 60 61 71 76 83 92 97 98 99 102
 Qwen3.8-Max,Claude Code / OpenRouter,default,19,20 25 27 30 43 50 51 60 61 66 69 70 71 76 78 83 97 98 99
-Hy4 Preview,Claude Code / OpenRouter,high,18,13 16 20 26 27 29 43 44 45 50 60 70 71 76 83 92 98 99
+Hy4 Preview,Claude Code / OpenRouter,default,18,13 16 20 26 27 29 43 44 45 50 60 70 71 76 83 92 98 99
 GPT-5.6 Terra (high effort),Codex CLI,high,18,13 16 17 20 29 30 43 47 49 50 62 76 77 83 92 98 99 102
 Gemini 3.7 Flash (high; Antigravity CLI retest),Antigravity CLI,high,18,16 20 43 45 47 49 50 60 62 66 76 83 84 92 97 98 99 100
 Grok 4.5 (re-run Aug 6),Grok Build CLI (ACP),high,17,16 20 30 37 40 47 50 60 62 66 71 76 83 84 99 100 102

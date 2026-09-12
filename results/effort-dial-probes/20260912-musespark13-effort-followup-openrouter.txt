@@ -1,0 +1,45 @@
+Muse Spark 1.3 effort follow-up - 2026-09-12 12:25
+endpoint https://openrouter.ai/api/v1/messages  model meta/muse-spark-1.3
+n=3 per condition, max_tokens=32000, 12 calls, all concurrent
+Kills two alternative explanations for the first probe's null result:
+  flat_* : the ALTERNATE spelling `reasoning_effort`, same train prompt
+  hard_* : the canonical spelling on a prompt with far more room to think
+           (the first probe drew only ~3,000 thinking tokens, so a real dial may have had
+            nowhere to go - that would make a null result a property of the PROMPT)
+
+flat_high  rep1: think_tok=  2461 out_tok=  3457 text_chars= 2266 cost=$0.0146 stop=end_turn wall=23.1s
+flat_high  rep3: think_tok=  3021 out_tok=  4255 text_chars= 2982 cost=$0.0179 stop=end_turn wall=28.5s
+flat_high  rep2: think_tok=  2688 out_tok=  3764 text_chars= 2495 cost=$0.0159 stop=end_turn wall=29.5s
+flat_low   rep2: think_tok=  3335 out_tok=  4514 text_chars= 2772 cost=$0.0190 stop=end_turn wall=34.3s
+flat_low   rep3: think_tok=  3996 out_tok=  5063 text_chars= 2325 cost=$0.0213 stop=end_turn wall=35.9s
+flat_low   rep1: think_tok=  5111 out_tok=  6266 text_chars= 2433 cost=$0.0264 stop=end_turn wall=42.4s
+hard_low   rep3: think_tok= 12684 out_tok= 15374 text_chars= 6446 cost=$0.0648 stop=end_turn wall=108.7s
+hard_high  rep2: think_tok= 12916 out_tok= 15401 text_chars= 6901 cost=$0.0650 stop=end_turn wall=117.8s
+hard_low   rep2: think_tok= 12024 out_tok= 14231 text_chars= 5596 cost=$0.0601 stop=end_turn wall=117.8s
+hard_high  rep3: think_tok= 14040 out_tok= 16626 text_chars= 6061 cost=$0.0700 stop=end_turn wall=118.0s
+hard_low   rep1: think_tok= 15262 out_tok= 17556 text_chars= 5690 cost=$0.0739 stop=end_turn wall=126.1s
+hard_high  rep1: think_tok= 16117 out_tok= 18605 text_chars= 6154 cost=$0.0783 stop=end_turn wall=151.6s
+
+THINKING TOKENS
+condition      mean     min     max  within x   n
+flat_low       4147    3335    5111      1.53   3
+flat_high      2723    2461    3021      1.23   3
+hard_low      13323   12024   15262      1.27   3
+hard_high     14357   12916   16117      1.25   3
+
+alternate spelling `reasoning_effort`, train prompt
+   low  3335-5111   high 2461-3021
+   1.52x means, ranges DISJOINT -> THE DIAL BINDS HERE
+canonical spelling, high-headroom prompt
+   low  12024-15262   high 12916-16117
+   1.08x means, ranges OVERLAP -> no detectable effect
+
+HEADROOM CHECK: the hard prompt drew 12916-16117 thinking tokens at high, against 2,805-3,257
+  on the train prompt. There WAS room to think, so the train null is not a ceiling artefact.
+
+VERDICT: at least one condition SEPARATES - the first probe's null was incomplete.
+  Label the row off whichever form actually binds, and say which one it was.
+
+probe spend, exact from usage.cost: $0.5272 over 12 calls
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-musespark13-effort-followup-openrouter.txt
