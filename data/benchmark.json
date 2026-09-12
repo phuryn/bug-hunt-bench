@@ -6,11 +6,11 @@
     "repo1_total": 45,
     "repo2_total": 60,
     "survivors": 39,
-    "models": 24,
+    "models": 25,
     "bug_count": 105,
     "repo1_bug_count": 45,
-    "runs": 66,
-    "updated": "2026-09-11",
+    "runs": 67,
+    "updated": "2026-09-12",
     "source_repo": "https://github.com/phuryn/bug-hunt-bench/tree/main/results",
     "repo_url": "https://github.com/phuryn/bug-hunt-bench",
     "author": "Pawel Huryn",
@@ -1406,7 +1406,7 @@
         98,
         99
       ],
-      "group_rank": 100
+      "group_rank": 200
     },
     {
       "id": "Opus 5 (xhigh effort)",
@@ -1672,7 +1672,7 @@
         98,
         99
       ],
-      "group_rank": 104
+      "group_rank": 204
     },
     {
       "id": "GPT-5.6 Luna (xhigh effort)",
@@ -2872,6 +2872,50 @@
         100
       ],
       "group_rank": 4
+    },
+    {
+      "id": "Qwen3.8-27B (xhigh effort, Alibaba API)",
+      "model": "Qwen3.8-27B",
+      "vendor": "Alibaba",
+      "harness": "Claude Code / Alibaba API",
+      "effort": "xhigh",
+      "effort_status": "first_party",
+      "date": "2026-09-12",
+      "color": "#EEBA5D",
+      "fixed": 15,
+      "repo1_fixed": 6,
+      "repo2_fixed": 9,
+      "partial": 0,
+      "claimed_only": 4,
+      "extras": 2,
+      "false_positive_fixes": 0,
+      "wall_min": 46.8,
+      "cost_usd": 6.09,
+      "cost_kind": "list",
+      "wall_note": null,
+      "ceiling": false,
+      "featured": false,
+      "superseded": null,
+      "caveat": "One run, and the effort_status is first_party rather than verified for a specific reason: the MAGNITUDE of the dial was probed on this endpoint for the other two Qwen3.8 sizes (both bind hard at the bottom and saturate across high/xhigh/max) but not for this one, so what is verified here is that the field is accepted and validated, not that xhigh buys more thinking than high on this particular model. Given the shape the siblings show, expect it to buy little. Cost is a list-price ESTIMATE and not a bill - DashScope exposes no credits API on this path - computed from the run's own token counts at 0.425 in / 0.5312 cache-write / 0.085 cache-read / 2.55 out per MTok, from OpenRouter's Alibaba-endpoint listing for this slug; that source is trusted here because for Qwen3.8-Max it lists exactly the DashScope rates this board already carries. Cache writes are priced at 0.5312 and NOT zero: Qwen is the one family on this board that is charged for them, and modelling them free is the error the Aug 3 Qwen row shipped with. The model id was probed rather than assumed - the endpoint serves `qwen3.8-27b` and 400s on -instruct, -0902 and qwen3-8-27b.",
+      "note": "The middle size of the Qwen3.8 family, on Alibaba's own Anthropic-compatible endpoint - the same first-party path as the Qwen3.8-Max and Qwen3.8-Flash rows, so the three sizes differ by model and by nothing else. It is the most interesting Qwen row on the board because it LOSES to both siblings and costs more than one of them: 15/105 for $6.09 against Flash's 26/105 for $1.81 and Max's 28/105 for $26.29. Eleven points below a model that costs a THIRD as much, on the same endpoint, in the same harness, on the same two repos. It is the fast one - 46.8 minutes against 97.3 and 103.4, less than half the wall clock of either sibling - so read it as a latency option and not a price/capability midpoint, because on capability per dollar there is no case for it here. *** THE EFFORT LABEL IS MEASURED, AND IT IS NOT WHAT WAS ASKED FOR *** This arm was commissioned at DEFAULT effort. On this route there is no such thing. A logging pass-through of the CLI (receipt: effort-dial-probes/20260912-claude-code-wire-default-effort.txt) shows an UNFLAGGED Claude Code putting output_config.effort=xhigh on every main call - Claude Code has no send-nothing mode - and this endpoint IMPLEMENTS that field: it 400-rejects bogus_zzz and names its accept-list (low, medium, high, xhigh, max), the same five the other two Qwen3.8 sizes expose. So an out-of-the-box run here is an xhigh run, the row says xhigh, and the arm passes --effort xhigh explicitly so the result does not depend on a CLI default that can change under it. An unrequested tier is not an absent tier. Honesty profile: 15 strict matches, ZERO partials, 4 claimed-only across both repos, 2 genuine unplanted extras and no false-positive fixes.",
+      "fixed_bugs": [
+        13,
+        16,
+        20,
+        30,
+        33,
+        34,
+        47,
+        49,
+        50,
+        76,
+        83,
+        84,
+        92,
+        99,
+        100
+      ],
+      "group_rank": 101
     },
     {
       "id": "Opus 4.8 (max effort)",

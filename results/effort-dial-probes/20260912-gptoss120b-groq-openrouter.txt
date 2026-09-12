@@ -1,0 +1,68 @@
+Effort-dial probe: openai/gpt-oss-120b via OpenRouter, provider pinned to Groq - 2026-09-12 17:39
+endpoint https://openrouter.ai/api/v1/messages  max_tokens=32000  n=3 per condition, 15 calls, all concurrent
+Surface is OpenRouter's Anthropic-compatible /v1/messages because that is the path the bench
+arm ships on (Claude Code -> local shim -> OpenRouter). A verdict measured on
+/chat/completions would not transfer - a dial is a property of the serving path.
+The arm itself asserts NO tier; this probe exists to say whether one was available.
+
+nested_low   rep1: out_tok=  4158 think_tok=  2374 text_chars= 4683 think_chars=  6510 cost=$0.0025 stop=end_turn wall=9.1s
+nested_low   rep3: out_tok=  3625 think_tok=  2034 text_chars= 3957 think_chars=  5387 cost=$0.0022 stop=end_turn wall=7.8s
+nested_low   rep2: out_tok=  4695 think_tok=  3050 text_chars= 4113 think_chars=  8188 cost=$0.0028 stop=end_turn wall=9.9s
+nested_high  rep1: out_tok=  3576 think_tok=  2393 text_chars= 3371 think_chars=  6517 cost=$0.0022 stop=end_turn wall=7.6s
+nested_high  rep2: out_tok=  3642 think_tok=  2447 text_chars= 3199 think_chars=  6729 cost=$0.0022 stop=end_turn wall=7.8s
+nested_high  rep3: out_tok=  4169 think_tok=  2613 text_chars= 3879 think_chars=  6930 cost=$0.0025 stop=end_turn wall=8.9s
+flat_low     rep1: out_tok=  3639 think_tok=  2251 text_chars= 4008 think_chars=  5819 cost=$0.0022 stop=end_turn wall=7.7s
+flat_low     rep2: out_tok=  4879 think_tok=  3226 text_chars= 4376 think_chars=  8377 cost=$0.0029 stop=end_turn wall=10.4s
+flat_low     rep3: out_tok=  4285 think_tok=  2741 text_chars= 3863 think_chars=  7667 cost=$0.0026 stop=end_turn wall=9.3s
+flat_high    rep1: out_tok=  3869 think_tok=  2724 text_chars= 2896 think_chars=  7691 cost=$0.0023 stop=end_turn wall=8.3s
+flat_high    rep2: out_tok=  3131 think_tok=  1761 text_chars= 3580 think_chars=  5172 cost=$0.0019 stop=end_turn wall=6.7s
+flat_high    rep3: out_tok=  3661 think_tok=  2370 text_chars= 3240 think_chars=  6899 cost=$0.0022 stop=end_turn wall=7.8s
+no_field     rep1: out_tok=  3857 think_tok=  2302 text_chars= 4047 think_chars=  6267 cost=$0.0023 stop=end_turn wall=8.2s
+no_field     rep2: out_tok=  3442 think_tok=  2041 text_chars= 4027 think_chars=  5598 cost=$0.0021 stop=end_turn wall=7.3s
+no_field     rep3: out_tok=  3890 think_tok=  2221 text_chars= 4456 think_chars=  5931 cost=$0.0023 stop=end_turn wall=8.3s
+
+OUTPUT TOKENS (reasoning + answer; the primary measure)
+condition        mean     min     max  within x   n
+nested_low       4159    3625    4695      1.30   3
+nested_high      3795    3576    4169      1.17   3
+flat_low         4267    3639    4879      1.34   3
+flat_high        3553    3131    3869      1.24   3
+no_field         3729    3442    3890      1.13   3
+
+THINKING TOKENS reported separately by this endpoint (cross-check)
+nested_low   mean   2486  range   2034-  3050
+nested_high  mean   2484  range   2393-  2613
+flat_low     mean   2739  range   2251-  3226
+flat_high    mean   2285  range   1761-  2724
+no_field     mean   2188  range   2041-  2302
+
+worst within-condition spread: 1.34x  (the noise floor any gap must clear)
+
+nested spelling  reasoning.effort
+   low 3625-4695   high 3576-4169   means 1.10x   ranges OVERLAP
+   -> no detectable effect
+flat spelling    reasoning_effort
+   low 3639-4879   high 3131-3869   means 1.20x   ranges OVERLAP
+   -> no detectable effect
+
+WHERE IS THE DEFAULT? baseline (no field) 3442-3890, mean 3729
+   nested_low     3625-  4695  vs baseline: overlaps -> indistinguishable from sending nothing
+   nested_high    3576-  4169  vs baseline: overlaps -> indistinguishable from sending nothing
+   flat_low       3639-  4879  vs baseline: overlaps -> indistinguishable from sending nothing
+   flat_high      3131-  3869  vs baseline: overlaps -> indistinguishable from sending nothing
+
+VALIDATION - does this path even look at the field? (the decisive half)
+  bogus nested  reasoning={effort: bogus_zzz}  -> HTTP 200 (accepted)
+  bogus flat    reasoning_effort=bogus_zzz     -> HTTP 200 (accepted)
+  CONTROL: bad model id                        -> HTTP 400  {"type":"error","error":{"type":"invalid_request_error","message":"openai/gpt-oss-120b-does-not-exist is not a valid model ID","error_type":"invalid_request"},"request_id":"gen-1789227623-o5QYTCWJabQKNW80oHmK"}
+  An endpoint that 400-rejects an invented tier cannot silently clamp. A 200 on bogus while
+  the bad model id 400s means the effort field is accepted and never read.
+
+VERDICT: no detectable effect on either spelling at n=3, with the baseline measured at
+  the same n. Combined with the validation result above this supports `inert_default`.
+  Standing caveat: n samples cannot prove a field does nothing, only that any effect is
+  smaller than the noise - and ranges can only WIDEN with n, so this can still fail later.
+
+probe spend, exact from usage.cost: $0.0352 over 15 calls
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-gptoss120b-groq-openrouter.txt

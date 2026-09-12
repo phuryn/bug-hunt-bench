@@ -1306,3 +1306,68 @@ with means that fall as the nominal tier rises. Two different models, one vendor
 shape, which points at Alibaba's serving rather than at either model. And the accept-list here
 (low/medium/high/xhigh/max) **contradicts the QwenCloud doc** the superseded row's tier claim rested on
 (low/medium/xhigh, with high→xhigh) — one more reason that claim was never safe.
+
+## Sep 12 — the wave that had to be relabelled before it could be published
+
+Six arms were commissioned to run "at default effort", to see what these models do with no tier
+asserted. Measuring what the harness actually sends turned that into two different experiments, and
+the measurement is worth more than any single row in the wave.
+
+**There is no send-nothing mode.** A logging pass-through of Claude Code
+([20260912-claude-code-wire-default-effort.txt](effort-dial-probes/20260912-claude-code-wire-default-effort.txt))
+captured the request bodies an unflagged run puts on the wire:
+
+```
+REQ  /v1/messages  (unflagged, main call)        "output_config": {"effort": "xhigh"}
+REQ  /v1/messages  (unflagged, title side-call)  "output_config": {"effort": "high"}
+REQ  /v1/messages  (--effort max, main call)     "output_config": {"effort": "max"}
+```
+
+Omitting the flag does not omit the field. It asserts `xhigh`. So **"default effort" is a fact about
+the route, not about the flag**, and it splits this wave in two:
+
+- on a **first-party endpoint that implements the field**, the CLI's assertion is *applied*. Alibaba's
+  DashScope Anthropic surface 400-rejects an invented tier and names its accept-list, so an unflagged
+  run there is an **xhigh** run. Publishing it as "default" would have flattered it.
+- on an **aggregator that drops the field in transit** — which is what every OpenRouter probe on this
+  board has found, most recently on Hy4 Preview — the same run genuinely *is* the provider default,
+  and `inert_default` is honest because the negative fact was probed rather than assumed.
+
+This is the inverse of the rule this board has been running on since August. *A requested tier is not
+an applied tier* has cost several rows a correction. Its mirror image — **an unrequested tier is not
+an absent tier** — had never been tested, and it is the reason the first row below says `xhigh` on the
+badge when the arm was ordered at "default".
+
+### Qwen3.8-27B — the middle size is dominated by the small one
+
+The third and last size of the Qwen3.8 family on Alibaba's own endpoint, so all three now differ by
+model and by nothing else: same harness, same endpoint, same two repos, same laptop.
+
+| Arm | Effort | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Claimed-only | Genuine extras | Wall | Cost (list) |
+|---|---|--:|--:|--:|--:|--:|--:|--:|
+| Qwen3.8-Max | max | **28** | 13 | 15 | 4 | 6 | 103.4 min | $26.29 |
+| Qwen3.8-Flash | max | **26** | 13 | 13 | 3 | 7 | 97.3 min | $1.81 |
+| Qwen3.8-Flash | low | **23** | 11 | 12 | 3 | 7 | 98.1 min | $1.37 |
+| **Qwen3.8-27B** | **xhigh** | **15** | 6 | 9 | 4 | 2 | **46.8 min** | **$6.09** |
+
+- **It loses to both siblings, and it is not the cheap one.** Eleven points below Qwen3.8-Flash at
+  **3.4x the price**. There is no reading of this board on which the 27B is the value pick in its own
+  family: the small model is better *and* cheaper, and the big one is better again. A size ladder is
+  not a capability ladder, and on this benchmark the middle rung is the one to skip.
+- **What it does have is wall clock.** 46.8 minutes against 97.3 and 103.4 — less than half the time
+  of either sibling, on the same two repos. If the thing being bought is latency rather than fixes,
+  that is the row's case, and it is the whole of it.
+- **It found nothing new.** Zero survivor kills; the count stays at 39. Eleven of its fifteen fixes
+  are bugs Flash and Max already fix, so it is largely a subset of its own family rather than a
+  different reader of the same code.
+- **Honesty profile is clean:** 15 strict matches, **zero partials**, 4 claimed-only across both
+  repos, 2 genuine unplanted extras, no false-positive fixes.
+- **The effort badge says `xhigh`, and the arm was ordered at "default".** See the wave head above:
+  the CLI asserts `xhigh` when unflagged and this endpoint implements the field, so xhigh is what
+  ran. The arm now passes `--effort xhigh` explicitly, so the row does not depend on a CLI default
+  that can change under it. The status is `first_party` rather than `verified` because the dial's
+  *magnitude* was probed on this endpoint for the other two sizes and not for this one — what is
+  verified here is that the field is accepted and validated, not that `xhigh` buys more thinking than
+  `high` on this particular model. Given that both siblings saturate across high/xhigh/max, expect
+  little.
+
