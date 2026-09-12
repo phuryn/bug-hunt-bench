@@ -1087,6 +1087,26 @@ Caching that keeps working means the model keeps its context instead of rebuildi
 23%** while wall time went **down 30%** — it spent its time thinking rather than re-reading, and the
 prompt tokens it did re-send fell by a factor of ~5,000.
 
+**This is not a claim that OpenRouter charges more, and the table should not be read that way.** Both
+rows are priced from the *same* book — OpenRouter's own Alibaba-endpoint listing, $2.00 in / $2.50
+cache-write / $0.25 cache-read / $6.00 out per MTok — so the comparison is rate-neutral by
+construction. OpenRouter lists exactly one upstream for this model, and it is Alibaba, at Alibaba's
+rates. Per token the two paths cost the same; the $7 is **entirely token volume**. The honest sentence
+is *routing through the aggregator cost more for the same work because prompt caching degraded across
+the hop* — not *the aggregator is more expensive*.
+
+Worth saying who is **not** to blame, since the obvious suspect is the local shim: it is a dumb
+passthrough. It rewrites the model id and swaps `thinking` for `reasoning.effort`, forwards the
+untouched Anthropic body to OpenRouter's Anthropic-compatible path, and never reads or strips
+`cache_control`. The breakpoints reached the aggregator intact. Provider load-balancing across cold
+caches is also ruled out for the model as listed today — one endpoint, no fan-out. The most likely
+remaining mechanism is that Alibaba's own endpoint caches the whole prompt implicitly, while only the
+explicit breakpoints survive the relay, leaving the tail of every request to be billed fresh.
+
+Two limits on all of it: both figures are **list estimates, not bills** (no credits delta was captured
+for the Aug 3 run), and OpenRouter's credit fee is modelled in neither, so a real-money comparison
+would be slightly wider than the one above.
+
 One caution against over-reading it: scores move between runs on this board, and a single pair cannot
 cleanly separate a path effect from ordinary variance — nine points is large, but it is n=1 against n=1.
 What the pair establishes *beyond* variance is the cost and token behaviour, where a ~5,000× gap is not
