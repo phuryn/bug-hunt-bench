@@ -1,0 +1,68 @@
+Effort-dial probe: nvidia/nemotron-3-ultra-550b-a55b via OpenRouter, provider pinned to BaseTen - 2026-09-12 18:27
+endpoint https://openrouter.ai/api/v1/messages  max_tokens=32000  n=3 per condition, 15 calls, all concurrent
+Surface is OpenRouter's Anthropic-compatible /v1/messages because that is the path the bench
+arm ships on (Claude Code -> local shim -> OpenRouter). A verdict measured on
+/chat/completions would not transfer - a dial is a property of the serving path.
+The arm itself asserts NO tier; this probe exists to say whether one was available.
+
+nested_low   rep1: out_tok=  6228 think_tok=  4912 text_chars= 2715 think_chars= 12707 cost=$0.0149 stop=end_turn wall=19.0s
+nested_low   rep3: out_tok=  5683 think_tok=  4736 text_chars= 1956 think_chars= 11662 cost=$0.0136 stop=end_turn wall=16.6s
+nested_low   rep2: out_tok=  6524 think_tok=  5356 text_chars= 2478 think_chars= 13051 cost=$0.0156 stop=end_turn wall=20.4s
+nested_high  rep3: out_tok=  6046 think_tok=  4442 text_chars= 3391 think_chars= 10772 cost=$0.0144 stop=end_turn wall=25.4s
+nested_high  rep2: out_tok=  8344 think_tok=  7270 text_chars= 2263 think_chars= 18178 cost=$0.0199 stop=end_turn wall=27.6s
+flat_low     rep2: out_tok=  7511 think_tok=  6084 text_chars= 2891 think_chars= 14495 cost=$0.0179 stop=end_turn wall=23.7s
+nested_high  rep1: out_tok=  8075 think_tok=  6854 text_chars= 2580 think_chars= 18521 cost=$0.0193 stop=end_turn wall=31.9s
+flat_high    rep1: out_tok=  5809 think_tok=  4360 text_chars= 2973 think_chars= 11482 cost=$0.0139 stop=end_turn wall=20.4s
+flat_low     rep1: out_tok=  6546 think_tok=  5414 text_chars= 2366 think_chars= 14052 cost=$0.0156 stop=end_turn wall=27.3s
+flat_high    rep2: out_tok=  5739 think_tok=  4748 text_chars= 2132 think_chars= 11948 cost=$0.0137 stop=end_turn wall=20.0s
+flat_low     rep3: out_tok=  7484 think_tok=  6442 text_chars= 2160 think_chars= 15393 cost=$0.0179 stop=end_turn wall=25.4s
+no_field     rep2: out_tok=  6382 think_tok=  5104 text_chars= 2721 think_chars= 12306 cost=$0.0152 stop=end_turn wall=21.3s
+flat_high    rep3: out_tok=  8250 think_tok=  6887 text_chars= 2987 think_chars= 17557 cost=$0.0197 stop=end_turn wall=26.3s
+no_field     rep1: out_tok=  7439 think_tok=  6077 text_chars= 2770 think_chars= 14380 cost=$0.0178 stop=end_turn wall=24.4s
+no_field     rep3: out_tok=  7674 think_tok=  6318 text_chars= 2821 think_chars= 15042 cost=$0.0183 stop=end_turn wall=23.0s
+
+OUTPUT TOKENS (reasoning + answer; the primary measure)
+condition        mean     min     max  within x   n
+nested_low       6145    5683    6524      1.15   3
+nested_high      7488    6046    8344      1.38   3
+flat_low         7180    6546    7511      1.15   3
+flat_high        6599    5739    8250      1.44   3
+no_field         7165    6382    7674      1.20   3
+
+THINKING TOKENS reported separately by this endpoint (cross-check)
+nested_low   mean   5001  range   4736-  5356
+nested_high  mean   6188  range   4442-  7270
+flat_low     mean   5980  range   5414-  6442
+flat_high    mean   5331  range   4360-  6887
+no_field     mean   5833  range   5104-  6318
+
+worst within-condition spread: 1.44x  (the noise floor any gap must clear)
+
+nested spelling  reasoning.effort
+   low 5683-6524   high 6046-8344   means 1.22x   ranges OVERLAP
+   -> no detectable effect
+flat spelling    reasoning_effort
+   low 6546-7511   high 5739-8250   means 1.09x   ranges OVERLAP
+   -> no detectable effect
+
+WHERE IS THE DEFAULT? baseline (no field) 6382-7674, mean 7165
+   nested_low     5683-  6524  vs baseline: overlaps -> indistinguishable from sending nothing
+   nested_high    6046-  8344  vs baseline: overlaps -> indistinguishable from sending nothing
+   flat_low       6546-  7511  vs baseline: overlaps -> indistinguishable from sending nothing
+   flat_high      5739-  8250  vs baseline: overlaps -> indistinguishable from sending nothing
+
+VALIDATION - does this path even look at the field? (the decisive half)
+  bogus nested  reasoning={effort: bogus_zzz}  -> HTTP 200 (accepted)
+  bogus flat    reasoning_effort=bogus_zzz     -> HTTP 200 (accepted)
+  CONTROL: bad model id                        -> HTTP 400  {"type":"error","error":{"type":"invalid_request_error","message":"nvidia/nemotron-3-ultra-550b-a55b-does-not-exist is not a valid model ID","error_type":"invalid_request"},"request_id":"gen-1789230484-FiXg0BiHug9bhAJd8p
+  An endpoint that 400-rejects an invented tier cannot silently clamp. A 200 on bogus while
+  the bad model id 400s means the effort field is accepted and never read.
+
+VERDICT: no detectable effect on either spelling at n=3, with the baseline measured at
+  the same n. Combined with the validation result above this supports `inert_default`.
+  Standing caveat: n samples cannot prove a field does nothing, only that any effect is
+  smaller than the noise - and ranges can only WIDEN with n, so this can still fail later.
+
+probe spend, exact from usage.cost: $0.2477 over 15 calls
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-nemotron3ultra-openrouter.txt

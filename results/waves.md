@@ -1371,3 +1371,118 @@ model and by nothing else: same harness, same endpoint, same two repos, same lap
   `high` on this particular model. Given that both siblings saturate across high/xhigh/max, expect
   little.
 
+
+### The harness has a floor, and this wave fell through it
+
+Six arms were commissioned. **One produced a row.** Chasing the other five is the useful part of
+this wave, because three of them died on a Claude Code failure this board had not seen once in 105
+published rows:
+
+```
+terminal_reason = rapid_refill_breaker
+"Autocompact is thrashing: the context refilled to the limit within 3 turns of the previous
+ compact, 3 times in a row."
+```
+
+MiniMax M2.7 stopped itself after 23 turns and three compactions. gpt-oss-120b stopped itself after
+28 turns and six. Nemotron 3 Ultra stopped itself after 152 turns and **twenty-three**. Two of the
+three are not the small-window case at all: MiniMax and Nemotron carry 204,800 and 262,144-token
+windows, both larger than the 200,000 Claude Code assumes by default.
+
+**Two wrong answers came first, and both are on the record**
+([receipt](effort-dial-probes/20260912-count-tokens-route-asymmetry.txt)) because each one looked
+decisive until it was tested.
+
+- *The missing token counter.* The proxy log showed Claude Code repeatedly asking the endpoint to
+  count tokens for it, in bursts of four, and getting 404s. Probing every Anthropic-compatible
+  upstream this board publishes through found a genuine asymmetry — OpenRouter 404, **Moonshot 404**,
+  DashScope, DeepSeek and Z.ai 200 — which also demolishes the tidy version of it, because Moonshot
+  is first-party and serves no counter either. And the Kimi K3 arm on Moonshot ran 263 turns and a
+  13.7 MB transcript with **zero** compactions. A missing counter that causes nothing on one route
+  cannot be what caused twenty-three compactions on another.
+- *The missing context declaration.* Every arm on this machine that has ever compacted, laid out
+  together, looked like an open-and-shut case: the five first-party arms that compacted at all
+  triggered between **284,197** and **302,629** tokens — the other eight never compacted —
+  while the three proxy arms in this wave triggered between **52,023** and **84,796**. Every
+  OpenRouter row this board ever published carried a `[1m]` context suffix in its model string;
+  these did not.
+
+**What actually settles it is a controlled pair.** Same model, same job — read six 1,900-line files
+— changing only the declared window
+([receipt](effort-dial-probes/20260912-autocompact-flag.txt)):
+
+| `--autocompact` | compacted at | outcome |
+|---|---|---|
+| `100000` | 61,981 / 47,677 / 66,011 | `rapid_refill_breaker` |
+| `1000000` | 63,093 / 74,087 / 71,753 | `rapid_refill_breaker` |
+
+A tenfold difference in the declared window moved the trigger by nothing, and **both runs died the
+same way — on Claude Haiku 4.5, on Anthropic's own first-party endpoint, with a working token
+counter, in 86 seconds.** That kills both false trails at once. The breaker has nothing to do with
+aggregators, with proxies, or with token counting.
+
+**On Anthropic's own route the trigger is a clean fraction of the window.** The same fixture on two
+models, changing only the context window
+([receipt](effort-dial-probes/20260912-compaction-trigger-window.txt)): Haiku 4.5 (200,000) compacts
+around 62,000; Sonnet 5 (1,000,000) compacted **five times in one run, between 292,063 and
+312,465**, and finished clean at 66 turns. A five-fold window, a five-fold budget, and nothing about
+a fixed trigger size survives it.
+
+**Through a proxy the harness hands the run far less, and the proxy arms scattered** — gpt-oss-120b
+compacting at 23,863-26,498 (six times in one leg, then the breaker) while gpt-oss-20b, the same
+model id on the same host through the same proxy, compacted at 52,023 and 57,418. That looked
+unexplained for an hour. It is the same arm four hours apart, and the difference between the two
+readings is one flag: `--autocompact 100000` was added at 17:57, the 52K leg ran at 17:46 without it
+and the 24,514 leg ran at 19:26 with it.
+
+So `--autocompact` is **not** inert — it is inert on Anthropic's own route, where the CLI already
+knows the real window and ignores a declaration it can beat, and **live through a proxy**, where the
+CLI knows nothing. And what it sets is not the trigger but the window the trigger is a fraction of.
+One rule covers every number on this page:
+
+> Compaction fires at roughly a quarter to a third of the context window **the CLI believes it has**.
+
+| What the CLI believes | Compacts at |
+|---|---|
+| the truth, first-party — 200K model | ~62,000 |
+| the truth, first-party — 1M models | 284,197 – 302,629 |
+| its own fallback, proxy, nothing declared | 52,023 – 84,796 (back-solves to a ~200K belief) |
+| a declaration of `100000`, proxy | ~24,500 |
+| a declaration of `[1m]`, proxy | ~292,000 |
+
+**And the lever only helps by lying.** Declaring MiniMax's real 204,800 would set its trigger around
+51,000–61,000 — the budget it already died in. Declaring Nemotron's real 262,144 gives 65,000–79,000
+against the 52,252–76,434 it already had. Telling the harness the truth about either model changes
+nothing, because the fallback was already approximately true. Only overstating the window buys room.
+
+The same inversion caught the gpt-oss arms going the other way. They were given `--autocompact
+100000` that morning to protect a 131,072-token model from a 200,000-token assumption; what it did
+was halve a working context that was never in danger — unflagged they compact around 55K and never
+approach their ceiling — and the 120b thrashed to death inside the 25K it was left with. The flag is
+off both arms now.
+
+**Either way the arms were handed a working context this repo needs more than**, compacted from 56K
+down to 25K, had it refilled by three ordinary file reads, and the harness stopped itself. That is
+the breaker's text, verbatim.
+
+**The part that matters beyond this wave.** Every Claude Code row on this board has been either a
+genuine 1M-context model or a proxy arm declared `[1m]`. A 200K-class model has therefore **never
+completed repo 1 in this harness** — the first two ever pointed at it both died. That is a limit of
+the measuring instrument, published here as one, and it is why neither model is scored above:
+nothing about MiniMax M2.7 or Nemotron 3 Ultra has been measured yet, and a row that says otherwise
+would be inventing one.
+
+Neither is re-run on a guess, because neither configuration is honest: the fallback gives them the
+~60K that already killed them twice, and `[1m]` would overstate their windows by four to five times
+and let the harness run the context past what the model can actually accept.
+
+**Two fixes went in rather than two notes.** The runner now refuses to start a Claude Code arm
+pointed at a non-Anthropic upstream unless it states its context decision — a `[1m]` model string, or
+an explicit acknowledgement that the fallback is close enough *and* that the ~60K trigger is
+accepted. `--autocompact` does not count as a declaration, because it was measured inert. Separately,
+the launcher for Meta's own agent turned out never to have worked: it backgrounded the shim inside a
+WSL session that is torn down the instant the launching shell exits, so the shim died before it could
+even create its log file. It is held open from the Windows side now, and the readiness check is a
+poll rather than a four-second guess — a guess that fails is indistinguishable from a component that
+is genuinely broken.
+

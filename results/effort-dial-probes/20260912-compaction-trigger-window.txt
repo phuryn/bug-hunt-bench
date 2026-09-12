@@ -1,0 +1,42 @@
+Is the compaction trigger a fixed size, or a fraction of the window? - 2026-09-12
+
+VERDICT (written by hand; the script's automatic one said NO VERDICT and was too strict - see the
+note at the bottom): A FRACTION OF THE WINDOW, and close to 30% of it in both conditions.
+
+    200,000-token model    compacts at ~62,000       (47,677 - 66,011 across four triggers)
+    1,000,000-token model  compacts at ~300,000      (292,063 - 312,465 across five triggers)
+
+The 1M half is decisive on its own: five compactions inside a 20-point range on one run, on the same
+fixture, and the run finished clean at 66 turns. A five-fold window buys a five-fold budget. Nothing
+about a fixed trigger size survives that.
+
+Same job in both conditions: read the files with the Read tool, in order, whole,
+nothing else. Same fixture, same machine, sequential, first-party endpoint.
+
+  haiku-200k  claude-haiku-4-5-20251001    window 200,000    6 files  rc=0  wall=24.5s  Read calls=3
+          compactions (pre_tokens -> post_tokens): none
+          result: {"subtype": "success", "is_error": false, "num_turns": 4, "terminal_reason": "completed", "total_cost_usd": 0.0956124}
+
+  sonnet5-1m  claude-sonnet-5              window 1,000,000  12 files  rc=0  wall=638.7s  Read calls=60
+          compactions (pre_tokens -> post_tokens): [(292063, 15084), (312465, 16696), (299898, 15449), (308474, 17003), (308075, 17340)]
+          result: {"subtype": "success", "is_error": false, "num_turns": 66, "terminal_reason": "completed", "total_cost_usd": 8.403841199999999}
+
+WHY THIS WAS RUN. The breaker that killed two arms of the Sep 12 wave was traced to the
+harness compacting them at roughly a fifth of the context the 1M arms get. The supporting
+1M numbers were bench arms - different models, repos and prompts - and the 200K number was a
+controlled job, so the comparison was between two different kinds of evidence. This makes it
+one kind. --autocompact is not used in either condition, and on this route it would not matter if it
+were: it is inert first-party (20260912-autocompact-flag.txt) and only live through a shim. So the
+only thing separating these two runs is the model.
+
+WHERE THE 200K NUMBER COMES FROM, SAID OUT LOUD. The 200K run HERE did not compact - Haiku read three
+of the six files, answered, and ended at a context of 63,479, just short of a trigger. The four 200K
+triggers quoted in the verdict are from the two runs of the SAME fixture in
+20260912-autocompact-flag.txt, which did keep reading. Borrowing them is legitimate only because
+--autocompact is inert on this route, which is exactly what that receipt's controlled pair
+establishes - its two runs declared 100,000 and 1,000,000 and triggered in the same place. If that
+pair is ever overturned, this verdict loses its 200K half and keeps its 1M half.
+
+COST. The 1M condition is not a cheap probe: 60 Read calls and 66 turns of a 1M-context model came
+to $8.40. It is recorded because this is the number the whole breaker investigation rests on, and
+because a reader deciding whether to repeat it should know the price before starting.

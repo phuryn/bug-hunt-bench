@@ -1,0 +1,52 @@
+Effort-dial probe: minimax/minimax-m2.7 via OpenRouter, provider pinned to Minimax - 2026-09-12 17:55
+endpoint https://openrouter.ai/api/v1/messages  max_tokens=32000  n=3 per condition, 15 calls, all concurrent
+Surface is OpenRouter's Anthropic-compatible /v1/messages because that is the path the bench
+arm ships on (Claude Code -> local shim -> OpenRouter). A verdict measured on
+/chat/completions would not transfer - a dial is a property of the serving path.
+The arm itself asserts NO tier; this probe exists to say whether one was available.
+
+flat_low     rep2: out_tok=     0 think_tok=  3146 text_chars=    0 think_chars= 12497 cost=$0.0000 stop=end_turn wall=68.4s
+nested_high  rep2: out_tok=  5992 think_tok=  4974 text_chars= 2905 think_chars= 15214 cost=$0.0072 stop=end_turn wall=102.8s
+flat_low     rep3: out_tok=  5950 think_tok=  4738 text_chars= 3348 think_chars= 14112 cost=$0.0071 stop=end_turn wall=111.3s
+no_field     rep3: out_tok=  6755 think_tok=  5559 text_chars= 3278 think_chars= 17432 cost=$0.0081 stop=end_turn wall=121.2s
+nested_high  rep1: out_tok=  7621 think_tok=  6131 text_chars= 4318 think_chars= 19337 cost=$0.0091 stop=end_turn wall=147.2s
+nested_low   rep2: out_tok=  7633 think_tok=  6499 text_chars= 3243 think_chars= 18930 cost=$0.0091 stop=end_turn wall=153.6s
+flat_high    rep3: out_tok=  7184 think_tok=  5848 text_chars= 3840 think_chars= 18204 cost=$0.0086 stop=end_turn wall=139.0s
+no_field     rep1: out_tok=  7553 think_tok=  6366 text_chars= 3347 think_chars= 19712 cost=$0.0090 stop=end_turn wall=150.3s
+flat_high    rep2: out_tok=  8255 think_tok=  7046 text_chars= 3677 think_chars= 23249 cost=$0.0099 stop=end_turn wall=163.4s
+flat_low     rep1: out_tok=  9410 think_tok=  7893 text_chars= 4116 think_chars= 26266 cost=$0.0112 stop=end_turn wall=184.0s
+flat_high    rep1: out_tok=  9387 think_tok=  8336 text_chars= 3212 think_chars= 25970 cost=$0.0112 stop=end_turn wall=181.6s
+no_field     rep2: out_tok=  9632 think_tok=  8706 text_chars= 2598 think_chars= 27817 cost=$0.0115 stop=end_turn wall=190.8s
+nested_low   rep3: out_tok= 11518 think_tok= 10274 text_chars= 3381 think_chars= 31402 cost=$0.0137 stop=end_turn wall=218.4s
+nested_low   rep1: out_tok= 13190 think_tok= 11894 text_chars= 3686 think_chars= 36260 cost=$0.0157 stop=end_turn wall=260.2s
+nested_high  rep3: out_tok= 12887 think_tok= 11765 text_chars= 3174 think_chars= 41396 cost=$0.0154 stop=end_turn wall=256.4s
+
+OUTPUT TOKENS (reasoning + answer; the primary measure)
+condition        mean     min     max  within x   n
+nested_low      10780    7633   13190      1.73   3
+nested_high      8833    5992   12887      2.15   3
+flat_low         5120       0    9410      0.00   3
+flat_high        8275    7184    9387      1.31   3
+no_field         7980    6755    9632      1.43   3
+
+THINKING TOKENS reported separately by this endpoint (cross-check)
+nested_low   mean   9555  range   6499- 11894
+nested_high  mean   7623  range   4974- 11765
+flat_low     mean   5259  range   3146-  7893
+flat_high    mean   7076  range   5848-  8336
+no_field     mean   6877  range   5559-  8706
+
+INCOMPLETE - not every condition returned data, so no magnitude verdict.
+
+VALIDATION - does this path even look at the field? (the decisive half)
+  bogus nested  reasoning={effort: bogus_zzz}  -> HTTP 200 (accepted)
+  bogus flat    reasoning_effort=bogus_zzz     -> HTTP 200 (accepted)
+  CONTROL: bad model id                        -> HTTP 400  {"type":"error","error":{"type":"invalid_request_error","message":"minimax/minimax-m2.7-does-not-exist is not a valid model ID","error_type":"invalid_request"},"request_id":"gen-1789228822-vKBcIlF7Sj0MFIIfMhK5"}
+  An endpoint that 400-rejects an invented tier cannot silently clamp. A 200 on bogus while
+  the bad model id 400s means the effort field is accepted and never read.
+
+VERDICT: none. Re-run before the row is labelled.
+
+probe spend, exact from usage.cost: $0.1467 over 15 calls
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-minimaxm27-openrouter.txt

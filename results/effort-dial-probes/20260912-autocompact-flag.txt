@@ -1,0 +1,47 @@
+Does --autocompact <tokens> move the auto-compaction trigger? - 2026-09-12
+
+*** CORRECTED THE SAME EVENING: INERT HERE, LIVE THROUGH A SHIM. This pair ran on Anthropic's own
+route, and on that route the verdict below holds. It does NOT generalise. Through the OpenRouter
+shim the flag is honoured and sets the trigger to roughly a QUARTER of the declared value - the same
+gpt-oss-20b arm compacted at 52,023/57,418 unflagged and at 24,514 with 100,000 declared, and
+gpt-oss-120b at 23,863-26,498 with the same declaration, six times in one leg, then the breaker. The
+likely reading is that the CLI ignores a declaration it can beat with a window it already knows, and
+uses one when it knows nothing. Practical consequence, which is the opposite of the intent the flag
+was added with: declaring a model's REAL window through a shim SHRINKS its working context. See
+20260912-autocompact-flag-through-shim.txt. ***
+
+VERDICT (this route only): INERT. Both runs compacted in the same region despite a 10x difference in the declared window, so the flag is not what sets the trigger and the re-runs need a different fix.
+
+Same job both runs: read 6 files of 1900 lines each with the Read tool, in order, nothing
+else. Same model (claude-haiku-4-5-20251001), same fixture, same machine, sequential.
+
+  A-100k  --autocompact 100000   rc=1  wall=86.5s  Read calls=5
+          compactions (pre_tokens -> post_tokens): [(61981, 3452), (47677, 13226), (66011, 13800)]
+          result: {"subtype": "success", "is_error": true, "num_turns": 9, "terminal_reason": "rapid_refill_breaker", "total_cost_usd": 0.37754789999999994}
+
+  B-1m    --autocompact 1000000  rc=1  wall=91.9s  Read calls=6
+          compactions (pre_tokens -> post_tokens): [(63093, 3475), (74087, 16680), (71753, 13810)]
+          result: {"subtype": "success", "is_error": true, "num_turns": 10, "terminal_reason": "rapid_refill_breaker", "total_cost_usd": 0.46090349999999997}
+
+A THIRD RUN, ADDED AFTER THE FACT, AND WHAT IT DOES NOT SAY. The same job was run once more with
+no flag at all, as the 200K arm of a separate probe (20260912-compaction-trigger-window.txt). It
+compacted zero times and finished at a context of 63,479 tokens - HIGHER than either flagged run's
+first trigger (61,981 and 63,093). That is not evidence that the unflagged trigger is higher: the
+model simply stopped after three of the six files and answered, so the run ended before it could
+cross anything. It is recorded here because a reader comparing the two receipts will notice it, and
+because leaving it out would make the flagged pair look cleaner than it is. The verdict above rests
+only on A against B, which are the two runs that differ in exactly one thing.
+
+WHY THIS WAS RUN. Two arms of the Sep 12 wave died on terminal_reason=rapid_refill_breaker
+after the harness compacted them at ~55K instead of ~290K, because the arms carried no
+context declaration. There is no [204k] or [262k] model-string suffix - only [1m] - so this
+flag is the only honest way to tell the harness a 204,800 or 262,144-token window. It had
+never been tested, and the one field observation available (gpt-oss at --autocompact 100000
+triggering at 52,023 and 57,418, against 52,252-76,434 with no flag) does not clear this
+board's magnitude rule at n=2. Hence a controlled pair.
+
+METHOD NOTE. The control is the other run, not a remembered baseline, so the result does not
+depend on knowing what window the CLI assumes for an unsuffixed model id. Files are 1,900
+lines to sit under Claude Code's 2,000-line read truncation, so each read lands whole and
+the context grows in known steps. No aggregator is involved, so no arm's credits delta can
+absorb this.
