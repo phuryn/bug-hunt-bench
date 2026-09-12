@@ -1,0 +1,81 @@
+qwen3.8-max: every condition to n=9, both routes - 2026-09-12 11:34
+24 fresh calls (8 cells x 3), all concurrent, launches staggered 3s
+pooled with the original n=3 receipts and both n=6 top-ups
+identical prompt / model / endpoint / max_tokens=32000 as the rest of the series
+
+openrouter native_thinking new2: out_tok=  3620 think_chars=  5663 text_chars= 2136 stop=end_turn wall=63.0s
+openrouter native_thinking new3: out_tok=  4728 think_chars=  7556 text_chars= 2220 stop=end_turn wall=81.8s
+openrouter native_thinking new1: out_tok=  6514 think_chars= 11583 text_chars= 1732 stop=end_turn wall=112.8s
+openrouter no_field        new2: out_tok=  9179 think_chars= 20858 text_chars= 2375 stop=end_turn wall=192.6s
+openrouter reasoning_low   new2: out_tok= 11639 think_chars= 24983 text_chars= 3016 stop=end_turn wall=242.3s
+alibaba    reasoning_low   new1: out_tok=  9407 think_chars= 22252 text_chars= 1741 stop=end_turn wall=212.7s
+openrouter reasoning_high  new1: out_tok= 11524 think_chars= 27631 text_chars= 1696 stop=end_turn wall=242.9s
+alibaba    native_thinking new3: out_tok=  9185 think_chars= 20880 text_chars= 2900 stop=end_turn wall=192.4s
+alibaba    reasoning_high  new3: out_tok= 10907 think_chars= 24978 text_chars= 2798 stop=end_turn wall=227.8s
+openrouter reasoning_high  new3: out_tok= 12821 think_chars= 29717 text_chars= 2832 stop=end_turn wall=268.9s
+openrouter reasoning_low   new3: out_tok= 13092 think_chars= 31693 text_chars= 2510 stop=end_turn wall=284.1s
+alibaba    reasoning_low   new3: out_tok= 11349 think_chars= 26104 text_chars= 3119 stop=end_turn wall=252.9s
+alibaba    reasoning_high  new2: out_tok= 12622 think_chars= 28470 text_chars= 2699 stop=end_turn wall=259.8s
+openrouter reasoning_high  new2: out_tok= 13745 think_chars= 33737 text_chars= 1800 stop=end_turn wall=299.0s
+openrouter no_field        new3: out_tok= 13627 think_chars= 31975 text_chars= 3235 stop=end_turn wall=291.6s
+alibaba    reasoning_low   new2: out_tok= 13181 think_chars= 31756 text_chars= 1876 stop=end_turn wall=277.1s
+alibaba    no_field        new1: out_tok= 12537 think_chars= 29017 text_chars= 3228 stop=end_turn wall=269.1s
+alibaba    reasoning_high  new1: out_tok= 13228 think_chars= 31349 text_chars= 3185 stop=end_turn wall=280.3s
+alibaba    no_field        new3: out_tok= 12941 think_chars= 31599 text_chars= 2529 stop=end_turn wall=276.2s
+openrouter reasoning_low   new1: out_tok= 16058 think_chars= 37528 text_chars= 3007 stop=end_turn wall=346.1s
+alibaba    native_thinking new1: out_tok= 13509 think_chars= 30970 text_chars= 3131 stop=end_turn wall=291.1s
+alibaba    native_thinking new2: out_tok= 14729 think_chars= 35010 text_chars= 3151 stop=end_turn wall=309.3s
+alibaba    no_field        new2: out_tok= 15845 think_chars= 37781 text_chars= 1634 stop=end_turn wall=341.3s
+openrouter no_field        new1: out_tok= 19757 think_chars= 51584 text_chars= 3043 stop=end_turn wall=426.1s
+
+POOLED SAMPLES
+  openrouter reasoning_low   n=9  [7897, 11639, 12297, 12572, 13092, 13212, 13983, 16058, 16402]
+  openrouter reasoning_high  n=9  [11524, 12178, 12821, 13745, 14158, 15949, 16324, 16401, 20237]
+  openrouter no_field        n=9  [9179, 9673, 9820, 11507, 13398, 13627, 16617, 19020, 19757]
+  openrouter native_thinking n=9  [3568, 3620, 3630, 4197, 4571, 4728, 6238, 6514, 7637]
+  alibaba    reasoning_low   n=9  [9407, 11349, 11486, 13181, 14304, 14478, 17787, 19277, 19734]
+  alibaba    reasoning_high  n=9  [10907, 12622, 13168, 13207, 13228, 13306, 14905, 16519, 17990]
+  alibaba    no_field        n=9  [11586, 12537, 12680, 12941, 14356, 14680, 15845, 17343, 17442]
+  alibaba    native_thinking n=9  [9185, 10063, 10542, 13509, 14613, 14729, 14903, 14991, 15977]
+
+route      condition           mean     min     max  within x   n
+openrouter reasoning_low      13016    7897   16402      2.08   9
+openrouter reasoning_high     14815   11524   20237      1.76   9
+openrouter no_field           13622    9179   19757      2.15   9
+openrouter native_thinking     4967    3568    7637      2.14   9
+alibaba    reasoning_low      14555    9407   19734      2.10   9
+alibaba    reasoning_high     13983   10907   17990      1.65   9
+alibaba    no_field           14378   11586   17442      1.51   9
+alibaba    native_thinking    13168    9185   15977      1.74   9
+
+worst within-cell spread at n=9: 2.15x
+
+CLAIM A - the suppression is the PATH, not the model
+  thinking budget: OpenRouter [3568, 3620, 3630, 4197, 4571, 4728, 6238, 6514, 7637]
+                   Alibaba    [9185, 10063, 10542, 13509, 14613, 14729, 14903, 14991, 15977]
+  ranges DISJOINT; means 4967 vs 13168 = 2.65x, against a 2.15x worst within-cell spread
+  VERDICT: HOLDS at n=9
+
+CLAIM B - on OpenRouter, sending the field costs most of the thinking
+  OpenRouter: thinking budget [3568, 3620, 3630, 4197, 4571, 4728, 6238, 6514, 7637]
+              no field        [9179, 9673, 9820, 11507, 13398, 13627, 16617, 19020, 19757]
+  ranges DISJOINT; 4967 vs 13622 = 64% less
+  VERDICT: HOLDS at n=9
+
+CONTROL - on Alibaba the same field should do nothing
+  Alibaba: thinking budget [9185, 10063, 10542, 13509, 14613, 14729, 14903, 14991, 15977]
+           no field        [11586, 12537, 12680, 12941, 14356, 14680, 15845, 17343, 17442]
+  ranges OVERLAP; 13168 vs 14378
+  VERDICT: still no detectable effect (as expected)
+
+DOES THE EFFORT WORD DO ANYTHING, AT n=9?
+  -- openrouter (baseline 9179-19757, n=9)
+     reasoning_low   7897-16402 (n=9)  vs baseline: overlaps -> no detectable effect
+     reasoning_high  11524-20237 (n=9)  vs baseline: overlaps -> no detectable effect
+     low vs high: 1.14x means, ranges overlap -> inert
+  -- alibaba (baseline 11586-17442, n=9)
+     reasoning_low   9407-19734 (n=9)  vs baseline: overlaps -> no detectable effect
+     reasoning_high  10907-17990 (n=9)  vs baseline: overlaps -> no detectable effect
+     low vs high: 1.04x means, ranges overlap -> inert
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-qwen38max-all-n9.txt

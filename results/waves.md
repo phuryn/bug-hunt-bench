@@ -1094,10 +1094,11 @@ model at the same setting has swung 6 points on repo 1 elsewhere on this board (
 model's number on a clean path — not as evidence that the hop is worth nine points.
 
 **Postscript, Sep 12 — the Aug 3 row's effort tier was inert.** It asked OpenRouter for `high`. A
-probe on that exact surface (n=3 per condition) put `low` at 14,532 mean output tokens, `high` at
-17,503, and *no effort field at all* at 15,714 — a 1.20× spread against a 1.82× worst within-condition
-spread, ranges overlapping. The field does nothing there. The row is now `inert_default`, matching
-every other aggregator-routed row here. Scores unchanged.
+probe on that exact surface, **nine runs per condition**, puts `low` at 13,017 mean output tokens
+(7,897–16,402), `high` at 14,815 (11,524–20,237), and *no effort field at all* at 13,622
+(9,179–19,757) — a 1.14× spread between the two tiers against a 2.15× worst within-condition spread,
+with every range overlapping every other. The field does nothing there. The row is now
+`inert_default`, matching every other aggregator-routed row here. Scores unchanged.
 
 **Correction, same day, to the paragraph above.** For a few hours this postscript also said that
 Anthropic's native `thinking` field *binds* on that surface and that our shim had "removed the one
@@ -1113,13 +1114,24 @@ each) show what it actually does:
 | 2,000 | 5,627 | 4,478–7,490 | 3 |
 | 8,000 | 4,735 | 3,469–6,780 | 3 |
 | 24,000 | 4,111 | 3,053–4,729 | 3 |
-| *field absent* | *13,339* | *9,673–19,020* | *6* |
+| *field absent* | *13,622* | *9,179–19,757* | *9* |
 
 Twelve times the budget moved the mean **0.73×** — the wrong way, and well inside a 1.95× worst
 within-condition spread. `budget_tokens` is not a dial on this path, it is a switch, and what it does
 is *suppress*: sending the field in any form costs roughly two thirds of the model's thinking, while
 the number attached to it is ignored. Every budget's *maximum* still lands below the baseline's
 *minimum*.
+
+**The three budget rows are still n=3, and that is the weakest thing on this page.** They were queued
+for the same nine-run treatment as everything else below; the top-up was attempted on Sep 12 and all
+18 calls returned HTTP 402 — the OpenRouter account had run dry on the run immediately before. So the
+sweep that *retracted* a published claim rests on three samples per value, which is exactly the
+sample size this postscript spends the rest of its length arguing against. Two things keep it
+standing in the meantime: the direction is consistent across all three values, and the 24,000 arm is
+configuration-identical to the nine-run `native_thinking` cell below, which lands in the same place
+(3,053–4,729 there against 3,568–7,637 at n=9). Treat the *ranking* of the three budgets as
+unmeasured. The claim that survives at nine runs is the one that matters — that sending the field at
+all suppresses — and it does not depend on this table.
 
 So the shim's `pop("thinking")` was not a bug that cost the Aug 3 run anything. It was, by accident,
 the configuration that produced the **most** thinking available on that path — because with `thinking`
@@ -1137,23 +1149,33 @@ Alibaba's own no-field baseline. Direct, the field does nothing much. Through th
 thinking by roughly two thirds. One path could not have told those apart, which is why the control was
 run.
 
-**Re-measured at n=6, because a claim this size should not rest on three samples.** Both conditions
-the finding leans on were taken to six runs on both routes
-([receipt](../experiments/effort-dial-probes/20260912-qwen38max-thinking-n6.txt), 12 fresh calls
-pooled with the originals):
+**Re-measured at n=6, then at n=9, because a claim this size should not rest on three samples.** Every
+condition on both routes now stands at **nine runs**
+([receipt](../experiments/effort-dial-probes/20260912-qwen38max-all-n9.txt) — 24 fresh concurrent
+calls pooled with the originals and the n=6 top-ups; the same n on both sides of every comparison, so
+no verdict here rests on a smaller sample than the one it is measured against):
 
 | route | `budget_tokens: 24,000` | no field at all | n each |
 |---|---|---|---|
-| through OpenRouter | **4,973** (3,568–7,637) | 13,339 (9,673–19,020) | 6 |
-| straight to Alibaba | 13,514 (10,063–15,977) | 14,681 (11,586–17,442) | 6 |
+| through OpenRouter | **4,967** (3,568–7,637) | 13,622 (9,179–19,757) | 9 |
+| straight to Alibaba | 13,168 (9,185–15,977) | 14,379 (11,586–17,442) | 9 |
 
-All three verdicts survive, and the cross-route gap *widened* — 2.72× against a 2.14× worst
-within-cell spread, up from 2.16×. Through OpenRouter the field costs **63%** of the model's thinking
-(ranges disjoint); direct to Alibaba it is indistinguishable from sending nothing (ranges overlap).
+All three verdicts survive. Cross-route, the gap is **2.65×** against a 2.15× worst within-cell spread
+— ranges disjoint, with the highest OpenRouter run still below the lowest Alibaba one. Through
+OpenRouter the field costs **64%** of the model's thinking; direct to Alibaba it is indistinguishable
+from sending nothing (ranges overlap). The `reasoning.effort` word reads *more* inert at nine runs
+than at three: low-vs-high means are 1.14× through OpenRouter and 1.04× direct.
 
-The honest cost of the bigger sample: the no-field baseline through OpenRouter was **15,714** at n=3
-and is **13,339** at n=6 — three samples had overestimated it by 18%. The conclusions do not move, but
-every figure above is the six-run one, and the earlier three-run numbers should not be quoted.
+The honest cost of the bigger sample, and the reason it was bought: the no-field baseline through
+OpenRouter measured **15,714** at n=3, **13,339** at n=6, and **13,622** at n=9. Three samples had
+overestimated it by 15%, and the second and third readings agree to 2%. That is the shape you want —
+it says the noise was in the sample, not in the effect. Only the nine-run figures should be quoted;
+the earlier ones are superseded, and they are left visible here because the size of that first
+correction is itself the argument for not publishing off three runs.
+
+Ranges are the load-bearing claim on this finding, and ranges can only widen with more samples — every
+extra draw can break a disjointness claim and none can manufacture one. So each of these passes was a
+test the finding could fail. It didn't.
 
 The Aug 3 row is superseded rather than deleted; it remains the receipt for what an aggregator hop
 costs in tokens.

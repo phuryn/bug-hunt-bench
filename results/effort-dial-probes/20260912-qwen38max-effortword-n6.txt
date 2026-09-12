@@ -1,0 +1,38 @@
+qwen3.8-max reasoning.effort WORD at n=6, both routes - 2026-09-12 11:23
+12 fresh calls, ALL CONCURRENT; pooled with the 3 prior samples per cell
+closes the last four n=3 cells, so every row on the card carries the same n
+identical prompt / model / endpoint / max_tokens=32000 as the rest of the series
+
+openrouter reasoning_low   new2: out_tok=  7897 think_chars= 16730 text_chars= 2521 stop=end_turn wall=180.4s
+alibaba    reasoning_low   new2: out_tok= 11486 think_chars= 28718 text_chars= 1654 stop=end_turn wall=264.0s
+openrouter reasoning_high  new1: out_tok= 12178 think_chars= 26378 text_chars= 3024 stop=end_turn wall=264.9s
+openrouter reasoning_low   new3: out_tok= 12297 think_chars= 28502 text_chars= 2780 stop=end_turn wall=287.8s
+openrouter reasoning_low   new1: out_tok= 12572 think_chars= 30669 text_chars= 1751 stop=end_turn wall=291.4s
+alibaba    reasoning_high  new3: out_tok= 13207 think_chars= 30959 text_chars= 2940 stop=end_turn wall=303.0s
+openrouter reasoning_high  new3: out_tok= 14158 think_chars= 35203 text_chars= 2595 stop=end_turn wall=332.5s
+alibaba    reasoning_high  new1: out_tok= 14905 think_chars= 36656 text_chars= 2792 stop=end_turn wall=342.1s
+openrouter reasoning_high  new2: out_tok= 16401 think_chars= 38777 text_chars= 2543 stop=end_turn wall=367.6s
+alibaba    reasoning_high  new2: out_tok= 17990 think_chars= 43293 text_chars= 3229 stop=end_turn wall=392.2s
+alibaba    reasoning_low   new3: out_tok= 17787 think_chars= 44251 text_chars= 3156 stop=end_turn wall=411.7s
+alibaba    reasoning_low   new1: out_tok= 19277 think_chars= 46793 text_chars= 1816 stop=end_turn wall=437.3s
+
+POOLED
+route      condition           mean     min     max  within x   n
+openrouter reasoning_low      12727    7897   16402      2.08   6
+openrouter reasoning_high     15874   12178   20237      1.66   6
+openrouter no_field           13339    9673   19020      1.97   6
+alibaba    reasoning_low      16177   11486   19734      1.72   6
+alibaba    reasoning_high     14849   13168   17990      1.37   6
+alibaba    no_field           14681   11586   17442      1.51   6
+
+DOES THE EFFORT WORD DO ANYTHING, AT n=6?
+  -- openrouter (baseline 9673-19020, n=6)
+     reasoning_low   7897-16402 (n=6)  vs baseline: overlaps -> no detectable effect
+     reasoning_high  12178-20237 (n=6)  vs baseline: overlaps -> no detectable effect
+     low vs high: 1.25x means, ranges overlap -> inert
+  -- alibaba (baseline 11586-17442, n=6)
+     reasoning_low   11486-19734 (n=6)  vs baseline: overlaps -> no detectable effect
+     reasoning_high  13168-17990 (n=6)  vs baseline: overlaps -> no detectable effect
+     low vs high: 1.09x means, ranges overlap -> inert
+
+wrote <WORKDIR>\experiments\effort-dial-probes\20260912-qwen38max-effortword-n6.txt
