@@ -138,3 +138,4 @@ GPT-6 Sol (low effort),Codex CLI,3,0,0,2,0,7.5,0.74
 GPT-6 Luna (max effort),Codex CLI,6,1,0,6,0,48.4,0.28
 GPT-6 Luna (max effort) - mean of 2,Codex CLI,6.5,1.0,0.0,6.0,0,51.8,0.25
 GPT-6 Luna (max effort) - mean of 3,Codex CLI,6.3,1.3,0.0,5.7,0,50.2,0.23
+GPT-6 Luna (xhigh effort),Codex CLI,4,0,0,4,0,21.3,0.2

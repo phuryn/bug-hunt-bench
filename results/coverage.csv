@@ -110,6 +110,7 @@ Grok 4.6 (low),Grok Build CLI (ACP),low,15,1,16 20 30 33 34 45 47 60 71 76 83 84
 "Qwen3.8-27B (xhigh effort, Alibaba API) - mean of 3",Claude Code / Alibaba API,xhigh,15,3,16x2 20x3 27x1 30x3 32x1 39x2 43x3 44x1 45x1 47x1 49x1 50x3 60x3 61x1 62x1 71x3 76x3 83x3 84x1 92x1 97x2 98x2 99x3
 "Qwen3.8-27B (xhigh effort, Alibaba API)",Claude Code / Alibaba API,xhigh,15,1,16 20 30 33 34 45 47 60 71 76 83 84 92 97 99
 Opus 4.8 (max effort),Claude Code,max,15,1,16 20 30 33 34 45 47 60 71 76 83 84 92 97 99
+GPT-6 Luna (xhigh effort),Codex CLI,xhigh,14,1,20 30 43 45 47 49 50 62 76 77 83 84 92 99
 DeepSeek V4-Flash 0731,Claude Code / OpenRouter,default,14,1,13 20 25 30 39 43 50 67 71 76 83 92 97 99
 GPT-6 Sol (medium effort),Codex CLI,medium,14,1,13 16 30 47 49 50 77 82 83 84 98 99 100 102
 "Muse Spark 1.2 (default effort, OpenRouter)",Claude Code / OpenRouter,default,14,1,13 16 30 47 49 50 77 82 83 84 98 99 100 102
