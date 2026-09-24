@@ -7,9 +7,9 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Sep 23, 2026](assets/leaderboard.png?v=2026-09-23-4cae100e)
+![Bug Hunt Bench leaderboard, the featured runs, updated Sep 23, 2026](assets/leaderboard.png?v=2026-09-23-21e2aee1)
 
-**Updated Sep 23, 2026 · 141 rows from 218 scored runs · 38 models · 31 of 105 bugs have never been fixed by any model.**
+**Updated Sep 23, 2026 · 142 rows from 219 scored runs · 38 models · 31 of 105 bugs have never been fixed by any model.**
 
 **Current leader:** GPT-6 Astra at `max` effort — **45 / 105** (22/45 on repo 1, 23/60 on repo 2).
 
@@ -102,11 +102,12 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 83 | Opus 4.8 | Claude Code | high | 1 | **9** | 2 | 7 | 1 | 35 min | $21.30 | 2026-07-26 |
 | 84 | Sonnet 5 | Claude Code | max | 1 | **9** | 3 | 6 | 3 | 61 min | $26.94 | 2026-09-10 |
 | 85 | GPT-6 Sol | Codex CLI | low | 1 | **6** | 3 | 3 | 5 | 11 min | $1.08 | 2026-09-23 |
-| 86 | GPT-5.6 Luna | Codex CLI | low | 1 | **4** | 0 | 4 | 1 | 6 min | $0.10 | 2026-08-27 |
-| 87 | Gemma 4 31B | Claude Code / OpenRouter | default | 1 | **4** | 1 | 3 | 2 | 222 min | $8.61 bill | 2026-09-16 |
-| 88 | Gemma 4 31B 4-bit | Claude Code / OpenRouter | default | 1 | **3** | 1 | 2 | 2 | 25 min | $0.56 bill | 2026-09-16 |
-| 89 | gpt-oss-120b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0.3 | 4 min | $0.11 bill | 2026-09-15 |
-| 90 | gpt-oss-20b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0 | 7 min | $0.11 bill | 2026-09-15 |
+| 86 | GPT-6 Luna | Codex CLI | medium | 1 | **4** | 2 | 2 | 0 | 9 min | $0.06 | 2026-09-23 |
+| 87 | GPT-5.6 Luna | Codex CLI | low | 1 | **4** | 0 | 4 | 1 | 6 min | $0.10 | 2026-08-27 |
+| 88 | Gemma 4 31B | Claude Code / OpenRouter | default | 1 | **4** | 1 | 3 | 2 | 222 min | $8.61 bill | 2026-09-16 |
+| 89 | Gemma 4 31B 4-bit | Claude Code / OpenRouter | default | 1 | **3** | 1 | 2 | 2 | 25 min | $0.56 bill | 2026-09-16 |
+| 90 | gpt-oss-120b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0.3 | 4 min | $0.11 bill | 2026-09-15 |
+| 91 | gpt-oss-20b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0 | 7 min | $0.11 bill | 2026-09-15 |
 
 **Runs** is how many independent runs the row is built from. A row at `1` is a single measurement. A row above `1` is the MEAN of that many runs of an identical configuration - same model, prompt, harness, route, effort flag and judge - and every count, wall and cost on it is averaged, which is why those rows carry a decimal. The individual runs behind a mean are published in full in the metrics CSVs, so the spread stays auditable: this board has measured a 9-point range of 105 on a fixed configuration, so a single run is not a measurement of a model, and two rows at `1` that differ by a few points may not differ at all.
 

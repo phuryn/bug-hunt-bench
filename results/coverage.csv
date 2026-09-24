@@ -133,6 +133,7 @@ Sonnet 5 (max effort),Claude Code,max,9,1,33 34 43 76 83 92 97 99 100
 DeepSeek V4-Flash,Claude Code / OpenRouter,default,8,1,20 30 39 43 47 71 84 99
 Qwen3.8-27B 8-bit (OpenRouter/Parasail),Claude Code / OpenRouter,default,8,1,20 43 62 71 76 83 98 99
 GPT-6 Sol (low effort),Codex CLI,low,6,1,20 30 45 76 83 99
+GPT-6 Luna (medium effort),Codex CLI,medium,4,1,20 30 77 99
 GPT-5.6 Luna (low effort),Codex CLI,low,4,1,76 77 83 99
 Gemma 4 31B (OpenRouter/Crusoe),Claude Code / OpenRouter,default,4,1,20 99 100 102
 Gemma 4 31B 4-bit (OpenRouter/CoreWeave),Claude Code / OpenRouter,default,3,1,20 83 100
