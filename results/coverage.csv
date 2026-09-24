@@ -123,11 +123,12 @@ Grok 4.7 (low),Grok Build CLI (ACP),low,11,1,20 30 37 39 45 60 76 83 84 99 100
 Qwen3.8-27B 8-bit (OpenRouter/Parasail) - mean of 3,Claude Code / OpenRouter,default,10.7,3,16x1 20x2 25x1 30x2 39x1 41x1 43x2 45x1 50x2 60x1 62x1 71x3 76x3 83x3 92x1 97x1 98x3 99x3
 DeepSeek V4-Pro,Claude Code / OpenRouter,default,10,1,13 16 20 39 43 76 77 83 84 99
 "Muse Spark 1.3 (low effort, Muse Code, Meta API) - mean of 3",Muse Code / Meta API,low,9.7,3,16x2 20x3 22x1 25x1 30x3 39x1 43x1 44x1 45x2 60x1 62x1 76x1 77x2 83x1 84x2 95x1 97x1 98x1 99x1 100x1 102x1
+GPT-6 Luna (high effort),Codex CLI,high,9,1,30 45 49 76 77 83 84 99 100
 GPT-5.6 Luna (medium effort),Codex CLI,medium,9,1,20 22 30 37 43 76 77 83 99
 "GLM-5.3 Flash (low effort, Z.ai API)",Claude Code / Z.ai API,low,9,1,16 20 25 27 29 39 43 71 84
 "Muse Spark 1.3 (medium effort, Muse Code, Meta API)",Muse Code / Meta API,medium,9,1,20 30 43 45 76 77 97 99 102
 Sonnet 5,Claude Code,high,9,1,22 66 70 71 76 77 83 97 99
-Opus 4.8,Claude Code,high,9,1,20 30 50 60 71 76 83 92 99
+Opus 4.8,Claude Code,high,9,1,30 45 49 76 77 83 84 99 100
 Sonnet 5 (max effort),Claude Code,max,9,1,33 34 43 76 83 92 97 99 100
 DeepSeek V4-Flash,Claude Code / OpenRouter,default,8,1,20 30 39 43 47 71 84 99
 Qwen3.8-27B 8-bit (OpenRouter/Parasail),Claude Code / OpenRouter,default,8,1,20 43 62 71 76 83 98 99
