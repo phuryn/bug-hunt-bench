@@ -3680,8 +3680,70 @@ a 20x price cut, which is the question a buyer actually has and the one a leader
 score alone never answers.
 
 The comparison it is being measured against, as published here today: GPT-6 Astra 45.0 (n=3), GPT-6
-Sol 29.3 (n=3), and its own direct predecessor GPT-5.6 Luna 31.3 (n=3). Scores and the full ladder
-land in the rows above as each run is judged; this section gets its table when the sweep is done.
+Sol 29.3 (n=3), and its own direct predecessor GPT-5.6 Luna 31.3 (n=3).
+
+**The answer is 62% of GPT-6 Sol's score — and less than two-thirds of what this same tier scored a
+generation ago.** Max is the mean of three runs; every rung below it is a single draw.
+
+| Effort | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|
+| max (n=3) | **18.3** / 105 | 6.3 / 45 | 12.0 / 60 | 22.7 | 99.2 min | $0.52 |
+| xhigh | 14 / 105 | 4 / 45 | 10 / 60 | 12 | 57.0 min | $0.39 |
+| high | 9 / 105 | 2 / 45 | 7 / 60 | 9 | 24.4 min | $0.13 |
+| medium | 4 / 105 | 2 / 45 | 2 / 60 | 0 | 8.6 min | $0.06 |
+| low | 4 / 105 | 1 / 45 | 3 / 60 | 9 | 19.3 min | $0.20 |
+
+The three runs at max were **17, 21 and 17** — a four-point spread around the mean, which is why the
+featured row is the mean and not the first number that came in.
+
+**The dial reaches this model for three rungs, then hits a floor.** 18.3 → 14 → 9 is a clean slope,
+so the objection that had to be closed for GPT-6 Sol — maybe the effort flag never arrived — closes
+here too. But medium and low both land on **4 of 105**, and they do not agree on which four: medium
+fixed 2 and 2 across the two repos, low fixed 1 and 3. The bottom of this ladder is a floor rather
+than a slope, and the two rows tie by coincidence, not by finding the same bugs.
+
+**Turning the dial below medium costs three times as much for the same score.** Low ran $0.20
+against medium's $0.06, 19.3 minutes against 8.6, and 15.2M input tokens against 2.8M. Both legs
+were clean — health checks passed on the first attempt, both wrote reports, both exited 0 — so this
+is the model's behaviour, not a harness artefact. The reasoning budget does fall exactly as
+advertised: 12.1K reasoning tokens at high, 3.1K at medium, **zero** at low. What rises instead is
+turn count. Low emitted 2.6x medium's output tokens and read 5.5x the input, roughly 97% of it cache
+hits — the shape of a model going around the same context repeatedly without thinking between
+passes. It is not nothing: low returned **9 genuine unplanted defects against medium's 0**. It just
+did not convert any of that into planted fixes. GPT-6 Sol's ladder does not behave this way; its
+meter tracked its dial end to end, $1.08 at the bottom to $9.33 at the top.
+
+**Every GPT-6 tier with a GPT-5.6 counterpart scores at or below it on this benchmark — lower at
+seven of the eight rungs where both were measured, level at the eighth.** Not one checkpoint, and
+not only the cheap end:
+
+| Effort | GPT-5.6 Sol → GPT-6 Sol | GPT-5.6 Luna → GPT-6 Luna |
+|---|---|---|
+| max | 43.5 (n=2) → 29.3 (n=3), **−33%** | 31.3 (n=3) → 18.3 (n=3), **−42%** |
+| xhigh | 39 → 25, **−36%** | 23 → 14, **−39%** |
+| high | not published | 13 → 9, **−31%** |
+| medium | 29 → 14, **−52%** | 9 → 4, **−56%** |
+| low | not published | 4 → 4, level |
+
+GPT-6 Astra is the exception, and the reason the pattern is easy to miss: it leads this board at 45.0
+and has no GPT-5.6 counterpart to be measured against — it is the tier the generation *added*, not a
+tier the generation improved. Read the release whole and the new top model beats everything before
+it while both carried-over tiers went backwards.
+
+Two caveats, both unmodelled. Every GPT-6 row runs a Codex build one version newer than every
+GPT-5.6 row, because the older build refuses these models on a ChatGPT account — so the generational
+deltas above carry a harness difference this board cannot separate out. And apart from the four
+means, every figure in them is a single draw of a configuration this board has watched swing 13
+points between identical runs. The direction is consistent across all eight rungs; the size of any
+one step is not a measurement.
+
+**Twenty times cheaper does not make it the cheapest way to find a bug here.** At $0.52 for a
+mean-of-three max run this is the cheapest OpenAI row on the board by a wide margin, and the
+price-per-token claim holds up end to end. It is still not the efficient choice: DeepSeek V4.1 Flash
+at high effort fixes 19 for $0.31, and MiMo-V2.6-Flash averages 23.3 over three runs for $0.50 —
+both above GPT-6 Luna's ceiling, for the same money or less. Dollars-per-bug flatters low scores, so
+it is only worth reading between rows in the same band; in that band the cheap seats were already
+taken, and taken by open weights.
 
 **Existence was proved positively, not inferred from a rejection.** The slug appears in the
 account's own model list and the pinned CLI accepted it and answered. That distinction is load
