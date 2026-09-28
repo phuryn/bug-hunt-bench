@@ -3759,3 +3759,11 @@ The two GPT-6 ladders therefore compare cleanly to each other and carry a one-ve
 against everything else. Costs are list-rate estimates and floors — the long-context surcharge
 above 272K input is not modelled. Judged by a blind grok checkpoint, with the id read from each
 scoring receipt rather than the judge config.
+
+## Sonnet 5.5 — measured on release day (Sep 28)
+
+Anthropic's Sonnet 5.5 went on the board the evening it shipped, through Claude Code on the first-party API, configured identically to the Opus 5.5 ladder except the model slug: 1M window, CLI-default autocompact, blind Codex judge. The order: max, xhigh, max twice more for a mean of three, then high, medium and low at one run each. Rows land in this table as they are judged; a mean row supersedes the max row before it. Single runs are single draws - this board has measured a 13-point spread between two runs of one identical configuration.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Sonnet 5.5 (max effort) | 1 | **57** / 105 | 24 / 45 | 33 / 60 | 28 | 257.8 min | $154.05 |

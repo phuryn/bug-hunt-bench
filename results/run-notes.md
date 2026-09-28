@@ -2,7 +2,15 @@
 
 Every row on the board, with the note and caveat it carries. Generated from `data/benchmark.json` by `bench_golive.py` - do not edit by hand.
 
-Updated Sep 23, 2026 · 143 rows from 220 scored runs. Superseded rows are listed last.
+Updated Sep 28, 2026 · 144 rows from 221 scored runs. Superseded rows are listed last.
+
+## Sonnet 5.5 (max effort)
+
+**57 / 105** · repo 1 24/45 · repo 2 33/60 · 28 unplanted · 257.8 min · $154.05 · `max` · Claude Code · single run · 2026-09-28
+
+**Caveat.** ONE RUN, not a mean - this board has measured a 13-point spread between two runs of a single identical configuration, so treat this as one draw until the two replicates land. Both Sonnet 5 rows here compacted mid-task on older CLI builds, so the gap against them is not a clean version comparison. Cost is a list-rate estimate, checked against the harness's own figure. The machine was idle for every leg.
+
+Anthropic's Sonnet 5.5 at max effort through Claude Code on the first-party API, measured the evening it shipped. 57 of 105: 24 of 45 on repo 1 and 33 of 60 on repo 2, 28 genuine extras, 257.8 minutes, $154.05. ONE RUN so far; two replicates follow and will supersede this row. For comparison the board currently publishes Sonnet 5 at max effort 9, Sonnet 5 at high effort 9, Opus 5.5 at max effort 41.7 (mean of 3) of 105. *** IT KEEPS WORKING AFTER IT WRITES ITS REPORT *** On repo 1 it took 915 turns (the harness's own count); it first wrote its report 66 minutes in and its last model call came at minute 196 - 129 minutes of further checking and revising after the report existed. For scale: Opus 5.5 at max took 159-201 turns there over three runs of 26-37 minutes; Sonnet 5 at max took 207, and every one of those runs wrote its report within 1 minute of its last call. On repo 2 it took 651 turns (the harness's own count); it first wrote its report 57 minutes in and its last model call came at minute 62 - 5 minutes of further checking and revising after the report existed. For scale: Opus 5.5 at max took 264-317 turns there over three runs of 34-39 minutes; Sonnet 5 at max took 204, and every one of those runs wrote its report within 1 minute of its last call. Its own repo-1 report says each fix carries a regression test that it confirmed fails with the fix reverted - a mutation check - which is where the extra turns went. *** SAME MACHINE AS THE OPUS 5.5 LADDER *** configured byte-identical to the opus55* arms except the model slug and the effort flag: Claude Code straight onto Anthropic's first-party API, no proxy, 1M window requested with the [1m] suffix, CLI-default autocompact, same prompt, same timeout class, same blind judge. The two Sonnet 5 rows on this board ran older Claude Code builds (2.1.218, 2.1.267) and compacted mid-task - 5 compactions across their 4 legs, peaks 284,197 to 295,210 tokens - so a gap against them mixes the model version with how much of each run's context survived, and is not a clean version delta. Effort is a first-party Claude Code tier (documented enum low|medium|high|xhigh|max, enforced: an invented tier is answered 'Unknown --effort value'), taken at face value like every other Claude row here. The harness stated init.model claude-sonnet-5-5[1m] on every leg - the [1m] suffix honoured, so this is a 1M-window run - on Claude Code 2.1.283. Peak context 1,001,140 tokens; 3 compactions across 2 legs. Autocompact ran at the CLI default. *** COST IS A LIST ESTIMATE *** token counts at Anthropic's published Sonnet 5.5 rates (as read 2026-09-28): $2 input, $10 output, $0.20 cache read, $4 cache write - the 1-hour rate, which is what this harness writes. The harness's own cost figure is NOT a cross-check on this model: Claude Code reported its cost basis for Sonnet 5.5 as 'unknown' and priced the run on Opus 5.5's table - its figure is exactly those tokens at Opus 5.5 rates, about a fifth higher than Sonnet 5.5's own. So the check here is on tokens: each leg's metered counts agree with the harness's own per-model counts within 3 per cent. Claude Code on a subscription exposes no invoice, hence `list`. *** RECEIPTS *** All legs exited 0 with a report written, run SEQUENTIALLY, one repo at a time. Judge: blind Codex gpt-5.5 - an OpenAI model scoring an Anthropic one, so neither the model itself nor a sibling of it. The machine was otherwise idle for every leg, so the wall figures compare directly against other uncontended rows.
 
 ## GPT-6 Astra (max effort) - mean of 3
 
@@ -540,19 +548,19 @@ The BOTTOM of Z.ai's three-tier dial for this family, run first-party on the sam
 
 ## Sonnet 5
 
-**9 / 105** · repo 1 1/45 · repo 2 8/60 · 4 unplanted · 32.8 min · $17.06 · `high` · Claude Code · single run · 2026-07-26
+**9 / 105** · repo 1 1/45 · repo 2 8/60 · 4 unplanted · 32.8 min · $11.38 · `high` · Claude Code · single run · 2026-07-26
+
+## Sonnet 5 (max effort)
+
+**9 / 105** · repo 1 3/45 · repo 2 6/60 · 3 unplanted · 61.3 min · $17.96 · `max` · Claude Code · single run · 2026-09-10
+
+**Caveat.** A null from one run per setting is not proof the tier is inert - it is the absence of evidence that it is active, on a benchmark where this model finds few bugs at either setting, which is exactly the regime where a real effect would be hardest to see.
+
+The clearest null on the board's Anthropic dial: Sonnet 5 at max scores 9/105, exactly what the default-effort Sonnet 5 row scored. The totals match and the split does not - default was 1/45 + 8/60, max is 3/45 + 6/60 - so the tier moved two bugs onto repo 1 and two off repo 2 and finished where it started. Two runs cannot separate that from ordinary run-to-run noise, and the honest reading is that asking Sonnet 5 for maximum effort bought nothing measurable on this benchmark. Both legs exited success with a report written. Cost rose about 58 per cent for it: $17.96 at list against $11.38 for the default row.
 
 ## Opus 4.8
 
 **9 / 105** · repo 1 2/45 · repo 2 7/60 · 1 unplanted · 34.8 min · $21.30 · `high` · Claude Code · single run · 2026-07-26
-
-## Sonnet 5 (max effort)
-
-**9 / 105** · repo 1 3/45 · repo 2 6/60 · 3 unplanted · 61.3 min · $26.94 · `max` · Claude Code · single run · 2026-09-10
-
-**Caveat.** A null from one run per setting is not proof the tier is inert - it is the absence of evidence that it is active, on a benchmark where this model finds few bugs at either setting, which is exactly the regime where a real effect would be hardest to see.
-
-The clearest null on the board's Anthropic dial: Sonnet 5 at max scores 9/105, exactly what the default-effort Sonnet 5 row scored. The totals match and the split does not - default was 1/45 + 8/60, max is 3/45 + 6/60 - so the tier moved two bugs onto repo 1 and two off repo 2 and finished where it started. Two runs cannot separate that from ordinary run-to-run noise, and the honest reading is that asking Sonnet 5 for maximum effort bought nothing measurable on this benchmark. Both legs exited success with a report written. Cost rose about 58 per cent for it: $26.94 at list against $17.06 for the default row.
 
 ## GPT-6 Sol (low effort)
 
