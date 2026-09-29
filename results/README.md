@@ -11,6 +11,7 @@ place, marked.
 | `repo1-scoreboard.csv`, `repo2-scoreboard.csv` | The same per repo (45 and 60 planted bugs). |
 | `repo1-metrics.csv`, `repo2-metrics.csv` | Per-leg accounting: harness, requested effort, wall seconds, input / cache-write / cache-read / output / reasoning tokens, cost estimate, exit code, and a notes column with the serving path, effort evidence, pricing basis, voids and corrections. |
 | `coverage.csv` | For every run, exactly which of the 105 bugs it fixed, by index (see below). |
+| `runs.csv` | One line per individual run: score (total and per repo), partials, claimed-only, extras, wall clock, cost, and turns (total and per repo). A board row that averages several runs lists each of them here (see below). |
 | `repo1-prompt.md`, `repo2-prompt.md` | The exact task prompt each model received. Self-contained specs. |
 | `judge-calibration.md` | The judge-routing controls: re-judging under a second vendor reproduced every published arm exactly. |
 | `effort-dial-probes/` | Per serving path, whether the reasoning-effort parameter does anything: token sweeps, zero-token ACP readbacks, wire readbacks, ceiling checks. Index in its README. |
@@ -25,6 +26,7 @@ place, marked.
 - **false_positive_fixes** — "fixes" of things that were not bugs. Zero on every run so far. Not to be confused with the judge's **cosmetic** bucket: a no-op change such as a moved comment or a style tweak, which is neither a fix nor a defect and is excluded from this column (one Astra row briefly counted one; corrected 2026-09-10, see `waves.md`).
 - **cost** kinds — `bill` (an invoice or credits delta), `list` (token estimate at published rates), `floor` (reconstructed lower bound), `free`. Never rank across kinds to the dollar.
 - **effort** and its status — `verified_ceiling` (dial probed as binding and the tier is the top one offered), `verified` (probed as binding), `first_party` (a documented first-party enum, requested explicitly, not probed), `clamped` (the CLI quietly served a lower tier; published as a correction), `inert_default` (the serving path's effort parameter provably does nothing; the row says `default`).
+- **turns** — model steps: every tool call (a shell command, a file read or edit, a search) plus the final answer, per repo. It is exactly what Claude Code reports as its own turn count, and the one definition every harness here can supply, so every run is counted from its own log the same way: Claude Code from its reported count, Codex CLI (which calls a whole run one turn) from its commands and edits, Grok from the tool calls in its session log, Muse Code and the Google CLIs from their tool events. A turn is a step, not a unit of work, so turns compare most cleanly within one harness. A run whose log was not kept has no turn count - blank, never estimated.
 - **exit** in the metrics files — `0` is a clean leg. A non-zero row is a `VOID` leg kept as the receipt for its replacement.
 
 ## Per-bug coverage
@@ -39,6 +41,18 @@ regeneration and every run.
 Each row's index count always equals that run's `fixed_of_105` in the scoreboards; the file is
 generated from the same verdict files, never hand-edited. The live board renders this as its Coverage view:
 https://bughunt.productcompass.pm/?view=coverage
+
+## Individual runs
+
+`runs.csv` exists because a board row is not always one run. A `- mean of N` row is an average, and until
+2026-09-29 the runs behind it were published only as per-leg metrics. Each line here is one run, keyed by the
+same run id the metrics files use, with the board row it belongs to (`board_row`) and whether that row is live
+or superseded. A run that once had a row of its own and is now part of a mean is filed under the mean.
+
+The file is generated with the board, never by hand. For a single-run row the figures are the row's own; for a
+run inside a mean they come from that run's own verdicts and metrics, and the build refuses to publish if the
+runs do not average back to the row. Where a row's cost is a corrected aggregate that the per-run receipts do
+not add up to, the per-run cost is left blank with the reason in `note` rather than split by guesswork.
 
 ## What is not here
 

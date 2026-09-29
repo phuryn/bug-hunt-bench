@@ -51,9 +51,9 @@ function presetSlugs(key, runs) {
   return p.select ? p.select(runs) : new Set(runs.filter(p.test).map((r) => r.slug));
 }
 
-/* The four views and the panels they live in. Score-vs-cost and score-vs-time
-   share one axis-driven renderer (scatter.js) — a fifth x/y measure there
-   would mean an axis spec and a row here, not a new renderer. Coverage has no
+/* The five views and the panels they live in. Score-vs-cost, score-vs-time and
+   score-vs-turns share one axis-driven renderer (scatter.js) — each is an axis
+   spec and a row here, not a new renderer. Coverage has no
    axis: it is its own renderer (coverage.js), wired in below. */
 const VIEWS = {
   table: { panel: 'panel-table', tab: 'tab-table' },
@@ -65,12 +65,16 @@ const VIEWS = {
     panel: 'panel-time', tab: 'tab-time', axis: AXES.time,
     host: 'chart-time', legend: 'time-legend', empty: 'time-empty', note: 'time-axis-note',
   },
+  turns: {
+    panel: 'panel-turns', tab: 'tab-turns', axis: AXES.turns,
+    host: 'chart-turns', legend: 'turns-legend', empty: 'turns-empty', note: 'turns-axis-note',
+  },
   coverage: {
     panel: 'panel-coverage', tab: 'tab-coverage',
     host: 'coverage-host', empty: 'coverage-empty', note: 'coverage-note',
   },
 };
-const CHART_VIEWS = ['scatter', 'time'];
+const CHART_VIEWS = ['scatter', 'time', 'turns'];
 
 /* Which caveat belongs beside which map. Matched on its opening words, with the
    generator's current position as a fallback, so a reordered data file moves the
@@ -78,6 +82,7 @@ const CHART_VIEWS = ['scatter', 'time'];
 const CHART_CAVEAT = {
   time: { index: 1, starts: 'Wall clock' },
   cost: { index: 2, starts: 'Cost' },
+  turns: { index: 4, starts: 'Turns' },
 };
 
 const state = {
@@ -395,7 +400,7 @@ function renderKeys() {
 
 /* ---------------------------------------------------------------- renderers */
 
-const lastChartWidth = { scatter: 0, time: 0 };
+const lastChartWidth = { scatter: 0, time: 0, turns: 0 };
 
 /** The sentence that belongs to a map, drawn inside the plate with the plot. */
 function chartFootnote(axisId) {
@@ -568,6 +573,15 @@ function setView(view, focus) {
     t.setAttribute('aria-selected', String(on));
     t.tabIndex = on ? 0 : -1;
     if (on && focus) t.focus();
+    // on a phone the tab row scrolls sideways: keep the active tab in it, without
+    // moving the page vertically (scrollIntoView would, on a deep-linked load)
+    const bar = t.parentElement;
+    if (on && bar && bar.scrollWidth > bar.clientWidth) {
+      const left = t.offsetLeft - bar.offsetLeft;
+      if (left < bar.scrollLeft || left + t.offsetWidth > bar.scrollLeft + bar.clientWidth) {
+        bar.scrollLeft = Math.max(0, left - 16);
+      }
+    }
   });
   Object.entries(VIEWS).forEach(([k, V]) => { $(V.panel).hidden = k !== state.view; });
   renderViews();

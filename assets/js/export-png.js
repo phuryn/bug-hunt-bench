@@ -597,6 +597,21 @@ function drawCoverage(ctx, T, L, w) {
   return L;
 }
 
+/** The runs on the card that the map cannot place: no figure at all, or a zero on a log axis. */
+function unplottedNote(runs, axis) {
+  const v = (r) => r[axis.key];
+  const what = { cost: 'cost', time: 'wall-clock', turns: 'turn' }[axis.id] || axis.id;
+  const missing = runs.filter((r) => v(r) === null || v(r) === undefined);
+  const zero = axis.scale === 'log' ? runs.filter((r) => v(r) === 0) : [];
+  if (!missing.length && !zero.length) return null;
+  const name = (r) => `${r.model}${r.effort ? ` · ${r.effort}` : ''}`;
+  const parts = [];
+  if (missing.length) parts.push(`${missing.map(name).join(', ')} (no ${what} figure)`);
+  if (zero.length) parts.push(`${zero.map(name).join(', ')} (zero, which a logarithmic axis cannot place)`);
+  const n = missing.length + zero.length;
+  return `Not plotted: ${parts.join('; ')}. ${n === 1 ? 'It is' : 'They are'} in the leaderboard.`;
+}
+
 /* -------------------------------------------------------------------- main */
 
 export async function exportView({
@@ -639,10 +654,12 @@ export async function exportView({
     : '';
   const footerLines = [
     isChart
-      ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${axis.id === 'cost' ? 'Cost on a logarithmic axis' : 'Wall clock on a linear axis'}; the score axis stops above the board's best run, which is out of 105.`
+      ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${{ cost: 'Cost on a logarithmic axis', time: 'Wall clock on a linear axis', turns: 'Turns on a logarithmic axis' }[axis.id]}; the score axis stops above the board's best run, which is out of 105.`
       : isCoverage
         ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}.`
         : `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Sorted by ${sortLabel}.`,
+    // a run with no figure on this map's measure is not drawn - the card says so, as the page does
+    isChart ? unplottedNote(runs, axis) : null,
     'Score = planted bugs fixed, verified blind against a withheld answer key. Unplanted defects are real, but they are counted separately and never added to the score.',
     // the same sentence the page carries, because an exported PNG travels alone
     isChart || isCoverage ? null : BAR_SCALE_NOTE,

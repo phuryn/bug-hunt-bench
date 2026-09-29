@@ -429,6 +429,13 @@ h1 em { font-style: normal; color: var(--accent); }
 .views__actions { display: flex; align-items: flex-end; gap: clamp(12px, 3vw, 28px); flex-wrap: wrap; }
 
 .tabs { display: flex; gap: 20px; }
+/* Five views since 2026-09-29 (score vs turns). On a phone the labels wrapped to three lines each;
+   one scrollable row keeps every tab a single line and still reachable. */
+@media (max-width: 620px) {
+  .tabs { gap: 16px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; max-width: 100%; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { white-space: nowrap; flex: 0 0 auto; }
+}
 .tab {
   font: inherit; font-size: 13px; background: none; border: 0; cursor: pointer;
   color: var(--muted); padding: 6px 0 10px; border-bottom: 2px solid transparent;

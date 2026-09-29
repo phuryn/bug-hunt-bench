@@ -238,6 +238,12 @@ export function fmtWall(v) {
   return v.toFixed(1);
 }
 
+/** Turns are whole model steps; thousands get a separator so 1,330 reads as one number. */
+export function fmtTurns(v) {
+  if (v === null || v === undefined) return '—';
+  return Math.round(v).toLocaleString('en-US');
+}
+
 /** Bar width as a share of the track, with the value's own width reserved out of it.
     Kept here because the table and the PNG export must agree on the geometry. */
 export function barRatio(value, max) {

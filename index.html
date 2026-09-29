@@ -158,6 +158,7 @@
           <button type="button" class="tab" role="tab" id="tab-table" aria-controls="panel-table" aria-selected="true" data-view="table">Leaderboard</button>
           <button type="button" class="tab" role="tab" id="tab-scatter" aria-controls="panel-scatter" aria-selected="false" tabindex="-1" data-view="scatter">Score vs cost</button>
           <button type="button" class="tab" role="tab" id="tab-time" aria-controls="panel-time" aria-selected="false" tabindex="-1" data-view="time">Score vs time</button>
+          <button type="button" class="tab" role="tab" id="tab-turns" aria-controls="panel-turns" aria-selected="false" tabindex="-1" data-view="turns">Score vs turns</button>
           <button type="button" class="tab" role="tab" id="tab-coverage" aria-controls="panel-coverage" aria-selected="false" tabindex="-1" data-view="coverage">Coverage</button>
         </div>
         <button type="button" class="btn btn--export" id="export-png">Export this view (PNG)</button>
@@ -206,6 +207,17 @@
         Minutes are on a linear axis: the board spans under sevenfold, well inside one order of magnitude, so a linear axis places every run honestly and keeps the reading additive.
         <span id="time-axis-note"></span>
         Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>.
+      </p>
+    </div>
+
+    <div class="panel" id="panel-turns" role="tabpanel" tabindex="0" aria-labelledby="tab-turns" hidden>
+      <div class="chart" id="chart-turns"></div>
+      <p class="empty" id="turns-empty" hidden>No runs selected. Pick some above, or hit <strong>Featured</strong>.</p>
+      <div class="chart__legend" id="turns-legend"></div>
+      <p class="chart__note">
+        A turn is one model step that either calls a tool or gives the final answer, counted from each run's own log the same way for every harness — see <a class="deflink" href="/method#def-turns">the definition</a>. Turns are on a logarithmic axis: the board spans roughly fortyfold, so a linear axis would pile most runs into the left margin.
+        <span id="turns-axis-note"></span>
+        Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>, and every run's own figures are in <a href="https://github.com/phuryn/bug-hunt-bench/blob/main/results/runs.csv">results/runs.csv</a>.
       </p>
     </div>
 

@@ -38,13 +38,15 @@
     "effort_first_party": "A setting the vendor documents in their own tool. Taken at face value, not separately tested.",
     "effort_clamped": "We asked for a higher setting and the tool quietly ran a lower one. Published as a correction.",
     "effort_inert_default": "This route ignores the effort setting entirely, so the model ran at its own default. There was no working dial to turn.",
-    "effort_default": "No reasoning setting was asked for, because this route offers none to ask for. Unlike an ignored dial, nothing was tested here - this says what we requested, not what the route does with it."
+    "effort_default": "No reasoning setting was asked for, because this route offers none to ask for. Unlike an ignored dial, nothing was tested here - this says what we requested, not what the route does with it.",
+    "turns": "Model steps in a run: each tool call (a shell command, a file read or edit, a search) plus the final answer, summed over both repos, averaged across runs on a mean row. It is the count Claude Code reports as its own turn count, taken from every run's own log the same way."
   },
   "caveats": [
     "MOST ROWS ARE ONE RUN. 28 configurations have now been run three times at identical settings - same model, prompt, harness, route, effort flag and judge - and their three-run ranges are 1, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 8, 8, 9, 9, 10 points of 105. The widest spread was 11, 15 and 21; the tightest was 31, 32 and 32. Rows on this board routinely sit within a point or two of each other, so a small gap between two single runs may be nothing at all. WHAT THIS DOES NOT SAY: which settings are steady. Spread does not fall cleanly as effort rises - Grok 4.7's rungs came out 10, 7, 5 and 6 going up, Muse Spark 1.3's rungs came out 9, 6, 3, 9 and 2 going up, Opus 5.5's rungs came out 6, 1, 1, 2 and 4 going up - and a range drawn from three runs is a very noisy estimate of spread. 9 models have been measured three times at max effort so far. Treat every one of these as a spread that has been SEEN, not a spread that has been bounded.",
     "Wall clock is the same measure on every row: repo 1 plus repo 2 agent time, with dependency install and health checks excluded. Two things bend it, and both are marked on the score-and-time map. Three runs took their two repo legs concurrently - the sum is still like-for-like, but two agents sharing one machine and one API key contend, so those figures can run high rather than low. And one figure is adjusted: the retired-Gemini-CLI run excludes a 35-minute harness stall, the only number here that is not what the harness measured.",
     "Cost is not one kind of number: some figures are an actual bill, some are a token-count estimate at published list rates, one CLI only allows a reconstructed lower bound, and one run was free. The key under the board names which is which - they are not interchangeable, and none of them is a quote for what you would pay.",
-    "29 of the 105 bugs have survived every model in every run to date. The count moves as new runs land: it fell from 49 to 44 during the 27-28 August waves."
+    "29 of the 105 bugs have survived every model in every run to date. The count moves as new runs land: it fell from 49 to 44 during the 27-28 August waves.",
+    "Turns count model steps: every tool call - a shell command, a file read or edit, a search - plus the final answer, summed over both repos. That is exactly what Claude Code reports as its own turn count, and it is the one definition every harness here can supply, so each run is counted from its own log the same way: Codex CLI, which counts a whole run as a single turn, by its commands and edits; Grok by the tool calls in its session log. A turn is a step, not a unit of work - one command can do several reads, and harnesses differ in how much a single call does - so turns compare most cleanly within one harness. 5 current rows have no turn count because their logs were not kept, and are left off that map rather than estimated."
   ],
   "runs": [
     {
@@ -133,6 +135,9 @@
         100,
         102
       ],
+      "turns": 1566,
+      "turns_repo1": 915,
+      "turns_repo2": 651,
       "group_rank": 500
     },
     {
@@ -291,6 +296,9 @@
         "105": 1
       },
       "coverage_runs": 2,
+      "turns": 1330,
+      "turns_repo1": 727,
+      "turns_repo2": 602,
       "group_rank": 500
     },
     {
@@ -370,6 +378,9 @@
         100,
         102
       ],
+      "turns": 221,
+      "turns_repo1": 94,
+      "turns_repo2": 127,
       "group_rank": 0
     },
     {
@@ -514,6 +525,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 222,
+      "turns_repo1": 104,
+      "turns_repo2": 118,
       "group_rank": 0
     },
     {
@@ -652,6 +666,9 @@
         "102": 2
       },
       "coverage_runs": 2,
+      "turns": 1082,
+      "turns_repo1": 451,
+      "turns_repo2": 632,
       "group_rank": 300
     },
     {
@@ -726,6 +743,9 @@
         100,
         102
       ],
+      "turns": 159,
+      "turns_repo1": 68,
+      "turns_repo2": 91,
       "group_rank": 1
     },
     {
@@ -800,6 +820,9 @@
         100,
         102
       ],
+      "turns": 476,
+      "turns_repo1": 159,
+      "turns_repo2": 317,
       "group_rank": 200
     },
     {
@@ -874,6 +897,9 @@
         100,
         102
       ],
+      "turns": 459,
+      "turns_repo1": 161,
+      "turns_repo2": 298,
       "group_rank": 0
     },
     {
@@ -947,6 +973,9 @@
         100,
         102
       ],
+      "turns": 831,
+      "turns_repo1": 397,
+      "turns_repo2": 434,
       "group_rank": 300
     },
     {
@@ -1077,6 +1106,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 476,
+      "turns_repo1": 186,
+      "turns_repo2": 289,
       "group_rank": 200
     },
     {
@@ -1203,6 +1235,9 @@
         "102": 2
       },
       "coverage_runs": 2,
+      "turns": 481,
+      "turns_repo1": 179,
+      "turns_repo2": 302,
       "group_rank": 200
     },
     {
@@ -1273,6 +1308,9 @@
         100,
         102
       ],
+      "turns": 485,
+      "turns_repo1": 233,
+      "turns_repo2": 252,
       "group_rank": 301
     },
     {
@@ -1305,9 +1343,10 @@
       "fixed_bugs": [
         13,
         16,
-        17,
         20,
+        21,
         22,
+        23,
         25,
         27,
         28,
@@ -1315,34 +1354,36 @@
         30,
         33,
         34,
-        35,
-        37,
         39,
+        40,
         43,
         44,
         45,
-        46,
         47,
         49,
         50,
-        53,
-        55,
         60,
         62,
-        64,
+        70,
         71,
         76,
         77,
+        79,
         80,
+        82,
         83,
         84,
+        91,
         92,
+        95,
         97,
         98,
         99,
-        100,
-        102
+        100
       ],
+      "turns": 588,
+      "turns_repo1": 307,
+      "turns_repo2": 281,
       "group_rank": 501
     },
     {
@@ -1463,6 +1504,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 362,
+      "turns_repo1": 134,
+      "turns_repo2": 228,
       "group_rank": 201
     },
     {
@@ -1577,6 +1621,9 @@
         "102": 2
       },
       "coverage_runs": 2,
+      "turns": 362,
+      "turns_repo1": 130,
+      "turns_repo2": 232,
       "group_rank": 201
     },
     {
@@ -1643,6 +1690,9 @@
         100,
         102
       ],
+      "turns": 131,
+      "turns_repo1": 73,
+      "turns_repo2": 58,
       "group_rank": 2
     },
     {
@@ -1709,6 +1759,9 @@
         100,
         102
       ],
+      "turns": 353,
+      "turns_repo1": 122,
+      "turns_repo2": 231,
       "group_rank": 201
     },
     {
@@ -1774,6 +1827,9 @@
         99,
         100
       ],
+      "turns": 104,
+      "turns_repo1": 54,
+      "turns_repo2": 50,
       "group_rank": 3
     },
     {
@@ -1839,6 +1895,9 @@
         99,
         102
       ],
+      "turns": 269,
+      "turns_repo1": 129,
+      "turns_repo2": 140,
       "group_rank": 302
     },
     {
@@ -1963,6 +2022,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 455,
+      "turns_repo1": 176,
+      "turns_repo2": 279,
       "group_rank": 0
     },
     {
@@ -2027,6 +2089,9 @@
         99,
         100
       ],
+      "turns": 616,
+      "turns_repo1": 93,
+      "turns_repo2": 523,
       "group_rank": 500
     },
     {
@@ -2063,34 +2128,37 @@
         21,
         22,
         23,
-        25,
-        29,
+        27,
         30,
         33,
         34,
         39,
         43,
+        44,
         45,
         47,
+        49,
         50,
-        61,
+        51,
+        60,
         62,
-        64,
-        70,
+        69,
         71,
         76,
-        80,
-        82,
+        77,
         83,
         84,
+        87,
+        91,
         92,
-        95,
         97,
         98,
         99,
-        100,
         102
       ],
+      "turns": 358,
+      "turns_repo1": 184,
+      "turns_repo2": 174,
       "group_rank": 0
     },
     {
@@ -2155,6 +2223,9 @@
         100,
         102
       ],
+      "turns": 308,
+      "turns_repo1": 136,
+      "turns_repo2": 172,
       "group_rank": 2
     },
     {
@@ -2287,6 +2358,9 @@
         "102": 5
       },
       "coverage_runs": 5,
+      "turns": 450,
+      "turns_repo1": 169,
+      "turns_repo2": 281,
       "group_rank": 0
     },
     {
@@ -2350,6 +2424,9 @@
         100,
         102
       ],
+      "turns": 89,
+      "turns_repo1": 46,
+      "turns_repo2": 43,
       "group_rank": 6
     },
     {
@@ -2413,6 +2490,9 @@
         100,
         102
       ],
+      "turns": 365,
+      "turns_repo1": 154,
+      "turns_repo2": 211,
       "group_rank": 100
     },
     {
@@ -2476,6 +2556,9 @@
         99,
         100
       ],
+      "turns": 294,
+      "turns_repo1": 138,
+      "turns_repo2": 156,
       "group_rank": 502
     },
     {
@@ -2582,6 +2665,9 @@
         "102": 2
       },
       "coverage_runs": 2,
+      "turns": 266,
+      "turns_repo1": 97,
+      "turns_repo2": 168,
       "group_rank": 202
     },
     {
@@ -2645,6 +2731,9 @@
         100,
         102
       ],
+      "turns": 269,
+      "turns_repo1": 107,
+      "turns_repo2": 162,
       "group_rank": 202
     },
     {
@@ -2708,6 +2797,9 @@
         99,
         102
       ],
+      "turns": 875,
+      "turns_repo1": 389,
+      "turns_repo2": 486,
       "group_rank": 400
     },
     {
@@ -2816,6 +2908,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 267,
+      "turns_repo1": 92,
+      "turns_repo2": 176,
       "group_rank": 202
     },
     {
@@ -2928,6 +3023,9 @@
         "102": 1
       },
       "coverage_runs": 2,
+      "turns": 876,
+      "turns_repo1": 404,
+      "turns_repo2": 472,
       "group_rank": 500
     },
     {
@@ -3042,6 +3140,9 @@
         "102": 1
       },
       "coverage_runs": 3,
+      "turns": 990,
+      "turns_repo1": 542,
+      "turns_repo2": 448,
       "group_rank": 500
     },
     {
@@ -3144,6 +3245,9 @@
         "102": 2
       },
       "coverage_runs": 2,
+      "turns": 353,
+      "turns_repo1": 156,
+      "turns_repo2": 196,
       "group_rank": 100
     },
     {
@@ -3177,21 +3281,21 @@
         13,
         16,
         20,
-        22,
-        28,
+        25,
         29,
         30,
         33,
         34,
-        37,
         39,
-        41,
+        40,
         43,
+        44,
+        45,
+        46,
         47,
         49,
         50,
-        60,
-        70,
+        62,
         71,
         76,
         77,
@@ -3200,12 +3304,15 @@
         83,
         84,
         92,
+        95,
         97,
         98,
         99,
-        100,
         102
       ],
+      "turns": 325,
+      "turns_repo1": 122,
+      "turns_repo2": 203,
       "group_rank": 302
     },
     {
@@ -3322,6 +3429,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 113,
+      "turns_repo1": 67,
+      "turns_repo2": 46,
       "group_rank": 6
     },
     {
@@ -3428,6 +3538,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 189,
+      "turns_repo1": 66,
+      "turns_repo2": 123,
       "group_rank": 203
     },
     {
@@ -3532,6 +3645,9 @@
         "102": 2
       },
       "coverage_runs": 2,
+      "turns": 190,
+      "turns_repo1": 70,
+      "turns_repo2": 120,
       "group_rank": 203
     },
     {
@@ -3562,27 +3678,27 @@
       "caveat": "ONE RUN, not a mean. This is the medium rung of a four-rung same-day sweep (medium 30, high 32, xhigh 35, max 43 of 105); the ladder is monotone, but no gap in it exceeds the 13-point run-to-run spread this board has measured on a single identical configuration, so read the direction, not the ordering of adjacent rungs. Runs a 1M context window with zero compactions; every Opus 5 row here runs 200K and compacted, so this ladder does not compare cleanly to that one. Cost is a list-rate estimate, not an invoice. The wall figure is contended.",
       "note": "Anthropic's Opus 5.5 at medium effort through Claude Code on the first-party API. 30 of 105: 11 of 45 on repo 1 and 19 of 60 on repo 2, 15 genuine extras, 17.2 minutes, $16.55. ONE RUN. *** THIS IS ONE RUNG OF A FOUR-RUNG SWEEP *** All four Opus 5.5 rows on this board are the same arm definition with one character changed - the effort dial - run on the same day, on the same machine, against the same two repos, judged the same way. The ladder is monotone: medium 30, high 32, xhigh 35, max 43 of 105, costing $16.55, $23.03, $35.14 and $60.49. *** BUT READ THE LADDER AS A TREND, NOT AS FOUR LEVELS *** every rung is a single run, and this board has already measured a 13-POINT spread between two runs of one identical max-effort configuration elsewhere. No gap on this ladder is that wide - the largest, max over xhigh, is 8. So the direction is credible across four points; the ordering of any two adjacent rungs is not resolved at n=1, and nothing here says medium is reliably worse than the rung above it. *** THE DIAL BINDS - MEASURED, NOT ASSUMED *** this board has caught several third-party routes that accept a reasoning field and ignore it, so 'first party' is not taken on trust. Token spend on repo 2 rises monotonically with the dial across the sweep - 33.4M at medium, 46.8M at high, 82.7M at xhigh, 150.2M at max, a 4.5x span - and wall rises with it. This rung burned 33.4M. Whatever else is true, the setting is reaching the model and changing how hard it works. *** THE CONTEXT WINDOW, WHICH IS WHY THESE ROWS DO NOT COMPARE TO THE OPUS 5 LADDER *** this arm runs the model string claude-opus-5-5[1m] and therefore a 1M window: it held a peak of 407,965 tokens on repo 2 and crossed ZERO compaction boundaries, carrying the repo whole through every turn. Every Opus 5 row on this board runs a bare slug, which the CLI treats as 200K, and those runs compacted repeatedly mid-task. Comparing this ladder to the Opus 5 ladder moves two variables at once - model version AND how much of the codebase the model could hold while reasoning about it. The [1m] suffix was verified on CLI 2.1.280 rather than assumed (an earlier arm on this board requested a 1M window and was silently normalised to the bare slug on 2.1.272); init.model returns 'claude-opus-5-5[1m]' verbatim. Autocompact ran at the CLI's own default - a user-level CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=30 that had been reaching legs on this machine was removed before the sweep and its absence re-verified in a leg-shaped probe. *** COST IS A LIST ESTIMATE *** token counts at Anthropic's published Opus 5.5 rates: $4 input, $20 output, $0.20 cache read - a 0.05x cache multiplier unique to this model, where every other model here uses 0.1x - and $8 cache write, the 1-hour rate, which is what this harness actually writes. Not an invoice, hence `list`. *** RECEIPTS *** Both legs exited 0, run SEQUENTIALLY, one repo at a time. Judge: blind Codex gpt-5.5 - an OpenAI model scoring an Anthropic one, so neither the model itself nor a sibling of it. The run shared the laptop with benchmark legs from another vendor, which the wall marker discloses - scores, tokens and cost are untouched by that, only the clock.",
       "fixed_bugs": [
-        13,
         16,
         20,
         22,
-        25,
+        28,
         29,
         30,
-        37,
+        33,
+        34,
         39,
         43,
         45,
+        46,
         47,
         49,
         50,
-        56,
-        57,
         60,
         62,
+        70,
         71,
         76,
-        78,
+        77,
         82,
         83,
         84,
@@ -3593,6 +3709,9 @@
         100,
         102
       ],
+      "turns": 197,
+      "turns_repo1": 74,
+      "turns_repo2": 123,
       "group_rank": 203
     },
     {
@@ -3654,6 +3773,9 @@
         100,
         102
       ],
+      "turns": 457,
+      "turns_repo1": 165,
+      "turns_repo2": 292,
       "group_rank": 3
     },
     {
@@ -3756,6 +3878,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 352,
+      "turns_repo1": 163,
+      "turns_repo2": 189,
       "group_rank": 100
     },
     {
@@ -3790,32 +3915,35 @@
         16,
         20,
         22,
-        28,
+        25,
         29,
         30,
         33,
         34,
-        37,
         39,
         41,
-        43,
+        44,
+        45,
+        46,
         47,
         49,
         50,
-        60,
+        59,
         62,
-        71,
         76,
-        77,
-        82,
+        78,
+        80,
         83,
         84,
+        92,
         97,
         98,
         99,
-        100,
         102
       ],
+      "turns": 143,
+      "turns_repo1": 67,
+      "turns_repo2": 76,
       "group_rank": 303
     },
     {
@@ -3876,6 +4004,9 @@
         100,
         102
       ],
+      "turns": 234,
+      "turns_repo1": 95,
+      "turns_repo2": 139,
       "group_rank": 4
     },
     {
@@ -3909,33 +4040,36 @@
         13,
         16,
         20,
+        21,
         22,
-        28,
+        27,
         29,
         30,
         33,
         34,
-        37,
         39,
-        41,
         43,
+        45,
         47,
         49,
         50,
-        60,
         62,
+        70,
         71,
         76,
-        77,
         82,
         83,
         84,
+        92,
         97,
         98,
         99,
         100,
         102
       ],
+      "turns": 420,
+      "turns_repo1": 208,
+      "turns_repo2": 212,
       "group_rank": 1
     },
     {
@@ -3996,6 +4130,9 @@
         100,
         102
       ],
+      "turns": 315,
+      "turns_repo1": 104,
+      "turns_repo2": 211,
       "group_rank": 100
     },
     {
@@ -4112,6 +4249,9 @@
         "102": 3
       },
       "coverage_runs": 4,
+      "turns": 500,
+      "turns_repo1": 176,
+      "turns_repo2": 324,
       "group_rank": 1
     },
     {
@@ -4226,6 +4366,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 101
     },
     {
@@ -4338,6 +4481,9 @@
         "102": 2
       },
       "coverage_runs": 3,
+      "turns": 506,
+      "turns_repo1": 181,
+      "turns_repo2": 325,
       "group_rank": 1
     },
     {
@@ -4397,6 +4543,9 @@
         100,
         102
       ],
+      "turns": 398,
+      "turns_repo1": 126,
+      "turns_repo2": 272,
       "group_rank": 0
     },
     {
@@ -4455,6 +4604,9 @@
         100,
         102
       ],
+      "turns": 92,
+      "turns_repo1": 49,
+      "turns_repo2": 43,
       "group_rank": 4
     },
     {
@@ -4513,6 +4665,9 @@
         100,
         102
       ],
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 101
     },
     {
@@ -4571,6 +4726,9 @@
         100,
         102
       ],
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 101
     },
     {
@@ -4629,6 +4787,9 @@
         98,
         99
       ],
+      "turns": 295,
+      "turns_repo1": 148,
+      "turns_repo2": 147,
       "group_rank": 300
     },
     {
@@ -4737,6 +4898,9 @@
         "102": 2
       },
       "coverage_runs": 3,
+      "turns": 417,
+      "turns_repo1": 165,
+      "turns_repo2": 252,
       "group_rank": 3
     },
     {
@@ -4767,33 +4931,36 @@
       "caveat": "One run at this tier, and repo 1 is a RETRY. The first repo-1 attempt at this exact setting made 70 successful tool calls across 73 turns with zero permission denials, then wrote 'Let me check a few remaining details before fixing...' and ended its turn having written no report - a healthy environment and a model that narrated its next step instead of taking it. The retry delivered 13/45 in 42.5 minutes, so that was a fluke rather than a property, but a top-effort run that silently stops on one repo in two attempts is itself a reliability signal, and the published wall and cost figures cover the retry only. Cost is a list-price ESTIMATE and not a bill - DashScope exposes no credits API on this path - computed from the run's own token counts at 0.15 in / 0.20 cache-write / 0.016 cache-read / 0.47 out per MTok. Do not read this row as a ceiling for the Qwen 3.8 family: it is the ceiling of the SMALL model. The Qwen3.8-Max row on this board ran a different path entirely (Claude Code -> local proxy -> OpenRouter) and is not a clean comparison.",
       "note": "The top of Alibaba's own accept-list on Alibaba's own Anthropic-compatible endpoint - no aggregator, no local proxy. 26/105 for $1.81 at list. Read it against its low companion, which is the point of running both: max buys THREE points over low (23/105) for 32% more money and the same wall clock (97.3 min against 98.1). The effort label is measured rather than requested - the endpoint 400-rejects an invented tier and names its accept-list (low, medium, high, xhigh, max), and an n=3-per-tier magnitude probe on this exact path shows the dial binds at the bottom: mean output tokens run low=3557, medium=4579, high=19329, and the 5.43x spread between lowest and highest mean clears the worst within-tier spread of 2.00x. So max is the real ceiling of a real dial. What it is NOT is a fifth rung: high (13933-27933), xhigh (12523-24778) and max (13767-19431) overlap almost entirely and their means FALL as the nominal tier rises, so paying for max over high buys nothing measurable. 26 strict matches, 3 partials, 3 claimed-only, 7 genuine unplanted extras.",
       "fixed_bugs": [
+        13,
         16,
         20,
         21,
         22,
         25,
+        26,
+        27,
         29,
         30,
-        32,
-        33,
-        34,
+        39,
+        40,
         43,
-        44,
-        45,
         47,
-        49,
         50,
-        70,
-        71,
+        60,
+        62,
         76,
         77,
-        82,
+        83,
         84,
+        91,
+        92,
         97,
-        99,
-        100,
-        102
+        98,
+        99
       ],
+      "turns": 363,
+      "turns_repo1": 122,
+      "turns_repo2": 241,
       "group_rank": 300
     },
     {
@@ -4824,33 +4991,36 @@
       "caveat": null,
       "note": "The Opus dial is nearly flat at the top: high 21, medium 24, xhigh 26, max 27.",
       "fixed_bugs": [
+        13,
         16,
         20,
+        21,
         22,
         25,
         27,
-        28,
         29,
         30,
         33,
         34,
         39,
         43,
-        44,
         45,
-        47,
+        49,
         50,
-        60,
+        61,
+        70,
         71,
         76,
-        82,
         83,
         84,
         92,
-        95,
+        97,
         98,
         99
       ],
+      "turns": 319,
+      "turns_repo1": 134,
+      "turns_repo2": 185,
       "group_rank": 301
     },
     {
@@ -4955,6 +5125,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 373,
+      "turns_repo1": 136,
+      "turns_repo2": 236,
       "group_rank": 0
     },
     {
@@ -5011,6 +5184,9 @@
         100,
         102
       ],
+      "turns": 260,
+      "turns_repo1": 107,
+      "turns_repo2": 153,
       "group_rank": 101
     },
     {
@@ -5066,6 +5242,9 @@
         98,
         99
       ],
+      "turns": 485,
+      "turns_repo1": 193,
+      "turns_repo2": 292,
       "group_rank": 0
     },
     {
@@ -5162,6 +5341,9 @@
         "102": 2
       },
       "coverage_runs": 2,
+      "turns": 136,
+      "turns_repo1": 58,
+      "turns_repo2": 78,
       "group_rank": 204
     },
     {
@@ -5217,6 +5399,9 @@
         99,
         100
       ],
+      "turns": 260,
+      "turns_repo1": 107,
+      "turns_repo2": 153,
       "group_rank": 303
     },
     {
@@ -5272,6 +5457,9 @@
         100,
         102
       ],
+      "turns": 244,
+      "turns_repo1": 110,
+      "turns_repo2": 134,
       "group_rank": 102
     },
     {
@@ -5380,6 +5568,9 @@
         "102": 2
       },
       "coverage_runs": 3,
+      "turns": 415,
+      "turns_repo1": 132,
+      "turns_repo2": 283,
       "group_rank": 106
     },
     {
@@ -5411,29 +5602,32 @@
       "note": "The board's first Qwen row that does not go through an aggregator: Claude Code straight onto Alibaba's own Anthropic-compatible endpoint, no local proxy and no OpenRouter in the path. 23/105 for $1.37 at list puts it between the two DeepSeek V4.1 Flash rows (19/105 at $0.31 and 24/105 at $1.08) and above models costing twenty times more. The effort label here is MEASURED, not merely requested, which is unusual for a cheap model on this board: the endpoint 400-rejects an invented tier and names its accept-list (low, medium, high, xhigh, max), and a magnitude probe at n=3 per tier separates the bottom of the dial cleanly - mean output tokens run low=3557 against high=19329, low and medium sit in bands that do not overlap the top three, and the 5.43x spread between lowest and highest mean clears the worst within-tier spread of 2.00x. So low is a real setting on this path rather than a word in a column. The honesty profile is among the better ones here: 23 strict matches, ZERO partials, only 3 claimed-only across both repos, and 7 genuine unplanted extras.",
       "fixed_bugs": [
         13,
-        16,
         20,
         22,
+        23,
         25,
+        26,
+        27,
+        29,
         30,
-        33,
-        34,
-        37,
+        40,
         43,
-        45,
-        47,
         49,
         50,
         60,
-        62,
         71,
         76,
         83,
         84,
-        87,
-        99,
-        100
+        91,
+        95,
+        97,
+        98,
+        99
       ],
+      "turns": 325,
+      "turns_repo1": 136,
+      "turns_repo2": 189,
       "group_rank": 304
     },
     {
@@ -5488,6 +5682,9 @@
         99,
         102
       ],
+      "turns": 813,
+      "turns_repo1": 464,
+      "turns_repo2": 349,
       "group_rank": 501
     },
     {
@@ -5518,30 +5715,33 @@
       "caveat": "ONE RUN, not a mean - and this board has measured a 13-point spread between two runs of a single identical max-effort configuration, so treat this as one draw. Two replicates are in flight and will supersede it. Runs a 1M context window; every Opus 5 row here runs 200K and compacted, so this ladder does not compare cleanly to that one. Cost is a list-rate estimate, not an invoice. The wall figure is contended.",
       "note": "Anthropic's Opus 5.5 at LOW effort through Claude Code on the first-party API - a rung below medium, added because the four rungs above it were replicated three times each and the ladder resolved at the top and not at the bottom. 23 of 105: 11 of 45 on repo 1 and 12 of 60 on repo 2, 14 genuine extras, 12.4 minutes, $8.68. ONE RUN so far; two replicates are running and will supersede this row. *** WHY THIS RUNG EXISTS *** at three runs a rung, xhigh beats high by 4.3 points of 105 and max beats xhigh by 5.7, both wider than the spread measured inside either rung. But high beats medium by 1.4 against spreads of 1 and 1 - one bug of 105, between configurations whose own runs move by that much. Twelve runs did not separate the bottom two rungs. Going a rung lower is the direct test of whether the dial does anything at all down there, and it is a cheaper question to answer than it looks: low is the fastest and cheapest setting on the ladder. The board currently reads low 22.3 (n=3), medium 30.3 (n=3), high 31.7 (n=3), xhigh 36 (n=3), max 41.7 (n=3). *** CONFIGURED BYTE-IDENTICAL TO THE RUNG ABOVE IT *** same model string claude-opus-5-5[1m], same 1M window, same timeout, same price table, same blind judge. One string differs, the effort flag. *** COST IS A LIST ESTIMATE *** at Anthropic's published Opus 5.5 rates - $4 input, $20 output, $0.20 cache read (a 0.05x cache multiplier unique to this model, where every other model here uses 0.1x) and $8 cache write, the 1-hour rate, which is what this harness actually writes and what the streams confirm. Not an invoice, hence `list`. *** THE CONTEXT WINDOW *** this run holds a 1M window, so it compares cleanly to the rest of the Opus 5.5 ladder and NOT to the Opus 5 ladder, which ran the CLI's default 200K and compacted repeatedly mid-task. Autocompact ran at the CLI's own default. *** THE WALL FIGURE ON THIS RUNG IS CONTENDED AND THE OTHERS ARE NOT *** the four rungs above it were measured on an otherwise idle machine; this one ran alongside another vendor's legs, deliberately, to get the rung measured sooner. Contention can only INFLATE a wall, so a low wall here is still a real low wall - but do not read a minute-for-minute comparison against the rungs above. Token spend is the figure that shows whether the effort flag reached the model, and contention does not touch it. *** RECEIPTS *** Both legs exited 0 with a report written, run SEQUENTIALLY, one repo at a time. Judge: blind Codex gpt-5.5 - an OpenAI model scoring an Anthropic one, so neither the model itself nor a sibling of it.",
       "fixed_bugs": [
-        13,
         16,
         20,
-        22,
         25,
+        26,
+        29,
         30,
         33,
         34,
-        37,
+        39,
+        40,
         43,
-        45,
         47,
         49,
         50,
-        60,
-        62,
         71,
         76,
         83,
         84,
-        87,
+        92,
+        98,
         99,
-        100
+        100,
+        102
       ],
+      "turns": 137,
+      "turns_repo1": 51,
+      "turns_repo2": 86,
       "group_rank": 204
     },
     {
@@ -5596,6 +5796,9 @@
         100,
         102
       ],
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 103
     },
     {
@@ -5650,6 +5853,9 @@
         100,
         102
       ],
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 102
     },
     {
@@ -5748,6 +5954,9 @@
         "100": 3
       },
       "coverage_runs": 3,
+      "turns": 308,
+      "turns_repo1": 129,
+      "turns_repo2": 180,
       "group_rank": 6
     },
     {
@@ -5846,6 +6055,9 @@
         "102": 2
       },
       "coverage_runs": 3,
+      "turns": 127,
+      "turns_repo1": 55,
+      "turns_repo2": 71,
       "group_rank": 204
     },
     {
@@ -5934,6 +6146,9 @@
         "100": 2
       },
       "coverage_runs": 2,
+      "turns": 326,
+      "turns_repo1": 131,
+      "turns_repo2": 195,
       "group_rank": 6
     },
     {
@@ -5987,6 +6202,9 @@
         100,
         102
       ],
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 103
     },
     {
@@ -6040,6 +6258,9 @@
         99,
         100
       ],
+      "turns": 530,
+      "turns_repo1": 254,
+      "turns_repo2": 276,
       "group_rank": 102
     },
     {
@@ -6140,6 +6361,9 @@
         "100": 1
       },
       "coverage_runs": 3,
+      "turns": 461,
+      "turns_repo1": 193,
+      "turns_repo2": 268,
       "group_rank": 0
     },
     {
@@ -6192,6 +6416,9 @@
         100,
         102
       ],
+      "turns": 194,
+      "turns_repo1": 88,
+      "turns_repo2": 106,
       "group_rank": 3
     },
     {
@@ -6244,6 +6471,9 @@
         99,
         102
       ],
+      "turns": 394,
+      "turns_repo1": 138,
+      "turns_repo2": 256,
       "group_rank": 6
     },
     {
@@ -6296,6 +6526,9 @@
         98,
         99
       ],
+      "turns": 261,
+      "turns_repo1": 121,
+      "turns_repo2": 140,
       "group_rank": 302
     },
     {
@@ -6390,6 +6623,9 @@
         "102": 1
       },
       "coverage_runs": 3,
+      "turns": 332,
+      "turns_repo1": 132,
+      "turns_repo2": 200,
       "group_rank": 1
     },
     {
@@ -6422,25 +6658,28 @@
       "fixed_bugs": [
         16,
         20,
+        22,
         25,
         30,
         33,
         34,
-        35,
+        39,
         43,
-        44,
-        47,
+        49,
+        50,
+        60,
         62,
+        70,
         71,
         76,
-        77,
         83,
-        84,
-        97,
-        98,
+        92,
         99,
-        102
+        100
       ],
+      "turns": 329,
+      "turns_repo1": 107,
+      "turns_repo2": 222,
       "group_rank": 6
     },
     {
@@ -6492,6 +6731,9 @@
         99,
         100
       ],
+      "turns": 162,
+      "turns_repo1": 80,
+      "turns_repo2": 82,
       "group_rank": 102
     },
     {
@@ -6523,26 +6765,29 @@
       "note": "Anthropic's Sonnet 5.5 at low effort through Claude Code on the first-party API, measured the evening it shipped. 20 of 105: 7 of 45 on repo 1 and 13 of 60 on repo 2, 5 genuine extras, 7.4 minutes, $5.75. ONE RUN. For comparison the board currently publishes Sonnet 5 at max effort 9, Sonnet 5 at high effort 9, Opus 5.5 at max effort 41.7 (mean of 3) of 105. *** HOW IT SPENT THE RUN *** On repo 1 it took 52 turns (the harness's own count); it first wrote its report 3 minutes in and its last model call came at minute 3. For scale: Opus 5.5 at max took 159-201 turns there over three runs of 26-37 minutes; Sonnet 5 at max took 207, and every one of those runs wrote its report within 1 minute of its last call. On repo 2 it took 67 turns (the harness's own count); it first wrote its report 4 minutes in and its last model call came at minute 4. For scale: Opus 5.5 at max took 264-317 turns there over three runs of 34-39 minutes; Sonnet 5 at max took 204, and every one of those runs wrote its report within 1 minute of its last call. *** SAME MACHINE AS THE OPUS 5.5 LADDER *** configured byte-identical to the opus55* arms except the model slug and the effort flag: Claude Code straight onto Anthropic's first-party API, no proxy, 1M window requested with the [1m] suffix, CLI-default autocompact, same prompt, same timeout class, same blind judge. The two Sonnet 5 rows on this board ran older Claude Code builds (2.1.218, 2.1.267) and compacted mid-task - 5 compactions across their 4 legs, peaks 284,197 to 295,210 tokens - so a gap against them mixes the model version with how much of each run's context survived, and is not a clean version delta. Effort is a first-party Claude Code tier (documented enum low|medium|high|xhigh|max, enforced: an invented tier is answered 'Unknown --effort value'), taken at face value like every other Claude row here. The harness stated init.model claude-sonnet-5-5[1m] on every leg - the [1m] suffix honoured, so this is a 1M-window run - on Claude Code 2.1.283. Peak context 355,093 tokens; 0 compactions across 2 legs. Autocompact ran at the CLI default. *** COST IS A LIST ESTIMATE *** token counts at Anthropic's published Sonnet 5.5 rates (as read 2026-09-28): $2 input, $10 output, $0.20 cache read, $4 cache write - the 1-hour rate, which is what this harness writes. The harness's own cost figure is NOT a cross-check on this model: Claude Code reported its cost basis for Sonnet 5.5 as 'unknown' and priced the run on Opus 5.5's table - its figure is exactly those tokens at Opus 5.5 rates, about a fifth higher than Sonnet 5.5's own. So the check here is on tokens: each leg's metered counts agree with the harness's own per-model counts within 3 per cent. Claude Code on a subscription exposes no invoice, hence `list`. *** RECEIPTS *** All legs exited 0 with a report written, run SEQUENTIALLY, one repo at a time. Judge: blind Codex gpt-5.5 - an OpenAI model scoring an Anthropic one, so neither the model itself nor a sibling of it. The machine was otherwise idle for every leg, so the wall figures compare directly against other uncontended rows.",
       "fixed_bugs": [
         13,
-        16,
         20,
+        25,
         30,
-        33,
-        34,
+        39,
+        43,
         45,
-        47,
+        46,
+        49,
+        50,
         60,
-        62,
+        71,
         76,
-        82,
+        77,
         83,
         84,
         92,
-        97,
         98,
         99,
-        100,
-        102
+        100
       ],
+      "turns": 119,
+      "turns_repo1": 52,
+      "turns_repo2": 67,
       "group_rank": 504
     },
     {
@@ -6594,6 +6839,9 @@
         99,
         102
       ],
+      "turns": 259,
+      "turns_repo1": 127,
+      "turns_repo2": 132,
       "group_rank": 401
     },
     {
@@ -6645,6 +6893,9 @@
         100,
         102
       ],
+      "turns": 546,
+      "turns_repo1": 262,
+      "turns_repo2": 284,
       "group_rank": 2
     },
     {
@@ -6677,25 +6928,28 @@
       "fixed_bugs": [
         16,
         20,
-        21,
-        22,
         25,
+        29,
         30,
-        39,
-        43,
+        33,
+        34,
+        44,
+        47,
         50,
         60,
+        62,
         71,
         76,
-        82,
         83,
         84,
         92,
         97,
         98,
-        99,
-        102
+        99
       ],
+      "turns": 356,
+      "turns_repo1": 164,
+      "turns_repo2": 192,
       "group_rank": 1
     },
     {
@@ -6784,6 +7038,9 @@
         "102": 2
       },
       "coverage_runs": 3,
+      "turns": 397,
+      "turns_repo1": 143,
+      "turns_repo2": 254,
       "group_rank": 2
     },
     {
@@ -6834,6 +7091,9 @@
         98,
         99
       ],
+      "turns": 383,
+      "turns_repo1": 153,
+      "turns_repo2": 230,
       "group_rank": 2
     },
     {
@@ -6920,6 +7180,9 @@
         "102": 1
       },
       "coverage_runs": 2,
+      "turns": 270,
+      "turns_repo1": 156,
+      "turns_repo2": 115,
       "group_rank": 200
     },
     {
@@ -6950,26 +7213,29 @@
       "caveat": null,
       "note": "GLM-5.3 Flash on Z.ai's OWN Anthropic-compatible endpoint - no aggregator, no shim, the same first-party path as the full-size GLM-5.3 row, so the two sizes differ by model and by nothing else. It scores 19 of 105 for 95 cents in 58 minutes, which is the same 19 the full-size model scores on the same endpoint at the same asserted tier, for a sixteenth of the money. *** THIS NOTE TOLD READERS NOT TO CREDIT THE EFFORT DIAL. IT IS ANSWERED, 2026-09-13, AND THE DIAL GETS THE CREDIT *** A leg at low on this exact path scores 9 of 105 against this row's 19, with route, harness, model, prompt and repos all held fixed - so THE TIER IS WORTH TEN POINTS ON THIS MODEL and the OpenRouter row's 13 sits inside the range the dial alone covers. Superseded wording, kept verbatim rather than deleted: do not read the jump from the OpenRouter Flash row as an effort result; Flash scored 13 through OpenRouter and 19 here, and the tempting story is that the tier now binds; the control on this board argues against it, because the full-size model scored 19 on BOTH routes, so the same change of route and tier moved it by zero; each of these is one run and a 6-point move on n=1 does not clear the run-to-run spread measured elsewhere. THE CONTROL ITSELF IS NOT RETRACTED: the full-size GLM-5.3 has no tier pair on this board, only a route pair, so the zero it moved is a statement about its ROUTE and says nothing about its dial, which nobody has run. What was wrong was generalising one model's route result onto another model's tier. *** EFFORT max IS A SETTING, NOT A REQUEST *** Receipt: effort-dial-probes/20260912-glm53flash-zai-anthropic.txt. The endpoint validates output_config.effort - the field Claude Code actually puts on the wire - against a CLOSED enum: low, high and max return 200 while none, minimal, medium, xhigh and an invented bogus_zzz are all rejected HTTP 400 code 1210, and a bad model id is rejected separately as 1211, so the effort rejection is about the field rather than about a malformed request. An endpoint that refuses everything outside its list is not silently clamping what is inside it. Identical accept-list on both GLM sizes. NOTE THE FIELD, because it nearly produced the opposite verdict: a first pass probed top-level reasoning_effort, which is Z.ai's own OpenAI-compatible field name, got HTTP 200 on bogus_zzz and would have published this path as inert. output_config is what the endpoint reads and what the CLI sends. max is also Z.ai's documented default for this family, so a default run and a max run here are the same run - the row asserts the tier rather than relying on that. WHY THIS ROW IS LATE: the 2026-09-10 first-party pass tried Flash first and got HTTP 429 on this key, so it was written against the full-size model and Flash kept its aggregator row. The 429 is gone. *** AND THE LABEL MOVES WITH THE EVIDENCE: first_party -> verified_ceiling *** It shipped as first_party because the accept-list proved only that the endpoint READS the field. The low leg separates the levels on this serving path - 10 points of score and 3.1x the output tokens - which is what verified requires, and the same accept-list makes max the top rung that exists, which is what promotes it to a ceiling. Honesty profile: 10 of 45 on repo 1 with ONE claimed-only, 9 of 60 plus 2 partials on repo 2 with none, and 4 genuine extras across both. billing=LIST ESTIMATE, NOT A BILL: Z.ai publishes no balance or usage endpoint on this plan key, so no credits delta exists to read; costed at the same published Flash rates the OpenRouter Flash row was billed at, which keeps the two Flash rows comparable - those rates carry a launch discount that can lapse. ctx 1M, model string [1m].",
       "fixed_bugs": [
+        13,
         16,
+        20,
         23,
-        27,
+        25,
         29,
         30,
         39,
-        41,
         43,
         44,
-        45,
         50,
         70,
         71,
         76,
         83,
+        84,
         92,
-        97,
         98,
         99
       ],
+      "turns": 289,
+      "turns_repo1": 100,
+      "turns_repo2": 189,
       "group_rank": 100
     },
     {
@@ -7002,24 +7268,27 @@
       "fixed_bugs": [
         16,
         20,
+        22,
         25,
-        26,
-        29,
         30,
-        40,
-        43,
+        33,
+        34,
+        45,
+        47,
         49,
         60,
-        61,
+        62,
         71,
         76,
         83,
         92,
-        97,
         98,
         99,
         102
       ],
+      "turns": 221,
+      "turns_repo1": 141,
+      "turns_repo2": 80,
       "group_rank": 2
     },
     {
@@ -7054,22 +7323,25 @@
         16,
         20,
         22,
-        29,
+        25,
         30,
+        37,
         39,
-        40,
-        43,
-        50,
+        45,
+        47,
         60,
-        70,
+        62,
         71,
         76,
-        83,
-        92,
-        97,
+        84,
         98,
-        99
+        99,
+        100,
+        102
       ],
+      "turns": 384,
+      "turns_repo1": 150,
+      "turns_repo2": 234,
       "group_rank": 2
     },
     {
@@ -7103,23 +7375,26 @@
         13,
         16,
         20,
-        22,
+        27,
         29,
         30,
         39,
         40,
         43,
+        49,
         50,
-        60,
-        70,
         71,
         76,
         83,
-        92,
         97,
         98,
-        99
+        99,
+        100,
+        102
       ],
+      "turns": 344,
+      "turns_repo1": 116,
+      "turns_repo2": 228,
       "group_rank": 0
     },
     {
@@ -7170,6 +7445,9 @@
         99,
         102
       ],
+      "turns": 338,
+      "turns_repo1": 158,
+      "turns_repo2": 180,
       "group_rank": 6
     },
     {
@@ -7220,6 +7498,9 @@
         98,
         99
       ],
+      "turns": 303,
+      "turns_repo1": 154,
+      "turns_repo2": 149,
       "group_rank": 6
     },
     {
@@ -7314,6 +7595,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 268,
+      "turns_repo1": 142,
+      "turns_repo2": 126,
       "group_rank": 2
     },
     {
@@ -7406,6 +7690,9 @@
         "102": 1
       },
       "coverage_runs": 3,
+      "turns": 286,
+      "turns_repo1": 153,
+      "turns_repo2": 133,
       "group_rank": 200
     },
     {
@@ -7436,25 +7723,28 @@
       "caveat": "ONE RUN, not a mean. The OpenRouter default row on this same model scored 2 points higher (20 vs 18 of 105, both single runs) - inside the noise this board has already measured elsewhere (widest observed spread from an identical config: 6 of 105), and expected here since both rows almost certainly ran with reasoning already on. Effort is `enabled`, this model's own vocabulary for its one and only reasoning toggle - there is no higher tier to assert. Cost is a list-price estimate, not a checked bill. The wall figure is contended.",
       "note": "Xiaomi's MiMo-V2.6-Pro driven by Claude Code through an Anthropic-API shim onto Xiaomi's OWN first-party endpoint - no aggregator hop at all, unlike the default row published earlier the same day. 18 of 105: 9 of 45 on repo 1 and 9 of 60 on repo 2, 4 genuine extras, 74.9 minutes, $0.59. ONE RUN. *** THIS MODEL HAS NO GRADUATED EFFORT DIAL, ON ANY ROUTE - CONFIRMED TWO WAYS *** Xiaomi's own docs document exactly one reasoning control for this model: `thinking.type` = enabled or disabled, a binary toggle, not a low/medium/high/xhigh scale. Confirmed directly, not just from docs: a 2-call test against this same endpoint found thinking=disabled gives 0 reasoning tokens (542 completion tokens total) and thinking=enabled gives 2,375 chars of reasoning content (1,696 completion tokens). This also explains the earlier OpenRouter finding on the default row - reasoning.effort was accepted but inert there (n=3 per condition, low/high/no-field ranges fully overlapping) because OpenRouter was normalising onto this SAME binary toggle, and no effort value it sent could ever separate on a route with only two states. *** THIS ROW ASSERTS THE TOGGLE EXPLICITLY *** Every call carries thinking={type:enabled}, forced by the shim regardless of what the harness sent, verbatim Claude-shaped (the field name and structure this endpoint documents). Labelled `enabled`, not `max` or `high`: borrowing a graduated-tier name would imply a scale this model does not have. *** COST IS A LIST-PRICE ESTIMATE, NOT A BILL *** $0.59 is token counts against Xiaomi's own published per-token rate (0.435 in / 0.0036 cache-read / 0.87 out per MTok) - real usage at a real rate, but this platform's balance/usage API was not checked the way OpenRouter's credits-delta was for the other row, so it is not called a bill. *** RECEIPTS *** Key is a budget-capped ($5) first-party test key. Both legs exited 0, run SEQUENTIALLY, one repo at a time. The run shared the laptop with benchmark legs from other vendors, which the wall marker on this row discloses - scores, tokens and cost are untouched by that, only the clock. Judge: blind Codex gpt-5.5, which is neither this model nor a sibling of it. Second measurement of this model, published as its own row rather than averaged into the first: route and an explicitly-asserted effort are configuration, not noise.",
       "fixed_bugs": [
-        13,
         16,
         20,
-        23,
+        25,
+        26,
+        27,
+        28,
+        29,
         30,
-        39,
-        40,
         43,
-        44,
+        47,
+        49,
         50,
         60,
+        62,
         71,
         76,
-        83,
-        92,
-        97,
-        98,
-        99
+        99,
+        100
       ],
+      "turns": 288,
+      "turns_repo1": 113,
+      "turns_repo2": 175,
       "group_rank": 8
     },
     {
@@ -7488,22 +7778,25 @@
         13,
         16,
         20,
-        23,
-        30,
-        39,
-        40,
+        26,
+        27,
+        29,
         43,
         44,
+        45,
         50,
         60,
+        70,
         71,
         76,
         83,
         92,
-        97,
         98,
         99
       ],
+      "turns": 257,
+      "turns_repo1": 101,
+      "turns_repo2": 156,
       "group_rank": 6
     },
     {
@@ -7553,6 +7846,9 @@
         99,
         102
       ],
+      "turns": 128,
+      "turns_repo1": 71,
+      "turns_repo2": 57,
       "group_rank": 402
     },
     {
@@ -7602,6 +7898,9 @@
         99,
         100
       ],
+      "turns": 112,
+      "turns_repo1": 43,
+      "turns_repo2": 69,
       "group_rank": 503
     },
     {
@@ -7651,6 +7950,9 @@
         99,
         100
       ],
+      "turns": 450,
+      "turns_repo1": 138,
+      "turns_repo2": 312,
       "group_rank": 102
     },
     {
@@ -7700,6 +8002,9 @@
         100,
         102
       ],
+      "turns": 235,
+      "turns_repo1": 109,
+      "turns_repo2": 126,
       "group_rank": 2
     },
     {
@@ -7782,6 +8087,9 @@
         "102": 1
       },
       "coverage_runs": 3,
+      "turns": 658,
+      "turns_repo1": 329,
+      "turns_repo2": 329,
       "group_rank": 2
     },
     {
@@ -7862,6 +8170,9 @@
         "99": 3
       },
       "coverage_runs": 3,
+      "turns": 332,
+      "turns_repo1": 119,
+      "turns_repo2": 213,
       "group_rank": 100
     },
     {
@@ -7910,6 +8221,9 @@
         84,
         92
       ],
+      "turns": 315,
+      "turns_repo1": 210,
+      "turns_repo2": 105,
       "group_rank": 200
     },
     {
@@ -7944,20 +8258,23 @@
         20,
         30,
         37,
-        40,
+        43,
         47,
+        49,
         50,
-        60,
         62,
-        66,
-        71,
         76,
+        77,
         83,
         84,
+        95,
         99,
         100,
         102
       ],
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 202
     },
     {
@@ -7988,24 +8305,27 @@
       "caveat": "Mixed serving path: repo 1 ran Meta-direct at verified xhigh, repo 2 through OpenRouter at default effort. The single-path number for this model is the 14/105 row.",
       "note": null,
       "fixed_bugs": [
+        20,
         25,
-        29,
         30,
-        39,
         41,
         43,
-        47,
-        49,
-        50,
+        45,
         62,
+        71,
         76,
         77,
-        80,
-        82,
         83,
         84,
-        92
+        92,
+        97,
+        98,
+        99,
+        102
       ],
+      "turns": 31,
+      "turns_repo1": 1,
+      "turns_repo2": 30,
       "group_rank": 101
     },
     {
@@ -8036,23 +8356,26 @@
       "caveat": null,
       "note": "OpenRouter stealth slug, free at the time of the run; Z.ai confirmed on 26 Aug 2026 that it was GLM-5.3-Flash. Off the default view because the named, priced run is the GLM-5.3 Flash row. Fixed H3 - a repo-1 bug that had survived every model in every prior run.",
       "fixed_bugs": [
+        16,
         20,
-        23,
+        22,
         25,
         27,
-        29,
-        30,
+        32,
         39,
         43,
+        50,
         71,
         76,
         83,
         84,
         92,
         97,
-        98,
         99
       ],
+      "turns": 263,
+      "turns_repo1": 118,
+      "turns_repo2": 145,
       "group_rank": 206
     },
     {
@@ -8100,6 +8423,9 @@
         83,
         99
       ],
+      "turns": 344,
+      "turns_repo1": 115,
+      "turns_repo2": 229,
       "group_rank": 102
     },
     {
@@ -8147,6 +8473,9 @@
         98,
         99
       ],
+      "turns": 354,
+      "turns_repo1": 123,
+      "turns_repo2": 231,
       "group_rank": 100
     },
     {
@@ -8194,6 +8523,9 @@
         100,
         102
       ],
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 202
     },
     {
@@ -8241,6 +8573,9 @@
         99,
         102
       ],
+      "turns": 363,
+      "turns_repo1": 136,
+      "turns_repo2": 227,
       "group_rank": 102
     },
     {
@@ -8321,6 +8656,9 @@
         "100": 3
       },
       "coverage_runs": 3,
+      "turns": 285,
+      "turns_repo1": 142,
+      "turns_repo2": 144,
       "group_rank": 4
     },
     {
@@ -8367,6 +8705,9 @@
         100,
         102
       ],
+      "turns": 93,
+      "turns_repo1": 48,
+      "turns_repo2": 45,
       "group_rank": 403
     },
     {
@@ -8397,22 +8738,25 @@
       "caveat": null,
       "note": null,
       "fixed_bugs": [
+        13,
         16,
         20,
         30,
         33,
         34,
-        45,
         47,
-        60,
-        71,
+        49,
+        50,
         76,
         83,
         84,
         92,
-        97,
-        99
+        99,
+        100
       ],
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 104
     },
     {
@@ -8493,6 +8837,9 @@
         "99": 3
       },
       "coverage_runs": 3,
+      "turns": 292,
+      "turns_repo1": 101,
+      "turns_repo2": 191,
       "group_rank": 101
     },
     {
@@ -8526,19 +8873,22 @@
         16,
         20,
         30,
-        33,
-        34,
+        39,
+        43,
         45,
-        47,
+        50,
         60,
+        62,
         71,
         76,
         83,
         84,
         92,
-        97,
         99
       ],
+      "turns": 318,
+      "turns_repo1": 120,
+      "turns_repo2": 198,
       "group_rank": 101
     },
     {
@@ -8571,20 +8921,23 @@
       "fixed_bugs": [
         16,
         20,
+        26,
         30,
-        33,
-        34,
+        44,
         45,
         47,
+        49,
+        50,
         60,
         71,
         76,
-        83,
-        84,
+        77,
         92,
-        97,
         99
       ],
+      "turns": 469,
+      "turns_repo1": 209,
+      "turns_repo2": 260,
       "group_rank": 400
     },
     {
@@ -8630,6 +8983,9 @@
         92,
         99
       ],
+      "turns": 172,
+      "turns_repo1": 73,
+      "turns_repo2": 99,
       "group_rank": 201
     },
     {
@@ -8675,6 +9031,9 @@
         97,
         99
       ],
+      "turns": 205,
+      "turns_repo1": 66,
+      "turns_repo2": 139,
       "group_rank": 206
     },
     {
@@ -8720,6 +9079,9 @@
         100,
         102
       ],
+      "turns": 103,
+      "turns_repo1": 49,
+      "turns_repo2": 54,
       "group_rank": 103
     },
     {
@@ -8750,21 +9112,24 @@
       "caveat": null,
       "note": null,
       "fixed_bugs": [
-        13,
-        16,
+        20,
         30,
+        43,
         47,
-        49,
-        50,
+        60,
+        71,
+        76,
         77,
-        82,
         83,
         84,
-        98,
+        92,
+        97,
         99,
-        100,
         102
       ],
+      "turns": 424,
+      "turns_repo1": 144,
+      "turns_repo2": 280,
       "group_rank": 106
     },
     {
@@ -8809,6 +9174,9 @@
         84,
         99
       ],
+      "turns": 174,
+      "turns_repo1": 111,
+      "turns_repo2": 63,
       "group_rank": 502
     },
     {
@@ -8853,6 +9221,9 @@
         99,
         102
       ],
+      "turns": 243,
+      "turns_repo1": 91,
+      "turns_repo2": 152,
       "group_rank": 106
     },
     {
@@ -8897,6 +9268,9 @@
         98,
         99
       ],
+      "turns": 288,
+      "turns_repo1": 102,
+      "turns_repo2": 186,
       "group_rank": 102
     },
     {
@@ -8977,6 +9351,9 @@
         "102": 3
       },
       "coverage_runs": 3,
+      "turns": 240,
+      "turns_repo1": 88,
+      "turns_repo2": 152,
       "group_rank": 3
     },
     {
@@ -9021,6 +9398,9 @@
         99,
         100
       ],
+      "turns": null,
+      "turns_repo1": null,
+      "turns_repo2": null,
       "group_rank": 202
     },
     {
@@ -9063,6 +9443,9 @@
         99,
         100
       ],
+      "turns": 253,
+      "turns_repo1": 101,
+      "turns_repo2": 152,
       "group_rank": 4
     },
     {
@@ -9133,6 +9516,9 @@
         "99": 3
       },
       "coverage_runs": 3,
+      "turns": 329,
+      "turns_repo1": 153,
+      "turns_repo2": 177,
       "group_rank": 206
     },
     {
@@ -9174,6 +9560,9 @@
         84,
         99
       ],
+      "turns": 184,
+      "turns_repo1": 69,
+      "turns_repo2": 115,
       "group_rank": 106
     },
     {
@@ -9250,6 +9639,9 @@
         "102": 1
       },
       "coverage_runs": 3,
+      "turns": 175,
+      "turns_repo1": 93,
+      "turns_repo2": 82,
       "group_rank": 4
     },
     {
@@ -9290,6 +9682,9 @@
         99,
         100
       ],
+      "turns": 72,
+      "turns_repo1": 29,
+      "turns_repo2": 43,
       "group_rank": 202
     },
     {
@@ -9330,6 +9725,9 @@
         83,
         99
       ],
+      "turns": 97,
+      "turns_repo1": 58,
+      "turns_repo2": 39,
       "group_rank": 503
     },
     {
@@ -9370,6 +9768,9 @@
         71,
         84
       ],
+      "turns": 155,
+      "turns_repo1": 60,
+      "turns_repo2": 95,
       "group_rank": 104
     },
     {
@@ -9410,6 +9811,9 @@
         99,
         102
       ],
+      "turns": 228,
+      "turns_repo1": 79,
+      "turns_repo2": 149,
       "group_rank": 3
     },
     {
@@ -9450,6 +9854,9 @@
         97,
         99
       ],
+      "turns": 258,
+      "turns_repo1": 143,
+      "turns_repo2": 115,
       "group_rank": 602
     },
     {
@@ -9490,6 +9897,9 @@
         99,
         100
       ],
+      "turns": 411,
+      "turns_repo1": 207,
+      "turns_repo2": 204,
       "group_rank": 600
     },
     {
@@ -9520,16 +9930,19 @@
       "caveat": null,
       "note": null,
       "fixed_bugs": [
+        20,
         30,
-        45,
-        49,
+        50,
+        60,
+        71,
         76,
-        77,
         83,
-        84,
-        99,
-        100
+        92,
+        99
       ],
+      "turns": 165,
+      "turns_repo1": 97,
+      "turns_repo2": 68,
       "group_rank": 402
     },
     {
@@ -9569,6 +9982,9 @@
         84,
         99
       ],
+      "turns": 190,
+      "turns_repo1": 63,
+      "turns_repo2": 127,
       "group_rank": 206
     },
     {
@@ -9608,6 +10024,9 @@
         98,
         99
       ],
+      "turns": 271,
+      "turns_repo1": 120,
+      "turns_repo2": 151,
       "group_rank": 206
     },
     {
@@ -9645,6 +10064,9 @@
         83,
         99
       ],
+      "turns": 64,
+      "turns_repo1": 40,
+      "turns_repo2": 24,
       "group_rank": 104
     },
     {
@@ -9680,6 +10102,9 @@
         77,
         99
       ],
+      "turns": 40,
+      "turns_repo1": 24,
+      "turns_repo2": 16,
       "group_rank": 203
     },
     {
@@ -9715,6 +10140,9 @@
         83,
         99
       ],
+      "turns": 37,
+      "turns_repo1": 18,
+      "turns_repo2": 19,
       "group_rank": 504
     },
     {
@@ -9745,11 +10173,14 @@
       "caveat": "ONE RUN, not a mean. This board has measured a 13-point spread between two runs of a single identical max-effort configuration, so treat this as one draw and treat the gap to the rung above or below it as unresolved until it is replicated. Runs a Codex build one version newer than the GPT-5.6 rows here, because the build they use refuses this model; it does compare cleanly to the other GPT-6 rungs. Cost is a list-rate estimate and a floor - the long-context surcharge is not modelled. The machine was idle for both legs.",
       "note": "OpenAI's GPT-6 Luna at low effort through OpenAI's own Codex CLI, on a ChatGPT account - the same auth path as every other Sol, Astra, Terra and Luna row here, NOT the metered API. 4 of 105: 1 of 45 on repo 1 and 3 of 60 on repo 2, 9 genuine extras, 19.3 minutes, $0.20. ONE RUN. *** WHERE THIS SITS *** the GPT-6 Luna ladder currently reads low 4, medium 4, high 9, xhigh 14, max 18.3 (n=3). Its own predecessor's ladder, GPT-5.6 Luna, publishes 31.3 (mean of 3) of 105 at max and 4 at this same rung, which is the generation-over-generation comparison at a fixed dial setting. *** WHY THE SWEEP EXISTS *** a single top-of-ladder number cannot tell a weak model from a mis-set dial. Running every rung of the same model on the same harness does: if the rungs separate, the dial reaches the model and the max figure is the model's ceiling. This family's dial has been steep - the GPT-6 Sol ladder spans roughly five times from low to max. *** ONE RUN IS ONE DRAW *** this board has measured a 13-point spread between two runs of a single identical max-effort configuration. Read any single rung, and any gap between two adjacent rungs, with that width in mind. *** CONFIGURED BYTE-IDENTICAL TO THE MAX RUNG EXCEPT THE EFFORT STRING *** same model string gpt-6-luna, same pinned executable, same code-mode setting, same timeout, same price table, same blind judge. One string differs. *** THIS ROW RUNS A DIFFERENT CLI BUILD FROM THE OLDER OPENAI ROWS, UNAVOIDABLY *** the Codex build the rest of this board uses (0.154.0) refuses this model outright. 0.155.1 runs it on the same account, same auth, same machine, so the blocker was the client and not entitlement. There is no version of this measurement that holds the harness fixed against the GPT-5.6 rows quoted above. The GPT-6 Luna rungs DO compare cleanly to each other and to the GPT-6 Sol rungs - they all run 0.155.1. *** COST IS A LIST ESTIMATE AND A FLOOR *** token counts at OpenAI's published short-context rates, $0.10 input, $0.01 cached, $0.50 output per million - twenty times cheaper than GPT-6 Sol on both sides of the meter. Requests over 272K input bill 2x on input and cache and 1.5x on output, which is NOT modelled here, so any leg that crossed that line cost more than this figure says. The Codex CLI on a subscription exposes no per-run bill, hence `list`, comparable only to other list rows. *** THE JUDGE IS NOT THIS BOARD'S DEFAULT, BY RULE *** a model may never judge itself or a sibling, and the default Codex judge is an OpenAI model, so it is disqualified for this arm - as is every other first-party GPT checkpoint here, since the rule is about shared weights and not identity-knowledge. Judged by grok-4.7, blinded to the arm's identity - the id is read back from the scoring receipt, not the judge config, because the endpoint has resolved a request for one grok checkpoint to another. *** RECEIPTS *** Both legs exited 0 with a report written, run SEQUENTIALLY, one repo at a time. The machine was otherwise idle for every leg, so the wall figures compare directly against other uncontended rows.",
       "fixed_bugs": [
-        20,
+        30,
+        49,
         99,
-        100,
-        102
+        100
       ],
+      "turns": 130,
+      "turns_repo1": 79,
+      "turns_repo2": 51,
       "group_rank": 204
     },
     {
@@ -9785,6 +10216,9 @@
         100,
         102
       ],
+      "turns": 174,
+      "turns_repo1": 125,
+      "turns_repo2": 49,
       "group_rank": 206
     },
     {
@@ -9819,6 +10253,9 @@
         83,
         100
       ],
+      "turns": 59,
+      "turns_repo1": 26,
+      "turns_repo2": 33,
       "group_rank": 306
     },
     {
@@ -9849,6 +10286,9 @@
       "caveat": null,
       "note": "The second ZERO, and the more instructive of the pair, because it did not run out of anything - it decided it was finished. On repo 1 it spent 55 seconds and 18 shell calls and then reported that all the public APIs were exercised by the suite, that type checking and the tests passed, and that no bugs were located that require a code change. The prompt it was given says in as many words that a number of subtle bugs have been deliberately planted, that the suite passes anyway, and that some tests which would have caught a planted bug were neutralised when it was planted. It used a green suite as proof of a clean repo after being told that a green suite proves nothing. On repo 2 it filed a report and scored zero on it: 0 of 60, no partials, and - the one thing to its credit - zero claimed-only, so it did not invent fixes it had not made. The whole arm cost eleven cents. *** THIS IS THE THIRD ATTEMPT AT THIS ARM AND THE FIRST CLEAN ONE, WHICH THE ROW WOULD BE DISHONEST WITHOUT *** Pass 1 ran before the harness carried any context declaration. Pass 2 ran with --autocompact 100000 on it, a flag since measured INERT on both routes by two controlled pairs - so whatever pass 2 was, it was not the flag doing it. Both passes were discarded and their rows dropped before this one ran. Pass 3 carries no flag and it is mechanically clean on both legs: terminal_reason=completed, zero auto-compactions, no breaker, no truncation, no denied tool call. That matters because this board voids a leg whose ENVIRONMENT failed and scores a leg whose MODEL failed, and the runner checks the transcript to tell them apart rather than guessing from an exit code. Here it counted successful tool calls and zero permission denials on every leg. The environment was fine. *** EFFORT IS THE PROVIDER DEFAULT AND THE ROUTE IS PROBED, NOT ASSUMED *** The arm carries no --effort flag, and that is a weaker claim than it sounds: a logging pass-through measured an UNFLAGGED Claude Code putting output_config.effort=xhigh on every main call, so there is no send-nothing mode. OpenRouter does not implement output_config, so on this route the tier is dropped in transit and what runs is Groq's own default - which is what makes default honest here and would not make it honest on a first-party endpoint. Receipts: effort-dial-probes/20260912-claude-code-wire-default-effort.txt and effort-dial-probes/20260912-gptoss20b-groq-openrouter.txt. OPEN WEIGHTS ON SOMEONE ELSE'S HARDWARE: OpenAI-released weights served by Groq, pinned with allow_fallbacks=false. More than twenty hosts serve these slugs and OpenRouter load-balances per request, so an unpinned run measures a blend rather than a model. Groq is the pin because it is the one host serving BOTH sizes, so this row and its sibling differ by parameter count and by nothing else. Cost is a REAL OpenRouter credits delta, not an estimate. WHAT A ZERO IS AND IS NOT: it is not a crash and it is not a harness failure. Both legs completed, the environment was verified healthy from the transcript, and the judge read a real submission on repo 2. This model was asked to find planted bugs in two repositories and found none of the 105.",
       "fixed_bugs": [],
+      "turns": 61,
+      "turns_repo1": 19,
+      "turns_repo2": 42,
       "group_rank": 706
     },
     {
@@ -9881,6 +10321,9 @@
       "fixed_bugs": [],
       "bug_hits": {},
       "coverage_runs": 3,
+      "turns": 35,
+      "turns_repo1": 11,
+      "turns_repo2": 25,
       "group_rank": 606
     },
     {
@@ -9913,6 +10356,9 @@
       "fixed_bugs": [],
       "bug_hits": {},
       "coverage_runs": 3,
+      "turns": 63,
+      "turns_repo1": 23,
+      "turns_repo2": 40,
       "group_rank": 706
     },
     {
@@ -9943,6 +10389,9 @@
       "caveat": null,
       "note": "The first ZERO on this board. Sixty-seven rows in, the floor was 4 of 105; this is 0 of 105, and its sibling below is the other one. It is also among the cheapest rows here at twelve cents, and the two facts are the same fact: it finished both repos in under four minutes combined because it barely engaged with either. On repo 1 it made eight tool calls in 64 seconds, wrote no report, changed no file and stopped. On repo 2 it did better and it is worth saying so - 33 turns, five real edits, and a full bug report with file, symptom, root cause and patch for each entry - but it PRINTED that report into the transcript instead of writing it to the path the prompt names, so the leg was judged on its diff alone. Judged on the diff it found none of the 60 planted bugs; it did find one genuine issue nobody planted, plus one cosmetic. So the failure is not that it cannot read code. It is that it stops early, and once it stops it has produced nothing the task asked for. *** THIS IS THE THIRD ATTEMPT AT THIS ARM AND THE FIRST CLEAN ONE, WHICH THE ROW WOULD BE DISHONEST WITHOUT *** Pass 1 ran before the harness carried any context declaration. Pass 2 ran with --autocompact 100000 on it, a flag since measured INERT on both routes by two controlled pairs - so whatever pass 2 was, it was not the flag doing it. Both passes were discarded and their rows dropped before this one ran. Pass 3 carries no flag and it is mechanically clean on both legs: terminal_reason=completed, zero auto-compactions, no breaker, no truncation, no denied tool call. That matters because this board voids a leg whose ENVIRONMENT failed and scores a leg whose MODEL failed, and the runner checks the transcript to tell them apart rather than guessing from an exit code. Here it counted successful tool calls and zero permission denials on every leg. The environment was fine. *** EFFORT IS THE PROVIDER DEFAULT AND THE ROUTE IS PROBED, NOT ASSUMED *** The arm carries no --effort flag, and that is a weaker claim than it sounds: a logging pass-through measured an UNFLAGGED Claude Code putting output_config.effort=xhigh on every main call, so there is no send-nothing mode. OpenRouter does not implement output_config, so on this route the tier is dropped in transit and what runs is Groq's own default - which is what makes default honest here and would not make it honest on a first-party endpoint. Receipts: effort-dial-probes/20260912-claude-code-wire-default-effort.txt and effort-dial-probes/20260912-gptoss120b-groq-openrouter.txt. OPEN WEIGHTS ON SOMEONE ELSE'S HARDWARE: OpenAI-released weights served by Groq, pinned with allow_fallbacks=false. More than twenty hosts serve these slugs and OpenRouter load-balances per request, so an unpinned run measures a blend rather than a model. Groq is the pin because it is the one host serving BOTH sizes, so this row and its sibling differ by parameter count and by nothing else. Cost is a REAL OpenRouter credits delta, not an estimate. READ THE PAIR, NOT THE ROW: the two gpt-oss sizes bracket a question this board has otherwise answered only with money, which is whether scale alone buys bug-finding. At this end of the market it buys nothing measurable - both sizes score zero, and the larger one is the one that stopped fastest.",
       "fixed_bugs": [],
+      "turns": 44,
+      "turns_repo1": 11,
+      "turns_repo2": 33,
       "group_rank": 606
     }
   ]

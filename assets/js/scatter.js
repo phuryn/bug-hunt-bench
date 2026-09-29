@@ -1,5 +1,5 @@
-/* The two maps: score against cost, and score against wall clock.
-   One layout function, one renderer, two axis specs — the only thing that differs
+/* The three maps: score against cost, against wall clock, and against turns.
+   One layout function, one renderer, three axis specs — the only thing that differs
    between them is the x measure, its scale and the sentence under the plot.
    Layout is computed in a pure function so the on-screen SVG and the PNG export
    cannot drift apart.
@@ -9,15 +9,17 @@
    under sevenfold — well inside one order of magnitude — so a linear axis places
    every run honestly and keeps the reading additive, which is how minutes are
    read. A log axis there would stretch the gaps at the fast end and squash the
-   ones at the slow end, for no gain. */
+   ones at the slow end, for no gain. Turns are logarithmic for the same reason as
+   cost: the board spans roughly fortyfold, from a few dozen to over a thousand. */
 
 import {
-  pointLabels, fmtCost, fmtWall, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
+  pointLabels, fmtCost, fmtWall, fmtTurns, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
 } from './format.js?v=d69cab3767';
 import { runColor } from './theme.js?v=d69cab3767';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
+const TURN_TICKS = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000];
 const LINEAR_STEPS = [5, 10, 15, 20, 25, 30, 50, 60, 100, 150, 200];
 const CEILING = 105;
 
@@ -50,7 +52,26 @@ export const AXES = {
     fmt: (v) => `${fmtWall(v)} min`,
     flag: 'wall_note',
   },
+  turns: {
+    id: 'turns',
+    key: 'turns',
+    scale: 'log',
+    ticks: TURN_TICKS,
+    tickLabel: (t) => fmtTurns(t),
+    title: 'Turns — logarithmic, fewer to the left',
+    titleCompact: 'Turns (log)',
+    exportTitle: 'TURNS — LOGARITHMIC, FEWER TO THE LEFT',
+    corner: 'lean and strong',
+    chartTitle: 'Score against turns',
+    slug: 'score-vs-turns',
+    fmt: (v) => `${fmtTurns(v)} turns`,
+    flag: null,
+  },
 };
+
+/* What each map measures, in the words a sentence needs ("no turn figure"). */
+const MEASURE_NAME = { cost: 'cost', time: 'wall-clock', turns: 'turn' };
+const MEASURE_ARIA = { cost: 'run cost', time: 'wall clock', turns: 'turns taken' };
 
 /* The y-axis stops just above the best run on the whole board, not at 105 and
    not at the leaderboard's 100-unit bar reference either. Both answer the same
@@ -121,8 +142,10 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
     const l0 = Math.log10(lo);
     const l1 = Math.log10(hi);
     x = (c) => m.left + ((Math.log10(c) - l0) / (l1 - l0)) * plotW;
-    xTicks = LOG_TICKS.filter((t) => t >= lo && t <= hi).map((t) => ({
-      v: t, x: x(t), label: t < 1 ? `$${t.toFixed(2).replace(/0$/, '')}` : `$${t}`,
+    xTicks = (A.ticks || LOG_TICKS).filter((t) => t >= lo && t <= hi).map((t) => ({
+      v: t,
+      x: x(t),
+      label: A.tickLabel ? A.tickLabel(t) : t < 1 ? `$${t.toFixed(2).replace(/0$/, '')}` : `$${t}`,
     }));
     // on a phone, half the ticks is still a readable log axis; all of them collide
     if (compact) xTicks = xTicks.filter((_, i) => i % 2 === 0);
@@ -241,16 +264,14 @@ function tooltipContent(p, axis) {
     el('i', { class: 'tip-key', style: { 'background-color': p.color } }),
     `${r.model}${r.effort ? ` · ${r.effort}` : ''}`,
   ]));
-  const cost = () => tipRow('Cost', `${fmtCost(r.cost_usd)} (${kind})`);
-  const wall = () => tipRow('Wall clock', `${fmtWall(r.wall_min)} min`);
-  // the measure this map is about goes first
-  if (axis.id === 'time') {
-    frag.appendChild(wall());
-    frag.appendChild(cost());
-  } else {
-    frag.appendChild(cost());
-    frag.appendChild(wall());
-  }
+  const rows = {
+    cost: () => tipRow('Cost', `${fmtCost(r.cost_usd)} (${kind})`),
+    time: () => tipRow('Wall clock', `${fmtWall(r.wall_min)} min`),
+    turns: () => tipRow('Turns', r.turns === null || r.turns === undefined ? 'not counted' : fmtTurns(r.turns)),
+  };
+  // the measure this map is about goes first, the other two after it
+  const order = [axis.id, ...['cost', 'time', 'turns'].filter((k) => k !== axis.id)];
+  order.forEach((k) => { if (rows[k]) frag.appendChild(rows[k]()); });
   frag.appendChild(tipRow('Unplanted, not scored', String(r.extras)));
   frag.appendChild(tipRow('Claimed only', String(r.claimed_only)));
   frag.appendChild(tipRow('Run date', fmtDate(r.date)));
@@ -272,7 +293,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
     viewBox: `0 0 ${width} ${height}`,
     width,
     height,
-    'aria-label': `Planted bugs fixed plotted against ${A.id === 'time' ? 'wall clock' : 'run cost'}. Every value is also in the leaderboard table.`,
+    'aria-label': `Planted bugs fixed plotted against ${MEASURE_ARIA[A.id] || 'run cost'}. Every value is also in the leaderboard table.`,
   });
   svg.appendChild(svgEl('title', { text: `${A.chartTitle}, for the selected runs` }));
 
@@ -408,7 +429,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
       parts.push(`${names} cost nothing to run, and zero has no place on a logarithmic cost axis.`);
     }
     if (missing.length) {
-      parts.push(`${missing.length} selected run${missing.length === 1 ? ' carries' : 's carry'} no ${A.id === 'time' ? 'wall-clock' : 'cost'} figure.`);
+      parts.push(`${missing.length} selected run${missing.length === 1 ? ' carries' : 's carry'} no ${MEASURE_NAME[A.id] || 'cost'} figure.`);
     }
     parts.push(`${L.skipped === 1 ? 'It is' : 'They are'} in the table.`);
     host.appendChild(el('p', { class: 'chart__def chart__def--skip', text: parts.join(' ') }));
