@@ -3810,3 +3810,4 @@ OpenAI's GPT-6.1 Sol went on the board the night it became reachable on a ChatGP
 | Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost | Turns |
 |---|---|---|---|---|---|---|---|---|
 | GPT-6.1 Sol (max effort) | 1 | **44** / 105 | 21 / 45 | 23 / 60 | 59 | 112.4 min | $6.56 | 280 |
+| GPT-6.1 Sol (xhigh effort) | 1 | **41** / 105 | 24 / 45 | 17 / 60 | 63 | 80.6 min | $4.68 | 211 |
