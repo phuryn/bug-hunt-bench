@@ -3774,6 +3774,7 @@ Anthropic's Sonnet 5.5 went on the board the evening it shipped, through Claude 
 | Sonnet 5.5 (low effort) | 1 | **20** / 105 | 7 / 45 | 13 / 60 | 5 | 7.4 min | $5.75 |
 | Sonnet 5.5 (max effort) - mean of 3 | mean of 3 | **51.3** / 105 | 22.7 / 45 | 28.7 / 60 | 26.3 | 287.1 min | $154.03 |
 | Sonnet 5.5 (xhigh effort) - mean of 3 | mean of 3 | **36** / 105 | 16 / 45 | 20 / 60 | 14 | 72.7 min | $42.86 |
+| Sonnet 5.5 (high effort) - mean of 3 | mean of 3 | **34.3** / 105 | 15.7 / 45 | 18.7 / 60 | 10.7 | 27.9 min | $19.85 |
 
 From Sep 29 every tier is taken to three runs. Each mean of 3 lands in the table above when its third run is judged, and supersedes the row before it - the single run, or at max the mean of 2.
 
