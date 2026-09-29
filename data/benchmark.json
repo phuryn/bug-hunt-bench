@@ -6,11 +6,11 @@
     "repo1_total": 45,
     "repo2_total": 60,
     "survivors": 29,
-    "models": 39,
+    "models": 40,
     "bug_count": 105,
     "repo1_bug_count": 45,
-    "rows": 152,
-    "runs": 236,
+    "rows": 153,
+    "runs": 237,
     "updated": "2026-09-29",
     "source_repo": "https://github.com/phuryn/bug-hunt-bench/tree/main/results",
     "repo_url": "https://github.com/phuryn/bug-hunt-bench",
@@ -696,6 +696,84 @@
       "group_rank": 0
     },
     {
+      "id": "GPT-6.1 Sol (max effort)",
+      "n_runs": 1,
+      "model": "GPT-6.1 Sol",
+      "vendor": "OpenAI",
+      "local": false,
+      "harness": "Codex CLI",
+      "effort": "max",
+      "effort_status": "first_party",
+      "date": "2026-09-29",
+      "color": "#2BA580",
+      "fixed": 44,
+      "repo1_fixed": 21,
+      "repo2_fixed": 23,
+      "partial": 3,
+      "claimed_only": 0,
+      "extras": 59,
+      "false_positive_fixes": 0,
+      "wall_min": 112.4,
+      "cost_usd": 6.56,
+      "cost_kind": "list",
+      "wall_note": null,
+      "ceiling": false,
+      "featured": true,
+      "superseded": null,
+      "caveat": "ONE RUN, not a mean - this board has measured a 13-point spread between two runs of a single identical configuration, so treat 44 as one draw. It runs Codex 0.159.0, newer than every other OpenAI row, because the build the others use refuses this model; the harness is not held fixed across that comparison. Max is not this model's top tier (the account also offers ultra). Cost is a list-rate estimate and a floor - the long-context surcharge is not modelled. The wall figure may include load from other work on the laptop.",
+      "note": "OpenAI's GPT-6.1 Sol at max effort through OpenAI's own Codex CLI, on a ChatGPT account - the same auth path as every other Sol, Astra, Terra and Luna row here, NOT the metered API. 44 of 105: 21 of 45 on repo 1 and 23 of 60 on repo 2, 59 genuine extras, 112.4 minutes, $6.56, 280 turns (133 and 147). ONE RUN, measured the night the model became reachable. For comparison the board publishes GPT-6 Sol at max 29.3 (mean of 3), GPT-6 Astra at max 45 (mean of 3), GPT-5.6 Sol at max 43.5 (mean of 2), Sonnet 5.5 at max 51.3 (mean of 3) of 105. *** MAX IS NOT THIS MODEL'S TOP TIER *** the account's own Codex model list offers low, medium, high, xhigh, max, ultra for gpt-6.1-sol - 'ultra' sits above max ('Maximum reasoning with automatic task delegation'), so this row is not marked as the model's ceiling. *** THIS ROW RUNS A NEWER CODEX BUILD THAN THE OTHER OPENAI ROWS, UNAVOIDABLY *** the build the rest of this board's OpenAI rows use answers 'not supported when using Codex with a ChatGPT account' for this model on the same account at the same minute that Codex 0.159.0 runs it, so the blocker is the client, not entitlement. The GPT-6 Sol rows ran on 0.155.1, so a gap against them is model-plus-client. (That rejection message is generic - a made-up slug gets it word for word - so it is never evidence about whether a model exists; the API's own model list settled that.) *** AN EARLIER ATTEMPT IS VOIDED IN THE LEDGER *** Codex's sandbox was misconfigured on the machine and refused every command the model tried, so it never ran one; the runner marked it void (exit 90) and this row is a clean re-run. *** COST IS A LIST ESTIMATE AND A FLOOR *** token counts at OpenAI's published GPT-6.1 Sol short-context rates, $2 input, $0.10 cached, $10 output per million - half GPT-6 Sol's cached rate. Requests over 272K input bill 2x on input and cache and 1.5x on output, which is NOT modelled here, so any leg that crossed that line cost more than this figure says. The Codex CLI on a subscription exposes no per-run bill, hence `list`. *** THE JUDGE IS NOT THIS BOARD'S DEFAULT, BY RULE *** a model may never judge itself or a sibling, and the default Codex judge is an OpenAI model, so it is disqualified for this arm. Judged by grok-4.7, blinded to the arm's identity - the id is read back from the scoring receipt. *** RECEIPTS *** Both legs exited 0 with a report written, run SEQUENTIALLY, one repo at a time, code mode off as on the GPT-6 Sol arms. No other benchmark leg overlapped either leg - the only load this board's marker records - but the laptop was running several interactive coding-agent sessions that evening, at times near full CPU, so the wall figure may run high; scores, tokens and cost are unaffected.",
+      "fixed_bugs": [
+        13,
+        16,
+        20,
+        22,
+        23,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        33,
+        34,
+        35,
+        37,
+        39,
+        40,
+        41,
+        43,
+        44,
+        45,
+        47,
+        49,
+        50,
+        51,
+        62,
+        66,
+        68,
+        69,
+        71,
+        73,
+        74,
+        76,
+        77,
+        80,
+        82,
+        83,
+        84,
+        92,
+        95,
+        98,
+        99,
+        100,
+        102
+      ],
+      "turns": 280,
+      "turns_repo1": 133,
+      "turns_repo2": 147,
+      "group_rank": 100
+    },
+    {
       "id": "GPT-5.6 Sol (max effort) - mean of 2",
       "n_runs": 2,
       "model": "GPT-5.6 Sol",
@@ -705,7 +783,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-16",
-      "color": "#51B597",
+      "color": "#5AB99C",
       "fixed": 43.5,
       "repo1_fixed": 19,
       "repo2_fixed": 24.5,
@@ -834,7 +912,7 @@
       "turns": 1082,
       "turns_repo1": 451,
       "turns_repo2": 632,
-      "group_rank": 300
+      "group_rank": 400
     },
     {
       "id": "GPT-6 Astra (xhigh effort)",
@@ -1077,7 +1155,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-08-01",
-      "color": "#51B597",
+      "color": "#5AB99C",
       "fixed": 42,
       "repo1_fixed": 19,
       "repo2_fixed": 23,
@@ -1141,7 +1219,7 @@
       "turns": 831,
       "turns_repo1": 397,
       "turns_repo2": 434,
-      "group_rank": 300
+      "group_rank": 400
     },
     {
       "id": "Opus 5.5 (max effort) - mean of 3",
@@ -1415,7 +1493,7 @@
       "effort": "xhigh",
       "effort_status": "first_party",
       "date": "2026-08-28",
-      "color": "#51B597",
+      "color": "#5AB99C",
       "fixed": 39,
       "repo1_fixed": 18,
       "repo2_fixed": 21,
@@ -1476,7 +1554,7 @@
       "turns": 485,
       "turns_repo1": 233,
       "turns_repo2": 252,
-      "group_rank": 301
+      "group_rank": 401
     },
     {
       "id": "Sonnet 5.5 (xhigh effort)",
@@ -2247,7 +2325,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-07-31",
-      "color": "#51B597",
+      "color": "#5AB99C",
       "fixed": 34,
       "repo1_fixed": 13,
       "repo2_fixed": 21,
@@ -2303,7 +2381,7 @@
       "turns": 269,
       "turns_repo1": 129,
       "turns_repo2": 140,
-      "group_rank": 302
+      "group_rank": 402
     },
     {
       "id": "Muse Spark 1.3 (max effort, Muse Code, Meta API) - mean of 3",
@@ -2442,7 +2520,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-07-31",
-      "color": "#75C4AC",
+      "color": "#79C6AF",
       "fixed": 33,
       "repo1_fixed": 17,
       "repo2_fixed": 16,
@@ -2497,7 +2575,7 @@
       "turns": 616,
       "turns_repo1": 93,
       "turns_repo2": 523,
-      "group_rank": 500
+      "group_rank": 600
     },
     {
       "id": "Muse Spark 1.3 (max effort, Muse Code, Meta API)",
@@ -2844,7 +2922,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#2DA682",
+      "color": "#3AAB8A",
       "fixed": 32,
       "repo1_fixed": 18,
       "repo2_fixed": 14,
@@ -2898,7 +2976,7 @@
       "turns": 365,
       "turns_repo1": 154,
       "turns_repo2": 211,
-      "group_rank": 100
+      "group_rank": 200
     },
     {
       "id": "Sonnet 5.5 (high effort)",
@@ -3151,7 +3229,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-08-27",
-      "color": "#63BCA2",
+      "color": "#69BFA6",
       "fixed": 32,
       "repo1_fixed": 16,
       "repo2_fixed": 16,
@@ -3205,7 +3283,7 @@
       "turns": 875,
       "turns_repo1": 389,
       "turns_repo2": 486,
-      "group_rank": 400
+      "group_rank": 500
     },
     {
       "id": "Opus 5.5 (high effort) - mean of 3",
@@ -3328,7 +3406,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-22",
-      "color": "#75C4AC",
+      "color": "#79C6AF",
       "fixed": 31.5,
       "repo1_fixed": 16.5,
       "repo2_fixed": 15,
@@ -3431,7 +3509,7 @@
       "turns": 876,
       "turns_repo1": 404,
       "turns_repo2": 472,
-      "group_rank": 500
+      "group_rank": 600
     },
     {
       "id": "GPT-5.6 Luna (max effort) - mean of 3",
@@ -3443,7 +3521,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-22",
-      "color": "#75C4AC",
+      "color": "#79C6AF",
       "fixed": 31.3,
       "repo1_fixed": 16,
       "repo2_fixed": 15.3,
@@ -3548,7 +3626,7 @@
       "turns": 990,
       "turns_repo1": 542,
       "turns_repo2": 448,
-      "group_rank": 500
+      "group_rank": 600
     },
     {
       "id": "GPT-6 Sol (max effort) - mean of 2",
@@ -3560,7 +3638,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#2DA682",
+      "color": "#3AAB8A",
       "fixed": 31,
       "repo1_fixed": 17,
       "repo2_fixed": 14,
@@ -3653,7 +3731,7 @@
       "turns": 353,
       "turns_repo1": 156,
       "turns_repo2": 196,
-      "group_rank": 100
+      "group_rank": 200
     },
     {
       "id": "GPT-5.6 Sol",
@@ -3665,7 +3743,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-07-26",
-      "color": "#51B597",
+      "color": "#5AB99C",
       "fixed": 31,
       "repo1_fixed": 13,
       "repo2_fixed": 18,
@@ -3718,7 +3796,7 @@
       "turns": 325,
       "turns_repo1": 122,
       "turns_repo2": 203,
-      "group_rank": 302
+      "group_rank": 402
     },
     {
       "id": "Union Alpha (stealth; free) - mean of 3",
@@ -4193,7 +4271,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#2DA682",
+      "color": "#3AAB8A",
       "fixed": 29.3,
       "repo1_fixed": 15.3,
       "repo2_fixed": 14,
@@ -4286,7 +4364,7 @@
       "turns": 352,
       "turns_repo1": 163,
       "turns_repo2": 189,
-      "group_rank": 100
+      "group_rank": 200
     },
     {
       "id": "GPT-5.6 Sol (medium effort)",
@@ -4298,7 +4376,7 @@
       "effort": "medium",
       "effort_status": "first_party",
       "date": "2026-09-06",
-      "color": "#51B597",
+      "color": "#5AB99C",
       "fixed": 29,
       "repo1_fixed": 13,
       "repo2_fixed": 16,
@@ -4349,7 +4427,7 @@
       "turns": 143,
       "turns_repo1": 67,
       "turns_repo2": 76,
-      "group_rank": 303
+      "group_rank": 403
     },
     {
       "id": "Fable 5.1 (low effort)",
@@ -5545,7 +5623,7 @@
       "effort": "xhigh",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#2DA682",
+      "color": "#3AAB8A",
       "fixed": 25,
       "repo1_fixed": 10,
       "repo2_fixed": 15,
@@ -5592,7 +5670,7 @@
       "turns": 260,
       "turns_repo1": 107,
       "turns_repo2": 153,
-      "group_rank": 101
+      "group_rank": 201
     },
     {
       "id": "DeepSeek V4.1 Flash (max effort)",
@@ -6045,7 +6123,7 @@
       "effort": "xhigh",
       "effort_status": "first_party",
       "date": "2026-08-28",
-      "color": "#75C4AC",
+      "color": "#79C6AF",
       "fixed": 23,
       "repo1_fixed": 10,
       "repo2_fixed": 13,
@@ -6090,7 +6168,7 @@
       "turns": 813,
       "turns_repo1": 464,
       "turns_repo2": 349,
-      "group_rank": 501
+      "group_rank": 601
     },
     {
       "id": "Opus 5.5 (low effort)",
@@ -7097,7 +7175,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#2DA682",
+      "color": "#3AAB8A",
       "fixed": 20,
       "repo1_fixed": 10,
       "repo2_fixed": 10,
@@ -7139,7 +7217,7 @@
       "turns": 162,
       "turns_repo1": 80,
       "turns_repo2": 82,
-      "group_rank": 102
+      "group_rank": 202
     },
     {
       "id": "Sonnet 5.5 (low effort)",
@@ -7205,7 +7283,7 @@
       "effort": "xhigh",
       "effort_status": "first_party",
       "date": "2026-08-28",
-      "color": "#63BCA2",
+      "color": "#69BFA6",
       "fixed": 20,
       "repo1_fixed": 9,
       "repo2_fixed": 11,
@@ -7247,7 +7325,7 @@
       "turns": 259,
       "turns_repo1": 127,
       "turns_repo2": 132,
-      "group_rank": 401
+      "group_rank": 501
     },
     {
       "id": "Gemini 3.8 Flash",
@@ -7511,7 +7589,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#3FAD8C",
+      "color": "#4AB293",
       "fixed": 19,
       "repo1_fixed": 6.5,
       "repo2_fixed": 12.5,
@@ -7588,7 +7666,7 @@
       "turns": 270,
       "turns_repo1": 156,
       "turns_repo2": 115,
-      "group_rank": 200
+      "group_rank": 300
     },
     {
       "id": "GLM-5.3 Flash (max effort, Z.ai API)",
@@ -8015,7 +8093,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#3FAD8C",
+      "color": "#4AB293",
       "fixed": 18.3,
       "repo1_fixed": 6.3,
       "repo2_fixed": 12,
@@ -8098,7 +8176,7 @@
       "turns": 286,
       "turns_repo1": 153,
       "turns_repo2": 133,
-      "group_rank": 200
+      "group_rank": 300
     },
     {
       "id": "MiMo-V2.6-Pro (first-party)",
@@ -8214,7 +8292,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-08-27",
-      "color": "#63BCA2",
+      "color": "#69BFA6",
       "fixed": 18,
       "repo1_fixed": 7,
       "repo2_fixed": 11,
@@ -8254,7 +8332,7 @@
       "turns": 128,
       "turns_repo1": 71,
       "turns_repo2": 57,
-      "group_rank": 402
+      "group_rank": 502
     },
     {
       "id": "Sonnet 5.5 (medium effort)",
@@ -8590,7 +8668,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#3FAD8C",
+      "color": "#4AB293",
       "fixed": 17,
       "repo1_fixed": 6,
       "repo2_fixed": 11,
@@ -8629,7 +8707,7 @@
       "turns": 315,
       "turns_repo1": 210,
       "turns_repo2": 105,
-      "group_rank": 200
+      "group_rank": 300
     },
     {
       "id": "Grok 4.5 (re-run Aug 6)",
@@ -9076,7 +9154,7 @@
       "effort": "medium",
       "effort_status": "first_party",
       "date": "2026-08-27",
-      "color": "#63BCA2",
+      "color": "#69BFA6",
       "fixed": 15,
       "repo1_fixed": 4,
       "repo2_fixed": 11,
@@ -9113,7 +9191,7 @@
       "turns": 93,
       "turns_repo1": 48,
       "turns_repo2": 45,
-      "group_rank": 403
+      "group_rank": 503
     },
     {
       "id": "Grok 4.6 (low)",
@@ -9355,7 +9433,7 @@
       "effort": "xhigh",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#3FAD8C",
+      "color": "#4AB293",
       "fixed": 14,
       "repo1_fixed": 4,
       "repo2_fixed": 10,
@@ -9391,7 +9469,7 @@
       "turns": 172,
       "turns_repo1": 73,
       "turns_repo2": 99,
-      "group_rank": 201
+      "group_rank": 301
     },
     {
       "id": "DeepSeek V4-Flash 0731",
@@ -9451,7 +9529,7 @@
       "effort": "medium",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#2DA682",
+      "color": "#3AAB8A",
       "fixed": 14,
       "repo1_fixed": 3,
       "repo2_fixed": 11,
@@ -9487,7 +9565,7 @@
       "turns": 103,
       "turns_repo1": 49,
       "turns_repo2": 54,
-      "group_rank": 103
+      "group_rank": 203
     },
     {
       "id": "Muse Spark 1.2 (default effort, OpenRouter)",
@@ -9547,7 +9625,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-07-31",
-      "color": "#75C4AC",
+      "color": "#79C6AF",
       "fixed": 13,
       "repo1_fixed": 5,
       "repo2_fixed": 8,
@@ -9582,7 +9660,7 @@
       "turns": 174,
       "turns_repo1": 111,
       "turns_repo2": 63,
-      "group_rank": 502
+      "group_rank": 602
     },
     {
       "id": "GLM-5.3 Flash",
@@ -10059,7 +10137,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#3FAD8C",
+      "color": "#4AB293",
       "fixed": 9,
       "repo1_fixed": 2,
       "repo2_fixed": 7,
@@ -10090,7 +10168,7 @@
       "turns": 72,
       "turns_repo1": 29,
       "turns_repo2": 43,
-      "group_rank": 202
+      "group_rank": 302
     },
     {
       "id": "GPT-5.6 Luna (medium effort)",
@@ -10102,7 +10180,7 @@
       "effort": "medium",
       "effort_status": "first_party",
       "date": "2026-08-27",
-      "color": "#75C4AC",
+      "color": "#79C6AF",
       "fixed": 9,
       "repo1_fixed": 5,
       "repo2_fixed": 4,
@@ -10133,7 +10211,7 @@
       "turns": 97,
       "turns_repo1": 58,
       "turns_repo2": 39,
-      "group_rank": 503
+      "group_rank": 603
     },
     {
       "id": "GLM-5.3 Flash (low effort, Z.ai API)",
@@ -10444,7 +10522,7 @@
       "effort": "low",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#2DA682",
+      "color": "#3AAB8A",
       "fixed": 6,
       "repo1_fixed": 3,
       "repo2_fixed": 3,
@@ -10472,7 +10550,7 @@
       "turns": 64,
       "turns_repo1": 40,
       "turns_repo2": 24,
-      "group_rank": 104
+      "group_rank": 204
     },
     {
       "id": "GPT-6 Luna (medium effort)",
@@ -10484,7 +10562,7 @@
       "effort": "medium",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#3FAD8C",
+      "color": "#4AB293",
       "fixed": 4,
       "repo1_fixed": 2,
       "repo2_fixed": 2,
@@ -10510,7 +10588,7 @@
       "turns": 40,
       "turns_repo1": 24,
       "turns_repo2": 16,
-      "group_rank": 203
+      "group_rank": 303
     },
     {
       "id": "GPT-5.6 Luna (low effort)",
@@ -10522,7 +10600,7 @@
       "effort": "low",
       "effort_status": "first_party",
       "date": "2026-08-27",
-      "color": "#75C4AC",
+      "color": "#79C6AF",
       "fixed": 4,
       "repo1_fixed": 0,
       "repo2_fixed": 4,
@@ -10548,7 +10626,7 @@
       "turns": 37,
       "turns_repo1": 18,
       "turns_repo2": 19,
-      "group_rank": 504
+      "group_rank": 604
     },
     {
       "id": "GPT-6 Luna (low effort)",
@@ -10560,7 +10638,7 @@
       "effort": "low",
       "effort_status": "first_party",
       "date": "2026-09-23",
-      "color": "#3FAD8C",
+      "color": "#4AB293",
       "fixed": 4,
       "repo1_fixed": 1,
       "repo2_fixed": 3,
@@ -10586,7 +10664,7 @@
       "turns": 130,
       "turns_repo1": 79,
       "turns_repo2": 51,
-      "group_rank": 204
+      "group_rank": 304
     },
     {
       "id": "Gemma 4 31B (OpenRouter/Crusoe)",
@@ -10694,7 +10772,7 @@
       "turns": 61,
       "turns_repo1": 19,
       "turns_repo2": 42,
-      "group_rank": 706
+      "group_rank": 806
     },
     {
       "id": "gpt-oss-120b - mean of 3",
@@ -10706,7 +10784,7 @@
       "effort": "default",
       "effort_status": "inert_default",
       "date": "2026-09-15",
-      "color": "#86CCB7",
+      "color": "#89CDB8",
       "fixed": 0,
       "repo1_fixed": 0,
       "repo2_fixed": 0,
@@ -10729,7 +10807,7 @@
       "turns": 35,
       "turns_repo1": 11,
       "turns_repo2": 25,
-      "group_rank": 606
+      "group_rank": 706
     },
     {
       "id": "gpt-oss-20b - mean of 3",
@@ -10764,7 +10842,7 @@
       "turns": 63,
       "turns_repo1": 23,
       "turns_repo2": 40,
-      "group_rank": 706
+      "group_rank": 806
     },
     {
       "id": "gpt-oss-120b",
@@ -10776,7 +10854,7 @@
       "effort": "default",
       "effort_status": "inert_default",
       "date": "2026-09-12",
-      "color": "#86CCB7",
+      "color": "#89CDB8",
       "fixed": 0,
       "repo1_fixed": 0,
       "repo2_fixed": 0,
@@ -10797,7 +10875,7 @@
       "turns": 44,
       "turns_repo1": 11,
       "turns_repo2": 33,
-      "group_rank": 606
+      "group_rank": 706
     }
   ]
 }

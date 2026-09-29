@@ -1,0 +1,37 @@
+{
+ "source": "~/.codex/models_cache.json (the ChatGPT account's own Codex model list), entry for gpt-6.1-sol",
+ "fetched_at": "2026-09-29T22:16:09.187251700Z",
+ "client_version": "0.159.0",
+ "entry": {
+  "slug": "gpt-6.1-sol",
+  "display_name": "GPT-6.1-Sol",
+  "visibility": "list",
+  "default_reasoning_level": "low",
+  "supported_reasoning_levels": [
+   {
+    "effort": "low",
+    "description": "Fast responses with lighter reasoning"
+   },
+   {
+    "effort": "medium",
+    "description": "Balances speed and reasoning depth for everyday tasks"
+   },
+   {
+    "effort": "high",
+    "description": "Greater reasoning depth for complex problems"
+   },
+   {
+    "effort": "xhigh",
+    "description": "Extra high reasoning depth for complex problems"
+   },
+   {
+    "effort": "max",
+    "description": "Maximum reasoning depth for the hardest problems"
+   },
+   {
+    "effort": "ultra",
+    "description": "Maximum reasoning with automatic task delegation"
+   }
+  ]
+ }
+}

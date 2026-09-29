@@ -3802,3 +3802,11 @@ whose logs were not kept carry no turn count and are left off the map.
 
 `runs.csv` now lists every individual run behind every row — score per repo, wall clock, cost and turns — so a
 mean row's spread is readable directly (Sonnet 5.5 max: 57 and 54; 1,566 and 1,093 turns).
+
+## GPT-6.1 Sol — measured the night it shipped (Sep 29)
+
+OpenAI's GPT-6.1 Sol went on the board the night it became reachable on a ChatGPT account, through OpenAI's own Codex CLI - the same auth path as every other Sol, Astra, Terra and Luna row. The Codex build the rest of the OpenAI rows use refuses this model, so it runs on a newer one (named in the row). Judged blind by Grok, never by an OpenAI model. Single runs are single draws - this board has measured a 13-point spread between two runs of one identical configuration.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost | Turns |
+|---|---|---|---|---|---|---|---|---|
+| GPT-6.1 Sol (max effort) | 1 | **44** / 105 | 21 / 45 | 23 / 60 | 59 | 112.4 min | $6.56 | 280 |

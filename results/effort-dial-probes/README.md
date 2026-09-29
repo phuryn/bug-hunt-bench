@@ -90,3 +90,4 @@ dropped mid-flight — the first grok-4.5 pass lost 3 of 3 `high` samples and 2 
 samples that way (`20260806-grok45-xai-v1-nonstreaming.txt`, kept as the receipt). Silent sample
 loss reads exactly like a model that will not answer. The effort probe streams and retries
 transport failures now; HTTP errors are never retried, because an unsupported level is a finding.
+| 2026-09-29 | gpt-6.1-sol | Codex CLI 0.159.0 (`model_reasoning_effort=max`) | **ACCEPTED** - the account's own Codex model list documents low, medium, high, xhigh, max and ultra (above max: 'maximum reasoning with automatic task delegation'); the leg's session record shows effort max | gpt-6.1-sol-codex-model-list-2026-09-29.json |
