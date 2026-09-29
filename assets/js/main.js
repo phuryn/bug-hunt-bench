@@ -11,7 +11,9 @@ import {
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
 } from './format.js?v=d69cab3767';
 import { renderHead, renderBody, renderColgroup } from './table.js?v=d69cab3767';
-import { renderScatter, AXES } from './scatter.js?v=d69cab3767';
+import {
+  renderScatter, AXES, SCALES, scaledAxis, scaleSentence,
+} from './scatter.js?v=d69cab3767';
 import { renderPicker, refreshGroups } from './selector.js?v=d69cab3767';
 import { exportView } from './export-png.js?v=d69cab3767';
 import { initTheme, hasAdjustedColors } from './theme.js?v=d69cab3767';
@@ -60,14 +62,17 @@ const VIEWS = {
   scatter: {
     panel: 'panel-scatter', tab: 'tab-scatter', axis: AXES.cost,
     host: 'chart', legend: 'chart-legend', empty: 'scatter-empty', note: 'axis-note',
+    scale: 'scale-scatter', scaleNote: 'scale-note',
   },
   time: {
     panel: 'panel-time', tab: 'tab-time', axis: AXES.time,
     host: 'chart-time', legend: 'time-legend', empty: 'time-empty', note: 'time-axis-note',
+    scale: 'scale-time', scaleNote: 'time-scale-note',
   },
   turns: {
     panel: 'panel-turns', tab: 'tab-turns', axis: AXES.turns,
     host: 'chart-turns', legend: 'turns-legend', empty: 'turns-empty', note: 'turns-axis-note',
+    scale: 'scale-turns', scaleNote: 'turns-scale-note',
   },
   coverage: {
     panel: 'panel-coverage', tab: 'tab-coverage',
@@ -96,6 +101,11 @@ const state = {
   // because it has to survive a view switch and round-trip the URL like
   // every other piece of state on this page.
   pivot: null,
+  // Each map's x scale, by view key: 'log' or 'linear', absent = that map's default.
+  // One per map rather than one for the page, so choosing linear cost does not also
+  // flip wall clock. Kept for the session; only the current map's choice goes in the
+  // URL, and only when it differs from the default.
+  scale: {},
 };
 
 let DATA = null;
@@ -170,6 +180,10 @@ function readUrl() {
   if (dir === 'asc' || dir === 'desc') state.dir = dir;
   const view = p.get('view');
   if (VIEWS[view]) state.view = view;
+  // ?x= belongs to the map the link opens on; anything else there is ignored
+  state.scale = {};
+  const x = p.get('x');
+  if (VIEWS[state.view].axis && SCALES.includes(x)) state.scale[state.view] = x;
   // Read raw; validity (still selected, still carries per-bug data) is
   // checked by sanitizePivot() on the first render, same as a link typed by
   // hand rather than produced by this page.
@@ -183,6 +197,10 @@ function writeUrl() {
   if (state.sort !== 'fixed') p.set('sort', state.sort);
   if (state.dir !== 'desc') p.set('dir', state.dir);
   if (state.view !== 'table') p.set('view', state.view);
+  if (VIEWS[state.view].axis) {
+    const x = axisFor(state.view).scale;
+    if (x !== VIEWS[state.view].axis.defaultScale) p.set('x', x);
+  }
   if (state.pivot) p.set('pivot', state.pivot);
   const qs = p.toString();
   history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
@@ -402,6 +420,11 @@ function renderKeys() {
 
 const lastChartWidth = { scatter: 0, time: 0, turns: 0 };
 
+/** A map's axis spec with the scale the reader has chosen for it. */
+function axisFor(key) {
+  return scaledAxis(VIEWS[key].axis, state.scale[key]);
+}
+
 /** The sentence that belongs to a map, drawn inside the plate with the plot. */
 function chartFootnote(axisId) {
   const cav = chartCaveat(axisId);
@@ -423,11 +446,16 @@ function chartFootnote(axisId) {
 
 function renderChart(key) {
   const V = VIEWS[key];
+  const A = axisFor(key);
   const runs = selectedRuns();
   const legend = $(V.legend);
   legend.textContent = '';
+  $(V.scale).querySelectorAll('button[data-scale]').forEach((b) => {
+    b.setAttribute('aria-pressed', String(b.dataset.scale === A.scale));
+  });
+  $(V.scaleNote).textContent = scaleSentence(A, RUNS);
   if (!runs.length) return;
-  const L = renderScatter($(V.host), runs, RUNS, V.axis, chartFootnote(V.axis.id));
+  const L = renderScatter($(V.host), runs, RUNS, A, chartFootnote(A.id));
   lastChartWidth[key] = $(V.host).clientWidth;
   if (!L) return;
   L.points.slice().sort((a, b) => b.score - a.score).forEach((p) => {
@@ -490,6 +518,7 @@ function renderViews() {
   CHART_VIEWS.forEach((k) => {
     $(VIEWS[k].empty).hidden = !empty;
     $(VIEWS[k].host).hidden = empty;
+    $(VIEWS[k].scale).hidden = empty;
     if (empty) $(VIEWS[k].legend).textContent = '';
   });
   $('coverage-empty').hidden = !empty;
@@ -611,6 +640,18 @@ function wire() {
     });
   });
 
+  // the log / linear switch under each map: static buttons, so focus stays put
+  // while the map redraws beside them
+  CHART_VIEWS.forEach((k) => {
+    $(VIEWS[k].scale).querySelectorAll('button[data-scale]').forEach((b) => {
+      b.addEventListener('click', () => {
+        state.scale[k] = b.dataset.scale;
+        renderViews();
+        writeUrl();
+      });
+    });
+  });
+
   document.querySelectorAll('[data-goto-view]').forEach((b) => {
     b.addEventListener('click', () => {
       setView(b.dataset.gotoView, true);
@@ -624,7 +665,7 @@ function wire() {
     exportBtn.classList.add('is-busy');
     exportBtn.textContent = 'Rendering…';
     try {
-      const axis = VIEWS[state.view].axis || null;
+      const axis = VIEWS[state.view].axis ? axisFor(state.view) : null;
       const cav = axis ? chartCaveat(axis.id) : null;
       await exportView({
         view: state.view,

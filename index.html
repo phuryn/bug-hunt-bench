@@ -190,10 +190,17 @@
 
     <div class="panel" id="panel-scatter" role="tabpanel" tabindex="0" aria-labelledby="tab-scatter" hidden>
       <div class="chart" id="chart"></div>
+      <div class="scale-switch" id="scale-scatter">
+        <span class="scale-switch__label" id="scale-scatter-label">X axis</span>
+        <div class="segs" role="group" aria-labelledby="scale-scatter-label">
+          <button type="button" class="seg" data-scale="log" aria-pressed="true">Log</button>
+          <button type="button" class="seg" data-scale="linear" aria-pressed="false">Linear</button>
+        </div>
+      </div>
       <p class="empty" id="scatter-empty" hidden>No runs selected. Pick some above, or hit <strong>Featured</strong>.</p>
       <div class="chart__legend" id="chart-legend"></div>
       <p class="chart__note">
-        Cost is on a logarithmic axis: the spread across the board is roughly two hundredfold, and a linear axis would pile half the runs into the left margin.
+        <span id="scale-note"></span>
         <span id="axis-note"></span>
         Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>.
       </p>
@@ -201,10 +208,17 @@
 
     <div class="panel" id="panel-time" role="tabpanel" tabindex="0" aria-labelledby="tab-time" hidden>
       <div class="chart" id="chart-time"></div>
+      <div class="scale-switch" id="scale-time">
+        <span class="scale-switch__label" id="scale-time-label">X axis</span>
+        <div class="segs" role="group" aria-labelledby="scale-time-label">
+          <button type="button" class="seg" data-scale="log" aria-pressed="true">Log</button>
+          <button type="button" class="seg" data-scale="linear" aria-pressed="false">Linear</button>
+        </div>
+      </div>
       <p class="empty" id="time-empty" hidden>No runs selected. Pick some above, or hit <strong>Featured</strong>.</p>
       <div class="chart__legend" id="time-legend"></div>
       <p class="chart__note">
-        Minutes are on a linear axis: the board spans under sevenfold, well inside one order of magnitude, so a linear axis places every run honestly and keeps the reading additive.
+        <span id="time-scale-note"></span>
         <span id="time-axis-note"></span>
         Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>.
       </p>
@@ -212,10 +226,18 @@
 
     <div class="panel" id="panel-turns" role="tabpanel" tabindex="0" aria-labelledby="tab-turns" hidden>
       <div class="chart" id="chart-turns"></div>
+      <div class="scale-switch" id="scale-turns">
+        <span class="scale-switch__label" id="scale-turns-label">X axis</span>
+        <div class="segs" role="group" aria-labelledby="scale-turns-label">
+          <button type="button" class="seg" data-scale="log" aria-pressed="true">Log</button>
+          <button type="button" class="seg" data-scale="linear" aria-pressed="false">Linear</button>
+        </div>
+      </div>
       <p class="empty" id="turns-empty" hidden>No runs selected. Pick some above, or hit <strong>Featured</strong>.</p>
       <div class="chart__legend" id="turns-legend"></div>
       <p class="chart__note">
-        A turn is one model step that either calls a tool or gives the final answer, counted from each run's own log the same way for every harness — see <a class="deflink" href="/method#def-turns">the definition</a>. Turns are on a logarithmic axis: the board spans roughly fortyfold, so a linear axis would pile most runs into the left margin.
+        A turn is one model step that either calls a tool or gives the final answer, counted from each run's own log the same way for every harness — see <a class="deflink" href="/method#def-turns">the definition</a>.
+        <span id="turns-scale-note"></span>
         <span id="turns-axis-note"></span>
         Every value here is also in the <button type="button" class="linkbtn" data-goto-view="table">leaderboard table</button>, and every run's own figures are in <a href="https://github.com/phuryn/bug-hunt-bench/blob/main/results/runs.csv">results/runs.csv</a>.
       </p>

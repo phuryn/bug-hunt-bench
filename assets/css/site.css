@@ -329,6 +329,37 @@ h1 em { font-style: normal; color: var(--accent); }
 }
 .preset[aria-pressed="true"] + .preset { border-left-color: var(--on-bg); }
 
+/* The log / linear switch under each map. Same segmented look as the presets,
+   its own class because every .preset is wired to the selection. Right-aligned
+   under the plate, on the side opposite the axis title it changes. */
+.scale-switch {
+  display: flex; justify-content: flex-end; align-items: center; gap: 10px;
+  margin-top: 8px;
+}
+.scale-switch[hidden] { display: none; }
+.scale-switch__label {
+  font-family: var(--sans); font-size: 11px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
+}
+.segs { display: flex; }
+.seg {
+  font: inherit; font-size: 12.5px; line-height: 1;
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--hairline); border-right-width: 0;
+  padding: 7px 13px; cursor: pointer;
+}
+.seg:first-child { border-radius: 3px 0 0 3px; }
+.seg:last-child { border-right-width: 1px; border-radius: 0 3px 3px 0; }
+.seg:hover { color: var(--ink); background: var(--plate); }
+.seg[aria-pressed="true"] {
+  background: var(--on-bg); border-color: var(--on-bg); color: var(--on-ink);
+}
+.seg[aria-pressed="true"] + .seg { border-left-color: var(--on-bg); }
+@media (max-width: 620px) {
+  /* a thumb-sized target on a phone */
+  .seg { padding: 10px 16px; }
+}
+
 .picker { margin-top: 12px; }
 .picker > summary {
   cursor: pointer; font-size: 12.5px; color: var(--ink);
@@ -1104,7 +1135,7 @@ h1 em { font-style: normal; color: var(--accent); }
     color-scheme: light;
   }
   body { background: #fff; font-size: 10.5pt; }
-  .masthead__nav, .controls, .tabs, .btn, .themetoggle, .skip-link, .picker { display: none !important; }
+  .masthead__nav, .controls, .tabs, .btn, .themetoggle, .skip-link, .picker, .scale-switch { display: none !important; }
   .views__bar { border-bottom: 1px solid #999; }
   .chart, .tablewrap, .board tbody tr { break-inside: avoid; }
   .tablewrap { overflow: visible; border: 0; }

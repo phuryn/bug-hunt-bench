@@ -13,7 +13,7 @@ import {
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
 } from './format.js?v=d69cab3767';
-import { scatterLayout, AXES } from './scatter.js?v=d69cab3767';
+import { scatterLayout, resolveAxis } from './scatter.js?v=d69cab3767';
 import { coverageLayout, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=d69cab3767';
 import { runColor, activeTheme } from './theme.js?v=d69cab3767';
 
@@ -325,7 +325,7 @@ function drawTable(ctx, T, runs, state, w) {
 /* ----------------------------------------------------------------- scatter */
 
 function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
-  const A = axis || AXES.cost;
+  const A = resolveAxis(axis);
   const top = ctx.__y + 20;
   const plotW = w - PAD * 2;
   const height = Math.round(plotW * 0.5);
@@ -654,7 +654,7 @@ export async function exportView({
     : '';
   const footerLines = [
     isChart
-      ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${{ cost: 'Cost on a logarithmic axis', time: 'Wall clock on a linear axis', turns: 'Turns on a logarithmic axis' }[axis.id]}; the score axis stops above the board's best run, which is out of 105.`
+      ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${resolveAxis(axis).noun} on a ${resolveAxis(axis).scale === 'log' ? 'logarithmic' : 'linear'} axis; the score axis stops above the board's best run, which is out of 105.`
       : isCoverage
         ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}.`
         : `${runs.length} of ${allRuns.length} runs shown — ${presetName}. Sorted by ${sortLabel}.`,

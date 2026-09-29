@@ -52,7 +52,7 @@ assets/js/
   method.js         renders method.html from the same JSON
   format.js         vocabularies, formatters, column model, DOM helpers
   table.js          leaderboard: colgroup, sortable head, rows
-  scatter.js        all three charts (score vs cost, vs time, vs turns) from one renderer
+  scatter.js        all three charts (score vs cost, vs time, vs turns) from one renderer; log / linear per map
   selector.js       run picker
   export-png.js     canvas renderer for "Export this view"
 stamp-assets.py     content-hashes CSS/JS URLs; runs on every Netlify deploy

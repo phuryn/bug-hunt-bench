@@ -4,13 +4,15 @@
    Layout is computed in a pure function so the on-screen SVG and the PNG export
    cannot drift apart.
 
-   Cost is logarithmic: the board spans roughly two hundredfold, and a linear axis
-   would pile half the runs into the left margin. Wall clock is LINEAR: it spans
-   under sevenfold — well inside one order of magnitude — so a linear axis places
-   every run honestly and keeps the reading additive, which is how minutes are
-   read. A log axis there would stretch the gaps at the fast end and squash the
-   ones at the slow end, for no gain. Turns are logarithmic for the same reason as
-   cost: the board spans roughly fortyfold, from a few dozen to over a thousand. */
+   EVERY MAP HAS A LOG / LINEAR SWITCH (2026-09-29), and every map opens on log.
+   The old split - cost and turns logarithmic, wall clock linear - rested on a
+   sentence that said minutes spanned "under sevenfold". They did, until Sonnet 5.5
+   at max took four hours: the board then spanned 68-fold and the linear time map
+   pushed most runs into its left fifth. Log is the default because on all three
+   measures the board spans well over an order of magnitude; linear stays one click
+   away, because it is the honest picture of distance - equal steps are equal
+   dollars, minutes or turns. The sentence under each map is COMPUTED from the board
+   (scaleSentence), never typed, so it cannot go stale the way that one did. */
 
 import {
   pointLabels, fmtCost, fmtWall, fmtTurns, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
@@ -20,19 +22,26 @@ import { runColor } from './theme.js?v=d69cab3767';
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
 const TURN_TICKS = [10, 20, 50, 100, 200, 500, 1000, 2000, 5000];
-const LINEAR_STEPS = [5, 10, 15, 20, 25, 30, 50, 60, 100, 150, 200];
+const MINUTE_TICKS = [1, 2, 5, 10, 20, 50, 100, 200, 500, 1000];
 const CEILING = 105;
 
+export const SCALES = ['log', 'linear'];
+
 /* The x measures. `flag` names the field that marks a value as carrying its own
-   note on how it was taken; a flagged point is drawn differently and says why. */
+   note on how it was taken; a flagged point is drawn differently and says why.
+   A spec here carries no scale: scaledAxis() adds one, with the titles that name it. */
 export const AXES = {
   cost: {
     id: 'cost',
     key: 'cost_usd',
-    scale: 'log',
-    title: 'Run cost, USD — logarithmic, cheaper to the left',
-    titleCompact: 'Cost, USD (log)',
-    exportTitle: 'RUN COST, USD — LOGARITHMIC, CHEAPER TO THE LEFT',
+    defaultScale: 'log',
+    name: 'Run cost, USD',
+    nameCompact: 'Cost, USD',
+    noun: 'Cost',
+    unit: 'dollars',
+    better: 'cheaper to the left',
+    logTicks: LOG_TICKS,
+    tickLabel: (t) => (t === 0 ? '$0' : t < 1 ? `$${t.toFixed(2).replace(/0$/, '')}` : `$${t}`),
     corner: 'cheap and strong',
     chartTitle: 'Score against cost',
     slug: 'score-vs-cost',
@@ -42,10 +51,14 @@ export const AXES = {
   time: {
     id: 'time',
     key: 'wall_min',
-    scale: 'linear',
-    title: 'Wall clock, minutes — linear, faster to the left',
-    titleCompact: 'Wall clock, min',
-    exportTitle: 'WALL CLOCK, MINUTES — LINEAR, FASTER TO THE LEFT',
+    defaultScale: 'log',
+    name: 'Wall clock, minutes',
+    nameCompact: 'Wall clock, min',
+    noun: 'Wall clock',
+    unit: 'minutes',
+    better: 'faster to the left',
+    logTicks: MINUTE_TICKS,
+    tickLabel: (t) => String(t),
     corner: 'fast and strong',
     chartTitle: 'Score against wall clock',
     slug: 'score-vs-time',
@@ -55,12 +68,15 @@ export const AXES = {
   turns: {
     id: 'turns',
     key: 'turns',
-    scale: 'log',
-    ticks: TURN_TICKS,
+    defaultScale: 'log',
+    name: 'Turns',
+    nameCompact: 'Turns',
+    noun: 'Turns',
+    plural: true,
+    unit: 'turns',
+    better: 'fewer to the left',
+    logTicks: TURN_TICKS,
     tickLabel: (t) => fmtTurns(t),
-    title: 'Turns — logarithmic, fewer to the left',
-    titleCompact: 'Turns (log)',
-    exportTitle: 'TURNS — LOGARITHMIC, FEWER TO THE LEFT',
     corner: 'lean and strong',
     chartTitle: 'Score against turns',
     slug: 'score-vs-turns',
@@ -68,6 +84,47 @@ export const AXES = {
     flag: null,
   },
 };
+
+/** An axis spec with a scale applied: the titles name the scale, and a
+    non-default scale gets its own export file name. */
+export function scaledAxis(axis, scale) {
+  const s = SCALES.includes(scale) ? scale : axis.defaultScale;
+  const title = `${axis.name} — ${s === 'log' ? 'logarithmic' : 'linear'}, ${axis.better}`;
+  return {
+    ...axis,
+    scale: s,
+    title,
+    titleCompact: `${axis.nameCompact} (${s === 'log' ? 'log' : 'linear'})`,
+    exportTitle: title.toUpperCase(),
+    slug: s === axis.defaultScale ? axis.slug : `${axis.slug}-${s}`,
+  };
+}
+
+/** Accepts a scaled axis, a bare spec (gets its default scale) or nothing (cost). */
+export function resolveAxis(axis) {
+  const a = axis || AXES.cost;
+  return a.scale ? a : scaledAxis(a);
+}
+
+/** The sentence under a map: which scale it is on, and how wide the board is on
+    that measure - read from the board every time, so it cannot go stale. */
+export function scaleSentence(axis, allRuns) {
+  const A = resolveAxis(axis);
+  const vals = allRuns.map((r) => r[A.key]).filter((v) => v !== null && v !== undefined);
+  const pos = vals.filter((v) => v > 0);
+  if (pos.length < 2) return '';
+  const lo = Math.min(...pos);
+  const hi = Math.max(...pos);
+  const zeros = vals.length - pos.length;
+  const fold = Math.round(hi / lo).toLocaleString('en-US');
+  const [it, runs] = A.plural ? ['they', 'run'] : ['it', 'runs'];
+  const span = `across the board ${it} ${runs} from ${A.fmt(lo)} to ${A.fmt(hi)}`
+    + `${zeros ? ` (not counting ${zeros === 1 ? 'one run' : `${zeros} runs`} at zero)` : ''}, a ${fold}-fold spread`;
+  const is = A.plural ? 'are' : 'is';
+  return A.scale === 'log'
+    ? `${A.noun} ${is} on a logarithmic axis: ${span}, and on a linear axis most runs would crowd into the left margin. Each step along it is a multiple, not a fixed number of ${A.unit}.`
+    : `${A.noun} ${is} on a linear axis from zero, so equal distances are equal ${A.unit} — but ${span}, so the low end crowds together.`;
+}
 
 /* What each map measures, in the words a sentence needs ("no turn figure"). */
 const MEASURE_NAME = { cost: 'cost', time: 'wall-clock', turns: 'turn' };
@@ -107,16 +164,20 @@ function frontierOf(points) {
   return keep.sort((a, b) => a.xv - b.xv);
 }
 
+/* A linear axis from zero, ticked on a 1-2-2.5-5 ladder at whatever power of ten
+   gives roughly one tick per 110px - the same density on dollars, minutes and
+   turns, whose ranges differ by two orders of magnitude. */
 function linearTicks(hi, plotW) {
   const want = Math.max(3, Math.min(8, Math.round(plotW / 110)));
-  const step = LINEAR_STEPS.find((s) => hi / s <= want) || LINEAR_STEPS[LINEAR_STEPS.length - 1];
+  const mag = 10 ** Math.floor(Math.log10(hi / want));
+  const step = [1, 2, 2.5, 5, 10].map((k) => k * mag).find((s) => hi / s <= want) || 10 * mag;
   const out = [];
-  for (let v = 0; v <= hi + 1e-9; v += step) out.push(v);
+  for (let v = 0; v <= hi + 1e-9; v += step) out.push(Math.round(v * 1e6) / 1e6);
   return out;
 }
 
 export function scatterLayout(runs, allRuns, width, height, axis) {
-  const A = axis || AXES.cost;
+  const A = resolveAxis(axis);
   const compact = width < 620;
   const m = {
     top: 38,
@@ -142,20 +203,20 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
     const l0 = Math.log10(lo);
     const l1 = Math.log10(hi);
     x = (c) => m.left + ((Math.log10(c) - l0) / (l1 - l0)) * plotW;
-    xTicks = (A.ticks || LOG_TICKS).filter((t) => t >= lo && t <= hi).map((t) => ({
+    xTicks = (A.logTicks || LOG_TICKS).filter((t) => t >= lo && t <= hi).map((t) => ({
       v: t,
       x: x(t),
-      label: A.tickLabel ? A.tickLabel(t) : t < 1 ? `$${t.toFixed(2).replace(/0$/, '')}` : `$${t}`,
+      label: A.tickLabel ? A.tickLabel(t) : String(t),
     }));
     // on a phone, half the ticks is still a readable log axis; all of them collide
     if (compact) xTicks = xTicks.filter((_, i) => i % 2 === 0);
     plotted = runs.filter((r) => isNum(val(r)) && val(r) > 0);
   } else {
-    // minutes start at zero, because on a duration axis zero is a real place
+    // a linear axis starts at zero: no dollars, no minutes and no turns are all real places
     const vals = allRuns.map(val).filter(isNum);
     const hi = vals.length ? Math.max(...vals) * 1.06 : 10;
     x = (c) => m.left + (c / hi) * plotW;
-    xTicks = linearTicks(hi, plotW).map((t) => ({ v: t, x: x(t), label: String(t) }));
+    xTicks = linearTicks(hi, plotW).map((t) => ({ v: t, x: x(t), label: A.tickLabel ? A.tickLabel(t) : String(t) }));
     plotted = runs.filter((r) => isNum(val(r)));
   }
 
@@ -280,7 +341,7 @@ function tooltipContent(p, axis) {
 }
 
 export function renderScatter(host, runs, allRuns, axis, footnote) {
-  const A = axis || AXES.cost;
+  const A = resolveAxis(axis);
   host.classList.add('chart-host');
   host.textContent = '';
   if (!runs.length) return null;
@@ -293,7 +354,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
     viewBox: `0 0 ${width} ${height}`,
     width,
     height,
-    'aria-label': `Planted bugs fixed plotted against ${MEASURE_ARIA[A.id] || 'run cost'}. Every value is also in the leaderboard table.`,
+    'aria-label': `Planted bugs fixed plotted against ${MEASURE_ARIA[A.id] || 'run cost'}, on a ${A.scale === 'log' ? 'logarithmic' : 'linear'} axis. Every value is also in the leaderboard table.`,
   });
   svg.appendChild(svgEl('title', { text: `${A.chartTitle}, for the selected runs` }));
 
@@ -426,7 +487,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
     const missing = L.missingRuns || [];
     if (zero.length) {
       const names = zero.map((r) => r.model).join(', ');
-      parts.push(`${names} cost nothing to run, and zero has no place on a logarithmic cost axis.`);
+      parts.push(`${names} cost nothing to run, and zero has no place on a logarithmic cost axis — switch the axis to linear to see ${zero.length === 1 ? 'it' : 'them'} at $0.`);
     }
     if (missing.length) {
       parts.push(`${missing.length} selected run${missing.length === 1 ? ' carries' : 's carry'} no ${MEASURE_NAME[A.id] || 'cost'} figure.`);

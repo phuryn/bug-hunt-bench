@@ -266,29 +266,44 @@ described at the bottom of this file. Swatches and chart points also carry a
 hairline ring (`--chip-ring`) in both themes, which is what keeps a mark's edge
 visible on a surface close to its own value.
 
-## The two maps
+## The three maps, and the log / linear switch
 
-Both are the same renderer with a different axis spec (`AXES` in `scatter.js`);
-adding a third measure means adding a spec, not a chart.
+All three are the same renderer with a different axis spec (`AXES` in `scatter.js`);
+adding a measure means adding a spec, not a chart. A spec carries no scale of its
+own: `scaledAxis(spec, scale)` applies one and writes the titles that name it.
 
-- **Score vs cost — logarithmic x.** The board spans roughly two hundredfold, and
-  a linear axis would pile half the runs into the left margin. Two things have no
-  place on that axis and they are not the same claim, so the note says which: a
-  run with no cost figure, and a run that genuinely cost **zero**, which is a
-  known number a log axis cannot place.
-- **Score vs turns — log x (added 2026-09-29).** Turns span roughly fortyfold, from a few dozen to over a
-  thousand, so it is logarithmic like cost. A turn is a model step - a tool call or the final answer - counted
-  from each run's own log (`tools/bench_turns.py` in the private runner; definition on `/method#def-turns`).
-  Rows with no countable log carry `turns: null`, are left off this map, and the caveat says how many. The
-  tooltip on every map now carries turns next to cost and wall clock.
-- **Score vs time — linear x.** Wall clock spans about 25 to 164 minutes: under
-  sevenfold, well inside one order of magnitude. Linear places every run honestly
-  and keeps the reading additive, which is how minutes are read; a log axis would
-  stretch the gaps at the fast end and squash them at the slow end for no gain.
-  The axis starts at zero, because on a duration axis zero is a real place.
+**Every map has a Log | Linear switch under the plate, and every map opens on log
+(2026-09-29).** Until then cost and turns were logarithmic and wall clock was
+linear, on a sentence that said minutes spanned "under sevenfold". They did until
+Sonnet 5.5 at max took four hours; the board then spanned 68-fold, the linear time
+map pushed most runs into its left fifth, and the sentence under it was false. On
+all three measures the board now spans well over an order of magnitude, so log is
+the default; linear is one click away because it is the honest picture of
+distance - equal steps are equal dollars, minutes or turns.
 
-Both mark the good corner (*cheap and strong*, *fast and strong*) and draw the
-frontier — runs no other selected run beats on both axes at once.
+- **One switch per map, not one for the page.** Choosing linear cost does not flip
+  wall clock; each map keeps its own choice for the session (`state.scale`).
+- **URL:** `?x=log|linear` belongs to the map the link opens on, and is written only
+  when it differs from that map's default. Anything else there is ignored. Not kept
+  in localStorage: a returning visitor gets the defaults the notes are written for.
+- **The sentence under each map is computed** (`scaleSentence`): which scale, and the
+  board's actual range on that measure - "from 3.7 min to 253.1 min, a 68-fold
+  spread". Never typed, so it cannot go stale the way the sevenfold one did.
+- **Ticks.** Log: fixed 1-2-5 ladders per measure (`logTicks`). Linear: from zero,
+  on a 1-2-2.5-5 ladder at whatever power of ten gives about one tick per 110px.
+  Both use the spec's `tickLabel` ($, thousands separators).
+- **Zero.** A run that genuinely cost $0 has no place on a log axis, and the note
+  says so and points at the switch; on linear it is plotted at $0. A run with NO
+  figure is off both, and the note says which case it is.
+- **Export** draws the chosen scale, names it in the title and footer, and a
+  non-default scale gets its own file name (`score-vs-time-linear-...png`).
+- Measures: **cost** (`cost_usd`); **wall clock** (`wall_min`); **turns** (a model step -
+  a tool call or the final answer - counted from each run's own log by
+  `tools/bench_turns.py` in the private runner; definition on `/method#def-turns`;
+  rows with no countable log carry `turns: null` and are left off that map).
+
+All three mark the good corner (*cheap and strong*, *fast and strong*, *lean and strong*).
+The frontier is still computed in the layout but not drawn (removed 2026-08-27).
 
 `caveats[1]` and `caveats[2]` are pulled out and drawn **inside the plate with the
 plot**, matched on their opening words with the generator's position as a
