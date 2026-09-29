@@ -3772,3 +3772,28 @@ Anthropic's Sonnet 5.5 went on the board the evening it shipped, through Claude 
 | Sonnet 5.5 (high effort) | 1 | **32** / 105 | 15 / 45 | 17 / 60 | 12 | 24.5 min | $16.73 |
 | Sonnet 5.5 (medium effort) | 1 | **18** / 105 | 8 / 45 | 10 / 60 | 8 | 11.9 min | $8.39 |
 | Sonnet 5.5 (low effort) | 1 | **20** / 105 | 7 / 45 | 13 / 60 | 5 | 7.4 min | $5.75 |
+
+## A correction to the coverage view — 29 rows showed another run's bug list (Sep 29)
+
+The coverage view and `coverage.csv` attach to each row the list of planted bugs its run fixed. The row was
+matched to its run by its two repo scores, and when another run had the same pair of scores, the first one
+alphabetically won. By Sep 29, sixty rows shared their score pair with some other run, and **29 of them were
+showing the wrong run's bug list** — GPT-5.6 Sol carried Fable 5.1 low's, Opus 4.8 carried GPT-6 Luna high's,
+Sonnet 5.5 xhigh carried GPT-5.6 Sol xhigh's. **No score, wall clock or cost figure was affected**: those come
+from the scoreboards, not from this match. What changed is which bugs a row is shown to have fixed.
+
+Every tied row is now linked to its run explicitly, the build refuses a tie it cannot resolve instead of
+guessing, and each new row records its own run when it is published. The corrected lists are live and in
+`coverage.csv`.
+
+## Turns, and every individual run (Sep 29)
+
+The board gains a third map, **score against turns**. A turn is one model step that either calls a tool or
+gives the final answer — tool calls plus one per repo — which is exactly what Claude Code reports as its own
+count, and the one definition every harness here can supply: Codex CLI counts a whole run as a single turn, so
+it is counted from its commands and edits, and Grok from the tool calls in its session log. Each run is counted
+from its own log. A turn is a step, not a unit of work, so turns compare most cleanly within one harness; rows
+whose logs were not kept carry no turn count and are left off the map.
+
+`runs.csv` now lists every individual run behind every row — score per repo, wall clock, cost and turns — so a
+mean row's spread is readable directly (Sonnet 5.5 max: 57 and 54; 1,566 and 1,093 turns).
