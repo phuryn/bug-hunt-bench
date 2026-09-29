@@ -272,8 +272,8 @@ All three are the same renderer with a different axis spec (`AXES` in `scatter.j
 adding a measure means adding a spec, not a chart. A spec carries no scale of its
 own: `scaledAxis(spec, scale)` applies one and writes the titles that name it.
 
-**Every map has a Log | Linear switch under the plate, and every map opens on log
-(2026-09-29).** Until then cost and turns were logarithmic and wall clock was
+**Every map has a Log | Linear switch on its x-axis title row, and every map opens on
+log (2026-09-29).** Until then cost and turns were logarithmic and wall clock was
 linear, on a sentence that said minutes spanned "under sevenfold". They did until
 Sonnet 5.5 at max took four hours; the board then spanned 68-fold, the linear time
 map pushed most runs into its left fifth, and the sentence under it was false. On
@@ -281,6 +281,15 @@ all three measures the board now spans well over an order of magnitude, so log i
 the default; linear is one click away because it is the honest picture of
 distance - equal steps are equal dollars, minutes or turns.
 
+- **Where it sits.** On the x-axis title row, right-aligned to the plot's edge, inside
+  the plate - it was first shipped under the plate, below the caveat paragraph, and was
+  not found there. The renderer places it right after the SVG and CSS lifts it onto the
+  row; a compact plot (under 620px) has tick labels too close, so it gets its own row
+  under the axis. It is rebuilt with the map, so focus is handed back to the button.
+- **The on-screen axis title does not name the scale** ("Turns — fewer to the left"):
+  the switch beside it does, and a title repeating it read as if the direction should
+  flip with the scale. Direction is the same on both. The exported card has no switch,
+  so its title does name the scale.
 - **One switch per map, not one for the page.** Choosing linear cost does not flip
   wall clock; each map keeps its own choice for the session (`state.scale`).
 - **URL:** `?x=log|linear` belongs to the map the link opens on, and is written only

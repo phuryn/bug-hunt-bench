@@ -62,17 +62,17 @@ const VIEWS = {
   scatter: {
     panel: 'panel-scatter', tab: 'tab-scatter', axis: AXES.cost,
     host: 'chart', legend: 'chart-legend', empty: 'scatter-empty', note: 'axis-note',
-    scale: 'scale-scatter', scaleNote: 'scale-note',
+    scaleNote: 'scale-note',
   },
   time: {
     panel: 'panel-time', tab: 'tab-time', axis: AXES.time,
     host: 'chart-time', legend: 'time-legend', empty: 'time-empty', note: 'time-axis-note',
-    scale: 'scale-time', scaleNote: 'time-scale-note',
+    scaleNote: 'time-scale-note',
   },
   turns: {
     panel: 'panel-turns', tab: 'tab-turns', axis: AXES.turns,
     host: 'chart-turns', legend: 'turns-legend', empty: 'turns-empty', note: 'turns-axis-note',
-    scale: 'scale-turns', scaleNote: 'turns-scale-note',
+    scaleNote: 'turns-scale-note',
   },
   coverage: {
     panel: 'panel-coverage', tab: 'tab-coverage',
@@ -425,6 +425,30 @@ function axisFor(key) {
   return scaledAxis(VIEWS[key].axis, state.scale[key]);
 }
 
+/* The Log | Linear switch, built with the map it belongs to and placed by the
+   renderer on the x-axis title row. The map is rebuilt on every change, switch
+   included, so focus is handed back to the button just pressed. */
+function scaleSwitch(key, A) {
+  const wrap = el('div', {
+    class: 'scale-switch', id: `scale-${key}`, role: 'group', 'aria-label': 'Horizontal axis scale',
+  });
+  SCALES.forEach((s) => {
+    const b = el('button', {
+      type: 'button', class: 'seg', 'data-scale': s, 'aria-pressed': String(s === A.scale),
+      text: s === 'log' ? 'Log' : 'Linear',
+    });
+    b.addEventListener('click', () => {
+      state.scale[key] = s;
+      renderViews();
+      writeUrl();
+      const again = document.querySelector(`#scale-${key} .seg[data-scale="${s}"]`);
+      if (again) again.focus();
+    });
+    wrap.appendChild(b);
+  });
+  return wrap;
+}
+
 /** The sentence that belongs to a map, drawn inside the plate with the plot. */
 function chartFootnote(axisId) {
   const cav = chartCaveat(axisId);
@@ -450,12 +474,9 @@ function renderChart(key) {
   const runs = selectedRuns();
   const legend = $(V.legend);
   legend.textContent = '';
-  $(V.scale).querySelectorAll('button[data-scale]').forEach((b) => {
-    b.setAttribute('aria-pressed', String(b.dataset.scale === A.scale));
-  });
   $(V.scaleNote).textContent = scaleSentence(A, RUNS);
   if (!runs.length) return;
-  const L = renderScatter($(V.host), runs, RUNS, A, chartFootnote(A.id));
+  const L = renderScatter($(V.host), runs, RUNS, A, chartFootnote(A.id), scaleSwitch(key, A));
   lastChartWidth[key] = $(V.host).clientWidth;
   if (!L) return;
   L.points.slice().sort((a, b) => b.score - a.score).forEach((p) => {
@@ -518,7 +539,6 @@ function renderViews() {
   CHART_VIEWS.forEach((k) => {
     $(VIEWS[k].empty).hidden = !empty;
     $(VIEWS[k].host).hidden = empty;
-    $(VIEWS[k].scale).hidden = empty;
     if (empty) $(VIEWS[k].legend).textContent = '';
   });
   $('coverage-empty').hidden = !empty;
@@ -637,18 +657,6 @@ function wire() {
       e.preventDefault();
       const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
       setView(next.dataset.view, true);
-    });
-  });
-
-  // the log / linear switch under each map: static buttons, so focus stays put
-  // while the map redraws beside them
-  CHART_VIEWS.forEach((k) => {
-    $(VIEWS[k].scale).querySelectorAll('button[data-scale]').forEach((b) => {
-      b.addEventListener('click', () => {
-        state.scale[k] = b.dataset.scale;
-        renderViews();
-        writeUrl();
-      });
     });
   });
 

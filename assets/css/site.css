@@ -329,19 +329,19 @@ h1 em { font-style: normal; color: var(--accent); }
 }
 .preset[aria-pressed="true"] + .preset { border-left-color: var(--on-bg); }
 
-/* The log / linear switch under each map. Same segmented look as the presets,
-   its own class because every .preset is wired to the selection. Right-aligned
-   under the plate, on the side opposite the axis title it changes. */
+/* The log / linear switch. Same segmented look as the presets, its own class
+   because every .preset is wired to the selection. It sits ON the x-axis title
+   row, right-aligned to the plot's right edge - the title is on the left of the
+   same row, so the control is read with the axis it changes. The renderer puts it
+   straight after the SVG; the negative margin lifts it onto the row (the title
+   baseline is 14px above the SVG's bottom). A compact plot has tick labels too
+   close to that row, so there it takes its own row under the axis. */
 .scale-switch {
-  display: flex; justify-content: flex-end; align-items: center; gap: 10px;
-  margin-top: 8px;
+  position: relative;
+  display: flex; justify-content: flex-end;
+  margin: -33px 26px 0 auto; width: max-content;
 }
-.scale-switch[hidden] { display: none; }
-.scale-switch__label {
-  font-family: var(--sans); font-size: 11px; font-weight: 600;
-  letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted);
-}
-.segs { display: flex; }
+.chart-host--compact .scale-switch { margin: 6px 16px 0 auto; }
 .seg {
   font: inherit; font-size: 12.5px; line-height: 1;
   background: transparent; color: var(--muted);
@@ -355,6 +355,7 @@ h1 em { font-style: normal; color: var(--accent); }
   background: var(--on-bg); border-color: var(--on-bg); color: var(--on-ink);
 }
 .seg[aria-pressed="true"] + .seg { border-left-color: var(--on-bg); }
+.seg { padding: 6px 12px; }
 @media (max-width: 620px) {
   /* a thumb-sized target on a phone */
   .seg { padding: 10px 16px; }

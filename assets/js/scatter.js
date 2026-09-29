@@ -85,17 +85,20 @@ export const AXES = {
   },
 };
 
-/** An axis spec with a scale applied: the titles name the scale, and a
-    non-default scale gets its own export file name. */
+/** An axis spec with a scale applied. On screen the axis title does NOT name the
+    scale - the switch sitting on the same line does, and a title that repeated it
+    read as if the direction ("fewer to the left") should have changed with it
+    (Pawel, 2026-09-29: "Why both scales say 'fewer to the left'?"). Direction is the
+    same on both scales. The exported card has no switch, so its title names the
+    scale. A non-default scale gets its own export file name. */
 export function scaledAxis(axis, scale) {
   const s = SCALES.includes(scale) ? scale : axis.defaultScale;
-  const title = `${axis.name} — ${s === 'log' ? 'logarithmic' : 'linear'}, ${axis.better}`;
   return {
     ...axis,
     scale: s,
-    title,
-    titleCompact: `${axis.nameCompact} (${s === 'log' ? 'log' : 'linear'})`,
-    exportTitle: title.toUpperCase(),
+    title: `${axis.name} — ${axis.better}`,
+    titleCompact: axis.nameCompact,
+    exportTitle: `${axis.name} — ${s === 'log' ? 'logarithmic' : 'linear'}, ${axis.better}`.toUpperCase(),
     slug: s === axis.defaultScale ? axis.slug : `${axis.slug}-${s}`,
   };
 }
@@ -340,7 +343,9 @@ function tooltipContent(p, axis) {
   return frag;
 }
 
-export function renderScatter(host, runs, allRuns, axis, footnote) {
+/* `control`, when given, is placed straight after the plot: the page passes the
+   log / linear switch, which CSS lifts onto the x-axis title row. */
+export function renderScatter(host, runs, allRuns, axis, footnote, control) {
   const A = resolveAxis(axis);
   host.classList.add('chart-host');
   host.textContent = '';
@@ -349,6 +354,9 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
   const width = Math.max(320, host.clientWidth || 900);
   const height = width < 620 ? 400 : Math.min(520, Math.round(width * 0.46));
   const L = scatterLayout(runs, allRuns, width, height, A);
+  // the switch sits ON the axis-title row at full width; a compact plot has no room
+  // there beside its tick labels, so it gets its own row under the axis instead
+  host.classList.toggle('chart-host--compact', L.compact);
 
   const svg = svgEl('svg', {
     viewBox: `0 0 ${width} ${height}`,
@@ -472,6 +480,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote) {
   svg.appendChild(marks);
 
   host.appendChild(svg);
+  if (control) host.appendChild(control);
   host.appendChild(tip);
 
   /* What the measure IS, inside the plate with the plot, so it travels with the
