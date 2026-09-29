@@ -96,6 +96,7 @@ GPT-6 Luna (max effort) - mean of 3,Codex CLI,max,18.3,3,16x2 20x2 25x3 29x1 30x
 MiMo-V2.6-Pro (first-party),Claude Code / Xiaomi first-party,enabled,18,1,13 16 20 23 30 39 40 43 44 50 60 71 76 83 92 97 98 99
 Hy4 Preview,Claude Code / OpenRouter,default,18,1,13 16 20 23 30 39 40 43 44 50 60 71 76 83 92 97 98 99
 GPT-5.6 Terra (high effort),Codex CLI,high,18,1,13 16 17 20 29 30 43 47 49 50 62 76 77 83 92 98 99 102
+Sonnet 5.5 (medium effort),Claude Code,medium,18,1,13 20 22 29 30 39 43 45 50 71 76 77 83 92 97 98 99 100
 Gemini 3.7 Flash (high; Antigravity CLI retest),Antigravity CLI,high,18,1,16 20 43 45 47 49 50 60 62 66 76 83 84 92 97 98 99 100
 "Muse Spark 1.3 (high effort, Muse Code, OpenRouter)",Muse Code / OpenRouter,high,18,1,20 25 30 41 43 45 49 50 71 76 77 84 95 96 98 99 100 102
 Gemini 3.8 Flash - mean of 3,Antigravity CLI,high,18,3,13x1 16x3 20x3 27x1 30x3 33x3 34x3 45x3 47x3 50x1 60x3 62x1 71x2 76x3 80x1 82x1 83x3 84x3 92x3 97x3 98x1 99x3 100x2 102x1

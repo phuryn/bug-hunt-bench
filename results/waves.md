@@ -3770,3 +3770,4 @@ Anthropic's Sonnet 5.5 went on the board the evening it shipped, through Claude 
 | Sonnet 5.5 (xhigh effort) | 1 | **39** / 105 | 18 / 45 | 21 / 60 | 19 | 122.4 min | $60.30 |
 | Sonnet 5.5 (max effort) - mean of 2 | mean of 2 | **55.5** / 105 | 22.5 / 45 | 33 / 60 | 24.5 | 234.8 min | $134.80 |
 | Sonnet 5.5 (high effort) | 1 | **32** / 105 | 15 / 45 | 17 / 60 | 12 | 24.5 min | $16.73 |
+| Sonnet 5.5 (medium effort) | 1 | **18** / 105 | 8 / 45 | 10 / 60 | 8 | 11.9 min | $8.39 |

@@ -2,7 +2,7 @@
 
 Every row on the board, with the note and caveat it carries. Generated from `data/benchmark.json` by `bench_golive.py` - do not edit by hand.
 
-Updated Sep 28, 2026 · 147 rows from 225 scored runs. Superseded rows are listed last.
+Updated Sep 28, 2026 · 148 rows from 226 scored runs. Superseded rows are listed last.
 
 ## Sonnet 5.5 (max effort) - mean of 2
 
@@ -391,6 +391,14 @@ Tencent Hunyuan 4 preview (MoE, 49B active of 770B), benchmarked day-one via Ope
 ## GPT-5.6 Terra (high effort)
 
 **18 / 105** · repo 1 7/45 · repo 2 11/60 · 17 unplanted · 28.1 min · $5.89 · `high` · Codex CLI · single run · 2026-08-27
+
+## Sonnet 5.5 (medium effort)
+
+**18 / 105** · repo 1 8/45 · repo 2 10/60 · 8 unplanted · 11.9 min · $8.39 · `medium` · Claude Code · single run · 2026-09-28
+
+**Caveat.** ONE RUN, not a mean - this board has measured a 13-point spread between two runs of a single identical configuration, so treat this as one draw. Both Sonnet 5 rows here compacted mid-task on older CLI builds, so the gap against them is not a clean version comparison. Cost is a list-rate estimate at Sonnet 5.5's published rates; the harness priced this model on another model's table, so the check is on token counts, not on its dollar figure. The machine was idle for every leg.
+
+Anthropic's Sonnet 5.5 at medium effort through Claude Code on the first-party API, measured the evening it shipped. 18 of 105: 8 of 45 on repo 1 and 10 of 60 on repo 2, 8 genuine extras, 11.9 minutes, $8.39. ONE RUN. For comparison the board currently publishes Sonnet 5 at max effort 9, Sonnet 5 at high effort 9, Opus 5.5 at max effort 41.7 (mean of 3) of 105. *** HOW IT SPENT THE RUN *** On repo 1 it took 43 turns (the harness's own count); it first wrote its report 5 minutes in and its last model call came at minute 5. For scale: Opus 5.5 at max took 159-201 turns there over three runs of 26-37 minutes; Sonnet 5 at max took 207, and every one of those runs wrote its report within 1 minute of its last call. On repo 2 it took 69 turns (the harness's own count); it first wrote its report 7 minutes in and its last model call came at minute 7. For scale: Opus 5.5 at max took 264-317 turns there over three runs of 34-39 minutes; Sonnet 5 at max took 204, and every one of those runs wrote its report within 1 minute of its last call. *** SAME MACHINE AS THE OPUS 5.5 LADDER *** configured byte-identical to the opus55* arms except the model slug and the effort flag: Claude Code straight onto Anthropic's first-party API, no proxy, 1M window requested with the [1m] suffix, CLI-default autocompact, same prompt, same timeout class, same blind judge. The two Sonnet 5 rows on this board ran older Claude Code builds (2.1.218, 2.1.267) and compacted mid-task - 5 compactions across their 4 legs, peaks 284,197 to 295,210 tokens - so a gap against them mixes the model version with how much of each run's context survived, and is not a clean version delta. Effort is a first-party Claude Code tier (documented enum low|medium|high|xhigh|max, enforced: an invented tier is answered 'Unknown --effort value'), taken at face value like every other Claude row here. The harness stated init.model claude-sonnet-5-5[1m] on every leg - the [1m] suffix honoured, so this is a 1M-window run - on Claude Code 2.1.283. Peak context 397,488 tokens; 0 compactions across 2 legs. Autocompact ran at the CLI default. *** COST IS A LIST ESTIMATE *** token counts at Anthropic's published Sonnet 5.5 rates (as read 2026-09-28): $2 input, $10 output, $0.20 cache read, $4 cache write - the 1-hour rate, which is what this harness writes. The harness's own cost figure is NOT a cross-check on this model: Claude Code reported its cost basis for Sonnet 5.5 as 'unknown' and priced the run on Opus 5.5's table - its figure is exactly those tokens at Opus 5.5 rates, about a fifth higher than Sonnet 5.5's own. So the check here is on tokens: each leg's metered counts agree with the harness's own per-model counts within 3 per cent. Claude Code on a subscription exposes no invoice, hence `list`. *** RECEIPTS *** All legs exited 0 with a report written, run SEQUENTIALLY, one repo at a time. Judge: blind Codex gpt-5.5 - an OpenAI model scoring an Anthropic one, so neither the model itself nor a sibling of it. The machine was otherwise idle for every leg, so the wall figures compare directly against other uncontended rows.
 
 ## Gemini 3.8 Flash - mean of 3
 
