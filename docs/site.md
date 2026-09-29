@@ -33,7 +33,7 @@ through any local server and it runs.
 │       ├── method.js          the method page: renders method/caveats/glossary
 │       ├── format.js          vocabularies, formatters, column model, DOM helpers
 │       ├── table.js           leaderboard table: colgroup, sortable head, rows
-│       ├── scatter.js         both maps — one layout function, two axis specs
+│       ├── scatter.js         all three maps — one layout function, three axis specs
 │       ├── selector.js        run picker (native checkboxes, grouped by vendor)
 │       └── export-png.js      canvas renderer for "Export this view (PNG)"
 ├── netlify.toml               publish = repo root, no build command, /method rewrite
@@ -204,7 +204,7 @@ Selection, sort and view live in the query string:
 ?preset=featured|all|ceiling|clear     a named preset
 ?runs=<slug>,<slug>                    an explicit selection (slugs from run ids)
 ?sort=<column key>&dir=asc|desc        table sort
-?view=table|scatter|time               active view (scatter = score vs cost)
+?view=table|scatter|time|turns|coverage   active view (scatter = score vs cost)
 ```
 
 `https://…/?preset=ceiling&sort=cost_usd&dir=asc&view=scatter` reloads exactly
@@ -276,6 +276,11 @@ adding a third measure means adding a spec, not a chart.
   place on that axis and they are not the same claim, so the note says which: a
   run with no cost figure, and a run that genuinely cost **zero**, which is a
   known number a log axis cannot place.
+- **Score vs turns — log x (added 2026-09-29).** Turns span roughly fortyfold, from a few dozen to over a
+  thousand, so it is logarithmic like cost. A turn is a model step - a tool call or the final answer - counted
+  from each run's own log (`tools/bench_turns.py` in the private runner; definition on `/method#def-turns`).
+  Rows with no countable log carry `turns: null`, are left off this map, and the caveat says how many. The
+  tooltip on every map now carries turns next to cost and wall clock.
 - **Score vs time — linear x.** Wall clock spans about 25 to 164 minutes: under
   sevenfold, well inside one order of magnitude. Linear places every run honestly
   and keeps the reading additive, which is how minutes are read; a log axis would
@@ -312,7 +317,7 @@ to the score" line, the update date, the selection and sort, and the site URL �
 read from the canonical tag, so it follows the domain — which is what keeps a
 screenshot of a screenshot attributable. The cost-tag warning is printed only
 where a dollar figure is actually on the card. The three views land as
-`bug-hunt-bench-{leaderboard|score-vs-cost|score-vs-time}-{theme}-{date}.png`.
+`bug-hunt-bench-{leaderboard|score-vs-cost|score-vs-time|score-vs-turns|coverage}-{theme}-{date}.png`.
 
 ## Deploy to Netlify
 

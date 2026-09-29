@@ -40,7 +40,7 @@ The README leaderboard block (between the `leaderboard:start/end` markers), `ass
 ## Layout
 
 ```
-index.html          the board: tick rule, run selector, leaderboard, two charts, PNG export
+index.html          the board: tick rule, run selector, leaderboard, three charts, coverage, PNG export
 method.html         served at /method: method, caveats, definitions (same data, no duplication)
 data/benchmark.json GENERATED upstream - read only
 assets/css/site.css all styles, both themes, responsive + print
@@ -52,7 +52,7 @@ assets/js/
   method.js         renders method.html from the same JSON
   format.js         vocabularies, formatters, column model, DOM helpers
   table.js          leaderboard: colgroup, sortable head, rows
-  scatter.js        both charts (score vs cost, score vs time) from one renderer
+  scatter.js        all three charts (score vs cost, vs time, vs turns) from one renderer
   selector.js       run picker
   export-png.js     canvas renderer for "Export this view"
 stamp-assets.py     content-hashes CSS/JS URLs; runs on every Netlify deploy
@@ -109,6 +109,10 @@ Run `python stamp-assets.py` locally too if you want your working copy to match 
   concurrently (contention pushes those figures **high**, not low), and one excludes a 35-minute
   harness stall. Wall clock is otherwise one consistent measure: repo 1 + repo 2 agent time,
   dependency install excluded.
+- **`turns`** = model steps, tool calls + 1 per repo (Claude Code's own count), taken from each run's log the
+  same way for every harness; averaged on a mean row; `null` when any run behind the row has no countable log -
+  such rows are left off the score-vs-turns map and the map says how many. Per-run figures are in
+  `results/runs.csv`. Never estimate a missing one.
 - **`superseded` / `caveat` / `note`** attach to a row when present; surface them, don't drop them.
   They ride on the cell as a plain `title` — no marker, no disclosure row, no layout cost.
 
