@@ -143,3 +143,4 @@ GPT-6 Luna (high effort),Codex CLI,2,2,0,2,0,8.3,0.05
 GPT-6 Luna (medium effort),Codex CLI,2,0,0,0,0,5.4,0.04
 GPT-6 Luna (low effort),Codex CLI,1,0,0,0,0,11.2,0.13
 Sonnet 5.5 (max effort),Claude Code,24,1,0,12,0,195.6,98.8
+Sonnet 5.5 (xhigh effort),Claude Code,18,2,0,7,0,94.8,32.24

@@ -3767,3 +3767,4 @@ Anthropic's Sonnet 5.5 went on the board the evening it shipped, through Claude 
 | Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
 |---|---|---|---|---|---|---|---|
 | Sonnet 5.5 (max effort) | 1 | **57** / 105 | 24 / 45 | 33 / 60 | 28 | 257.8 min | $154.05 |
+| Sonnet 5.5 (xhigh effort) | 1 | **39** / 105 | 18 / 45 | 21 / 60 | 19 | 122.4 min | $60.30 |
