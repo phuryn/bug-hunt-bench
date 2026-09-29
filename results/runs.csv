@@ -164,7 +164,9 @@ sonnet55max,Sonnet 5.5 (max effort) - mean of 3,live,Sonnet 5.5,Anthropic,Claude
 sonnet55maxr2,Sonnet 5.5 (max effort) - mean of 3,live,Sonnet 5.5,Anthropic,Claude Code,max,2026-09-29,54,21,33,3,0,21,211.7,115.55,list,1093,539,554,
 sonnet55maxr3,Sonnet 5.5 (max effort) - mean of 3,live,Sonnet 5.5,Anthropic,Claude Code,max,2026-09-29,43,23,20,3,1,30,392.0,192.52,list,1833,1145,688,
 sonnet55medium,Sonnet 5.5 (medium effort),live,Sonnet 5.5,Anthropic,Claude Code,medium,2026-09-28,18,8,10,2,4,8,11.9,8.39,list,112,43,69,
-sonnet55xhigh,Sonnet 5.5 (xhigh effort),live,Sonnet 5.5,Anthropic,Claude Code,xhigh,2026-09-28,39,18,21,2,1,19,122.4,60.3,list,588,307,281,
+sonnet55xhigh,Sonnet 5.5 (xhigh effort) - mean of 3,live,Sonnet 5.5,Anthropic,Claude Code,xhigh,2026-09-29,39,18,21,2,1,19,122.4,60.3,list,588,307,281,
+sonnet55xhighr2,Sonnet 5.5 (xhigh effort) - mean of 3,live,Sonnet 5.5,Anthropic,Claude Code,xhigh,2026-09-29,34,16,18,6,3,12,44.7,36.3,list,429,201,228,
+sonnet55xhighr3,Sonnet 5.5 (xhigh effort) - mean of 3,live,Sonnet 5.5,Anthropic,Claude Code,xhigh,2026-09-29,35,14,21,2,6,11,51.0,31.97,list,488,141,347,
 unionalpha,Union Alpha (stealth; free) - mean of 3,live,Pareto (ex-Union Alpha),Unbiased,Claude Code / OpenRouter,default,2026-09-17,32,16,16,2,3,11,32.7,,list,89,46,43,"the row's cost (4.81) is a corrected aggregate - the per-run receipts do not reconcile to it, so no per-run split is published"
 unionalphar2,Union Alpha (stealth; free) - mean of 3,live,Pareto (ex-Union Alpha),Unbiased,Claude Code / OpenRouter,default,2026-09-17,34,19,15,1,1,4,32.5,,list,105,62,43,"the row's cost (4.81) is a corrected aggregate - the per-run receipts do not reconcile to it, so no per-run split is published"
 unionalphar3,Union Alpha (stealth; free) - mean of 3,live,Pareto (ex-Union Alpha),Unbiased,Claude Code / OpenRouter,default,2026-09-17,26,13,13,1,2,16,49.3,,list,146,94,52,"the row's cost (4.81) is a corrected aggregate - the per-run receipts do not reconcile to it, so no per-run split is published"
