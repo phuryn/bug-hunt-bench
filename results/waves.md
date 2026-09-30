@@ -3833,3 +3833,8 @@ every row is still on the board under All runs, and featuring stays a decision, 
 row, and a superseded single's run is also a member of the mean that replaced it - Sonnet 5.5 at max counted
 1 + 2 + 3 = 6 for its three runs. Each run is now counted once, live or superseded: the same set the per-run
 receipt table lists one line per run. No score, row or ranking changed.
+
+**Cost wording (Oct 1).** The GPT-6.1 Sol rows called their cost "a floor", because requests over 272K input bill
+at higher rates and the estimate does not model them. None of these legs sent one: Codex caps this model's context
+below that line, and the session records confirm every request stayed under it. The rows now say list estimate,
+without the floor. No figure changed.
