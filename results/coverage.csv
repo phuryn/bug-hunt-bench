@@ -81,6 +81,7 @@ Opus 5.5 (low effort),Claude Code,low,23,1,16 20 25 26 29 30 33 34 39 40 43 47 4
 Grok 4.6 (medium),Grok Build CLI (ACP),medium,23,1,16 20 30 33 34 43 45 47 49 50 60 62 71 76 77 83 84 92 95 98 99 100 102
 Grok 4.6 (high),Grok Build CLI (ACP),high,23,1,13 16 20 30 33 34 43 47 49 50 60 62 76 77 82 83 84 92 95 98 99 100 102
 MiMo-V2.6-Pro - mean of 3,Claude Code / OpenRouter,default,22.7,3,13x2 16x1 20x3 21x2 22x1 23x1 25x3 26x1 27x1 30x3 32x2 33x3 34x3 39x2 40x1 43x3 45x2 47x2 49x3 50x2 60x2 62x1 70x3 71x3 76x3 77x1 79x1 83x3 84x1 92x3 99x3 100x3
+GPT-6.1 Sol (low effort) - mean of 2,Codex CLI,low,22.5,2,13x2 16x2 20x2 22x2 25x1 29x1 30x2 33x2 34x2 37x1 40x1 41x1 43x1 44x1 45x2 47x1 49x2 50x2 62x1 68x2 69x1 76x1 77x1 82x1 83x2 84x2 92x1 98x1 99x1 100x2 102x1
 Opus 5.5 (low effort) - mean of 3,Claude Code,low,22.3,3,13x1 16x3 20x3 22x2 23x1 25x2 26x1 29x3 30x3 33x3 34x3 39x3 40x1 43x3 44x1 45x1 47x3 49x3 50x1 60x1 62x2 71x2 76x3 77x1 83x2 84x3 92x1 97x1 98x2 99x3 100x3 102x2
 MiMo-V2.6-Pro - mean of 2,Claude Code / OpenRouter,default,22,2,13x1 16x1 20x2 21x1 22x1 23x1 25x2 30x2 32x1 33x2 34x2 39x2 43x2 45x1 47x1 49x2 50x2 60x2 62x1 70x2 71x2 76x2 83x2 84x1 92x2 99x2 100x2
 Grok 4.6 (medium) seq,Grok Build CLI (ACP),medium,22,1,13 16 20 30 33 34 39 43 45 47 49 50 60 62 76 83 84 92 98 99 100 102
