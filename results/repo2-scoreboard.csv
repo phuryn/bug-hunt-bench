@@ -160,3 +160,4 @@ GPT-6.1 Sol (medium effort),Codex CLI,12,2,0,23,0,17.9,0.99
 GPT-6.1 Sol (low effort),Codex CLI,16,2,0,24,0,21.1,0.97
 GPT-6.1 Sol (max effort) - mean of 3,Codex CLI,22.0,2.0,0.3,37.7,0,78.9,3.16
 GPT-6.1 Sol (xhigh effort) - mean of 3,Codex CLI,20.3,2.0,0.0,32.7,0,55.0,2.24
+GPT-6.1 Sol (high effort) - mean of 2,Codex CLI,19.5,1.0,0.5,26.0,0,43.1,1.97
