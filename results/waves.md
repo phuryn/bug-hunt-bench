@@ -3815,3 +3815,4 @@ OpenAI's GPT-6.1 Sol went on the board the night it became reachable on a ChatGP
 | GPT-6.1 Sol (xhigh effort) | 1 | **41** / 105 | 24 / 45 | 17 / 60 | 63 | 80.6 min | $4.68 | 211 |
 | GPT-6.1 Sol (high effort) | 1 | **38** / 105 | 15 / 45 | 23 / 60 | 45 | 78.7 min | $3.51 | 159 |
 | GPT-6.1 Sol (medium effort) | 1 | **28** / 105 | 16 / 45 | 12 / 60 | 32 | 34.0 min | $1.85 | 95 |
+| GPT-6.1 Sol (low effort) | 1 | **31** / 105 | 15 / 45 | 16 / 60 | 32 | 36.5 min | $1.77 | 91 |

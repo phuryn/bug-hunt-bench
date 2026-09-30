@@ -157,3 +157,4 @@ Sonnet 5.5 (medium effort) - mean of 3,Claude Code,8.7,0.0,0.0,0.7,0,5.3,3.64
 Sonnet 5.5 (low effort) - mean of 3,Claude Code,6.7,0.0,0.3,0.7,0,4.2,2.96
 GPT-6.1 Sol (high effort),Codex CLI,15,1,0,16,0,24.0,1.32
 GPT-6.1 Sol (medium effort),Codex CLI,16,1,0,9,0,16.1,0.86
+GPT-6.1 Sol (low effort),Codex CLI,15,2,0,8,0,15.4,0.8
