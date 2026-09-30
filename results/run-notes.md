@@ -2,7 +2,7 @@
 
 Every row on the board, with the note and caveat it carries. Generated from `data/benchmark.json` by `bench_golive.py` - do not edit by hand.
 
-Updated Sep 30, 2026 · 156 rows from 244 scored runs. Superseded rows are listed last.
+Updated Sep 30, 2026 · 157 rows from 245 scored runs. Superseded rows are listed last.
 
 ## Sonnet 5.5 (max effort) - mean of 3
 
@@ -65,6 +65,14 @@ OpenAI's GPT-6.1 Sol at xhigh effort through OpenAI's own Codex CLI, on a ChatGP
 **39 / 105** · repo 1 18/45 · repo 2 21/60 · 59 unplanted · 126.2 min · $52.75 · `xhigh` · Codex CLI · single run · 2026-08-28
 
 Second only to Sol max (42) on the board; the Sol dial runs high 34 -> xhigh 39 -> max 42.
+
+## GPT-6.1 Sol (high effort)
+
+**38 / 105** · repo 1 15/45 · repo 2 23/60 · 45 unplanted · 78.7 min · $3.51 · `high` · Codex CLI · single run · 2026-09-29
+
+**Caveat.** ONE RUN, not a mean - this board has measured a 13-point spread between two runs of a single identical configuration, so treat 38 as one draw until the replicates land. It runs Codex 0.159.0, newer than every other OpenAI row, because the build the others use refuses this model. Cost is a list-rate estimate and a floor - the long-context surcharge is not modelled. Wall figures may include load from other work on the laptop.
+
+OpenAI's GPT-6.1 Sol at high effort through OpenAI's own Codex CLI, on a ChatGPT account - the same auth path as every other Sol, Astra, Terra and Luna row here, NOT the metered API. 38 of 105: 15 of 45 on repo 1 and 23 of 60 on repo 2, 45 genuine extras, 78.7 minutes, $3.51, 159 turns (53 and 106). ONE RUN - two replicates follow and will supersede this row. The GPT-6.1 Sol ladder elsewhere on the board: GPT-6.1 Sol at xhigh 41, GPT-6.1 Sol at max 44. At the same tier the board publishes GPT-6 Sol at high 20, GPT-6 Astra at high 35, Sonnet 5.5 at high 34.3 (mean of 3) of 105. *** THIS ROW RUNS A NEWER CODEX BUILD THAN THE OTHER OPENAI ROWS, UNAVOIDABLY *** the build the rest of this board's OpenAI rows use answers 'not supported when using Codex with a ChatGPT account' for this model on the same account at the same minute that Codex 0.159.0 runs it, so the blocker is the client, not entitlement. The GPT-6 Sol rows ran on 0.155.1, so a gap against them is model-plus-client. (That rejection message is generic - a made-up slug gets it word for word - so it is never evidence about whether a model exists; the API's own model list settled that.) *** THE TIER IS VERIFIED, NOT ASSUMED *** the effort is a first-party Codex tier from the account's own model list, and every leg's own Codex session record shows it ran at high. *** COST IS A LIST ESTIMATE AND A FLOOR *** token counts at OpenAI's published GPT-6.1 Sol short-context rates, $2 input, $0.10 cached, $10 output per million. Requests over 272K input bill 2x on input and cache and 1.5x on output, which is NOT modelled here, so any leg that crossed that line cost more than this figure says. The Codex CLI on a subscription exposes no per-run bill, hence `list`. *** THE JUDGE IS NOT THIS BOARD'S DEFAULT, BY RULE *** a model may never judge itself or a sibling, and the default Codex judge is an OpenAI model, so it is disqualified for this arm. Judged by grok-4.7, blinded to the arm's identity - the id is read back from the scoring receipt. *** RECEIPTS *** Every leg exited 0 with a report written, run SEQUENTIALLY, one repo at a time, code mode off as on the GPT-6 Sol arms. Every leg shared the laptop with another arm, which the wall marker discloses - scores, tokens and cost are untouched by that, only the clock.
 
 ## Opus 5.5 (xhigh effort) - mean of 3
 
