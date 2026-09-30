@@ -3818,3 +3818,15 @@ OpenAI's GPT-6.1 Sol went on the board the night it became reachable on a ChatGP
 | GPT-6.1 Sol (low effort) | 1 | **31** / 105 | 15 / 45 | 16 / 60 | 32 | 36.5 min | $1.77 | 91 |
 | GPT-6.1 Sol (max effort) - mean of 3 | mean of 3 | **44.3** / 105 | 22.3 / 45 | 22 / 60 | 65.3 | 139.3 min | $5.88 | 270 |
 | GPT-6.1 Sol (xhigh effort) - mean of 3 | mean of 3 | **42.7** / 105 | 22.3 / 45 | 20.3 / 60 | 56.7 | 98.7 min | $4.35 | 200 |
+
+## The default view, re-cut, and the run count corrected (Sep 30)
+
+**Default view.** Pawel re-cut the Featured preset: GPT-6.1 Sol, GPT-6 Astra and Opus 5.5 are featured at max
+and xhigh only (GPT-6.1 Sol xhigh joins, Opus 5.5 high leaves), and GPT-6 Sol, Fable 5.1, Opus 5, Grok 4.6 and
+Pareto (ex-Union Alpha) are no longer featured at any tier. Default view: 29 → 21 rows. Nothing is removed -
+every row is still on the board under All runs, and featuring stays a decision, not a score (Sep 16).
+
+**Run count.** The headline said 253 runs; the board publishes 192. The count summed the runs behind every
+row, and a superseded single's run is also a member of the mean that replaced it - Sonnet 5.5 at max counted
+1 + 2 + 3 = 6 for its three runs. Each run is now counted once, live or superseded: the same set the per-run
+receipt table lists one line per run. No score, row or ranking changed.
