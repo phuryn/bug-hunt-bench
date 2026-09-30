@@ -2,7 +2,7 @@
 
 Every row on the board, with the note and caveat it carries. Generated from `data/benchmark.json` by `bench_golive.py` - do not edit by hand.
 
-Updated Sep 30, 2026 · 161 rows from 253 scored runs. Superseded rows are listed last.
+Updated Sep 30, 2026 · 161 rows from 192 scored runs. Superseded rows are listed last.
 
 ## Sonnet 5.5 (max effort) - mean of 3
 
