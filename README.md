@@ -7,13 +7,13 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Oct 1, 2026](assets/leaderboard.png?v=2026-10-01-1649380d)
+![Bug Hunt Bench leaderboard, the featured runs, updated Oct 7, 2026](assets/leaderboard.png?v=2026-10-07-1649380d)
 
-**Updated Oct 1, 2026 · 164 rows from 195 scored runs · 40 models · 29 of 105 bugs have never been fixed by any model.**
+**Updated Oct 7, 2026 · 165 rows from 198 scored runs · 41 models · 29 of 105 bugs have never been fixed by any model.**
 
 **Current leader:** Sonnet 5.5 at `max` effort — **51.3 / 105** (22.7/45 on repo 1, 28.7/60 on repo 2).
 
-**Best per lab:** Anthropic: Sonnet 5.5 (`max`) 51.3 · OpenAI: GPT-6 Astra (`max`) 45 · Meta: Muse Spark 1.3 (`max`) 32.2 · Unbiased: Pareto (ex-Union Alpha) (`default`) 30.7 · xAI: Grok 4.7 (`xhigh`) 28.8 · Alibaba: Qwen3.8-Flash (`max`) 26 · Xiaomi: MiMo-V2.6-Flash (`default`) 23.3 · Google: Gemini 3.7 Flash (`high`) 22 · DeepSeek: DeepSeek V4.1 Flash (`max`) 21.7 · Moonshot AI: Kimi K3 (`default`) 21 · Z.ai: GLM-5.3 (`max`) 19 · Tencent: Hy4 Preview (`default`) 18
+**Best per lab:** Anthropic: Sonnet 5.5 (`max`) 51.3 · OpenAI: GPT-6 Astra (`max`) 45 · Meta: Muse Spark 1.3 (`max`) 32.2 · Unbiased: Pareto (ex-Union Alpha) (`default`) 30.7 · xAI: Grok 4.7 (`xhigh`) 28.8 · Alibaba: Qwen3.8-Flash (`max`) 26 · Xiaomi: MiMo-V2.6-Flash (`default`) 23.3 · Google: Gemini 3.7 Flash (`high`) 22 · DeepSeek: DeepSeek V4.1 Flash (`max`) 21.7 · Moonshot AI: Kimi K3 (`default`) 21 · Z.ai: GLM-5.3 (`max`) 19 · Tencent: Hy4 Preview (`default`) 18 · Mistral: Mistral Large 4 (`default`) 15
 
 | # | Model | Harness | Effort | Runs | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Extras | Wall | Cost | Date |
 |--:|---|---|---|--:|--:|--:|--:|--:|--:|--:|---|
@@ -95,30 +95,31 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 76 | GPT-5.6 Terra | Codex CLI | medium | 1 | **15** | 4 | 11 | 6 | 20 min | $3.87 | 2026-08-27 |
 | 77 | Grok 4.6 | Grok Build CLI (ACP) | low | 1 | **15** | 6 | 9 | 9 | 18 min | $4.14 floor | 2026-08-27 |
 | 78 | Qwen3.8-27B | Claude Code / Alibaba API | xhigh | 3 | **15** | 5.7 | 9.3 | 2.3 | 57 min | $5.55 | 2026-09-15 |
-| 79 | Opus 4.8 | Claude Code | max | 1 | **15** | 6 | 9 | 3 | 109 min | $58.11 | 2026-09-10 |
-| 80 | GPT-6 Luna | Codex CLI | xhigh | 1 | **14** | 4 | 10 | 12 | 57 min | $0.39 | 2026-09-23 |
-| 81 | DeepSeek V4-Flash | Claude Code / OpenRouter | default | 1 | **14** | 6 | 8 | 0 | 48 min | $1.52 bill | 2026-08-01 |
-| 82 | GPT-6 Sol | Codex CLI | medium | 1 | **14** | 3 | 11 | 13 | 24 min | $2.39 | 2026-09-23 |
-| 83 | GPT-5.6 Luna | Codex CLI | high | 1 | **13** | 5 | 8 | 22 | 64 min | $0.57 | 2026-07-31 |
-| 84 | GLM-5.3 Flash | Claude Code / OpenRouter | default | 1 | **13** | 6 | 7 | 4 | 57 min | $0.79 bill | 2026-08-27 |
-| 85 | DeepSeek V4-Pro | Claude Code / DeepSeek API | high | 1 | **13** | 4 | 9 | 1 | 27 min | $1.08 bill | 2026-09-10 |
-| 86 | Muse Spark 1.3 | Muse Code / Meta API | medium | 3 | **13** | 5.3 | 7.7 | 17.3 | 58 min | $9.24 | 2026-09-14 |
-| 87 | Qwen3.8-27B 8-bit | Claude Code / OpenRouter | default | 3 | **10.7** | 3.7 | 7 | 1.7 | 57 min | $2.97 bill | 2026-09-16 |
-| 88 | Muse Spark 1.3 | Muse Code / Meta API | low | 3 | **9.7** | 5 | 4.7 | 6.7 | 36 min | $5.61 | 2026-09-14 |
-| 89 | GPT-6 Luna | Codex CLI | high | 1 | **9** | 2 | 7 | 9 | 24 min | $0.13 | 2026-09-23 |
-| 90 | GPT-5.6 Luna | Codex CLI | medium | 1 | **9** | 5 | 4 | 5 | 15 min | $0.33 | 2026-08-27 |
-| 91 | GLM-5.3 Flash | Claude Code / Z.ai API | low | 1 | **9** | 7 | 2 | 4 | 29 min | $0.42 | 2026-09-13 |
-| 92 | Sonnet 5 | Claude Code | high | 1 | **9** | 1 | 8 | 4 | 33 min | $11.38 | 2026-07-26 |
-| 93 | Sonnet 5 | Claude Code | max | 1 | **9** | 3 | 6 | 3 | 61 min | $17.96 | 2026-09-10 |
-| 94 | Opus 4.8 | Claude Code | high | 1 | **9** | 2 | 7 | 1 | 35 min | $21.30 | 2026-07-26 |
-| 95 | GPT-6 Sol | Codex CLI | low | 1 | **6** | 3 | 3 | 5 | 11 min | $1.08 | 2026-09-23 |
-| 96 | GPT-6 Luna | Codex CLI | medium | 1 | **4** | 2 | 2 | 0 | 9 min | $0.06 | 2026-09-23 |
-| 97 | GPT-5.6 Luna | Codex CLI | low | 1 | **4** | 0 | 4 | 1 | 6 min | $0.10 | 2026-08-27 |
-| 98 | GPT-6 Luna | Codex CLI | low | 1 | **4** | 1 | 3 | 9 | 19 min | $0.20 | 2026-09-23 |
-| 99 | Gemma 4 31B | Claude Code / OpenRouter | default | 1 | **4** | 1 | 3 | 2 | 222 min | $8.61 bill | 2026-09-16 |
-| 100 | Gemma 4 31B 4-bit | Claude Code / OpenRouter | default | 1 | **3** | 1 | 2 | 2 | 25 min | $0.56 bill | 2026-09-16 |
-| 101 | gpt-oss-120b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0.3 | 4 min | $0.11 bill | 2026-09-15 |
-| 102 | gpt-oss-20b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0 | 7 min | $0.11 bill | 2026-09-15 |
+| 79 | Mistral Large 4 | Claude Code / OpenRouter | default | 3 | **15** | 5 | 10 | 3.3 | 111 min | $11.95 bill | 2026-10-07 |
+| 80 | Opus 4.8 | Claude Code | max | 1 | **15** | 6 | 9 | 3 | 109 min | $58.11 | 2026-09-10 |
+| 81 | GPT-6 Luna | Codex CLI | xhigh | 1 | **14** | 4 | 10 | 12 | 57 min | $0.39 | 2026-09-23 |
+| 82 | DeepSeek V4-Flash | Claude Code / OpenRouter | default | 1 | **14** | 6 | 8 | 0 | 48 min | $1.52 bill | 2026-08-01 |
+| 83 | GPT-6 Sol | Codex CLI | medium | 1 | **14** | 3 | 11 | 13 | 24 min | $2.39 | 2026-09-23 |
+| 84 | GPT-5.6 Luna | Codex CLI | high | 1 | **13** | 5 | 8 | 22 | 64 min | $0.57 | 2026-07-31 |
+| 85 | GLM-5.3 Flash | Claude Code / OpenRouter | default | 1 | **13** | 6 | 7 | 4 | 57 min | $0.79 bill | 2026-08-27 |
+| 86 | DeepSeek V4-Pro | Claude Code / DeepSeek API | high | 1 | **13** | 4 | 9 | 1 | 27 min | $1.08 bill | 2026-09-10 |
+| 87 | Muse Spark 1.3 | Muse Code / Meta API | medium | 3 | **13** | 5.3 | 7.7 | 17.3 | 58 min | $9.24 | 2026-09-14 |
+| 88 | Qwen3.8-27B 8-bit | Claude Code / OpenRouter | default | 3 | **10.7** | 3.7 | 7 | 1.7 | 57 min | $2.97 bill | 2026-09-16 |
+| 89 | Muse Spark 1.3 | Muse Code / Meta API | low | 3 | **9.7** | 5 | 4.7 | 6.7 | 36 min | $5.61 | 2026-09-14 |
+| 90 | GPT-6 Luna | Codex CLI | high | 1 | **9** | 2 | 7 | 9 | 24 min | $0.13 | 2026-09-23 |
+| 91 | GPT-5.6 Luna | Codex CLI | medium | 1 | **9** | 5 | 4 | 5 | 15 min | $0.33 | 2026-08-27 |
+| 92 | GLM-5.3 Flash | Claude Code / Z.ai API | low | 1 | **9** | 7 | 2 | 4 | 29 min | $0.42 | 2026-09-13 |
+| 93 | Sonnet 5 | Claude Code | high | 1 | **9** | 1 | 8 | 4 | 33 min | $11.38 | 2026-07-26 |
+| 94 | Sonnet 5 | Claude Code | max | 1 | **9** | 3 | 6 | 3 | 61 min | $17.96 | 2026-09-10 |
+| 95 | Opus 4.8 | Claude Code | high | 1 | **9** | 2 | 7 | 1 | 35 min | $21.30 | 2026-07-26 |
+| 96 | GPT-6 Sol | Codex CLI | low | 1 | **6** | 3 | 3 | 5 | 11 min | $1.08 | 2026-09-23 |
+| 97 | GPT-6 Luna | Codex CLI | medium | 1 | **4** | 2 | 2 | 0 | 9 min | $0.06 | 2026-09-23 |
+| 98 | GPT-5.6 Luna | Codex CLI | low | 1 | **4** | 0 | 4 | 1 | 6 min | $0.10 | 2026-08-27 |
+| 99 | GPT-6 Luna | Codex CLI | low | 1 | **4** | 1 | 3 | 9 | 19 min | $0.20 | 2026-09-23 |
+| 100 | Gemma 4 31B | Claude Code / OpenRouter | default | 1 | **4** | 1 | 3 | 2 | 222 min | $8.61 bill | 2026-09-16 |
+| 101 | Gemma 4 31B 4-bit | Claude Code / OpenRouter | default | 1 | **3** | 1 | 2 | 2 | 25 min | $0.56 bill | 2026-09-16 |
+| 102 | gpt-oss-120b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0.3 | 4 min | $0.11 bill | 2026-09-15 |
+| 103 | gpt-oss-20b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0 | 7 min | $0.11 bill | 2026-09-15 |
 
 **Runs** is how many independent runs the row is built from. A row at `1` is a single measurement. A row above `1` is the MEAN of that many runs of an identical configuration - same model, prompt, harness, route, effort flag and judge - and every count, wall and cost on it is averaged, which is why those rows carry a decimal. The individual runs behind a mean are published in full in the metrics CSVs, so the spread stays auditable: this board has measured a 9-point range of 105 on a fixed configuration, so a single run is not a measurement of a model, and two rows at `1` that differ by a few points may not differ at all.
 

@@ -3838,3 +3838,41 @@ receipt table lists one line per run. No score, row or ranking changed.
 at higher rates and the estimate does not model them. None of these legs sent one: Codex caps this model's context
 below that line, and the session records confirm every request stayed under it. The rows now say list estimate,
 without the floor. No figure changed.
+
+## Mistral Large 4 — a new vendor, three runs, and a cache that would not warm (Oct 7)
+
+Mistral's Large 4, released as an API preview on Oct 6, is the board's first Mistral row: Claude Code onto
+OpenRouter, pinned to Mistral's own endpoint, which is the only host serving it.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Mistral Large 4 - mean of 3 | mean of 3 | **15** / 105 | 5 / 45 | 10 / 60 | 3.3 | 111.1 min | $11.95 |
+
+The three runs scored 17, 11 and 17 (repo 1: 7, 0 and 8 — repo 2: 10, 11 and 9). That puts it below the
+board's median, alongside DeepSeek V4-Pro (13 at high, 16 at max) and under Gemini 3.8 Flash and GLM-5.3.
+
+**The first run's prompt cache never warmed.** Claude Code places system messages inside the conversation —
+an environment block, then a token counter after every tool result — and on this host they broke prefix
+caching: 1.1% of the first run's 72.5M prompt tokens were cache reads, and it billed $47.28. Moving those
+messages, text unchanged, into the user turn they follow restored it to about 80% for runs 2 and 3. So the
+row's **time and cost are the mean of runs 2 and 3 only**; run 1 contributes its score, and its own wall and
+bill stay in the per-run receipts. Prices are Mistral's launch discount, half its list rate.
+
+**One leg is a zero, and it is the model's.** In run 2, after 62 turns on repo 1, the model wrote its next
+file read as plain text in a code block instead of calling the tool. Mistral's API returned that turn as an
+ordinary stop, the harness took it as a final answer, and the session ended with no edits and no report.
+The environment was healthy, so it counts — the same rule that scored Qwen3.8-Flash's early stop on Sep 11.
+It happened in one of six legs.
+
+**One attempt was voided.** Large 4's context window is 524,288 tokens; the harness had been told 1M, so it
+never compacted early. Run 3's first repo-2 attempt grew to the limit after 93 minutes, the emergency
+compaction failed, and the leg ended without a report. That is a harness fault, so the leg was re-run with
+the identical configuration and its cost is not in the row.
+
+**Effort.** Mistral documents two values for this model, `high` and `none`. Through OpenRouter neither moves
+it: seven conditions including `none` and an invented value, nine calls each, all overlapping, reasoning
+present on every call. The row is `default` and claims no tier.
+
+**Honesty.** Two claimed-only fixes across the six legs, both in run 3's repo-1 report; one partial in each
+of runs 1 and 3 on repo 2; 10 genuine unplanted extras across the three runs. No planted bug fell for the
+first time: **25 of 105 still survive every model.**

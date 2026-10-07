@@ -1,0 +1,32 @@
+# mistralai/mistral-large-4-0 - OpenRouter Anthropic surface (/v1/messages), provider.order=[Mistral], allow_fallbacks=false, reasoning={effort:X}, n=3, 2026-10-07 09:26 Central European Daylight Time
+# prompt: A function f(n) returns the number of ways to tile a 3 x n board with 2 x 1 dominoes. Compute f(12). Then explain in two sentences why f(n) is zero for odd n. Give the final number on the last line.
+
+{"cond": "OMIT", "i": 0, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 2144, "in_tok": 59, "think_chars": 6238, "stop": "end_turn", "last_line": "2131", "secs": 34.6}
+{"cond": "none", "i": 0, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 628, "in_tok": 59, "think_chars": 1573, "stop": "end_turn", "last_line": "2131", "secs": 14.2}
+{"cond": "low", "i": 0, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 721, "in_tok": 59, "think_chars": 1839, "stop": "end_turn", "last_line": "2131", "secs": 13.5}
+{"cond": "medium", "i": 0, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 556, "in_tok": 59, "think_chars": 1279, "stop": "end_turn", "last_line": "2131", "secs": 12.2}
+{"cond": "high", "i": 0, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 12884, "in_tok": 59, "think_chars": 36276, "stop": "end_turn", "last_line": "2131", "secs": 156.2}
+{"cond": "xhigh", "i": 0, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 1305, "in_tok": 59, "think_chars": 3789, "stop": "end_turn", "last_line": "2131", "secs": 24.5}
+{"cond": "bogus_zzz", "i": 0, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 9008, "in_tok": 59, "think_chars": 23369, "stop": "end_turn", "last_line": "2131", "secs": 124.2}
+{"cond": "OMIT", "i": 1, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 9767, "in_tok": 59, "think_chars": 28726, "stop": "end_turn", "last_line": "2131", "secs": 165.8}
+{"cond": "none", "i": 1, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 655, "in_tok": 59, "think_chars": 1641, "stop": "end_turn", "last_line": "2131", "secs": 11.1}
+{"cond": "low", "i": 1, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 11381, "in_tok": 59, "think_chars": 31040, "stop": "end_turn", "last_line": "2131", "secs": 144.6}
+{"cond": "medium", "i": 1, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 6034, "in_tok": 59, "think_chars": 17276, "stop": "end_turn", "last_line": "2131", "secs": 103.7}
+{"cond": "high", "i": 1, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 3111, "in_tok": 59, "think_chars": 7228, "stop": "end_turn", "last_line": "2131", "secs": 37.4}
+{"cond": "xhigh", "i": 1, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 2053, "in_tok": 59, "think_chars": 6029, "stop": "end_turn", "last_line": "2131", "secs": 25.1}
+{"cond": "bogus_zzz", "i": 1, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 3311, "in_tok": 59, "think_chars": 8588, "stop": "end_turn", "last_line": "2131", "secs": 53.1}
+{"cond": "OMIT", "i": 2, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 2361, "in_tok": 59, "think_chars": 7548, "stop": "end_turn", "last_line": "2131", "secs": 44.2}
+{"cond": "none", "i": 2, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 651, "in_tok": 59, "think_chars": 1491, "stop": "end_turn", "last_line": "2131", "secs": 8.8}
+{"cond": "low", "i": 2, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 5386, "in_tok": 59, "think_chars": 15622, "stop": "end_turn", "last_line": "2131", "secs": 64.8}
+{"cond": "medium", "i": 2, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 263, "in_tok": 59, "think_chars": 628, "stop": "end_turn", "last_line": "2131", "secs": 4.7}
+{"cond": "high", "i": 2, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 2787, "in_tok": 59, "think_chars": 8852, "stop": "end_turn", "last_line": "2131", "secs": 38.6}
+{"cond": "xhigh", "i": 2, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 321, "in_tok": 59, "think_chars": 576, "stop": "end_turn", "last_line": "2131", "secs": 4.9}
+{"cond": "bogus_zzz", "i": 2, "http": 200, "model": "mistralai/mistral-large-4-0", "out_tok": 2381, "in_tok": 59, "think_chars": 6916, "stop": "end_turn", "last_line": "2131", "secs": 32.4}
+
+OMIT       out_tok [2144, 2361, 9767] mean=4757  think_chars [6238, 7548, 28726]  within=4.56x
+none       out_tok [628, 651, 655] mean=645  think_chars [1491, 1573, 1641]  within=1.04x
+low        out_tok [721, 5386, 11381] mean=5829  think_chars [1839, 15622, 31040]  within=15.79x
+medium     out_tok [263, 556, 6034] mean=2284  think_chars [628, 1279, 17276]  within=22.94x
+high       out_tok [2787, 3111, 12884] mean=6261  think_chars [7228, 8852, 36276]  within=4.62x
+xhigh      out_tok [321, 1305, 2053] mean=1226  think_chars [576, 3789, 6029]  within=6.40x
+bogus_zzz  out_tok [2381, 3311, 9008] mean=4900  think_chars [6916, 8588, 23369]  within=3.78x

@@ -163,3 +163,4 @@ GPT-6.1 Sol (xhigh effort) - mean of 3,Codex CLI,20.3,2.0,0.0,32.7,0,55.0,2.24
 GPT-6.1 Sol (high effort) - mean of 2,Codex CLI,19.5,1.0,0.5,26.0,0,43.1,1.97
 GPT-6.1 Sol (medium effort) - mean of 2,Codex CLI,13.0,1.5,0.0,19.5,0,14.0,0.8
 GPT-6.1 Sol (low effort) - mean of 2,Codex CLI,11.0,1.5,0.5,18.0,0,14.3,0.69
+Mistral Large 4 - mean of 3,Claude Code / OpenRouter,10.0,0.7,0.0,2.7,0,50.6,6.6

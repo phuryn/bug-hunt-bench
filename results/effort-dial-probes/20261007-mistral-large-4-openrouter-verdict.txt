@@ -1,0 +1,44 @@
+# mistralai/mistral-large-4-0 - effort dial verdict, 2026-10-07 (model released 2026-10-06, API preview)
+
+SERVING PATH PROBED: OpenRouter Anthropic surface (/api/v1/messages), provider.order=[Mistral],
+allow_fallbacks=false - Mistral is the only host OpenRouter lists for this slug (quantization
+"unknown", ctx 524,288, max out 262,144). Body = the one a local OpenRouter shim sends with
+--reasoning-effort X: reasoning={effort:X}, no `thinking` field. 32,000 max_tokens, nothing
+truncated (every call stop_reason=end_turn). One fixed prompt (3 x 12 domino tilings; answer 2131,
+correct on all 63 calls). Two batches, interleaved and concurrent: n=3 then n=6, pooled to n=9.
+Raw: 20261007-mistral-large-4-openrouter-n3.txt, -n6.txt.
+
+VENDOR VOCABULARY: Mistral documents reasoning_effort for this model as exactly two values,
+"high" and "none". There is no low / medium / xhigh tier on any route.
+
+FIRST-PARTY PATH NOT PROBED: api.mistral.ai lists mistral-large-4 (alias mistral-large-4-0,
+ctx 524,288, reasoning=true) but answered every chat call - all 9 effort values and the omitted
+field alike - with HTTP 403 `tier_not_allowed` ("This model is not available in your subscription
+tier"). That rejection precedes any parameter validation, so it says nothing about the dial.
+
+ACCEPT-LIST ON THIS PATH: none enforced. bogus_zzz -> HTTP 200, like every other value.
+
+MAGNITUDE (output tokens incl. thinking, n=9 each):
+  OMIT       2144-10649   median 5661  mean 5195  within 5.0x
+  none        614- 7800   median 2585  mean 2972  within 12.7x
+  low         721-11381   median 2386  mean 3796  within 15.8x
+  medium      263- 6085   median 1269  mean 2368  within 23.1x
+  high        780-12884   median 3648  mean 5839  within 16.5x
+  xhigh       321- 2599   median 1305  mean 1501  within 8.1x
+  bogus_zzz   612- 9008   median 3311  mean 3788  within 14.7x
+
+  exact Mann-Whitney, two-sided:  high vs none p=0.077 | high vs OMIT p=0.863 | high vs low p=0.436
+                                  OMIT vs none p=0.222 | low vs none p=0.436 | high vs xhigh p=0.011
+
+VERDICT: INERT ON THIS ROUTE. Ranges nest for every pair against within-level spreads of 5-23x.
+Even `none` does not switch reasoning off here: thinking blocks came back on all 63 calls, `none`
+included (1,396-21,647 thinking chars). The n=3 batch alone made `none` look tight (614-655) and
+separated; the n=6 batch did not reproduce it - a small-n artefact, which is why this was taken to
+n=9 before labelling. high vs xhigh at p=0.011 does not survive 21 pairwise comparisons
+(Bonferroni 0.0024) and runs the "wrong" way (xhigh lower) - read as noise, and xhigh is not a
+documented value for this model anyway.
+
+ARM CONSEQUENCE (mistrallarge4): the proxy installs reasoning={effort:"high"} - the vendor's own
+documented on-value - on every call, so the wire is exactly the probed `high` condition rather
+than whatever Claude Code's own thinking field translates to. Because the word is measurably
+indistinguishable from omitting it, the row is labelled effort=default, effort_status=inert_default.
