@@ -3903,3 +3903,17 @@ and tools alone are about 50,000 tokens, so the conversation crosses the line wi
 
 **Honesty.** Two claimed-only fixes across six legs, both in run 1's repo-2 report; 20 genuine unplanted extras
 across the three runs.
+
+### Haiku 5.5 at max and high — one run each (Oct 7)
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Haiku 5.5 (max effort) | 1 | **22** / 105 | 10 / 45 | 12 / 60 | 13 | 34.9 min | $6.92 |
+| Haiku 5.5 (high effort) | 1 | **15** / 105 | 5 / 45 | 10 / 60 | 4 | 17.9 min | $3.30 |
+
+Single runs either side of the xhigh mean of three (18.3), so the order — max 22, xhigh 18.3, high 15 — follows
+the dial; but each is one run, and on this board a first run has moved by more than 2 points against its own
+three-run mean about half the time. Max also claimed the most fixes it did not make: six claimed-only, against
+two across all three xhigh runs and one at high. Both runs took their two repo legs at the same time on one
+account, so their walls include contention; scores and per-request costs were checked to come from each leg's
+own stream alone, with no response shared between the legs.

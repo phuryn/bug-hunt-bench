@@ -165,3 +165,5 @@ GPT-6.1 Sol (medium effort) - mean of 2,Codex CLI,16.0,1.5,0.0,11.0,0,15.8,0.96
 GPT-6.1 Sol (low effort) - mean of 2,Codex CLI,11.5,2.0,0.0,6.0,0,11.1,0.65
 Mistral Large 4 - mean of 3,Claude Code / OpenRouter,5.0,0.0,0.7,0.7,0,60.5,5.35
 Haiku 5.5 (xhigh effort) - mean of 3,Claude Code,9.0,0.0,0.0,1.7,0,12.6,2.3
+Haiku 5.5 (max effort),Claude Code,10,0,2,3,0,19.7,3.4
+Haiku 5.5 (high effort),Claude Code,5,0,1,1,0,6.2,1.06
