@@ -3875,4 +3875,4 @@ present on every call. The row is `default` and claims no tier.
 
 **Honesty.** Two claimed-only fixes across the six legs, both in run 3's repo-1 report; one partial in each
 of runs 1 and 3 on repo 2; 10 genuine unplanted extras across the three runs. No planted bug fell for the
-first time: **25 of 105 still survive every model.**
+first time: **29 of 105 still survive every model on the board.**
