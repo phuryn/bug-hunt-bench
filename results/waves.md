@@ -3878,3 +3878,28 @@ every probe call.
 **Honesty.** Two claimed-only fixes across the six legs, both in run 3's repo-1 report; one partial in each
 of runs 1 and 3 on repo 2; 10 genuine unplanted extras across the three runs. No planted bug fell for the
 first time: **29 of 105 still survive every model on the board.**
+
+## Claude Haiku 5.5 — measured on release day (Oct 7)
+
+Anthropic's Claude Haiku 5.5 went on the board the day it shipped, at xhigh effort through Claude Code on the
+first-party API — the same path as every Sonnet and Opus row. Three runs of one configuration, legs one at a time.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Haiku 5.5 (xhigh effort) - mean of 3 | mean of 3 | **18.3** / 105 | 9 / 45 | 9.3 / 60 | 6.7 | 24.1 min | $4.80 |
+
+The runs scored 16, 19 and 20 (repo 1: 6, 8 and 13 — repo 2: 10, 11 and 7). That is half of Sonnet 5.5 and
+Opus 5.5 at the same tier (36 each), level with GPT-6 Luna at max (18.3) and Gemini 3.8 Flash (18), at about
+26 cents per strict fix — and the fastest legs on the board, nine to twenty minutes each.
+
+**Effort, read off the wire.** The Claude Code build used here does not recognise the model yet, so the request
+was captured instead of the CLI being taken at its word: the main agent loop sends `xhigh` with adaptive
+thinking, and the API accepts it. Claude Code's once-per-session title call runs at `high`.
+
+**Cost is priced per request.** Haiku 5.5 is billed by each request's prompt length — $0.10 / $0.50 per
+million input / output tokens up to a 100,000-token prompt, $0.50 / $2.50 above it. Claude Code's instructions
+and tools alone are about 50,000 tokens, so the conversation crosses the line within a few turns: 552 of the
+587 requests across the six legs were priced at the upper tier. The window itself is 1M tokens either way.
+
+**Honesty.** Two claimed-only fixes across six legs, both in run 1's repo-2 report; 20 genuine unplanted extras
+across the three runs.

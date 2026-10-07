@@ -1,0 +1,17 @@
+# claude-haiku-5-5 - what Claude Code 2.1.292 actually sends, captured on the wire 2026-10-07 (staged as the haiku55xhigh arms)
+# CLI: claude -p ... --model 'claude-haiku-5-5[1m]' --effort xhigh, through a recording pass-through to api.anthropic.com (auth redacted)
+# The CLI logs [claude-code:unrecognized_model] for this id (released 2026-10-07, newer than the CLI's catalog) - which is why the wire was checked rather than the CLI's word taken.
+
+{"request": "001", "model": "claude-haiku-5-5", "output_config": {"effort": "high"}, "output_format": "json_schema", "thinking": null, "max_tokens": 128000, "tools": 0, "context_1m_beta": true}
+{"request": "002", "model": "claude-haiku-5-5", "output_config": {"effort": "xhigh"}, "output_format": null, "thinking": {"type": "adaptive", "display": "omitted"}, "max_tokens": 128000, "tools": 145, "context_1m_beta": true}
+
+VERDICT: the main agent loop sends output_config.effort=xhigh with adaptive thinking to model claude-haiku-5-5;
+the API accepted it (exit 0, answer returned). The [1m] suffix is stripped before the call and the 1M-context beta
+header is sent, matching the model's documented 1M window. Claude Code's per-session title call (request 001: no
+tools, a JSON-schema output) runs at effort=high - a side call the --effort flag does not reach; the label describes
+the main loop. Enum check: an invented --effort value is refused by the CLI with 'Unknown --effort value ... Valid
+values: low, medium, high, xhigh, max' and falls back to the default. Tier status: first_party (accepted, not
+magnitude-probed). Not the ceiling: max exists.
+COST CAVEAT FOUND HERE: because the CLI does not know this model, its own total_cost_usd uses a fallback price table
+(it reported $0.41 for a one-word reply). Haiku 5.5 is priced by prompt length per request ($0.10/$0.50 up to 100K
+prompt tokens, $0.50/$2.50 above), so the arm prices every request from Claude Code's session transcript instead.
