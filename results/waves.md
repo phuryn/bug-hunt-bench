@@ -3917,3 +3917,17 @@ three-run mean about half the time. Max also claimed the most fixes it did not m
 two across all three xhigh runs and one at high. Both runs took their two repo legs at the same time on one
 account, so their walls include contention; scores and per-request costs were checked to come from each leg's
 own stream alone, with no response shared between the legs.
+
+
+### Haiku 5.5 at max and high — second runs (Oct 7)
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Haiku 5.5 (max effort) - mean of 2 | mean of 2 | **21.5** / 105 | 10 / 45 | 11.5 / 60 | 9 | 32.5 min | $5.83 |
+| Haiku 5.5 (high effort) - mean of 2 | mean of 2 | **16** / 105 | 5 / 45 | 11 / 60 | 4 | 19.3 min | $3.56 |
+
+Run 2 at max scored 21 against run 1's 22; at high, 17 against 15. With xhigh's three-run mean
+of 18.3 between them, Haiku 5.5's dial now reads in order on repeated runs: max 21.5, xhigh 18.3,
+high 16. Max still claims the most fixes it did not make (7 claimed-only across its two runs, against
+3 at high). Every run took its two repo legs at the same time on one account, and every leg's scores and
+per-request costs were checked to come from its own stream alone. The two single-run rows are superseded by these means.
