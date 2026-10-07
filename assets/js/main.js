@@ -404,10 +404,11 @@ function renderKeys() {
 
   keys.appendChild(el('div', {}, [
     el('h3', { text: 'Variance' }),
-    el('p', { text: DATA.caveats[0] }),
+    el('p', { text: DATA.variance_short || DATA.caveats[0] }),
     el('p', {}, [
-      'One run is one run. Read gaps of a point or two as noise. ',
-      el('a', { class: 'deflink', href: methodHref('caveats') }, ['All four caveats']),
+      el('a', { class: 'deflink', href: 'https://github.com/phuryn/bug-hunt-bench#how-noisy-is-a-single-run' }, ['Every run and spread on GitHub']),
+      ' · ',
+      el('a', { class: 'deflink', href: methodHref('caveats') }, ['All caveats']),
       '.',
     ]),
   ]));

@@ -7,7 +7,7 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Oct 7, 2026](assets/leaderboard.png?v=2026-10-07-a7a15e99)
+![Bug Hunt Bench leaderboard, the featured runs, updated Oct 7, 2026](assets/leaderboard.png?v=2026-10-07-4e779385)
 
 **Updated Oct 7, 2026 · 166 rows from 201 scored runs · 42 models · 29 of 105 bugs have never been fixed by any model.**
 
@@ -171,7 +171,7 @@ An independent judge model grades each diff against the answer key, blind — it
 
 ### How noisy is a single run?
 
-One round per model per repo, so treat `fixed` as ±1 and extras as ±2. Same-setting variance has been measured: three Grok 4.5 runs on identical settings scored 16, 13 and 17. A one-fix gap between two rows is a tie. A five-fix gap is the first kind of lead on this board that clears its own variance band.
+Many rows are not single runs: a row named `- mean of N` averages N independent runs, and the site marks it `n=N`. Single runs remain on the board too, so read the run count before comparing two rows. Same-setting spread has been measured on every configuration run three times at identical settings — as of October 7, 2026, 36 of them, whose three-run ranges run from 1 to 14 points of 105 (median 5). A gap of a few points between two single runs can be noise. Every individual run behind every row — score per repo, time, cost and turns — is in [results/runs.csv](results/runs.csv), and the current spreads, configuration by configuration, are in the variance caveat on the [method page](https://bughunt.productcompass.pm/method.html#caveats).
 
 ### Does reasoning effort (max, xhigh, high, medium) help?
 
