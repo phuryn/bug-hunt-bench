@@ -48,7 +48,7 @@
     "29 of the 105 bugs have survived every model in every run to date. The count moves as new runs land: it fell from 49 to 44 during the 27-28 August waves.",
     "Turns count model steps: every tool call - a shell command, a file read or edit, a search - plus the final answer, summed over both repos. That is exactly what Claude Code reports as its own turn count, and it is the one definition every harness here can supply, so each run is counted from its own log the same way: Codex CLI, which counts a whole run as a single turn, by its commands and edits; Grok by the tool calls in its session log. A turn is a step, not a unit of work - one command can do several reads, and harnesses differ in how much a single call does - so turns compare most cleanly within one harness. 5 current rows have no turn count because their logs were not kept, and are left off that map rather than estimated."
   ],
-  "variance_short": "43 of the 104 rows are means of two or more runs (19 of the 26 in the default view); the rest are single runs. Run three times at identical settings, a configuration's score has moved by 1 to 14 points of 105 (median 5), so a gap of a few points between two single runs can be noise.",
+  "variance_short": "43 of the 104 rows are means of two or more runs (19 of the 26 in the default view); the rest are single runs. Running a configuration three times at identical settings moved its score from the first run by a median 1.8 points of 105 - by more than 2 in 17 of 36 cases, by more than 5 in 2 - and up about as often as down (18 up, 17 down). Read a gap of a few points between two single runs as possible noise.",
   "runs": [
     {
       "id": "Sonnet 5.5 (max effort)",
