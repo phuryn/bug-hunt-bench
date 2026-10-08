@@ -228,7 +228,6 @@ function wallCell(run, wallMax) {
     class: 'divide col--bar',
     role: 'cell',
     'data-label': MOBILE_LABEL.wall_min,
-    title: run.wall_note ? `Wall clock: ${run.wall_note}` : null,
   }, [
     barRow('wall', barRatio(run.wall_min, wallMax), null,
       el('span', {}, [

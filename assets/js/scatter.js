@@ -63,7 +63,9 @@ export const AXES = {
     chartTitle: 'Score against wall clock',
     slug: 'score-vs-time',
     fmt: (v) => `${fmtWall(v)} min`,
-    flag: 'wall_note',
+    // No per-point flag (2026-10-08): every run shares a working machine with other agents, so marking
+    // the few that recorded a peer singled them out unfairly. The detail stays in the GitHub receipts.
+    flag: null,
   },
   turns: {
     id: 'turns',
@@ -339,7 +341,6 @@ function tooltipContent(p, axis) {
   frag.appendChild(tipRow('Unplanted, not scored', String(r.extras)));
   frag.appendChild(tipRow('Claimed only', String(r.claimed_only)));
   frag.appendChild(tipRow('Run date', fmtDate(r.date)));
-  if (r.wall_note) frag.appendChild(el('div', { class: 'tip-note', text: `${NOTE_MARK} ${r.wall_note}` }));
   return frag;
 }
 
