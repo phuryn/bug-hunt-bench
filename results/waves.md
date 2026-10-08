@@ -3953,11 +3953,11 @@ stream alone, with nothing shared among the four.
 |---|---|---|---|---|---|---|---|
 | Haiku 4.5 - mean of 2 | mean of 2 | **1.5** / 105 | 0.5 / 45 | 1 / 60 | 2.5 | 16.9 min | $2.22 |
 
-Anthropic's previous Haiku, from October 2025, through Claude Code. It scored 1 and 2 of 105 — the lowest result
-on the board, and not a harness failure: every leg ran cleanly, wrote its report and ended normally. The model
+Anthropic's previous Haiku, from October 2025, through Claude Code. It scored 1 and 2 of 105 — the lowest of any
+Anthropic model on the board and third-lowest overall, and not a harness failure: every leg ran cleanly, wrote its report and ended normally. The model
 stopped early, declaring success after one to four fixes per repo; of the ten fixes it claimed, three were
-planted bugs, five were real defects outside the planted set, and one was not made. Haiku 5.5 at the same
-price-tier position scores 11 to 21.5 depending on effort.
+planted bugs, five were real defects outside the planted set, and one was not made. Its successor,
+Haiku 5.5, scores 11 to 21.5 depending on effort.
 
 **There is no effort setting for this model.** Anthropic's documentation lists Haiku 4.5's default effort as
 "Not supported": it takes a thinking-token budget instead. Claude Code sends the same request whatever `--effort`
