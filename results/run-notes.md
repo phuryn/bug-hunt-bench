@@ -2,7 +2,7 @@
 
 Every row on the board, with the note and caveat it carries. Generated from `data/benchmark.json` by `bench_golive.py` - do not edit by hand.
 
-Updated Oct 7, 2026 · 172 rows from 207 scored runs. Superseded rows are listed last.
+Updated Oct 8, 2026 · 172 rows from 207 scored runs. Superseded rows are listed last.
 
 ## Sonnet 5.5 (max effort) - mean of 3
 
@@ -616,7 +616,7 @@ The second measured rung of Meta's first-party dial, published as the MEAN OF TH
 
 ## Haiku 5.5 (medium effort)
 
-**12 / 105** · repo 1 5/45 · repo 2 7/60 · 4 unplanted · 15.5 min · $2.66 · `medium` · Claude Code · single run · 2026-10-07
+**12 / 105** · repo 1 5/45 · repo 2 7/60 · 4 unplanted · 15.5 min · $2.66 · `medium` · Claude Code · single run · 2026-10-08
 
 **Caveat.** One run at medium effort, run with four legs at once on one account (both repos of this run and of the other arm). Single runs on this board move by more than 2 points against a three-run mean about half the time. Cost is a list estimate priced per request at Haiku 5.5's prompt-length tiers.
 
@@ -624,7 +624,7 @@ Anthropic's Claude Haiku 5.5 at medium effort through Claude Code on the first-p
 
 ## Haiku 5.5 (low effort)
 
-**11 / 105** · repo 1 4/45 · repo 2 7/60 · 2 unplanted · 8.7 min · $1.61 · `low` · Claude Code · single run · 2026-10-07
+**11 / 105** · repo 1 4/45 · repo 2 7/60 · 2 unplanted · 8.7 min · $1.61 · `low` · Claude Code · single run · 2026-10-08
 
 **Caveat.** One run at low effort, run with four legs at once on one account (both repos of this run and of the other arm). Single runs on this board move by more than 2 points against a three-run mean about half the time. Cost is a list estimate priced per request at Haiku 5.5's prompt-length tiers.
 
