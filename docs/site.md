@@ -162,15 +162,14 @@ maintenance burden.
   same sentence is baked into the PNG footer.
 - **There is no row detail and no `†`.** A caveat, a note or a supersession rides
   on the model cell as a plain `title`: still there for anyone who wants it, no
-  marker, no layout cost, and nothing to expand. The wall-clock note rides on the
-  wall-clock cell the same way.
-- **A bent wall-clock figure is marked where it would mislead: on the map.**
-  Three runs have a `wall_note` in the data. On the score-vs-time map they get a
-  broken ring and a `*` on the label (`NOTE_MARK` in `format.js` — one glyph,
-  defined once), because that is where a reader compares minutes along an axis. In
-  the table the sentence is the cell's `title` and nothing is drawn: the grid stays
-  a grid. Neither mark is a colour, so both survive the run colour underneath, a
-  colourblind reader and a black-and-white print.
+  marker, no layout cost, and nothing to expand.
+- **Contention is not drawn (2026-10-08).** Rows still carry a `wall_note` in the
+  data when their legs overlapped another leg, but the site no longer shows it —
+  no marked point on the score-vs-time map, no tooltip line, no table `title`, no
+  PNG marker (the wall axis has `flag: null` in `scatter.js`). Every run here shares
+  a working machine with other agents, so marking only the runs whose legs recorded
+  a peer singled them out. The wall-clock caveat says that in general terms; which
+  legs overlapped stays in the receipts (`concurrent_with=` in the metrics CSVs).
 - **Extras are never added to the score, anywhere.** They live in a column group
   headed *Tracked, not scored*, drawn as a hatched grey ghost bar at half the
   height of the score bar and scaled against the highest extras count on screen —
