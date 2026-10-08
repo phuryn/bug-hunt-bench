@@ -7,9 +7,9 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Oct 8, 2026](assets/leaderboard.png?v=2026-10-08-4851ec43)
+![Bug Hunt Bench leaderboard, the featured runs, updated Oct 8, 2026](assets/leaderboard.png?v=2026-10-08-047e633d)
 
-**Updated Oct 8, 2026 · 172 rows from 207 scored runs · 42 models · 29 of 105 bugs have never been fixed by any model.**
+**Updated Oct 8, 2026 · 173 rows from 209 scored runs · 43 models · 29 of 105 bugs have never been fixed by any model.**
 
 **Current leader:** Sonnet 5.5 at `max` effort — **51.3 / 105** (22.7/45 on repo 1, 28.7/60 on repo 2).
 
@@ -123,8 +123,9 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 104 | GPT-6 Luna | Codex CLI | low | 1 | **4** | 1 | 3 | 9 | 19 min | $0.20 | 2026-09-23 |
 | 105 | Gemma 4 31B | Claude Code / OpenRouter | default | 1 | **4** | 1 | 3 | 2 | 222 min | $8.61 bill | 2026-09-16 |
 | 106 | Gemma 4 31B 4-bit | Claude Code / OpenRouter | default | 1 | **3** | 1 | 2 | 2 | 25 min | $0.56 bill | 2026-09-16 |
-| 107 | gpt-oss-120b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0.3 | 4 min | $0.11 bill | 2026-09-15 |
-| 108 | gpt-oss-20b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0 | 7 min | $0.11 bill | 2026-09-15 |
+| 107 | Haiku 4.5 | Claude Code | default | 2 | **1.5** | 0.5 | 1 | 2.5 | 17 min | $2.22 | 2026-10-08 |
+| 108 | gpt-oss-120b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0.3 | 4 min | $0.11 bill | 2026-09-15 |
+| 109 | gpt-oss-20b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0 | 7 min | $0.11 bill | 2026-09-15 |
 
 **Runs** is how many independent runs the row is built from. A row at `1` is a single measurement. A row above `1` is the MEAN of that many runs of an identical configuration - same model, prompt, harness, route, effort flag and judge - and every count, wall and cost on it is averaged, which is why those rows carry a decimal. The individual runs behind a mean are published in full in the metrics CSVs, so the spread stays auditable: this board has measured a 9-point range of 105 on a fixed configuration, so a single run is not a measurement of a model, and two rows at `1` that differ by a few points may not differ at all.
 

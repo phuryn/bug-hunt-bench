@@ -2,7 +2,7 @@
 
 Every row on the board, with the note and caveat it carries. Generated from `data/benchmark.json` by `bench_golive.py` - do not edit by hand.
 
-Updated Oct 8, 2026 · 172 rows from 207 scored runs. Superseded rows are listed last.
+Updated Oct 8, 2026 · 173 rows from 209 scored runs. Superseded rows are listed last.
 
 ## Sonnet 5.5 (max effort) - mean of 3
 
@@ -725,6 +725,14 @@ First appearance of Gemma 4 31B on this board - native bf16, reached through Ope
 **Caveat.** ONE RUN PER REPO, not a replicated mean - read the 3/105 as a single data point, not a settled estimate. The dramatic cost gap against the native sibling is READ FROM ONE RUN EACH, not a controlled quantization sweep - fp4 happened not to compact here while bf16 did on repo 1, but nothing here proves fp4 never compacts or bf16 always does. NOT FEATURED: mean rows and n=1 rows are not featured by default on this board unless opted in, and this one was not.
 
 The 4-bit fp4 sibling of the native row above, reached through OpenRouter pinned to CoreWeave (the cheapest tools-capable fp4 host for this slug - DeepInfra fp4 is cheaper still but reports tools=False, disqualified, same shape as the Parasail-vs-DeepInfra choice on the Qwen3.8-27B 8-bit row). 3 of 105 (repo 1: 1, repo 2: 2), 2 genuine unplanted extras (both on repo 2), ZERO claimed-only fixes on either repo. *** ESSENTIALLY THE SAME SCORE AS NATIVE, AT A FRACTION OF THE COST *** 3/105 here against native's 4/105, but 0.56 dollars combined against native's 8.61 - roughly 1/15th the cost for one point less, because NEITHER leg here hit the compaction native hit on repo 1 (zero compactions on both this arm's legs). Both legs ran clean and quick: 12.8 and 12.1 minutes, 0.2581 and 0.3034 dollars. BILLING: real OpenRouter bill (credits-delta) via meter=openrouter on both legs, not a list-rate estimate. EFFORT NOT ASSERTED, same reason as the native row: OpenRouter does not implement a tier field this route honors.
+
+## Haiku 4.5 - mean of 2
+
+**1.5 / 105** · repo 1 0.5/45 · repo 2 1/60 · 2.5 unplanted · 16.9 min · $2.22 · `default` · Claude Code · mean of 2 runs · 2026-10-08
+
+**Caveat.** Mean of two runs (1 and 2 of 105). Haiku 4.5 has no effort setting - it uses a thinking-token budget, and Claude Code always sets it to 31,999 tokens - so the effort column reads default. Cost is a list estimate.
+
+Anthropic's Claude Haiku 4.5 (claude-haiku-4-5, October 2025, 200K context) through Claude Code on the first-party API. MEAN OF TWO RUNS of one configuration: 1 and 2 of 105 (repo 1: 1 and 0 of 45 - repo 2: 0 and 2 of 60), mean 1.5. Claimed-only fixes 0 and 1; genuine unplanted extras 3 and 2. Walls 18.6 and 15.2 minutes; cost $1.91 and $2.53. *** NO EFFORT SETTING EXISTS FOR THIS MODEL *** Anthropic's Haiku 4.5 page lists default effort as 'Not supported' and thinking as 'Extended': the model takes a thinking-token budget, not an effort level, and the effort documentation's list of supported models includes Haiku 5.5 but not 4.5. Claude Code follows that: read off the wire, --effort xhigh and --effort low send identical requests - no effort field, and extended thinking at budget_tokens 31,999, the most the CLI's 32,000-token output cap allows. So this is Haiku 4.5 exactly as Claude Code runs it for every user, at the CLI's maximum thinking budget; the row is labelled default, not with an effort tier. *** RECEIPTS *** 98.0% of prompt tokens were cache reads; list rates $1 input / $2 1-hour cache write / $0.10 cache read / $5 output per MTok, priced per request from Claude Code's session record. A list estimate, not a bill. All four legs ran at the same time on one account, and each leg's scores and priced responses were checked to come from its own stream alone, with none shared among the four. Every leg shared the laptop with another arm, which the wall marker discloses - scores, tokens and cost are untouched by that, only the clock. Judge: blind Codex gpt-5.5, which is neither this model nor a sibling of it.
 
 ## gpt-oss-120b - mean of 3
 

@@ -3946,3 +3946,21 @@ separate on this board - so read medium and low as roughly level. Low is the che
 board, $1.61 for both repos, and one of the fastest at 8.7 minutes (Sonnet 5.5 at low: 8.5). Claimed-only fixes: 2 at medium, 0 at low. Both runs took
 their four legs at once on one account; each leg's scores and per-request costs were checked to come from its own
 stream alone, with nothing shared among the four.
+
+### Haiku 4.5 — two runs, and no effort setting to choose (Oct 8)
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Haiku 4.5 - mean of 2 | mean of 2 | **1.5** / 105 | 0.5 / 45 | 1 / 60 | 2.5 | 16.9 min | $2.22 |
+
+Anthropic's previous Haiku, from October 2025, through Claude Code. It scored 1 and 2 of 105 — the lowest result
+on the board, and not a harness failure: every leg ran cleanly, wrote its report and ended normally. The model
+stopped early, declaring success after one to four fixes per repo; of the ten fixes it claimed, three were
+planted bugs, five were real defects outside the planted set, and one was not made. Haiku 5.5 at the same
+price-tier position scores 11 to 21.5 depending on effort.
+
+**There is no effort setting for this model.** Anthropic's documentation lists Haiku 4.5's default effort as
+"Not supported": it takes a thinking-token budget instead. Claude Code sends the same request whatever `--effort`
+says — extended thinking at a 31,999-token budget, the most its 32,000-token output cap allows — so the effort
+column reads `default`. All four legs ran at the same time on one account; each leg's scores and costs were
+checked to come from its own stream alone.

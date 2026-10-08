@@ -1,0 +1,14 @@
+# claude-haiku-4-5 - what Claude Code 2.1.292 sends for --effort xhigh and --effort low, captured on the wire 2026-10-08
+# Recording pass-through to api.anthropic.com (auth redacted). Staged as the haiku45 arms.
+
+{"flag": "--effort xhigh", "request": "001", "model": "claude-haiku-4-5", "output_config": {}, "thinking": {"type": "disabled"}, "max_tokens": 32000, "tools": 0}
+{"flag": "--effort xhigh", "request": "002", "model": "claude-haiku-4-5", "output_config": {}, "thinking": {"budget_tokens": 31999, "type": "enabled", "display": "updates"}, "max_tokens": 32000, "tools": 146}
+{"flag": "--effort low", "request": "001", "model": "claude-haiku-4-5", "output_config": {}, "thinking": {"type": "disabled"}, "max_tokens": 32000, "tools": 0}
+{"flag": "--effort low", "request": "002", "model": "claude-haiku-4-5", "output_config": {}, "thinking": {"budget_tokens": 31999, "type": "enabled", "display": "omitted"}, "max_tokens": 32000, "tools": 146}
+
+VERDICT: INERT ON THIS ROUTE, PROVEN ON THE WIRE. Claude Code sends NO effort field for claude-haiku-4-5 under either
+flag; the main loop sends thinking={type: enabled, budget_tokens: 31999} both times (the 'display' sub-field differs,
+updates vs omitted, which changes what is shown, not how much is thought). 31,999 is the largest budget the CLI's
+32,000-token output cap allows, so every Haiku 4.5 leg runs at the CLI's maximum thinking budget whatever --effort
+says. Consistent with Anthropic's docs: the effort parameter errors on Haiku 4.5, which takes budget_tokens instead.
+The title side call runs with thinking disabled. Label: effort=default, effort_status=inert_default.

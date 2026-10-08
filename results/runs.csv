@@ -105,6 +105,8 @@ grok47xhigh,Grok 4.7 (xhigh) seq - mean of 4,live,Grok 4.7,xAI,Grok Build CLI (A
 grok47xhighr2,Grok 4.7 (xhigh) seq - mean of 4,live,Grok 4.7,xAI,Grok Build CLI (ACP),xhigh,2026-09-21,30,12,18,1,1,35,47.3,23.04,floor,501,163,338,
 grok47xhighr3,Grok 4.7 (xhigh) seq - mean of 4,live,Grok 4.7,xAI,Grok Build CLI (ACP),xhigh,2026-09-21,31,16,15,3,0,34,51.8,29.93,floor,545,209,336,
 grok47xhighr4,Grok 4.7 (xhigh) seq - mean of 4,live,Grok 4.7,xAI,Grok Build CLI (ACP),xhigh,2026-09-21,29,12,17,0,0,32,45.4,22.01,floor,482,161,321,
+haiku45,Haiku 4.5 - mean of 2,live,Haiku 4.5,Anthropic,Claude Code,default,2026-10-08,1,1,0,1,0,3,18.6,1.91,list,119,50,69,
+haiku45r2,Haiku 4.5 - mean of 2,live,Haiku 4.5,Anthropic,Claude Code,default,2026-10-08,2,0,2,0,1,2,15.2,2.53,list,162,105,57,
 haiku55high,Haiku 5.5 (high effort) - mean of 2,live,Haiku 5.5,Anthropic,Claude Code,high,2026-10-07,15,5,10,1,1,4,17.9,3.3,list,205,65,140,
 haiku55highr2,Haiku 5.5 (high effort) - mean of 2,live,Haiku 5.5,Anthropic,Claude Code,high,2026-10-07,17,5,12,2,2,4,20.7,3.82,list,227,69,158,
 haiku55low,Haiku 5.5 (low effort),live,Haiku 5.5,Anthropic,Claude Code,low,2026-10-08,11,4,7,0,0,2,8.7,1.61,list,127,53,74,
