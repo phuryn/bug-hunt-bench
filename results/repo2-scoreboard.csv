@@ -169,3 +169,5 @@ Haiku 5.5 (max effort),Claude Code,12,2,4,10,0,15.2,3.52
 Haiku 5.5 (high effort),Claude Code,10,1,0,3,0,11.7,2.24
 Haiku 5.5 (max effort) - mean of 2,Claude Code,11.5,1.0,2.5,6.5,0,15.3,3.1
 Haiku 5.5 (high effort) - mean of 2,Claude Code,11.0,1.5,0.5,2.5,0,12.3,2.41
+Haiku 5.5 (medium effort),Claude Code,7,0,2,3,0,8.1,1.44
+Haiku 5.5 (low effort),Claude Code,7,0,0,2,0,4.5,0.8

@@ -3931,3 +3931,18 @@ of 18.3 between them, Haiku 5.5's dial now reads in order on repeated runs: max 
 high 16. Max still claims the most fixes it did not make (7 claimed-only across its two runs, against
 3 at high). Every run took its two repo legs at the same time on one account, and every leg's scores and
 per-request costs were checked to come from its own stream alone. The two single-run rows are superseded by these means.
+
+
+### Haiku 5.5 at medium and low — one run each (Oct 8)
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Haiku 5.5 (medium effort) | 1 | **12** / 105 | 5 / 45 | 7 / 60 | 4 | 15.5 min | $2.66 |
+| Haiku 5.5 (low effort) | 1 | **11** / 105 | 4 / 45 | 7 / 60 | 2 | 8.7 min | $1.61 |
+
+That completes Haiku 5.5's dial, and it reads in order from the top: max 21.5 (two runs), xhigh 18.3 (three),
+high 16 (two), medium 12, low 11. The bottom two rungs are single runs a point apart - inside what one run can
+separate on this board - so read medium and low as roughly level. Low is the cheapest Anthropic row on the
+board, $1.61 for both repos, and one of the fastest at 8.7 minutes (Sonnet 5.5 at low: 8.5). Claimed-only fixes: 2 at medium, 0 at low. Both runs took
+their four legs at once on one account; each leg's scores and per-request costs were checked to come from its own
+stream alone, with nothing shared among the four.
