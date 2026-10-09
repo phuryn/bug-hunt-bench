@@ -172,3 +172,4 @@ Haiku 5.5 (high effort) - mean of 2,Claude Code,5.0,0.0,1.0,1.5,0,7.0,1.15
 Haiku 5.5 (medium effort),Claude Code,5,0,0,1,0,7.4,1.22
 Haiku 5.5 (low effort),Claude Code,4,0,0,0,0,4.2,0.81
 Haiku 4.5 - mean of 2,Claude Code,0.5,0.5,0.5,0.5,0,8.7,1.27
+Grok 4.7 (xhigh) - mean of 5,Grok Build CLI (ACP),13.0,0.4,0.2,10.4,0,18.1,9.0

@@ -3964,3 +3964,34 @@ Haiku 5.5, scores 11 to 21.5 depending on effort.
 says — extended thinking at a 31,999-token budget, the most its 32,000-token output cap allows — so the effort
 column reads `default`. All four legs ran at the same time on one account; each leg's scores and costs were
 checked to come from its own stream alone.
+
+## Grok 4.7 at xhigh — a fifth run, 17 days later (Oct 8)
+
+Did the model behind the `grok-4.7` slug get better after release? One more run of the published configuration,
+made on Oct 8, answers no.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Grok 4.7 (xhigh) - mean of 5 | mean of 5 | **29.0** / 105 | 13 / 45 | 16 / 60 | 32.2 | 44.7 min | $22.96 |
+
+The fifth run scored 30 (13 + 17), inside the first four's range of 25 to 31, and moved the mean from 28.8 to 29.0.
+Grok 4.6 at the same tier stands at 28.7, so the tie between the two generations holds at n=5. A clean run of an
+identical configuration goes into its row whatever it scores; this one would have gone in at 25 too.
+
+**Held to the same configuration.** Same model, effort, prompt and judge, and the same CLI build as Sep 21
+(grok 1.0.30). The installed CLI had auto-updated by then, so the run used a pinned copy. The model was pinned
+per session and confirmed by the session itself. The context window needed restoring: by Oct 8, xAI's model
+metadata gave grok-4.7 a 256K default with 500K as an option, and the CLI reads the window from there. The run
+set 500K, the window the first four runs had; their prompts peaked around 285K. A zero-token readback before
+launch matched the Sep 21 gate: grok-4.7, xhigh, a 500,000-token window.
+
+**What differs.** The first four runs took their two repos one after the other; the fifth took them at the same
+time, so the row's name drops "seq". That can only inflate the fifth run's wall, and it was still the shortest of
+the five. The fifth run's repo-2 leg was judged twice by the same blind judge: 16 and 17 strict on the same diff.
+The newer pass counts; the other would put the mean at 28.8.
+
+**Cost is a reconstructed floor at API list rates.** Checked on the fifth run against exact token counts, the
+reconstruction came in about 10% under list, before xAI's double rate on prompts of 200K and up, which it cannot
+see. Same arithmetic on all five runs ($16.55 to $29.93, mean $22.96).
+
+The mean-of-4 row is superseded by this one and kept as a receipt.
