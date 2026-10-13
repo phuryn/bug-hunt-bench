@@ -3995,3 +3995,35 @@ reconstruction came in about 10% under list, before xAI's double rate on prompts
 see. Same arithmetic on all five runs ($16.55 to $29.93, mean $22.96).
 
 The mean-of-4 row is superseded by this one and kept as a receipt.
+
+## Muse Wonder 1.0 at max — level with Muse Spark 1.3, at a higher price (Oct 13)
+
+Meta released Muse Wonder 1.0 on Oct 12. Three runs at max effort through Muse Code, Meta's own agent CLI, the
+same harness and route as the Muse Spark 1.3 max row it succeeds.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Muse Wonder 1.0 (max effort, Muse Code, Meta API) - mean of 3 | mean of 3 | **31.7** / 105 | 12.0 / 45 | 19.7 / 60 | 13.3 | 96.2 min | $27.87 |
+| Muse Spark 1.3 (max effort, Muse Code, Meta API) - mean of 5 | mean of 5 | 32.2 / 105 | 14.2 / 45 | 18.0 / 60 | 24.0 | 85.6 min | $18.11 |
+
+The runs scored 30, 36 and 29. A mean of 31.7 sits inside Spark 1.3's own range of 29 to 35, so the two
+generations are level on this bench. They are level in different ways: Wonder finished below Spark's repo-1 mean
+in all three runs (12, 13 and 11 against 14.2) and above its repo-2 mean on average (19.7 against 18.0). The 36 of
+run 2 is the high end of its spread, not its level; the third run was made to check exactly that, and scored 29.
+
+**It costs more.** Wonder's list rates are $4 input / $0.20 cache read / $20 output per million tokens, three to nearly five
+times Spark 1.3's ($1.25 / $0.15 / $4.25). It used fewer tokens per run, which narrows the gap: $27.87 against $18.11 per run, as list
+estimates (the runs used a subscription, so there is no bill).
+
+**Honesty profile.** Claimed-only fixes 2, 2 and 1 across the three runs. Genuine unplanted extras 5, 26 and 9:
+run 2 found far more real bugs outside the planted set than the other two, on the same configuration.
+
+**Effort.** Max is the top entry of the effort list Meta's console and Muse Code's model catalog give this model
+(minimal to max). Muse Code's `ultra` is a closed gate that silently sends xhigh, so max is the highest tier the
+harness sends. Taken at the vendor's word, not magnitude-probed on this model; the tier describes Muse Code's main
+loop, not its side agent.
+
+**What differs between the runs.** Run 1 took its two repos one after the other; runs 2 and 3 took them at the
+same time, so their walls include contention. Scores, tokens and cost are unaffected. Four further legs ended on
+account errors before writing a report (a billing refusal at start, then the subscription's usage window); they
+say nothing about the model and are not counted.
