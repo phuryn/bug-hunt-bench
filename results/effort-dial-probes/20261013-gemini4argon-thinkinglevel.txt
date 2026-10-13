@@ -1,0 +1,28 @@
+Which thinking levels does Gemini 4 Argon accept on the Gemini API, and is "high" its top tier? - 2026-10-13
+
+VERDICT: high IS THE CEILING. The endpoint validates thinkingLevel in two layers and accepts only low, medium
+and high for this model. Max does not exist.
+
+POST https://generativelanguage.googleapis.com/v1beta/models/gemini-4-argon:generateContent,
+generationConfig.thinkingConfig.thinkingLevel = ..., one short counting prompt, n=1 each.
+
+    thinkingLevel   result
+    bogus_zzz       400  Invalid value at 'generation_config.thinking_config.thinking_level' (enum), "bogus_zzz"
+    minimal         400  Thinking level MINIMAL is not supported for this model.
+    low             200  thoughtsTokenCount absent (no thinking reported)
+    medium          200  thoughtsTokenCount 79
+    high            200  thoughtsTokenCount 408
+    max             400  Invalid value ... "max" (not a member of the enum)
+    ultra           400  Invalid value ... "ultra"
+    field omitted   200  thoughtsTokenCount 79 - the same as medium, so medium is the default
+
+READ THE TWO REJECTIONS SEPARATELY. `max`, `ultra` and the invented value fail SCHEMA validation - they are not
+members of the API's ThinkingLevel enum. `minimal` is a member and fails a PER-MODEL check. A bad value cannot be
+silently accepted on this route.
+
+MAGNITUDE: one prompt, n=1 - low < medium (79) < high (408). A 5x step from medium to high, but a single sample:
+read it as "the dial is read", not as a measured separation.
+
+ON THE BENCH RUN: the harness (Gemini CLI 0.63.0) does not send a thinking level for this model, so the bench
+gateway pins thinkingLevel=high on every request and reads it back. The run's receipts record
+wire_thinkingLevel={"high": 120} on repo 1 and {"high": 112} on repo 2, and served model gemini-4-argon on every call.

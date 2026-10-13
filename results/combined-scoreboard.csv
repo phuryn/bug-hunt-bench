@@ -175,3 +175,4 @@ Haiku 4.5 - mean of 2,Claude Code,1.5,0.5,1.0,2.5,16.9,2.22
 Grok 4.7 (xhigh) - mean of 5,Grok Build CLI (ACP),29.0,13.0,16.0,32.2,44.7,22.96
 "Muse Wonder 1.0 (max effort, Muse Code, Meta API) - mean of 3",Muse Code / Meta API,31.7,12.0,19.7,13.3,96.2,27.87
 "Muse Wonder Full 1.0 (max effort, Muse Code, Meta API)",Muse Code / Meta API,44,22,22,53,138.2,
+Gemini 4 Argon (high effort),Gemini CLI,33,15,18,7,85.1,32.08

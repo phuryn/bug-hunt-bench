@@ -4052,3 +4052,31 @@ of any Muse run on this board.
 
 **Effort.** Max is the top tier Muse Code's catalog lists for the model; not magnitude-probed. Both repos ran at
 the same time, so the wall includes contention.
+
+## Gemini 4 Argon at high — 33 of 105, Google's best row by eleven points (Oct 13)
+
+One run of Google's Gemini 4 Argon at thinking level high, its top tier, through Gemini CLI on the first-party
+Gemini API.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Gemini 4 Argon (high effort) | 1 | **33** / 105 | 15 / 45 | 18 / 60 | 7 | 85.1 min | $32.08 |
+
+Google's previous best row was Gemini 3.7 Flash (high) at 22; Gemini 3.8 Flash stands at 18 as a mean of three.
+Argon lands in the pack around 32 to 34 - Fable 5.1, Muse Spark 1.3 at max, Muse Wonder 1.0 at max - well behind
+the leaders. Three claimed fixes were not made (two on repo 1, one on repo 2); seven genuine bugs outside the
+planted set were fixed.
+
+**Why Gemini CLI.** Google's current CLI, Antigravity, does not list Argon for the account used here and refuses
+an unlisted model before sending anything. The Gemini API serves it as `gemini-4-argon`, and Gemini CLI 0.63.0
+reached it directly.
+
+**Effort.** The API accepts thinkingLevel low, medium and high for this model, refuses `minimal` for it, and
+rejects `max` and `ultra` as invalid values; omitting the field gives medium. Gemini CLI sends no level for this
+model, so a local gateway pinned high on every request and read it back: high on all of them, and the served
+model was `gemini-4-argon` on all of them.
+
+**Cost.** A list estimate at Google's launch rate ($2 input / $0.10 cached input / $10 output per million tokens,
+thinking billed as output) from the API's own per-call usage. Only 69% of prompt tokens were cache reads, against
+the high 90s typical on this board, and that is most of why the run cost $32. Repo 2 met Google's spend-rate limit
+for a new account a few times and was slowed, not stopped.
