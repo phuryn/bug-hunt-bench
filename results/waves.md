@@ -4027,3 +4027,28 @@ loop, not its side agent.
 same time, so their walls include contention. Scores, tokens and cost are unaffected. Four further legs ended on
 account errors before writing a report (a billing refusal at start, then the subscription's usage window); they
 say nothing about the model and are not counted.
+
+## Muse Wonder Full 1.0 at max — 44 of 105 in one run, cost unknown (Oct 13)
+
+Meta released Muse Wonder Full 1.0 alongside Muse Wonder 1.0 on Oct 12. One run at max effort, same harness, route
+and judge as the Wonder row above.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Muse Wonder Full 1.0 (max effort, Muse Code, Meta API) | 1 | **44** / 105 | 22 / 45 | 22 / 60 | 53 | 138.2 min | unknown |
+| Muse Wonder 1.0 (max effort, Muse Code, Meta API) - mean of 3 | mean of 3 | 31.7 / 105 | 12.0 / 45 | 19.7 / 60 | 13.3 | 96.2 min | $27.87 |
+
+**The gap is on repo 1.** Full fixed 22 of 45 there, against 11 to 13 in each of Wonder's three runs. On repo 2 it
+fixed 22 of 60, near the top of Wonder's 18 to 23. It also claimed no fix it did not make, on either repo, and
+found 53 genuine bugs outside the planted set. On repo 1 it worked very differently: about three times as many
+model calls as any Wonder run there, each on a smaller prompt.
+
+**One run.** Wonder's three runs spread 7 points, so read 44 with that margin in mind.
+
+**Cost is left blank.** Meta publishes no rate for Full; its own model catalog lists the cost as empty, and no
+aggregator carries the model. An estimate at Wonder's rates would be a guess presented as a number, so the
+column says unknown. Tokens are exact: 108 million across both repos, 104 million of them cache reads, the most
+of any Muse run on this board.
+
+**Effort.** Max is the top tier Muse Code's catalog lists for the model; not magnitude-probed. Both repos ran at
+the same time, so the wall includes contention.
