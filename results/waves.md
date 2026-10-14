@@ -4129,3 +4129,22 @@ output per million tokens): $5.74, $6.43 and $9.30 per run. **Corrected the same
 first showed $5.82 per run, from agy's own token counts, which read 10-38% below what Google reported per call. If
 Google bills prompts over 200K tokens at a higher rate, as it does for its Pro models, these figures and the Gemini
 CLI row's are low.
+
+## Gemini 4 Argon at medium — 36.0 of 105, and no cheaper than high (Oct 14)
+
+Two runs of Gemini 4 Argon at thinking level medium - the model's default, one tier below the ceiling - through the
+Antigravity CLI, set up exactly as the high row.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Gemini 4 Argon (medium effort, Antigravity CLI) - mean of 2 | mean of 2 | **36.0** / 105 | 14.0 / 45 | 22.0 / 60 | 10.5 | 40.5 min | $6.75 |
+| Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3 | mean of 3 | 40.7 / 105 | 13.0 / 45 | 27.7 / 60 | 7.3 | 56.5 min | $7.16 |
+
+The runs scored 33 and 39. The two tiers are level on repo 1; high's lead is all on repo 2. Medium is faster but
+not meaningfully cheaper - about $6.75 a run against $7.16 - so on this bench the higher tier is the better buy. No
+claimed fix was missing in either run.
+
+**Effort.** The CLI sends thinkingLevel MEDIUM for `gemini-4-argon-medium`, read back at the gateway on the main
+loop's calls; a couple of the CLI's own side calls per run go out at HIGH regardless of the setting.
+
+**Cost** is a list estimate from Google's per-call usage at its launch rate, computed that way from the start.
