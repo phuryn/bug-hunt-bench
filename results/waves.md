@@ -4185,3 +4185,25 @@ separated here: high stays narrowly ahead, at about the same cost per run.
 **Run 3's repo-1 leg was resumed.** A console Ctrl+C killed its local gateway 46 minutes in; once the gateway was
 back, the same conversation continued for 12.7 minutes and finished. Its wall is the two segments' sum. The
 mean-of-2 row is superseded and kept.
+
+## Gemini 4 Argon at low — 32 of 105 in one run, Grok-judged (Oct 14)
+
+One run of Gemini 4 Argon at thinking level low, the lowest tier the API accepts for it, through the Antigravity CLI.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Gemini 4 Argon (low effort, Antigravity CLI) | 1 | **32** / 105 | 12 / 45 | 20 / 60 | 3 | 44.9 min | $5.97 |
+| Gemini 4 Argon (medium effort, Antigravity CLI) - mean of 3 | mean of 3 | 39.3 / 105 | 13.7 / 45 | 25.7 / 60 | 11.3 | 59.9 min | $7.50 |
+| Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3 | mean of 3 | 40.7 / 105 | 13.0 / 45 | 27.7 / 60 | 7.3 | 56.5 min | $7.16 |
+
+The three tiers order as expected, and the dial works mostly on repo 2 - repo 1 sits at 12 to 14 whatever the tier.
+Low is only a little cheaper than the tiers above it.
+
+**Why one run.** Three low runs were started. In runs 1 and 3 the repo-2 leg did not finish: the local gateway
+stopped answering before Google began its stream (the CLI gives up on a response that has not started within about
+a minute), and the resumed conversations then ran into the API key's depleted prepaid credit. Run 2 finished both
+repos and is the row.
+
+**A different judge.** Codex refused gpt-5.5 for the account from about 16:56 on Oct 14, so this row was judged by
+Grok (grok-4.7), the board's second calibrated judge and not a sibling of Gemini. The other Argon rows were judged by
+Codex; scores from two judges are close but not perfectly interchangeable.
