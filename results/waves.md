@@ -4148,3 +4148,23 @@ claimed fix was missing in either run.
 loop's calls; a couple of the CLI's own side calls per run go out at HIGH regardless of the setting.
 
 **Cost** is a list estimate from Google's per-call usage at its launch rate, computed that way from the start.
+
+## Muse Wonder Full 1.0, max and xhigh as means of two — the tie breaks, narrowly (Oct 14)
+
+One run each had put max and xhigh level at 44. A second run of each settles the order, just.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Muse Wonder Full 1.0 (max effort, Muse Code, Meta API) - mean of 2 | mean of 2 | **42.0** / 105 | 21.5 / 45 | 20.5 / 60 | 36.5 | 145.3 min | unknown |
+| Muse Wonder Full 1.0 (xhigh effort, Muse Code, Meta API) - mean of 2 | mean of 2 | **41.5** / 105 | 16.0 / 45 | 25.5 / 60 | 24.5 | 90.5 min | unknown |
+
+Max scored 44 and 40, xhigh 44 and 39. The tiers split the repos the same way both times: max leads on repo 1
+(22 and 21 against 16 and 16), xhigh on repo 2 (28 and 23 against 22 and 19). Max takes about half again as long.
+No claimed fix was missing in any of the four runs. The two single-run rows are superseded and kept.
+
+**Both second runs ran in segments.** They were interrupted - by the subscription's usage windows, by an operator
+stop and by a closed console - and each time Muse Code continued the same session. Their time counts active work
+only: each segment from its first model call to its last before any refusal. They also straddle a harness update,
+Muse Code 1.4.1 to 1.4.7, when the launcher updated itself between segments.
+
+**Cost stays blank:** Meta publishes no rate for Full.
