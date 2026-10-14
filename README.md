@@ -7,7 +7,7 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Oct 14, 2026](assets/leaderboard.png?v=2026-10-14-3e2630e2)
+![Bug Hunt Bench leaderboard, the featured runs, updated Oct 14, 2026](assets/leaderboard.png?v=2026-10-14-8cd195e2)
 
 **Updated Oct 14, 2026 · 179 rows from 219 scored runs · 46 models · 26 of 105 bugs have never been fixed by any model.**
 
@@ -27,7 +27,7 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 8 | Fable 5.1 | Claude Code | max | 1 | **43** | 19 | 24 | 11 | 73 min | $87.18 | 2026-09-01 |
 | 9 | GPT-6.1 Sol | Codex CLI | xhigh | 3 | **42.7** | 22.3 | 20.3 | 56.7 | 99 min | $4.35 | 2026-09-30 |
 | 10 | Opus 5.5 | Claude Code | max | 3 | **41.7** | 19 | 22.7 | 9 | 67 min | $58.53 | 2026-09-23 |
-| 11 | Gemini 4 Argon | Antigravity CLI | high | 3 | **40.7** | 13 | 27.7 | 7.3 | 56 min | $5.82 | 2026-10-14 |
+| 11 | Gemini 4 Argon | Antigravity CLI | high | 3 | **40.7** | 13 | 27.7 | 7.3 | 56 min | $7.16 | 2026-10-14 |
 | 12 | GPT-5.6 Sol | Codex CLI | xhigh | 1 | **39** | 18 | 21 | 59 | 126 min | $52.75 | 2026-08-28 |
 | 13 | GPT-6.1 Sol | Codex CLI | high | 2 | **36.5** | 17 | 19.5 | 40 | 70 min | $3.26 | 2026-09-30 |
 | 14 | Opus 5.5 | Claude Code | xhigh | 3 | **36** | 17 | 19 | 13.3 | 42 min | $34.98 | 2026-09-23 |

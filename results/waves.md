@@ -4099,20 +4099,21 @@ a second run of each is under way.
 
 **Cost is left blank,** as on the max row: Meta publishes no rate for Full. The run used a subscription.
 
-## Gemini 4 Argon in the Antigravity CLI — 40.7 of 105, and the harness was worth eight points (Oct 14)
+## Gemini 4 Argon in the Antigravity CLI — 40.7 of 105, eight above a single Gemini CLI run (Oct 14)
 
 Three runs of Gemini 4 Argon at thinking level high, its top tier, through the Antigravity CLI - Google's current
 agent CLI - against the single Gemini CLI run published the day before.
 
 | Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
 |---|---|---|---|---|---|---|---|
-| Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3 | mean of 3 | **40.7** / 105 | 13.0 / 45 | 27.7 / 60 | 7.3 | 56.5 min | $5.82 |
+| Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3 | mean of 3 | **40.7** / 105 | 13.0 / 45 | 27.7 / 60 | 7.3 | 56.5 min | $7.16 |
 | Gemini 4 Argon (high effort) | 1 | 33 / 105 | 15 / 45 | 18 / 60 | 7 | 85.1 min | $32.08 |
 
-**Same model, same tier, same judge - different harness.** The runs scored 40, 45 and 37. The gain is all on repo 2
-(27.7 against 18); repo 1 is about level. And the Antigravity runs cost about $6 against $32: Gemini CLI's
-requests were far larger and far less cached. The Gemini CLI row stays on the board as its own row, out of the
-default view.
+**Same model, same tier, same judge - different harness.** The runs scored 40, 45 and 37. The gap to the Gemini
+CLI run is all on repo 2 (27.7 against 18); repo 1 is about level. That side is a single run, and these three
+spread 8 points, so the score gap is not established as a harness effect. The cost gap is mechanical: Gemini CLI
+re-sent its whole conversation on every call (44M prompt tokens, 69% cached) and cost about 4.5 times as much,
+$32 against $7. The Gemini CLI row stays on the board as its own row, out of the default view.
 
 **How Antigravity reached Argon.** On a Google AI Pro subscription the Antigravity CLI does not list Argon. Its
 enterprise gateway mode does, signed in with a Gemini API key; a local gateway passed requests through unchanged
@@ -4123,4 +4124,8 @@ served by `gemini-4-argon`.
 report. After a top-up each continued its own conversation and finished; its wall is the two segments' sum with the
 idle gap removed. Its 32 of 60 on repo 2 is the run's high point, and the other two runs average 38.5 without it.
 
-**Cost** is a list estimate at Google's launch rate ($2 input / $0.10 cached input / $10 output per million tokens).
+**Cost** is a list estimate from Google's per-call usage at its launch rate ($2 input / $0.10 cached input / $10
+output per million tokens): $5.74, $6.43 and $9.30 per run. **Corrected the same day:** this section and the row
+first showed $5.82 per run, from agy's own token counts, which read 10-38% below what Google reported per call. If
+Google bills prompts over 200K tokens at a higher rate, as it does for its Pro models, these figures and the Gemini
+CLI row's are low.
