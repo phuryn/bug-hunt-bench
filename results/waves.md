@@ -4168,3 +4168,20 @@ only: each segment from its first model call to its last before any refusal. The
 Muse Code 1.4.1 to 1.4.7, when the launcher updated itself between segments.
 
 **Cost stays blank:** Meta publishes no rate for Full.
+
+## Gemini 4 Argon at medium — a third run, 46 of 105 (Oct 14)
+
+A third medium run scored 46 (13 on repo 1, 33 on repo 2), the highest single Argon run at any tier, and moves the
+medium mean from 36.0 to 39.3.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Gemini 4 Argon (medium effort, Antigravity CLI) - mean of 3 | mean of 3 | **39.3** / 105 | 13.7 / 45 | 25.7 / 60 | 11.3 | 59.9 min | $7.50 |
+| Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3 | mean of 3 | 40.7 / 105 | 13.0 / 45 | 27.7 / 60 | 7.3 | 56.5 min | $7.16 |
+
+Medium's runs spread from 33 to 46, wider than the 1.4 points between the two tiers' means, so the tiers are not
+separated here: high stays narrowly ahead, at about the same cost per run.
+
+**Run 3's repo-1 leg was resumed.** A console Ctrl+C killed its local gateway 46 minutes in; once the gateway was
+back, the same conversation continued for 12.7 minutes and finished. Its wall is the two segments' sum. The
+mean-of-2 row is superseded and kept.

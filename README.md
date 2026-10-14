@@ -7,9 +7,9 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Oct 14, 2026](assets/leaderboard.png?v=2026-10-14-1c33e1f5)
+![Bug Hunt Bench leaderboard, the featured runs, updated Oct 14, 2026](assets/leaderboard.png?v=2026-10-14-4c27cbd3)
 
-**Updated Oct 14, 2026 · 182 rows from 223 scored runs · 46 models · 26 of 105 bugs have never been fixed by any model.**
+**Updated Oct 14, 2026 · 183 rows from 224 scored runs · 46 models · 26 of 105 bugs have never been fixed by any model.**
 
 **Current leader:** Sonnet 5.5 at `max` effort — **51.3 / 105** (22.7/45 on repo 1, 28.7/60 on repo 2).
 
@@ -28,9 +28,9 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 9 | Opus 5.5 | Claude Code | max | 3 | **41.7** | 19 | 22.7 | 9 | 67 min | $58.53 | 2026-09-23 |
 | 10 | Muse Wonder Full 1.0 | Muse Code / Meta API | xhigh | 2 | **41.5** | 16 | 25.5 | 24.5 | 90 min | — | 2026-10-14 |
 | 11 | Gemini 4 Argon | Antigravity CLI | high | 3 | **40.7** | 13 | 27.7 | 7.3 | 56 min | $7.16 | 2026-10-14 |
-| 12 | GPT-5.6 Sol | Codex CLI | xhigh | 1 | **39** | 18 | 21 | 59 | 126 min | $52.75 | 2026-08-28 |
-| 13 | GPT-6.1 Sol | Codex CLI | high | 2 | **36.5** | 17 | 19.5 | 40 | 70 min | $3.26 | 2026-09-30 |
-| 14 | Gemini 4 Argon | Antigravity CLI | medium | 2 | **36** | 14 | 22 | 10.5 | 40 min | $6.75 | 2026-10-14 |
+| 12 | Gemini 4 Argon | Antigravity CLI | medium | 3 | **39.3** | 13.7 | 25.7 | 11.3 | 60 min | $7.50 | 2026-10-14 |
+| 13 | GPT-5.6 Sol | Codex CLI | xhigh | 1 | **39** | 18 | 21 | 59 | 126 min | $52.75 | 2026-08-28 |
+| 14 | GPT-6.1 Sol | Codex CLI | high | 2 | **36.5** | 17 | 19.5 | 40 | 70 min | $3.26 | 2026-09-30 |
 | 15 | Opus 5.5 | Claude Code | xhigh | 3 | **36** | 17 | 19 | 13.3 | 42 min | $34.98 | 2026-09-23 |
 | 16 | Sonnet 5.5 | Claude Code | xhigh | 3 | **36** | 16 | 20 | 14 | 73 min | $42.86 | 2026-09-29 |
 | 17 | GPT-6 Astra | Codex CLI | high | 1 | **35** | 19 | 16 | 40 | 40 min | $20.60 | 2026-09-04 |
@@ -138,7 +138,7 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 Extras are real, unplanted defects a model fixed on the way; they are counted and never added to the score. Costs are token estimates at published list rates unless tagged **bill** (an actual invoice or credits delta) or **floor** (a reconstructed lower bound). `default` effort means the serving path had no working effort dial; *ran lower* marks a run whose CLI quietly replaced the requested tier. Wall clock is repo 1 plus repo 2 agent time, dependency install excluded.
 Every row's full note, caveat and supersession history is in [results/run-notes.md](https://github.com/phuryn/bug-hunt-bench/blob/main/results/run-notes.md); the runs behind each one are in the metrics CSVs.
 
-67 superseded re-runs stay in the CSVs and on the [live board](https://bughunt.productcompass.pm/?preset=all) but are left off this table.
+68 superseded re-runs stay in the CSVs and on the [live board](https://bughunt.productcompass.pm/?preset=all) but are left off this table.
 <!-- leaderboard:end -->
 
 ## What Bug Hunt Bench is
