@@ -4207,3 +4207,16 @@ repos and is the row.
 **A different judge.** Codex refused gpt-5.5 for the account from about 16:56 on Oct 14, so this row was judged by
 Grok (grok-4.7), the board's second calibrated judge and not a sibling of Gemini. The other Argon rows were judged by
 Codex; scores from two judges are close but not perfectly interchangeable.
+
+## Gemini 4 Argon at low — three runs, 35.3 of 105 (Oct 14)
+
+Runs 1 and 3 finished their repo-2 legs after the API key was topped up, so the low row is now a mean of three:
+36, 32 and 38 (repo 1: 12, 12 and 14 - repo 2: 24, 20 and 24).
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Gemini 4 Argon (low effort, Antigravity CLI) - mean of 3 | mean of 3 | **35.3** / 105 | 12.7 / 45 | 22.7 / 60 | 5.7 | 59.6 min | $6.47 |
+
+Low 35.3, medium 39.3, high 40.7: the dial orders the tiers as expected and works mostly on repo 2. Low is only a
+little cheaper per run. Both late legs ran in resumed segments; their time counts active work only. All six low
+legs were judged by Grok, for the reason given in the n=1 section above. The n=1 row is superseded and kept.
