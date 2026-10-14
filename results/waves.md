@@ -4098,3 +4098,29 @@ a second run of each is under way.
 **Clean.** No claimed fix that was not made, on either repo; 35 genuine bugs fixed outside the planted set.
 
 **Cost is left blank,** as on the max row: Meta publishes no rate for Full. The run used a subscription.
+
+## Gemini 4 Argon in the Antigravity CLI — 40.7 of 105, and the harness was worth eight points (Oct 14)
+
+Three runs of Gemini 4 Argon at thinking level high, its top tier, through the Antigravity CLI - Google's current
+agent CLI - against the single Gemini CLI run published the day before.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3 | mean of 3 | **40.7** / 105 | 13.0 / 45 | 27.7 / 60 | 7.3 | 56.5 min | $5.82 |
+| Gemini 4 Argon (high effort) | 1 | 33 / 105 | 15 / 45 | 18 / 60 | 7 | 85.1 min | $32.08 |
+
+**Same model, same tier, same judge - different harness.** The runs scored 40, 45 and 37. The gain is all on repo 2
+(27.7 against 18); repo 1 is about level. And the Antigravity runs cost about $6 against $32: Gemini CLI's
+requests were far larger and far less cached. The Gemini CLI row stays on the board as its own row, out of the
+default view.
+
+**How Antigravity reached Argon.** On a Google AI Pro subscription the Antigravity CLI does not list Argon. Its
+enterprise gateway mode does, signed in with a Gemini API key; a local gateway passed requests through unchanged
+and presented the key the way the Gemini API expects. The CLI itself sent thinkingLevel HIGH, and every request was
+served by `gemini-4-argon`.
+
+**Run 2 was resumed.** Both of its legs stopped when the API key's prepaid credit ran out, before either wrote a
+report. After a top-up each continued its own conversation and finished; its wall is the two segments' sum with the
+idle gap removed. Its 32 of 60 on repo 2 is the run's high point, and the other two runs average 38.5 without it.
+
+**Cost** is a list estimate at Google's launch rate ($2 input / $0.10 cached input / $10 output per million tokens).
