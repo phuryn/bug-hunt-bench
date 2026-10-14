@@ -4080,3 +4080,21 @@ model was `gemini-4-argon` on all of them.
 thinking billed as output) from the API's own per-call usage. Only 69% of prompt tokens were cache reads, against
 the high 90s typical on this board, and that is most of why the run cost $32. Repo 2 met Google's spend-rate limit
 for a new account a few times and was slowed, not stopped.
+
+## Muse Wonder Full 1.0 at xhigh — 44 of 105, level with max in half the time (Oct 14)
+
+One run of Muse Wonder Full one tier below max, same harness, route and judge as the max row.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| Muse Wonder Full 1.0 (xhigh effort, Muse Code, Meta API) | 1 | **44** / 105 | 16 / 45 | 28 / 60 | 35 | 80.3 min | unknown |
+| Muse Wonder Full 1.0 (max effort, Muse Code, Meta API) | 1 | 44 / 105 | 22 / 45 | 22 / 60 | 53 | 138.2 min | unknown |
+
+**Same total, opposite split.** Max fixed six more planted bugs on repo 1; xhigh fixed six more on repo 2, and its
+28 of 60 there is among the highest repo-2 scores on this board. Xhigh used about 72 million tokens to max's 108
+and finished in a little over half the time. With one run of each, the two tiers are not separated by this bench;
+a second run of each is under way.
+
+**Clean.** No claimed fix that was not made, on either repo; 35 genuine bugs fixed outside the planted set.
+
+**Cost is left blank,** as on the max row: Meta publishes no rate for Full. The run used a subscription.

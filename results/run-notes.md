@@ -2,7 +2,7 @@
 
 Every row on the board, with the note and caveat it carries. Generated from `data/benchmark.json` by `bench_golive.py` - do not edit by hand.
 
-Updated Oct 13, 2026 · 177 rows from 215 scored runs. Superseded rows are listed last.
+Updated Oct 13, 2026 · 178 rows from 216 scored runs. Superseded rows are listed last.
 
 ## Sonnet 5.5 (max effort) - mean of 3
 
@@ -35,6 +35,14 @@ OpenAI's GPT-6.1 Sol at max effort through OpenAI's own Codex CLI, on a ChatGPT 
 **Caveat.** One run (44 of 105). Cost unknown: Meta publishes no price for this model. Effort max is the top tier Meta lists for it, not magnitude-probed. Both repos ran at the same time.
 
 Meta's Muse Wonder Full 1.0 at max effort through Muse Code, Meta's own agent CLI, released 2026-10-12 alongside Muse Wonder 1.0. ONE RUN: 44 of 105 - 22 of 45 on repo 1 and 22 of 60 on repo 2 - with 2 partial fix(es), 0 claimed-only and 53 genuine unplanted extras; 138.2 minutes. *** AGAINST MUSE WONDER 1.0 *** same harness, route and effort: Wonder's mean of three is 31.7 (30, 36 and 29), 12.0 on repo 1 and 19.7 on repo 2. Full's lead is almost all on repo 1 (22 against 12.0); on repo 2 it sits near the top of Wonder's range. Muse Spark 1.3 at max stands at 32.2. A single run: Wonder's own three runs spread 7 points. *** COST UNKNOWN *** Meta publishes no rate for Full - its own model catalog lists the cost as empty and no aggregator carries the model - so the cost column is left blank rather than estimated. Tokens are exact: 108 million across both repos, 104 million of them cache reads. The run used a subscription, so there is no bill either. *** EFFORT max *** the top entry of the effort list Muse Code's model catalog gives this model (minimal to max); not magnitude-probed. The tier describes Muse Code's main loop; its reminder-observer side agent runs at its own fixed efforts. *** RECEIPTS *** Both legs exited 0, run at the same time. Muse Code 1.4.1 (1.4.1-R4503.1). Every leg shared the laptop with another arm, which the wall marker discloses - scores, tokens and cost are untouched by that, only the clock. Judge: blind Codex gpt-5.5, which is neither this model nor a sibling of it.
+
+## Muse Wonder Full 1.0 (xhigh effort, Muse Code, Meta API)
+
+**44 / 105** · repo 1 16/45 · repo 2 28/60 · 35 unplanted · 80.3 min · — · `xhigh` · Muse Code / Meta API · single run · 2026-10-13
+
+**Caveat.** One run (44 of 105). Cost unknown: Meta publishes no price for this model. Effort xhigh is one tier below max, not magnitude-probed. Both repos ran at the same time.
+
+Meta's Muse Wonder Full 1.0 at xhigh effort - one tier below max - through Muse Code, Meta's own agent CLI. ONE RUN: 44 of 105 - 16 of 45 on repo 1 and 28 of 60 on repo 2 - with 3 partial fix(es), 0 claimed-only and 35 genuine unplanted extras; 80.3 minutes. *** AGAINST MAX *** the same model at max, also one run, scored 44 (22 on repo 1, 22 on repo 2) in 138.2 minutes. The totals land together and the split does not: max led on repo 1, xhigh on repo 2. With one run each, the two tiers are not separated here. Muse Wonder 1.0 at max stands at 31.7 (mean of three) and Muse Spark 1.3 at max at 32.2. *** COST UNKNOWN *** Meta publishes no rate for Full - its own model catalog lists the cost as empty - so the cost column is left blank rather than estimated. Tokens are exact: 72 million across both repos. The run used a subscription, so there is no bill either. *** EFFORT xhigh *** a tier in the effort list Muse Code's model catalog gives this model (minimal to max); not magnitude-probed, not the ceiling. The tier describes Muse Code's main loop; its reminder-observer side agent runs at its own fixed efforts. *** RECEIPTS *** Both legs exited 0, run at the same time. Muse Code 1.4.1 (1.4.1-R4503.1). Every leg shared the laptop with another arm, which the wall marker discloses - scores, tokens and cost are untouched by that, only the clock. Judge: blind Codex gpt-5.5, which is neither this model nor a sibling of it.
 
 ## GPT-5.6 Sol (max effort) - mean of 2
 
