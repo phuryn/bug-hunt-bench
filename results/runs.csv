@@ -8,6 +8,8 @@ dsv41flashhigh,DeepSeek V4.1 Flash (high effort),live,DeepSeek V4.1 Flash,DeepSe
 dsv41flashmax,DeepSeek V4.1 Flash (max effort) - mean of 3,live,DeepSeek V4.1 Flash,DeepSeek,Claude Code / DeepSeek API,max,2026-09-15,24,14,10,0,0,7,42.6,1.08,bill,485,193,292,
 dsv41flashmaxr2,DeepSeek V4.1 Flash (max effort) - mean of 3,live,DeepSeek V4.1 Flash,DeepSeek,Claude Code / DeepSeek API,max,2026-09-15,19,10,9,2,2,6,78.0,0.59,bill,412,198,214,
 dsv41flashmaxr3,DeepSeek V4.1 Flash (max effort) - mean of 3,live,DeepSeek V4.1 Flash,DeepSeek,Claude Code / DeepSeek API,max,2026-09-15,22,10,12,0,1,7,47.0,0.67,bill,487,188,299,
+dsv41flash1017high,DeepSeek V4.1 Flash 1017 (high effort) - mean of 2,live,DeepSeek V4.1 Flash 1017,DeepSeek,Claude Code / DeepSeek API,high,2026-10-17,34,15,19,4,1,18,47.2,0.87,bill,612,277,335,
+dsv41flash1017highr3,DeepSeek V4.1 Flash 1017 (high effort) - mean of 2,live,DeepSeek V4.1 Flash 1017,DeepSeek,Claude Code / DeepSeek API,high,2026-10-17,30,13,17,5,3,18,41.7,0.71,bill,574,199,375,
 dsv41flash1017max,DeepSeek V4.1 Flash 1017 (max effort) - mean of 3,live,DeepSeek V4.1 Flash 1017,DeepSeek,Claude Code / DeepSeek API,max,2026-10-17,34,17,17,2,2,19,50.6,0.9,bill,663,251,412,
 dsv41flash1017maxr2,DeepSeek V4.1 Flash 1017 (max effort) - mean of 3,live,DeepSeek V4.1 Flash 1017,DeepSeek,Claude Code / DeepSeek API,max,2026-10-17,37,19,18,1,5,16,54.1,0.98,bill,704,274,430,
 dsv41flash1017maxr3,DeepSeek V4.1 Flash 1017 (max effort) - mean of 3,live,DeepSeek V4.1 Flash 1017,DeepSeek,Claude Code / DeepSeek API,max,2026-10-17,45,17,28,3,0,32,57.5,1.13,bill,632,177,455,
