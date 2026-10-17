@@ -4252,3 +4252,14 @@ Runs: 34 and 37 of 105 (repo 1: 17 and 19 - repo 2: 17 and 18).
 | DeepSeek V4.1 Flash (max effort) - mean of 3 | mean of 3 | 21.7 / 105 | 11.3 / 45 | 10.3 / 60 | 6.7 | 55.9 min | $0.78 |
 
 Claimed-only per run: 2 and 5. Costs per run: $0.90 and $0.98 - real bills at DeepSeek's off-peak rate; runs 2 and 3 ran at the same time on one key and split their combined bill by token share. Judged by Grok (grok-4.7). The DeepSeek V4.1 Flash 1017 (max effort) row is superseded and kept.
+
+## DeepSeek V4.1 Flash 1017 at max — mean of 3, 38.7 of 105 (Oct 17)
+
+Runs: 34, 37 and 45 of 105 (repo 1: 17, 19 and 17 - repo 2: 17, 18 and 28).
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| DeepSeek V4.1 Flash 1017 (max effort) - mean of 3 | mean of 3 | **38.7** / 105 | 17.7 / 45 | 21.0 / 60 | 22.3 | 54.1 min | $1.01 |
+| DeepSeek V4.1 Flash (max effort) - mean of 3 | mean of 3 | 21.7 / 105 | 11.3 / 45 | 10.3 / 60 | 6.7 | 55.9 min | $0.78 |
+
+Claimed-only per run: 2, 5 and 0. Costs per run: $0.90, $0.98 and $1.13 - real bills at DeepSeek's off-peak rate; runs 2 and 3 ran at the same time on one key and split their combined bill by token share. Judged by Grok (grok-4.7). The DeepSeek V4.1 Flash 1017 (max effort) - mean of 2 row is superseded and kept.
