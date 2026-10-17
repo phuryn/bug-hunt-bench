@@ -1,0 +1,35 @@
+DeepSeek V4.1 Flash 1017 - the effort gate before the bench legs
+Probed 2026-10-17 for the dsv41flash1017max arm (Claude Code -> DeepSeek's own Anthropic-compatible API).
+
+WHAT CHANGED SINCE 2026-09-10
+DeepSeek released DeepSeek-V4.1-Flash-1017 on 2026-10-17 under the SAME model id. Its pricing page, read the
+same morning: "deepseek-flash" -> model version DeepSeek-V4.1-Flash-1017; the legacy ids deepseek-v4-flash and
+deepseek-v4-flash-vision-exp "are still accepted, but the corresponding models have been retired" and route to
+1017. So the 2026-09-10 rows and this one share an id and differ in checkpoint.
+
+1. WHAT THE VENDOR LISTS  (GET https://api.deepseek.com/models, 2026-10-17)
+    id deepseek-flash, name DeepSeek-V4.1-Flash, context_window 1048576, max_output_tokens 393216,
+    input_modalities text + image, effort.supported_levels [low, high, max], default_level high,
+    api_capabilities.anthropic_messages.system_prompt_update "in-history"
+
+2. DOES THE ENDPOINT VALIDATE THE TIER?  (POST /anthropic/v1/messages, model deepseek-flash, max_tokens 32)
+    output_config.effort = "max"        -> HTTP 200, served model = deepseek-flash
+    output_config.effort = "high"       -> HTTP 200
+    output_config.effort = "low"        -> HTTP 200
+    output_config.effort = "xhigh"      -> HTTP 200  (a compat alias; DeepSeek maps it to high)
+    output_config.effort = "bogus_zzz"  -> HTTP 422
+        "Failed to deserialize the JSON body into the target type: output_config.effort: unknown variant
+         `bogus_zzz`, expected one of `none`, `minimal`, `low`, `medium`, `high`, `xhigh`, `ultra`, `max`"
+
+The rejection moved from HTTP 400 (2026-09-10) to HTTP 422 with the same deserializer message and the same
+enum. It is still an announced rejection that names the accept-list, so a silent clamp is not possible on this
+path. The launch gate run before the legs accepts 400 or 422 when the body says "unknown variant".
+
+3. MAGNITUDE
+Not re-swept for 1017 before the legs: the replicates share the prepaid balance this run is billed from, and a
+sweep inside that window would land in the bill. The 2026-09-10 sweep on the previous checkpoint (same id, same
+endpoint, same field) found the dial binding: max 2.74x high in thinking characters, disjoint ranges at n=3.
+
+VERDICT: effort max is the top tier the vendor lists for deepseek-flash, requested explicitly, accepted on the
+wire and impossible to substitute silently. Labelled first_party (vendor-documented, accept-list verified,
+magnitude not re-measured on this checkpoint).

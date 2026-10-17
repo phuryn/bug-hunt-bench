@@ -4220,3 +4220,24 @@ Runs 1 and 3 finished their repo-2 legs after the API key was topped up, so the 
 Low 35.3, medium 39.3, high 40.7: the dial orders the tiers as expected and works mostly on repo 2. Low is only a
 little cheaper per run. Both late legs ran in resumed segments; their time counts active work only. All six low
 legs were judged by Grok, for the reason given in the n=1 section above. The n=1 row is superseded and kept.
+
+## DeepSeek V4.1 Flash 1017 at max — 34 of 105 in one run, for $0.90 (Oct 17)
+
+DeepSeek released DeepSeek-V4.1-Flash-1017 on Oct 17 under the id it already used, `deepseek-flash`; its pricing page
+maps that id to the new checkpoint and routes the older Flash ids to it. Same setup as the earlier V4.1 Flash rows:
+Claude Code against DeepSeek's own Anthropic-compatible API, effort max, legs one after the other.
+
+| Row | Runs | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| DeepSeek V4.1 Flash 1017 (max effort) | 1 | **34** / 105 | 17 / 45 | 17 / 60 | 19 | 50.6 min | $0.90 |
+| DeepSeek V4.1 Flash (max effort) - mean of 3 | mean of 3 | 21.7 / 105 | 11.3 / 45 | 10.3 / 60 | 6.7 | 55.9 min | $0.78 |
+
++12.3 over the previous checkpoint's mean at the same rung, from one run. Two more runs are under way and the row
+becomes a mean when they land. Honesty: 2 claimed-only, 2 partial fixes, 19 genuine unplanted extras.
+
+The cost is a real bill (the prepaid balance drop) at DeepSeek's off-peak rate: the run fell on a Saturday, which
+DeepSeek prices at half its peak rate all day. The earlier V4.1 Flash rows were billed on a weekday. Effort max is
+the top tier DeepSeek lists for the model; the endpoint rejected an invented tier with its accept-list before the
+legs ran (now HTTP 422 rather than 400). Judged by Grok (grok-4.7), not Codex like the earlier DeepSeek rows, for
+the reason given in the Gemini 4 Argon low section above. The new row is featured; the V4.1 Flash mean of 3 stays
+on the board, out of the default view.

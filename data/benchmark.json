@@ -6,12 +6,12 @@
     "repo1_total": 45,
     "repo2_total": 60,
     "survivors": 26,
-    "models": 46,
+    "models": 47,
     "bug_count": 105,
     "repo1_bug_count": 45,
-    "rows": 185,
-    "runs": 227,
-    "updated": "2026-10-14",
+    "rows": 186,
+    "runs": 228,
+    "updated": "2026-10-17",
     "source_repo": "https://github.com/phuryn/bug-hunt-bench/tree/main/results",
     "repo_url": "https://github.com/phuryn/bug-hunt-bench",
     "author": "Pawel Huryn",
@@ -42,13 +42,13 @@
     "turns": "Model steps in a run: each tool call (a shell command, a file read or edit, a search) plus the final answer, summed over both repos, averaged across runs on a mean row. It is the count Claude Code reports as its own turn count, taken from every run's own log the same way."
   },
   "caveats": [
-    "52 of the 116 rows on the board are means of two or more runs (22 of the 26 in the default view); the rest are single runs. 40 configurations have now been run three times at identical settings - same model, prompt, harness, route, effort flag and judge - and their three-run ranges are 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 10, 10, 13, 14 points of 105. The widest spread was 43, 54 and 57; the tightest was 31, 32 and 32. Rows on this board routinely sit within a point or two of each other, so a small gap between two single runs may be nothing at all. WHAT THIS DOES NOT SAY: which settings are steady. Spread does not fall cleanly as effort rises - Gemini 4 Argon's rungs came out 6, 13 and 8 going up, Grok 4.7's rungs came out 10, 7, 5 and 6 going up, Muse Spark 1.3's rungs came out 9, 6, 3, 9 and 2 going up, Opus 5.5's rungs came out 6, 1, 1, 2 and 4 going up, Sonnet 5.5's rungs came out 3, 10, 5, 5 and 14 going up - and a range drawn from three runs is a very noisy estimate of spread. 12 models have been measured three times at max effort so far. Treat every one of these as a spread that has been SEEN, not a spread that has been bounded.",
+    "52 of the 117 rows on the board are means of two or more runs (21 of the 26 in the default view); the rest are single runs. 40 configurations have now been run three times at identical settings - same model, prompt, harness, route, effort flag and judge - and their three-run ranges are 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 10, 10, 13, 14 points of 105. The widest spread was 43, 54 and 57; the tightest was 31, 32 and 32. Rows on this board routinely sit within a point or two of each other, so a small gap between two single runs may be nothing at all. WHAT THIS DOES NOT SAY: which settings are steady. Spread does not fall cleanly as effort rises - Gemini 4 Argon's rungs came out 6, 13 and 8 going up, Grok 4.7's rungs came out 10, 7, 5 and 6 going up, Muse Spark 1.3's rungs came out 9, 6, 3, 9 and 2 going up, Opus 5.5's rungs came out 6, 1, 1, 2 and 4 going up, Sonnet 5.5's rungs came out 3, 10, 5, 5 and 14 going up - and a range drawn from three runs is a very noisy estimate of spread. 12 models have been measured three times at max effort so far. Treat every one of these as a spread that has been SEEN, not a spread that has been bounded.",
     "Wall clock is the same measure on every row: repo 1 plus repo 2 agent time, with dependency install and health checks excluded. It is taken on a working machine, not an isolated one - other agents and applications routinely run alongside - so read small differences in time loosely; scores, tokens and cost are unaffected. Which runs overlapped is recorded per leg in the receipts on GitHub. One figure is adjusted: the retired-Gemini-CLI run excludes a 35-minute harness stall, the only number here that is not what the harness measured.",
     "Cost is not one kind of number: some figures are an actual bill, some are a token-count estimate at published list rates, one CLI only allows a reconstructed lower bound, and one run was free. The key under the board names which is which - they are not interchangeable, and none of them is a quote for what you would pay.",
     "26 of the 105 bugs have survived every model in every run to date. The count moves as new runs land: it fell from 49 to 44 during the 27-28 August waves.",
     "Turns count model steps: every tool call - a shell command, a file read or edit, a search - plus the final answer, summed over both repos. That is exactly what Claude Code reports as its own turn count, and it is the one definition every harness here can supply, so each run is counted from its own log the same way: Codex CLI, which counts a whole run as a single turn, by its commands and edits; Grok by the tool calls in its session log. A turn is a step, not a unit of work - one command can do several reads, and harnesses differ in how much a single call does - so turns compare most cleanly within one harness. 5 current rows have no turn count because their logs were not kept, and are left off that map rather than estimated."
   ],
-  "variance_short": "52 of the 116 rows are means of two or more runs (22 of the 26 in the default view); the rest are single runs. Running a configuration three times at identical settings moved its score from the first run by a median 1.7 points of 105 - by more than 2 in 18 of 40 cases, by more than 5 in 3 - and up about as often as down (21 up, 18 down). Read a gap of a few points between two single runs as possible noise.",
+  "variance_short": "52 of the 117 rows are means of two or more runs (21 of the 26 in the default view); the rest are single runs. Running a configuration three times at identical settings moved its score from the first run by a median 1.7 points of 105 - by more than 2 in 18 of 40 cases, by more than 5 in 3 - and up about as often as down (21 up, 18 down). Read a gap of a few points between two single runs as possible noise.",
   "runs": [
     {
       "id": "Sonnet 5.5 (max effort)",
@@ -3739,6 +3739,74 @@
       "turns_repo1": 116,
       "turns_repo2": 158,
       "group_rank": 502
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (max effort)",
+      "n_runs": 1,
+      "model": "DeepSeek V4.1 Flash 1017",
+      "vendor": "DeepSeek",
+      "local": false,
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "max",
+      "effort_status": "first_party",
+      "date": "2026-10-17",
+      "color": "#5A3EC8",
+      "fixed": 34,
+      "repo1_fixed": 17,
+      "repo2_fixed": 17,
+      "partial": 2,
+      "claimed_only": 2,
+      "extras": 19,
+      "false_positive_fixes": 0,
+      "wall_min": 50.6,
+      "cost_usd": 0.9,
+      "cost_kind": "bill",
+      "wall_note": null,
+      "ceiling": true,
+      "featured": true,
+      "superseded": null,
+      "caveat": "One run; two more are under way. Billed at DeepSeek's off-peak rate (a Saturday), about half the peak price. Judged by Grok, not Codex like the earlier DeepSeek rows.",
+      "note": "DeepSeek-V4.1-Flash-1017, released 2026-10-17, at max effort on DeepSeek's own Anthropic-compatible API in Claude Code, set up exactly as the earlier V4.1 Flash rows. ONE RUN: 34 of 105 - 17 of 45 on repo 1 and 17 of 60 on repo 2 - with 2 partial fix(es), 2 claimed-only and 19 genuine unplanted extras; 50.6 minutes, $0.90. The previous V4.1 Flash checkpoint at the same rung stands at 21.7 (mean of three, $0.78). Two more runs are under way. *** SAME MODEL ID, NEW CHECKPOINT *** DeepSeek serves 1017 under the id it used before, deepseek-flash; its pricing page maps that id to DeepSeek-V4.1-Flash-1017 and says the older Flash ids are retired and routed to it. *** EFFORT max *** the top tier DeepSeek lists for the model (low, high, max); the endpoint accepted max and rejected an invented tier with an error naming its accept-list, checked before the legs ran. *** COST IS A REAL BILL AT OFF-PEAK RATES *** the prepaid balance drop around each leg. The run fell on a Saturday, which DeepSeek prices at its off-peak rate all day - half its peak rate - so this bill is about half what the same tokens cost at peak. The earlier V4.1 Flash rows were billed on a weekday. *** A DIFFERENT JUDGE *** judged by Grok (grok-4.7), not Codex gpt-5.5 like the earlier DeepSeek rows: Codex has refused gpt-5.5 for the account since Oct 14. Grok is this board's second calibrated judge and is not a sibling of DeepSeek, but scores from two judges are not perfectly interchangeable. *** RECEIPTS *** The machine was otherwise idle for every leg, so the wall figures compare directly against other uncontended rows.",
+      "fixed_bugs": [
+        13,
+        16,
+        20,
+        23,
+        25,
+        27,
+        28,
+        29,
+        30,
+        32,
+        33,
+        34,
+        39,
+        42,
+        43,
+        44,
+        45,
+        47,
+        49,
+        50,
+        59,
+        61,
+        71,
+        76,
+        77,
+        78,
+        82,
+        83,
+        84,
+        92,
+        94,
+        97,
+        98,
+        99
+      ],
+      "turns": 663,
+      "turns_repo1": 251,
+      "turns_repo2": 412,
+      "group_rank": 0
     },
     {
       "id": "GPT-6 Astra (medium effort)",
@@ -7784,7 +7852,7 @@
       "effort": "max",
       "effort_status": "verified_ceiling",
       "date": "2026-09-10",
-      "color": "#5A3EC8",
+      "color": "#7861D2",
       "fixed": 24,
       "repo1_fixed": 14,
       "repo2_fixed": 10,
@@ -7830,7 +7898,7 @@
       "turns": 485,
       "turns_repo1": 193,
       "turns_repo2": 292,
-      "group_rank": 0
+      "group_rank": 100
     },
     {
       "id": "Opus 5.5 (low effort) - mean of 2",
@@ -9120,7 +9188,7 @@
       "effort": "max",
       "effort_status": "verified_ceiling",
       "date": "2026-09-15",
-      "color": "#5A3EC8",
+      "color": "#7861D2",
       "fixed": 21.7,
       "repo1_fixed": 11.3,
       "repo2_fixed": 10.3,
@@ -9133,7 +9201,7 @@
       "cost_kind": "bill",
       "wall_note": null,
       "ceiling": true,
-      "featured": true,
+      "featured": false,
       "superseded": null,
       "caveat": "A mean of three runs, not a single measurement; the three span 19 to 24. This row SUPERSEDES the single-run max row (24/105) published 2026-09-10, which was the HIGHEST of the three; the supersession is about method, not a correction, and that receipt stands. Every figure here is a MEAN carried to one decimal - 21.7 of 105. The three runs were verified to have run in the same harness regime on both repos, which is the exception on this board rather than the rule; the CLI version differed (2.1.267 for the first run, 2.1.270 for the other two).",
       "note": "DeepSeek's top Flash rung, RUN THREE TIMES. Runs scored 24, 19 and 22 of 105 (repo 1: 14, 10, 10 - repo 2: 10, 9, 12). Mean 21.7, range 5. *** THE ONE ARM IN THIS WAVE WHOSE REPLICATION IS VERIFIED *** Three flash arms were replicated on the same nights; this is the only one where the harness left enough behind to check that the three runs ran in the same configuration. All six legs resolved deepseek-flash with the 1M window, and NONE of them compacted: peak live context 513,330 / 509,936 / 471,821 on repo 1 and 520,206 / 544,170 / 558,074 on repo 2, against a harness that would have thrown context away at about 30 per cent had it been triggered. A mean is a claim that its members differ only by chance, and on this row that claim was tested rather than assumed. *** ONE THING WAS NOT HELD FIXED *** The 2026-09-10 run ran Claude Code 2.1.267 and both replicates ran 2.1.270. The CLI self-updates between waves. It is stated rather than buried because the resolved model and the compaction behaviour are identical across all six legs, so the version string is the only difference the receipts show. *** WHAT THE SPREAD LOOKS LIKE *** The totals span 5 points, and the two repos moved in OPPOSITE directions: repo 1 fell 14, 10, 10 while repo 2 rose 10, 9, 12. That is an observation about three runs, not a mechanism, and it is not a claim that totals are steadier than legs - three draws cannot establish that. The published single run scored 24, the TOP of its own three-run range, so every comparison drawn against 24 was drawn against this configuration's best day. *** THE WALL COLUMN ON THIS ROW IS NOISY AND THE PER-LEG FIGURES ARE THE HONEST FORM *** Against the control's tokens per minute the four replicate legs ran 47, 131, 118 and 104 per cent - in both directions, same binary, same night. The 47 per cent leg is the one that overlapped hardest with two other arms running concurrently. Do not read a ratio off this row. *** EVER VS ALWAYS - THE THING A SINGLE RUN CANNOT SHOW *** Across the three runs this arm ever fixed 33 distinct bugs of 105, well above the 21.7 any single run manages. Of those 33, only 11 fell in ALL THREE runs; 10 fell in two and 12 in exactly one. A third of what it ever fixed is what it reliably fixes. It is the LEAST consistent of the three flash arms replicated in this wave despite scoring the highest of them, which is exactly the trade a single number hides. The Coverage view shades each tick by its observed hit rate, so this is readable on the row. *** RECEIPTS *** All six legs exited 0. Per-leg (repo 1 / repo 2): wall 25.4/17.2, 59.9/18.1 and 20.6/26.4 minutes; bill 0.62/0.46, 0.30/0.29 and 0.31/0.36 dollars. Genuine extras 7, 6 and 7. Claimed-only 0, 2 and 1 across six legs, all on repo 2. Each leg is a full independent run of both repos; the mean is over three, and the per-repo runs are stated so the spread stays visible - it is the finding, not a caveat on it. billing=REAL bill: the runner snapshots the DeepSeek balance before and after each leg and writes the drop, so this cost column is money that moved, not a list estimate. Judge: Codex gpt-5.5 on all six legs.",
@@ -9211,7 +9279,7 @@
       "turns": 461,
       "turns_repo1": 193,
       "turns_repo2": 268,
-      "group_rank": 0
+      "group_rank": 100
     },
     {
       "id": "Haiku 5.5 (max effort) - mean of 2",
@@ -9987,7 +10055,7 @@
       "effort": "high",
       "effort_status": "verified",
       "date": "2026-09-10",
-      "color": "#5A3EC8",
+      "color": "#7861D2",
       "fixed": 19,
       "repo1_fixed": 9,
       "repo2_fixed": 10,
@@ -10028,7 +10096,7 @@
       "turns": 383,
       "turns_repo1": 153,
       "turns_repo2": 230,
-      "group_rank": 2
+      "group_rank": 102
     },
     {
       "id": "GPT-6 Luna (max effort) - mean of 2",
@@ -11552,7 +11620,7 @@
       "effort": "max",
       "effort_status": "first_party",
       "date": "2026-09-10",
-      "color": "#8773D7",
+      "color": "#9685DC",
       "fixed": 16,
       "repo1_fixed": 8,
       "repo2_fixed": 8,
@@ -11590,7 +11658,7 @@
       "turns": 354,
       "turns_repo1": 123,
       "turns_repo2": 231,
-      "group_rank": 100
+      "group_rank": 200
     },
     {
       "id": "Grok 4.5",
@@ -12357,7 +12425,7 @@
       "turns": 205,
       "turns_repo1": 66,
       "turns_repo2": 139,
-      "group_rank": 206
+      "group_rank": 306
     },
     {
       "id": "GPT-6 Sol (medium effort)",
@@ -12559,7 +12627,7 @@
       "effort": "high",
       "effort_status": "first_party",
       "date": "2026-09-10",
-      "color": "#8773D7",
+      "color": "#9685DC",
       "fixed": 13,
       "repo1_fixed": 4,
       "repo2_fixed": 9,
@@ -12594,7 +12662,7 @@
       "turns": 288,
       "turns_repo1": 102,
       "turns_repo2": 186,
-      "group_rank": 102
+      "group_rank": 202
     },
     {
       "id": "Muse Spark 1.3 (medium effort, Muse Code, Meta API) - mean of 3",
@@ -12945,7 +13013,7 @@
       "effort": "default",
       "effort_status": "inert_default",
       "date": "2026-08-01",
-      "color": "#8773D7",
+      "color": "#9685DC",
       "fixed": 10,
       "repo1_fixed": 5,
       "repo2_fixed": 5,
@@ -12977,7 +13045,7 @@
       "turns": 184,
       "turns_repo1": 69,
       "turns_repo2": 115,
-      "group_rank": 106
+      "group_rank": 206
     },
     {
       "id": "Muse Spark 1.3 (low effort, Muse Code, Meta API) - mean of 3",
@@ -13399,7 +13467,7 @@
       "turns": 190,
       "turns_repo1": 63,
       "turns_repo2": 127,
-      "group_rank": 206
+      "group_rank": 306
     },
     {
       "id": "Qwen3.8-27B 8-bit (OpenRouter/Parasail)",

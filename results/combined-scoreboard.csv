@@ -184,3 +184,4 @@ Gemini 4 Argon (high effort),Gemini CLI,33,15,18,7,85.1,32.08
 "Gemini 4 Argon (medium effort, Antigravity CLI) - mean of 3",Antigravity CLI,39.3,13.7,25.7,11.3,59.9,7.5
 "Gemini 4 Argon (low effort, Antigravity CLI)",Antigravity CLI,32,12,20,3,44.9,5.97
 "Gemini 4 Argon (low effort, Antigravity CLI) - mean of 3",Antigravity CLI,35.3,12.7,22.7,5.7,59.6,6.47
+DeepSeek V4.1 Flash 1017 (max effort),Claude Code / DeepSeek API,34,17,17,19,50.6,0.9
