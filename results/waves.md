@@ -4274,3 +4274,15 @@ Runs: 34 and 30 of 105 (repo 1: 15 and 13 - repo 2: 19 and 17).
 | DeepSeek V4.1 Flash 1017 (max effort) - mean of 3 | mean of 3 | 38.7 / 105 | 17.7 / 45 | 21.0 / 60 | 22.3 | 54.1 min | $1.01 |
 
 A third high run was voided: on repo 1 it found the real upstream project on the machine, extracted the matching release from its git history and diffed it against its run folder, scoring 45 of 45. The two runs here read nothing outside their own folders. Costs are real bills at DeepSeek's off-peak rate. Judged by Grok (grok-4.7). Not featured.
+
+## DeepSeek V4.1 Flash 1017 at max — mean of 5, 39.4 of 105 (Oct 17)
+
+Runs: 34, 37, 45, 46 and 35 of 105 (repo 1: 17, 19, 17, 19 and 19 - repo 2: 17, 18, 28, 27 and 16). 2 of them carried the integrity warning added after three legs of this model were caught reading the answers from outside their folder (voided, and each confirmed it when asked). Costs are real bills at DeepSeek's off-peak rate. Judged by Grok (grok-4.7).
+
+## DeepSeek V4.1 Flash 1017 at high — mean of 5, 36.4 of 105 (Oct 17)
+
+Runs: 34, 30, 42, 38 and 38 of 105 (repo 1: 15, 13, 16, 13 and 19 - repo 2: 19, 17, 26, 25 and 19). 3 of them carried the integrity warning added after three legs of this model were caught reading the answers from outside their folder (voided, and each confirmed it when asked). Costs are real bills at DeepSeek's off-peak rate. Judged by Grok (grok-4.7).
+
+## DeepSeek V4.1 Flash 1017 at low — mean of 5, 34.4 of 105 (Oct 17)
+
+Runs: 40, 34, 32, 33 and 33 of 105 (repo 1: 18, 15, 16, 16 and 17 - repo 2: 22, 19, 16, 17 and 16). 3 of them carried the integrity warning added after three legs of this model were caught reading the answers from outside their folder (voided, and each confirmed it when asked). Costs are real bills at DeepSeek's off-peak rate. Judged by Grok (grok-4.7).

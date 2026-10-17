@@ -188,3 +188,6 @@ DeepSeek V4.1 Flash 1017 (max effort),Claude Code / DeepSeek API,34,17,17,19,50.
 DeepSeek V4.1 Flash 1017 (max effort) - mean of 2,Claude Code / DeepSeek API,35.5,18.0,17.5,17.5,52.4,0.94
 DeepSeek V4.1 Flash 1017 (max effort) - mean of 3,Claude Code / DeepSeek API,38.7,17.7,21.0,22.3,54.1,1.01
 DeepSeek V4.1 Flash 1017 (high effort) - mean of 2,Claude Code / DeepSeek API,32.0,14.0,18.0,18.0,44.4,0.79
+DeepSeek V4.1 Flash 1017 (max effort) - mean of 5,Claude Code / DeepSeek API,39.4,18.2,21.2,24.6,61.8,1.06
+DeepSeek V4.1 Flash 1017 (high effort) - mean of 5,Claude Code / DeepSeek API,36.4,15.2,21.2,24.4,54.5,0.82
+DeepSeek V4.1 Flash 1017 (low effort) - mean of 5,Claude Code / DeepSeek API,34.4,16.4,18.0,16.8,44.5,0.71
