@@ -2,7 +2,7 @@
 
 Every row on the board, with the note and caveat it carries. Generated from `data/benchmark.json` by `bench_golive.py` - do not edit by hand.
 
-Updated Oct 17, 2026 · 192 rows from 242 scored runs. Superseded rows are listed last.
+Updated Oct 17, 2026 · 191 rows from 241 scored runs. Superseded rows are listed last.
 
 ## Sonnet 5.5 (max effort) - mean of 3
 
@@ -173,14 +173,6 @@ Anthropic's Sonnet 5.5 at high effort through Claude Code on the first-party API
 ## GPT-5.6 Sol (re-run Jul 31)
 
 **34 / 105** · repo 1 13/45 · repo 2 21/60 · 28 unplanted · 66.7 min · $33.92 · `high` · Codex CLI · single run · 2026-07-31
-
-## Gemini 4 Argon (high effort)
-
-**33 / 105** · repo 1 15/45 · repo 2 18/60 · 7 unplanted · 85.1 min · $32.08 · `high` · Gemini CLI · single run · 2026-10-13
-
-**Caveat.** One run (33 of 105). Run through Gemini CLI because Antigravity does not offer the model to this account. Cost is a list estimate; only 69% of prompt tokens were cached.
-
-Google's Gemini 4 Argon at thinking level high - its top tier - through Gemini CLI on the first-party Gemini API. ONE RUN: 33 of 105 - 15 of 45 on repo 1 and 18 of 60 on repo 2 - with 1 partial fix(es), 3 claimed-only and 7 genuine unplanted extras; 85.1 minutes, $32.08. Google's previous best row here is Gemini 3.7 Flash (high) at 22. *** WHY GEMINI CLI, NOT ANTIGRAVITY *** Google's current CLI does not list Argon for the account used here and refuses an unlisted model before sending anything; the Gemini API serves it as gemini-4-argon. Gemini CLI 0.63.0 reached it directly. *** EFFORT high IS THE CEILING *** The API accepts thinkingLevel low, medium and high for this model, refuses minimal for it, and rejects max and ultra as invalid values; omitted means medium. Gemini CLI does not send a level for this model, so a local gateway pins high on every request and reads it back: high on all of them, served model gemini-4-argon on all of them. One-prompt magnitude only (medium 79 / high 408 thought tokens). *** COST *** a list estimate at Google's launch rate ($2 input / $0.10 cached input / $10 output per million tokens, thinking billed as output) from the API's own per-call usage. Only 69% of prompt tokens were cache reads, against the high 90s typical on this board, which is most of why it costs what it does. *** RECEIPTS *** Both legs exited 0, one after the other. Repo 2 met Google's spend-rate limit for a new account a few times and was slowed, not stopped. 1 of the 2 legs shared the laptop with another arm and the rest had it to themselves, which the wall marker discloses per leg - scores, tokens and cost are untouched by that, only the clock. Judge: blind Codex gpt-5.5, which is neither this model nor a sibling of it.
 
 ## Fable 5.1
 
