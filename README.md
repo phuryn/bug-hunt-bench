@@ -7,13 +7,13 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Oct 17, 2026](assets/leaderboard.png?v=2026-10-17-2c1f404f)
+![Bug Hunt Bench leaderboard, the featured runs, updated Oct 17, 2026](assets/leaderboard.png?v=2026-10-17-3eee8720)
 
-**Updated Oct 17, 2026 · 186 rows from 228 scored runs · 47 models · 26 of 105 bugs have never been fixed by any model.**
+**Updated Oct 17, 2026 · 187 rows from 229 scored runs · 47 models · 26 of 105 bugs have never been fixed by any model.**
 
 **Current leader:** Sonnet 5.5 at `max` effort — **51.3 / 105** (22.7/45 on repo 1, 28.7/60 on repo 2).
 
-**Best per lab:** Anthropic: Sonnet 5.5 (`max`) 51.3 · OpenAI: GPT-6 Astra (`max`) 45 · Meta: Muse Wonder Full 1.0 (`max`) 42 · Google: Gemini 4 Argon (`high`) 40.7 · DeepSeek: DeepSeek V4.1 Flash 1017 (`max`) 34 · Unbiased: Pareto (ex-Union Alpha) (`default`) 30.7 · xAI: Grok 4.7 (`xhigh`) 29 · Alibaba: Qwen3.8-Flash (`max`) 26 · Xiaomi: MiMo-V2.6-Flash (`default`) 23.3 · Moonshot AI: Kimi K3 (`default`) 21 · Z.ai: GLM-5.3 (`max`) 19 · Tencent: Hy4 Preview (`default`) 18 · Mistral: Mistral Large 4 (`high`) 15
+**Best per lab:** Anthropic: Sonnet 5.5 (`max`) 51.3 · OpenAI: GPT-6 Astra (`max`) 45 · Meta: Muse Wonder Full 1.0 (`max`) 42 · Google: Gemini 4 Argon (`high`) 40.7 · DeepSeek: DeepSeek V4.1 Flash 1017 (`max`) 35.5 · Unbiased: Pareto (ex-Union Alpha) (`default`) 30.7 · xAI: Grok 4.7 (`xhigh`) 29 · Alibaba: Qwen3.8-Flash (`max`) 26 · Xiaomi: MiMo-V2.6-Flash (`default`) 23.3 · Moonshot AI: Kimi K3 (`default`) 21 · Z.ai: GLM-5.3 (`max`) 19 · Tencent: Hy4 Preview (`default`) 18 · Mistral: Mistral Large 4 (`high`) 15
 
 | # | Model | Harness | Effort | Runs | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Extras | Wall | Cost | Date |
 |--:|---|---|---|--:|--:|--:|--:|--:|--:|--:|---|
@@ -33,10 +33,10 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 14 | GPT-6.1 Sol | Codex CLI | high | 2 | **36.5** | 17 | 19.5 | 40 | 70 min | $3.26 | 2026-09-30 |
 | 15 | Opus 5.5 | Claude Code | xhigh | 3 | **36** | 17 | 19 | 13.3 | 42 min | $34.98 | 2026-09-23 |
 | 16 | Sonnet 5.5 | Claude Code | xhigh | 3 | **36** | 16 | 20 | 14 | 73 min | $42.86 | 2026-09-29 |
-| 17 | Gemini 4 Argon | Antigravity CLI | low | 3 | **35.3** | 12.7 | 22.7 | 5.7 | 60 min | $6.47 | 2026-10-14 |
-| 18 | GPT-6 Astra | Codex CLI | high | 1 | **35** | 19 | 16 | 40 | 40 min | $20.60 | 2026-09-04 |
-| 19 | Sonnet 5.5 | Claude Code | high | 3 | **34.3** | 15.7 | 18.7 | 10.7 | 28 min | $19.85 | 2026-09-29 |
-| 20 | DeepSeek V4.1 Flash 1017 | Claude Code / DeepSeek API | max | 1 | **34** | 17 | 17 | 19 | 51 min | $0.90 bill | 2026-10-17 |
+| 17 | DeepSeek V4.1 Flash 1017 | Claude Code / DeepSeek API | max | 2 | **35.5** | 18 | 17.5 | 17.5 | 52 min | $0.94 bill | 2026-10-17 |
+| 18 | Gemini 4 Argon | Antigravity CLI | low | 3 | **35.3** | 12.7 | 22.7 | 5.7 | 60 min | $6.47 | 2026-10-14 |
+| 19 | GPT-6 Astra | Codex CLI | high | 1 | **35** | 19 | 16 | 40 | 40 min | $20.60 | 2026-09-04 |
+| 20 | Sonnet 5.5 | Claude Code | high | 3 | **34.3** | 15.7 | 18.7 | 10.7 | 28 min | $19.85 | 2026-09-29 |
 | 21 | GPT-6 Astra | Codex CLI | medium | 1 | **34** | 19 | 15 | 33 | 28 min | $15.78 | 2026-09-05 |
 | 22 | GPT-5.6 Sol | Codex CLI | high | 1 | **34** | 13 | 21 | 28 | 67 min | $33.92 | 2026-07-31 |
 | 23 | Gemini 4 Argon | Gemini CLI | high | 1 | **33** | 15 | 18 | 7 | 85 min | $32.08 | 2026-10-13 |
@@ -140,7 +140,7 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 Extras are real, unplanted defects a model fixed on the way; they are counted and never added to the score. Costs are token estimates at published list rates unless tagged **bill** (an actual invoice or credits delta) or **floor** (a reconstructed lower bound). `default` effort means the serving path had no working effort dial; *ran lower* marks a run whose CLI quietly replaced the requested tier. Wall clock is repo 1 plus repo 2 agent time, dependency install excluded.
 Every row's full note, caveat and supersession history is in [results/run-notes.md](https://github.com/phuryn/bug-hunt-bench/blob/main/results/run-notes.md); the runs behind each one are in the metrics CSVs.
 
-69 superseded re-runs stay in the CSVs and on the [live board](https://bughunt.productcompass.pm/?preset=all) but are left off this table.
+70 superseded re-runs stay in the CSVs and on the [live board](https://bughunt.productcompass.pm/?preset=all) but are left off this table.
 <!-- leaderboard:end -->
 
 ## What Bug Hunt Bench is
