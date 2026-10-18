@@ -1,0 +1,16 @@
+DeepSeek V4.1 Flash 1017 in Pi - the effort on the wire, every request
+Recorded 2026-10-18 for the Pi row (max, n=5).
+
+HOW
+Pi 1.3.0 (Earendil's open-source coding agent) talks to DeepSeek's OpenAI-compatible endpoint (/chat/completions), not
+the Anthropic-compatible one the Claude Code and DeepSeek Harness rows use. Its own model catalog entry for deepseek-flash
+maps `--thinking max` to `reasoning_effort: "max"` and sends `thinking: {"type": "enabled"}` beside it. The same
+endpoint family validates the tier (see 20261017-dsv41flash1017-deepseek-effort.txt: low, high and max accepted, an
+invented tier refused). A pass-through logger sat between Pi and the API for every leg and recorded, per request, the
+model, reasoning_effort and DeepSeek's usage.
+
+WHAT WENT OUT (every request of every counted leg)
+    max   5 runs, 1902 requests: reasoning_effort {'max': 1902}; model {'deepseek-flash': 1902}
+
+READING
+Every request carried max. Pi runs no subagents and no side calls with a different tier.

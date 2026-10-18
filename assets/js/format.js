@@ -322,6 +322,23 @@ export function compareRuns(a, b, key, dir) {
   return (av < bv ? -1 : 1) * sign;
 }
 
+/** A harness's short name - "Claude Code", "DeepSeek Harness", "Pi" - from a row's "<harness> / <route>" field. */
+export const harnessShort = (r) => String(r.harness || '').split(' / ')[0].split(' (')[0].split(' + ')[0].trim();
+
+/** Ids of the runs whose model AND effort are shared with a run from a different harness (2026-10-18: DeepSeek
+    V4.1 Flash 1017 at max in Claude Code, DeepSeek Harness and Pi). Every view that names a run by model and
+    effort alone - chart labels, coverage rows, the picker - names the harness too for exactly these, so three
+    points that would read the same can be told apart. */
+export function harnessTwinIds(runs) {
+  const seen = new Map();
+  runs.forEach((r) => {
+    const k = `${r.model}|${r.effort}`;
+    if (!seen.has(k)) seen.set(k, new Set());
+    seen.get(k).add(harnessShort(r));
+  });
+  return new Set(runs.filter((r) => (seen.get(`${r.model}|${r.effort}`) || new Set()).size > 1).map((r) => r.id));
+}
+
 /** Build a display label for a run inside a chart, disambiguating shared model names. */
 export function pointLabels(runs) {
   const byModel = new Map();
@@ -337,10 +354,12 @@ export function pointLabels(runs) {
     }
     group.forEach((r) => {
       const sameEffort = group.filter((g) => g.effort === r.effort);
-      const label = sameEffort.length > 1
-        ? `${r.model} · ${r.effort} · ${fmtDate(r.date).replace(/ \d{4}$/, '')}`
-        : `${r.model} · ${r.effort}`;
-      out.set(r.id, label);
+      // Different harnesses at the same effort are told apart by the harness; only runs that share the harness
+      // too fall back to the date, as before.
+      const sameHarness = sameEffort.filter((g) => harnessShort(g) === harnessShort(r));
+      const harness = sameEffort.length > sameHarness.length ? ` · ${harnessShort(r)}` : '';
+      const date = sameHarness.length > 1 ? ` · ${fmtDate(r.date).replace(/ \d{4}$/, '')}` : '';
+      out.set(r.id, `${r.model} · ${r.effort}${harness}${date}`);
     });
   });
   return out;

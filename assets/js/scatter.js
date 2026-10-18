@@ -330,6 +330,7 @@ function tooltipContent(p, axis) {
     el('i', { class: 'tip-key', style: { 'background-color': p.color } }),
     `${r.model}${r.effort ? ` · ${r.effort}` : ''}`,
   ]));
+  if (r.harness) frag.appendChild(tipRow('Harness', r.harness));
   const rows = {
     cost: () => tipRow('Cost', `${fmtCost(r.cost_usd)} (${kind})`),
     time: () => tipRow('Wall clock', `${fmtWall(r.wall_min)} min`),
@@ -469,7 +470,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
     }
     const hit = svgEl('circle', {
       class: 'hit', cx: p.cx, cy: p.cy, r: 18, tabindex: '0', role: 'button',
-      'aria-label': `${p.run.model}${p.run.effort ? ` · ${p.run.effort}` : ''}: ${p.run.fixed} of 105 fixed, ${A.fmt(p.xv)}${p.flagged ? `. Note on this figure: ${p.run[A.flag]}` : ''}`,
+      'aria-label': `${p.run.model}${p.run.effort ? ` · ${p.run.effort}` : ''}${p.run.harness ? ` · ${p.run.harness}` : ''}: ${p.run.fixed} of 105 fixed, ${A.fmt(p.xv)}${p.flagged ? `. Note on this figure: ${p.run[A.flag]}` : ''}`,
     });
     hit.addEventListener('pointerenter', () => showTip(p, g));
     hit.addEventListener('pointerleave', () => hideTip(g));

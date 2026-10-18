@@ -4305,3 +4305,15 @@ Runs in DeepSeek Harness: max 42, 41, 47, 47, 40, 43 and 39 of 105 (repo 1: 19, 
 What it shows. The Harness scores higher at every tier, and the gap widens with effort: +0.4 at low, +2.8 at high, +3.6 at max. At max most of it is on repo 2 (+2.7, against +0.9 on repo 1); at high it is split. Each gap on its own sits inside the run-to-run spread (Claude Code's seven max runs span 34 to 46), so this is a consistent lean rather than an established difference. The Harness also fixes about twice as many genuine unplanted bugs (44.0 against 22.9 at max) and costs 1.5 to 1.8 times as much per run.
 
 The first Harness run at max read the upstream project's git history on repo 1 and was voided; every counted run carried the integrity warning, and every tool call was checked. Five of the seven Harness max runs ran in segments: DeepSeek's balance-based concurrency cap, then the prepaid balance running out, stopped them before they wrote a report, and after a top-up each continued its own session. Their wall counts active time only. Effort was read on the wire for every request (receipt in `effort-dial-probes/`). Costs are DeepSeek's own usage at its off-peak list price, which the account balance confirmed within 1%. Judged by Grok (grok-4.7). The DeepSeek V4.1 Flash 1017 (max effort) - mean of 5 row is superseded and kept.
+
+## DeepSeek V4.1 Flash 1017 in Pi — max, mean of 5, 42.2 of 105 (Oct 18)
+
+The third harness for the same model at max: Pi 1.3.0, Earendil's open-source minimal coding agent - four built-in tools (read, bash, edit, write), no subagents, no web tools. Same model id and DeepSeek account; Pi uses DeepSeek's OpenAI-compatible endpoint and sends `reasoning_effort: max`, read on the wire for all 1,902 requests. Integrity warning in every run; every tool call checked; all ten legs clean.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| DeepSeek V4.1 Flash 1017 (max effort, Pi) - mean of 5 | Pi | **42.2** / 105 | 17.8 / 45 | 24.4 / 60 | 54.1 min | $0.83 |
+| DeepSeek V4.1 Flash 1017 (max effort, DeepSeek Harness) - mean of 7 | DeepSeek Harness | 42.7 / 105 | 19.0 / 45 | 23.7 / 60 | 62.1 min | $1.84 |
+| DeepSeek V4.1 Flash 1017 (max effort) - mean of 7 | Claude Code | 39.1 / 105 | 18.1 / 45 | 21.0 / 60 | 57.7 min | $1.01 |
+
+Runs: 41, 41, 43, 44 and 42 of 105 (repo 1: 16, 15, 20, 17 and 21 - repo 2: 25, 26, 23, 27 and 21). Pi matches DeepSeek Harness on score at under half its cost, and is the cheapest and the steadiest of the three (all five runs between 41 and 44). It runs no subagents, so the edge both non-Claude-Code harnesses hold over Claude Code - all of it on repo 2 - is not a subagent effect. Each gap on its own is a lean, not an established difference. Costs are DeepSeek's own usage at its off-peak list price. Judged by Grok (grok-4.7). Not featured.

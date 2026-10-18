@@ -34,7 +34,7 @@
    pivot's dividers land in the same place all the way down the card, on
    screen and in the PNG export alike. */
 
-import { el, TOTALS } from './format.js?v=d69cab3767';
+import { el, TOTALS, harnessShort, harnessTwinIds } from './format.js?v=d69cab3767';
 import { effortBadge } from './table.js?v=d69cab3767';
 import { runColor } from './theme.js?v=d69cab3767';
 
@@ -54,6 +54,7 @@ const ZONE_META = [
     two can never show different rows, order or numbers for the same
     selection and pivot. */
 export function coverageLayout(runs, meta, pivotSlug) {
+  TWINS = harnessTwinIds(runs);
   const bugCount = meta && Number.isFinite(meta.bug_count) ? meta.bug_count : TOTALS.fixed;
   const repo1Count = meta && Number.isFinite(meta.repo1_bug_count) ? meta.repo1_bug_count : TOTALS.repo1_fixed;
 
@@ -175,7 +176,8 @@ const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
 /** How a run reads inline in a sentence — the same "model · effort" shape
     the scatter legend already uses, so the two views name a run the same way. */
-const runLabel = (run) => `${run.model}${run.effort ? ` · ${run.effort}` : ''}`;
+let TWINS = new Set();   // ids of runs that share model + effort with another harness (harnessTwinIds); set per render
+const runLabel = (run) => `${run.model}${run.effort ? ` · ${run.effort}` : ''}${TWINS.has(run.id) ? ` · ${harnessShort(run)}` : ''}`;
 
 /** Why the columns are in this order. Generated so a changed bug or repo
     count moves the sentence rather than dating it, and so a pivot rewrites
@@ -294,7 +296,8 @@ export function renderCoverage(host, runs, meta, glossary, pivotSlug, onPivotTog
 
     const label = el('div', { class: 'coverage__label' }, [
       el('span', { class: 'swatch', style: { 'background-color': runColor(run.color) } }),
-      el('span', { class: 'coverage__name' }, [run.model, ' ', effortBadge(run, glossary)]),
+      el('span', { class: 'coverage__name' }, [run.model, ' ', effortBadge(run, glossary),
+        TWINS.has(run.id) ? ` (${harnessShort(run)})` : null]),
       isPivot ? el('span', { class: 'coverage__chip', text: 'Sorted by' }) : null,
       rel ? el('span', {
         class: 'coverage__rel',
