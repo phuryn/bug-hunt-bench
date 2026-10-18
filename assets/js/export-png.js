@@ -366,10 +366,12 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
     ctx.strokeStyle = f.color;
     ctx.globalAlpha = 0.4;
     ctx.lineWidth = 1.5;
+    ctx.setLineDash(f.dash ? f.dash.split(' ').map(Number) : []);   // one line per model AND harness (scatterLayout)
     ctx.beginPath();
     ctx.moveTo(f.points[0].cx, f.points[0].cy);
     for (let i = 1; i < f.points.length; i += 1) ctx.lineTo(f.points[i].cx, f.points[i].cy);
     ctx.stroke();
+    ctx.setLineDash([]);
     ctx.globalAlpha = 1;
   });
   // Pareto frontier removed 2026-08-27 (Pawel) - kept in scatterLayout for a later rethink.

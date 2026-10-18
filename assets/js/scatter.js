@@ -16,6 +16,7 @@
 
 import {
   pointLabels, fmtCost, fmtWall, fmtTurns, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
+  harnessShort,
 } from './format.js?v=d69cab3767';
 import { runColor } from './theme.js?v=d69cab3767';
 
@@ -282,20 +283,37 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
     const i = EFFORT_RANK.indexOf(String(e || '').toLowerCase());
     return i < 0 ? EFFORT_RANK.length : i;
   };
+  // A family is one model IN ONE HARNESS (Pawel 2026-10-18: "never connect points for different harnesses. Here I
+  // should get three different trends not one big"). DeepSeek V4.1 Flash 1017 ran in Claude Code, DeepSeek Harness
+  // and Pi; joined by model alone, its nine points made one zig-zag across three harnesses. Each harness now gets its
+  // own line in the model's colour, told apart by dash pattern (solid, dashed, dotted, in harness-name order) and by
+  // the harness in the point labels.
   const fam = new Map();
   points.forEach((p) => {
-    if (!fam.has(p.run.model)) fam.set(p.run.model, []);
-    fam.get(p.run.model).push(p);
+    const k = `${p.run.model}|${harnessShort(p.run)}`;
+    if (!fam.has(k)) fam.set(k, []);
+    fam.get(k).push(p);
   });
+  const harnessesOf = new Map();
+  [...fam.keys()].forEach((k) => {
+    const [model, h] = k.split('|');
+    if (!harnessesOf.has(model)) harnessesOf.set(model, []);
+    harnessesOf.get(model).push(h);
+  });
+  harnessesOf.forEach((hs) => hs.sort());
+  const DASH = [null, '7 5', '2 4'];
   const familyLines = [];
-  fam.forEach((grp, model) => {
+  fam.forEach((grp, key) => {
+    const [model, h] = key.split('|');
     const ordered = grp.slice().sort((a, b) => effRankOf(a.run.effort) - effRankOf(b.run.effort));
     const famColor = ordered[0].color;                 // the top-effort member's colour
     ordered.forEach((p) => { p.color = famColor; });   // one colour per family on these views
     if (ordered.length > 1) {
       let d = `M${ordered[0].cx.toFixed(1)} ${ordered[0].cy.toFixed(1)}`;
       for (let i = 1; i < ordered.length; i += 1) d += ` L${ordered[i].cx.toFixed(1)} ${ordered[i].cy.toFixed(1)}`;
-      familyLines.push({ model, color: famColor, d, points: ordered });
+      const hs = harnessesOf.get(model);
+      const dash = hs.length > 1 ? DASH[Math.min(hs.indexOf(h), DASH.length - 1)] : null;
+      familyLines.push({ model, harness: h, color: famColor, d, dash, points: ordered });
     }
   });
 
@@ -420,7 +438,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
   }));
 
   L.familyLines.forEach((f) => {
-    svg.appendChild(svgEl('path', { class: 'family-line', d: f.d, stroke: f.color, 'aria-hidden': 'true' }));
+    svg.appendChild(svgEl('path', { class: 'family-line', d: f.d, stroke: f.color, 'stroke-dasharray': f.dash || null, 'aria-hidden': 'true' }));
   });
   // Pareto frontier removed 2026-08-27 (Pawel: too chaotic alongside the family lines - to be
   // rethought). frontierOf/frontierPath still computed in scatterLayout; re-enable by drawing
