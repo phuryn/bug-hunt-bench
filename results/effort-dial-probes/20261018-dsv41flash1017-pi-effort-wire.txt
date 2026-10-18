@@ -1,5 +1,5 @@
 DeepSeek V4.1 Flash 1017 in Pi - the effort on the wire, every request
-Recorded 2026-10-18 for the Pi row (max, n=5).
+Recorded 2026-10-18 for the Pi rows (max and high, n=5 each).
 
 HOW
 Pi 1.3.0 (Earendil's open-source coding agent) talks to DeepSeek's OpenAI-compatible endpoint (/chat/completions), not
@@ -11,6 +11,7 @@ model, reasoning_effort and DeepSeek's usage.
 
 WHAT WENT OUT (every request of every counted leg)
     max   5 runs, 1902 requests: reasoning_effort {'max': 1902}; model {'deepseek-flash': 1902}
+    high  5 runs, 1637 requests: reasoning_effort {'high': 1637}; model {'deepseek-flash': 1637}
 
 READING
-Every request carried max. Pi runs no subagents and no side calls with a different tier.
+Every request carried its row's tier. Pi runs no subagents and no side calls with a different tier.

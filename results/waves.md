@@ -4317,3 +4317,15 @@ The third harness for the same model at max: Pi 1.3.0, Earendil's open-source mi
 | DeepSeek V4.1 Flash 1017 (max effort) - mean of 7 | Claude Code | 39.1 / 105 | 18.1 / 45 | 21.0 / 60 | 57.7 min | $1.01 |
 
 Runs: 41, 41, 43, 44 and 42 of 105 (repo 1: 16, 15, 20, 17 and 21 - repo 2: 25, 26, 23, 27 and 21). Pi matches DeepSeek Harness on score at under half its cost, and is the cheapest and the steadiest of the three (all five runs between 41 and 44). It runs no subagents, so the edge both non-Claude-Code harnesses hold over Claude Code - all of it on repo 2 - is not a subagent effect. Each gap on its own is a lean, not an established difference. Costs are DeepSeek's own usage at its off-peak list price. Judged by Grok (grok-4.7). Not featured.
+
+## DeepSeek V4.1 Flash 1017 in Pi — high, mean of 5, 40.4 of 105 (Oct 18)
+
+Pi 1.3.0 at high, set up as the max runs: `reasoning_effort: high` read on the wire for all 1,637 requests, integrity warning in every run, every tool call checked, all ten legs clean.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| DeepSeek V4.1 Flash 1017 (high effort, Pi) - mean of 5 | Pi | **40.4** / 105 | 16.0 / 45 | 24.4 / 60 | 48.3 min | $0.64 |
+| DeepSeek V4.1 Flash 1017 (high effort, DeepSeek Harness) - mean of 5 | DeepSeek Harness | 39.2 / 105 | 17.0 / 45 | 22.2 / 60 | 53.0 min | $1.27 |
+| DeepSeek V4.1 Flash 1017 (high effort) - mean of 5 | Claude Code | 36.4 / 105 | 15.2 / 45 | 21.2 / 60 | 54.5 min | $0.82 |
+
+Runs: 40, 39, 41, 38 and 44 of 105 (repo 1: 18, 14, 15, 13 and 20 - repo 2: 22, 25, 26, 25 and 24). At high, Pi is both the highest and the cheapest of the three harnesses; it sits 1.8 below Pi at max (42.2). The pattern from max holds: both non-Claude-Code harnesses score above Claude Code, mostly on repo 2. Each gap on its own is a lean, not an established difference. Costs are DeepSeek's own usage at its off-peak list price. Judged by Grok (grok-4.7). Not featured.
