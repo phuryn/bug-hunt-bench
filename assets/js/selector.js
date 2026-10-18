@@ -54,6 +54,24 @@ const LOCAL_LABEL = 'Local AI';
    would be unusable. */
 const openGroups = new Map();
 
+/* Rows that would read the same except for the harness they ran in (2026-10-18, DeepSeek V4.1 Flash
+   1017 at max in Claude Code and in DeepSeek Harness: two checkboxes both reading "MAX · first-party").
+   When one model + tier + effort label is shared by runs from more than one harness, every such row
+   gets its harness as a suffix - all of them, so neither reads as the default. Recomputed per render. */
+let harnessTwins = new Set();
+const harnessName = (r) => String(r.harness || '').split(' / ')[0].split(' (')[0].split(' + ')[0].trim();
+const twinKey = (r) => `${r.model}|${r.effort}|${effortSuffix(r) || ''}`;
+
+function findHarnessTwins(runs) {
+  const seen = new Map();
+  runs.forEach((r) => {
+    const k = twinKey(r);
+    if (!seen.has(k)) seen.set(k, new Set());
+    seen.get(k).add(harnessName(r));
+  });
+  return new Set([...seen].filter(([, hs]) => hs.size > 1).map(([k]) => k));
+}
+
 /* Every group checkbox drawn in the current picker, with the runs it stands for.
    A single run toggle must update its model heading and its vendor heading, and
    re-rendering the whole picker to do that would destroy the element the reader
@@ -85,8 +103,9 @@ function runRow(r, selected, onToggle, { showName, showSwatch }) {
 
   /* the tier the run was asked for, as the board's badge shows it - plus the two
      words the clamped row carries there */
+  const harness = harnessTwins.has(twinKey(r)) && harnessName(r) ? ` (${harnessName(r)})` : '';
   const meta = [String(r.effort || '').toUpperCase(), effortSuffix(r), fmtDate(r.date)]
-    .filter(Boolean).join(' · ');
+    .filter(Boolean).join(' · ') + harness;
 
   const body = showName
     ? el('span', { class: 'run__body' }, [
@@ -200,6 +219,7 @@ function multiVendorFieldset(label, id, runsForGroup, selected, onToggle, onGrou
 export function renderPicker(gridEl, runs, selected, onToggle, onGroupToggle) {
   gridEl.textContent = '';
   groupBoxes.length = 0;
+  harnessTwins = findHarnessTwins(runs);
 
   /* LOCAL AI pulls specific MODELS out of their normal vendor group, regardless of how big that
      vendor's own group is - `r.local` is a data-level claim (build_bench_site_data.py's

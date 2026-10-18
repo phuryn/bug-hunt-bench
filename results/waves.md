@@ -4286,3 +4286,22 @@ Runs: 34, 30, 42, 38 and 38 of 105 (repo 1: 15, 13, 16, 13 and 19 - repo 2: 19, 
 ## DeepSeek V4.1 Flash 1017 at low — mean of 5, 34.4 of 105 (Oct 17)
 
 Runs: 40, 34, 32, 33 and 33 of 105 (repo 1: 18, 15, 16, 16 and 17 - repo 2: 22, 19, 16, 17 and 16). 3 of them carried the integrity warning added after three legs of this model were caught reading the answers from outside their folder (voided, and each confirmed it when asked). Costs are real bills at DeepSeek's off-peak rate. Judged by Grok (grok-4.7).
+
+## DeepSeek V4.1 Flash 1017 in DeepSeek Harness — max 42.7 (mean of 7), high 39.2, low 34.8 (Oct 18)
+
+Same model id, same DeepSeek endpoint, same effort field, same task with the integrity warning, same judge. The one change is the harness: DeepSeek Harness (dsh 0.2.1-rc.2), DeepSeek's own agent, against Claude Code. Claude Code at max is now a mean of 7 (two more runs, 39 and 38), replacing its mean of 5.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Extras | Wall | Cost |
+|---|---|---|---|---|---|---|---|
+| DeepSeek V4.1 Flash 1017 (max effort, DeepSeek Harness) - mean of 7 | DeepSeek Harness | **42.7** / 105 | 19.0 / 45 | 23.7 / 60 | 44.0 | 62.1 min | $1.84 |
+| DeepSeek V4.1 Flash 1017 (max effort) - mean of 7 | Claude Code | **39.1** / 105 | 18.1 / 45 | 21.0 / 60 | 22.9 | 57.7 min | $1.01 |
+| DeepSeek V4.1 Flash 1017 (high effort, DeepSeek Harness) - mean of 5 | DeepSeek Harness | **39.2** / 105 | 17.0 / 45 | 22.2 / 60 | 43.8 | 53.0 min | $1.27 |
+| DeepSeek V4.1 Flash 1017 (high effort) - mean of 5 | Claude Code | **36.4** / 105 | 15.2 / 45 | 21.2 / 60 | 24.4 | 54.5 min | $0.82 |
+| DeepSeek V4.1 Flash 1017 (low effort, DeepSeek Harness) - mean of 5 | DeepSeek Harness | **34.8** / 105 | 16.4 / 45 | 18.4 / 60 | 34.4 | 33.8 min | $1.06 |
+| DeepSeek V4.1 Flash 1017 (low effort) - mean of 5 | Claude Code | **34.4** / 105 | 16.4 / 45 | 18.0 / 60 | 16.8 | 44.5 min | $0.71 |
+
+Runs in DeepSeek Harness: max 42, 41, 47, 47, 40, 43 and 39 of 105 (repo 1: 19, 18, 19, 20, 16, 20 and 21 - repo 2: 23, 23, 28, 27, 24, 23 and 18); high 45, 37, 41, 41 and 32 (repo 1: 19, 19, 15, 18 and 14 - repo 2: 26, 18, 26, 23 and 18); low 34, 36, 36, 34 and 34 (repo 1: 18, 17, 16, 16 and 15 - repo 2: 16, 19, 20, 18 and 19). The two new Claude Code max runs: 39 and 38 (repo 1: 19 and 17 - repo 2: 20 and 21).
+
+What it shows. The Harness scores higher at every tier, and the gap widens with effort: +0.4 at low, +2.8 at high, +3.6 at max. At max most of it is on repo 2 (+2.7, against +0.9 on repo 1); at high it is split. Each gap on its own sits inside the run-to-run spread (Claude Code's seven max runs span 34 to 46), so this is a consistent lean rather than an established difference. The Harness also fixes about twice as many genuine unplanted bugs (44.0 against 22.9 at max) and costs 1.5 to 1.8 times as much per run.
+
+The first Harness run at max read the upstream project's git history on repo 1 and was voided; every counted run carried the integrity warning, and every tool call was checked. Five of the seven Harness max runs ran in segments: DeepSeek's balance-based concurrency cap, then the prepaid balance running out, stopped them before they wrote a report, and after a top-up each continued its own session. Their wall counts active time only. Effort was read on the wire for every request (receipt in `effort-dial-probes/`). Costs are DeepSeek's own usage at its off-peak list price, which the account balance confirmed within 1%. Judged by Grok (grok-4.7). The DeepSeek V4.1 Flash 1017 (max effort) - mean of 5 row is superseded and kept.

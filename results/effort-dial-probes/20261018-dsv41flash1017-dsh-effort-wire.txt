@@ -1,0 +1,23 @@
+DeepSeek V4.1 Flash 1017 in DeepSeek Harness (dsh) - the effort on the wire, every request
+Recorded 2026-10-17/18 for the DeepSeek Harness rows (max, high, low).
+
+HOW
+dsh 0.2.1-rc.2 (DeepSeek's own agent, headless profile) sends the tier from its profile overlay
+(agent-default-model.reasoningEffort) to DeepSeek's Anthropic-compatible API as output_config.effort - the same
+field and endpoint as the Claude Code rows (see 20261017-dsv41flash1017-deepseek-effort.txt for the endpoint's
+own validation: low, high and max accepted, an invented tier refused with 422). A pass-through logger sat between
+dsh and the API for every leg and recorded, per request, the model, output_config.effort and DeepSeek's usage.
+Main loop, subagents and side calls are all on the wire, so the counts below cover every agent dsh ran.
+
+WHAT WENT OUT (every request of every counted leg, all segments)
+    max   7 runs, 7123 requests: output_config.effort {'max': 7108, 'None': 14, 'high': 1}; model {'deepseek-flash': 7123}
+    high  5 runs, 3774 requests: output_config.effort {'high': 3764, 'None': 10}; model {'deepseek-flash': 3774}
+    low   5 runs, 3729 requests: output_config.effort {'low': 3719, 'None': 10}; model {'deepseek-flash': 3729}
+
+READING
+Every main-loop and subagent request carried the row's tier. Two kinds of request did not:
+  - one per leg with no effort field: a single-message call with thinking disabled, no tools and max_tokens 4096
+    (a side call outside the reasoning loop - consistent with dsh naming the session);
+  - one request in all the max runs went out at high: max r8, repo 1, a 527-message call with max_tokens 65536,
+    consistent with dsh condensing a long context at a tier of its own. It is 1 of 7,123 max requests.
+So the tier describes the agents dsh ran for the task; dsh's own housekeeping calls are not governed by it.
