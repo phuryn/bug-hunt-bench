@@ -4329,3 +4329,15 @@ Pi 1.3.0 at high, set up as the max runs: `reasoning_effort: high` read on the w
 | DeepSeek V4.1 Flash 1017 (high effort) - mean of 5 | Claude Code | 36.4 / 105 | 15.2 / 45 | 21.2 / 60 | 54.5 min | $0.82 |
 
 Runs: 40, 39, 41, 38 and 44 of 105 (repo 1: 18, 14, 15, 13 and 20 - repo 2: 22, 25, 26, 25 and 24). At high, Pi is both the highest and the cheapest of the three harnesses; it sits 1.8 below Pi at max (42.2). The pattern from max holds: both non-Claude-Code harnesses score above Claude Code, mostly on repo 2. Each gap on its own is a lean, not an established difference. Costs are DeepSeek's own usage at its off-peak list price. Judged by Grok (grok-4.7). Not featured.
+
+## DeepSeek V4.1 Flash 1017 in Pi — low, mean of 5, 33.8 of 105 (Oct 18)
+
+Pi 1.3.0 at low, set up as the max and high runs: `reasoning_effort: low` read on the wire for all 1,204 requests, integrity warning in every run, every tool call checked, all ten legs clean.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| DeepSeek V4.1 Flash 1017 (low effort, Pi) - mean of 5 | Pi | **33.8** / 105 | 14.0 / 45 | 19.8 / 60 | 33.2 min | $0.46 |
+| DeepSeek V4.1 Flash 1017 (low effort, DeepSeek Harness) - mean of 5 | DeepSeek Harness | 34.8 / 105 | 16.4 / 45 | 18.4 / 60 | 33.8 min | $1.06 |
+| DeepSeek V4.1 Flash 1017 (low effort) - mean of 5 | Claude Code | 34.4 / 105 | 16.4 / 45 | 18.0 / 60 | 44.5 min | $0.71 |
+
+Runs: 37, 38, 32, 37 and 25 of 105 (repo 1: 16, 15, 14, 14 and 11 - repo 2: 21, 23, 18, 23 and 14). Run 5 was a weak run, not a failed one (about 16 minutes per repo, 125 and 180 tool calls); the median of the five is 37. At low the three harnesses are level - the gap only opens at high and max. Pi's dial reads 33.8, 40.4 and 42.2 across low, high and max, and Pi is the cheapest harness at every tier. Costs are DeepSeek's own usage at its off-peak list price. Judged by Grok (grok-4.7). Not featured.

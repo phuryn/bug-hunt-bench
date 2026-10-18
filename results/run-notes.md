@@ -2,7 +2,7 @@
 
 Every row on the board, with the note and caveat it carries. Generated from `data/benchmark.json` by `bench_golive.py` - do not edit by hand.
 
-Updated Oct 18, 2026 · 197 rows from 270 scored runs. Superseded rows are listed last.
+Updated Oct 18, 2026 · 198 rows from 275 scored runs. Superseded rows are listed last.
 
 ## Sonnet 5.5 (max effort) - mean of 3
 
@@ -213,6 +213,14 @@ Anthropic's Sonnet 5.5 at high effort through Claude Code on the first-party API
 ## GPT-5.6 Sol (re-run Jul 31)
 
 **34 / 105** · repo 1 13/45 · repo 2 21/60 · 28 unplanted · 66.7 min · $33.92 · `high` · Codex CLI · single run · 2026-07-31
+
+## DeepSeek V4.1 Flash 1017 (low effort, Pi) - mean of 5
+
+**33.8 / 105** · repo 1 14/45 · repo 2 19.8/60 · 19.6 unplanted · 33.2 min · $0.46 bill · `low` · Pi / DeepSeek API · mean of 5 runs · 2026-10-18
+
+**Caveat.** Mean of 5 runs (37, 38, 32, 37 and 25 of 105) in Pi, the open-source minimal coding agent, through DeepSeek's OpenAI-compatible endpoint. Billed at DeepSeek's off-peak rate. Judged by Grok.
+
+DeepSeek-V4.1-Flash-1017 at effort low in PI (pi-coding-agent 1.3.0, Earendil's open-source minimal coding agent), on the same model id (deepseek-flash) and DeepSeek account as the Claude Code and DeepSeek Harness rows - the harness is the variable. Pi uses DeepSeek's OpenAI-compatible endpoint where the other two use the Anthropic-compatible one. MEAN OF 5 RUNS: 37, 38, 32, 37 and 25 of 105 (repo 1: 16, 15, 14, 14 and 11 of 45 - repo 2: 21, 23, 18, 23 and 14 of 60), mean 33.8. Genuine unplanted extras 21, 16, 16, 26 and 19; claimed-only fixes 3, 0, 2, 0 and 0. Minutes 39.4, 31.2, 28.8, 34.6 and 32.1; cost $0.54, $0.41, $0.35, $0.53 and $0.46. *** AGAINST THE OTHER HARNESSES *** the same model at low stands at 34.4 in Claude Code and 34.8 in DeepSeek Harness (means of 5, their own rows); Pi at high: 40.4, at max: 42.2: -0.6 over Claude Code, at a lower cost per run than either. Pi runs no subagents, so whatever lifts it above Claude Code is not subagents. With runs this spread the gaps are a lean, not an established difference. *** SETUP *** print mode with a JSON event stream; built-in tools only (read, bash, edit, write) - Pi ships no subagents and no web tools; extensions, skills, MCP and prompt templates off; a fresh Pi config directory per leg; the run repo's own CLAUDE.md loads as Pi's context file; the integrity warning appended to the task in every run (work only inside this folder; anything outside is cheating and every tool call is checked). Every leg ran in one segment. *** EFFORT low *** read on the wire for every request: 1,204 of 1,204 carried reasoning_effort=low (Pi's catalog maps --thinking low to low for this model). Run 5 scored 25 in a normal run (about 16 minutes per repo, 125 and 180 tool calls) - a weak run, not a failure; the median of the five is 37. *** COST IS A REAL BILL AT OFF-PEAK RATES *** DeepSeek's own per-call usage at its off-peak list price (a weekend); the account balance moved by the same amount. *** JUDGE *** Grok (grok-4.7). *** RECEIPTS *** Every leg shared the laptop with another arm, which the wall marker discloses - scores, tokens and cost are untouched by that, only the clock.
 
 ## Fable 5.1
 
