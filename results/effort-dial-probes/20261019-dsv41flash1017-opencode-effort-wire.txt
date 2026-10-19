@@ -1,0 +1,29 @@
+DeepSeek V4.1 Flash 1017 in OpenCode - the effort on the wire, every request
+Recorded 2026-10-18/19 for the OpenCode rows (max, high and low, n=5 each).
+
+HOW
+OpenCode 1.19.3 (opencode-ai, the open-source coding agent) talks to DeepSeek's OpenAI-compatible endpoint
+(/chat/completions), like Pi and unlike the Claude Code and DeepSeek Harness rows. Its own model catalog lists
+deepseek/deepseek-flash as DeepSeek V4.1 Flash 1017; `opencode run --variant <tier>` sends `reasoning_effort: "<tier>"`.
+The same endpoint family validates the tier (see 20261017-dsv41flash1017-deepseek-effort.txt: low, high and max
+accepted, an invented tier refused; each wave re-ran that gate before its first leg). A pass-through logger sat between
+OpenCode and the API for every leg and recorded, per request, the model, reasoning_effort, the number of tools offered
+and DeepSeek's usage. Requests are split by the tool set they carried: the main loop (9 tools), subagents started by
+OpenCode's task tool (4 or 7 tools) and OpenCode's own session-title call (no tools).
+
+WHAT WENT OUT (every request of every counted leg; 10 legs per tier)
+    max   2,382 requests: main loop max 2,218; subagents max 154; session title low 10
+    high  2,241 requests: main loop high 1,505; subagents high 726; session title low 10
+    low   2,465 requests: main loop low 1,425; subagents low 1,030; session title low 10
+    model deepseek-flash on every request; HTTP 200 on every request
+
+REASONING RETURNED (DeepSeek's usage, completion_tokens_details.reasoning_tokens, title calls excluded)
+    max   1,392,186 reasoning tokens over 2,372 requests (587 per request; 2,285 requests reasoned)
+    high  1,291,280 reasoning tokens over 2,231 requests (579 per request; 2,099 requests reasoned)
+    low   1,028,622 reasoning tokens over 2,455 requests (419 per request; 2,324 requests reasoned)
+
+READING
+Every task request - main loop and subagents alike - carried its row's tier. The only exceptions are OpenCode's
+session-title calls, one per leg, which it always sends at low; they generate a few words of title and touch no code.
+OpenCode sends no separate `thinking` field; the model reasoned at every tier, as the usage shows. Per request, max
+reasoned about as much as high (587 against 579 tokens) and both more than low (419).

@@ -285,8 +285,8 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
   };
   // A family is one model IN ONE HARNESS (Pawel 2026-10-18: "never connect points for different harnesses. Here I
   // should get three different trends not one big"). DeepSeek V4.1 Flash 1017 ran in Claude Code, DeepSeek Harness
-  // and Pi; joined by model alone, its nine points made one zig-zag across three harnesses. Each harness now gets its
-  // own line in the model's colour, told apart by dash pattern (solid, dashed, dotted, in harness-name order) and by
+  // and Pi (OpenCode followed on 2026-10-19); joined by model alone, its nine points made one zig-zag across three harnesses. Each harness now gets its
+  // own line in the model's colour, told apart by dash pattern (solid, dashed, dotted, dash-dot, in harness-name order) and by
   // the harness in the point labels.
   const fam = new Map();
   points.forEach((p) => {
@@ -301,7 +301,7 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
     harnessesOf.get(model).push(h);
   });
   harnessesOf.forEach((hs) => hs.sort());
-  const DASH = [null, '7 5', '2 4'];
+  const DASH = [null, '7 5', '2 4', '9 3 2 3'];
   const familyLines = [];
   fam.forEach((grp, key) => {
     const [model, h] = key.split('|');

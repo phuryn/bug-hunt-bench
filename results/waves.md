@@ -4341,3 +4341,27 @@ Pi 1.3.0 at low, set up as the max and high runs: `reasoning_effort: low` read o
 | DeepSeek V4.1 Flash 1017 (low effort) - mean of 5 | Claude Code | 34.4 / 105 | 16.4 / 45 | 18.0 / 60 | 44.5 min | $0.71 |
 
 Runs: 37, 38, 32, 37 and 25 of 105 (repo 1: 16, 15, 14, 14 and 11 - repo 2: 21, 23, 18, 23 and 14). Run 5 was a weak run, not a failed one (about 16 minutes per repo, 125 and 180 tool calls); the median of the five is 37. At low the three harnesses are level - the gap only opens at high and max. Pi's dial reads 33.8, 40.4 and 42.2 across low, high and max, and Pi is the cheapest harness at every tier. Costs are DeepSeek's own usage at its off-peak list price. Judged by Grok (grok-4.7). Not featured.
+
+## DeepSeek V4.1 Flash 1017 in OpenCode — max 37.6, high 36.6, low 32.8 (means of 5, Oct 18-19)
+
+The fourth harness for the same model, at all three tiers: OpenCode 1.19.3, the open-source coding agent. Same model id and DeepSeek account; like Pi, OpenCode uses DeepSeek's OpenAI-compatible endpoint. Tools as shipped, including its task tool for subagents, with web fetch and web search off. Integrity warning in every run; every tool call checked.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| DeepSeek V4.1 Flash 1017 (max effort, OpenCode) - mean of 5 | OpenCode | **37.6** / 105 | 15.8 / 45 | 21.8 / 60 | 55.7 min | $0.96 |
+| DeepSeek V4.1 Flash 1017 (high effort, OpenCode) - mean of 5 | OpenCode | **36.6** / 105 | 15.4 / 45 | 21.2 / 60 | 41.6 min | $0.79 |
+| DeepSeek V4.1 Flash 1017 (low effort, OpenCode) - mean of 5 | OpenCode | **32.8** / 105 | 15.8 / 45 | 17.0 / 60 | 41.2 min | $0.66 |
+
+Runs: max 36, 40, 35, 38 and 39 of 105 (repo 1: 13, 17, 18, 15 and 16 - repo 2: 23, 23, 17, 23 and 23); high 35, 37, 43, 28 and 40 (repo 1: 14, 15, 18, 14 and 16 - repo 2: 21, 22, 25, 14 and 24); low 36, 32, 27, 31 and 38 (repo 1: 22, 12, 12, 13 and 20 - repo 2: 14, 20, 15, 18 and 18).
+
+The same model in four harnesses, mean score (cost per run):
+
+| Effort | Claude Code | DeepSeek Harness | Pi | OpenCode |
+|---|---|---|---|---|
+| max | 39.1 ($1.01) | 42.7 ($1.84) | 42.2 ($0.83) | 37.6 ($0.96) |
+| high | 36.4 ($0.82) | 39.2 ($1.27) | 40.4 ($0.64) | 36.6 ($0.79) |
+| low | 34.4 ($0.71) | 34.8 ($1.06) | 33.8 ($0.46) | 32.8 ($0.66) |
+
+What it shows. OpenCode is last at max and low and level with Claude Code at high. At max the gap is the clearest harness difference on this model so far: OpenCode's best run (40) is below every Pi run (41-44) and at the bottom of DeepSeek Harness's range (39-47). Against Claude Code at max, and against all three at high and low, the run ranges overlap, so those gaps are a lean, not an established difference. OpenCode costs more per run than Pi at every tier and less than DeepSeek Harness. Unlike Pi it can start subagents, and it did more at lower effort: 1 across the ten max legs, 8 at high, 13 at low.
+
+Effort was read on the wire for every request: every main-loop and subagent request carried its row's tier; the only exceptions are OpenCode's own session-title calls (one per leg, always sent at low), so max 2,372 of 2,382 requests, high 2,231 of 2,241, low 2,465 of 2,465 (receipt in `effort-dial-probes/`). No leg compacted its context: the main loop's prompt only ever grew (peak 803K tokens of the 1M window). Every leg ran in one segment and shared the laptop with other legs of its wave, which the wall marker discloses. A first attempt at max was discarded unjudged - a launch fault made OpenCode work outside the run folders - and all ten legs were rerun with the fault fixed. One low leg (run 2, repo 1) was flagged by the automated integrity scan for a path string and cleared on review: the string came from the repo's own test fixtures, which the agent was parsing inside its folder. Generated test-coverage reports were left out of the judged diffs. Costs are DeepSeek's own usage at its off-peak list price, which the account balance confirmed. Judged by Grok (grok-4.7). Not featured.

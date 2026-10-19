@@ -198,3 +198,6 @@ DeepSeek V4.1 Flash 1017 (max effort) - mean of 7,Claude Code / DeepSeek API,21.
 "DeepSeek V4.1 Flash 1017 (max effort, Pi) - mean of 5",Pi / DeepSeek API,24.4,1.4,0.8,13.0,0,21.7,0.31
 "DeepSeek V4.1 Flash 1017 (high effort, Pi) - mean of 5",Pi / DeepSeek API,24.4,1.6,0.6,16.6,0,25.5,0.33
 "DeepSeek V4.1 Flash 1017 (low effort, Pi) - mean of 5",Pi / DeepSeek API,19.8,1.4,0.8,7.8,0,14.8,0.22
+"DeepSeek V4.1 Flash 1017 (max effort, OpenCode) - mean of 5",OpenCode / DeepSeek API,21.8,2.0,0.2,18.0,0,31.8,0.57
+"DeepSeek V4.1 Flash 1017 (high effort, OpenCode) - mean of 5",OpenCode / DeepSeek API,21.2,2.2,1.0,12.8,0,23.4,0.5
+"DeepSeek V4.1 Flash 1017 (low effort, OpenCode) - mean of 5",OpenCode / DeepSeek API,17.0,1.4,0.2,10.0,0,18.2,0.32
