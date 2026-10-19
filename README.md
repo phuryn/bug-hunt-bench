@@ -9,7 +9,7 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 <!-- leaderboard:start -->
 ![Bug Hunt Bench leaderboard, the featured runs, updated Oct 19, 2026](assets/leaderboard.png?v=2026-10-19-9cb1f8c0)
 
-**Updated Oct 19, 2026 · 201 rows from 290 scored runs · 47 models · 9 of 105 bugs have never been fixed by any model.**
+**Updated Oct 19, 2026 · 201 rows from 290 scored runs · 47 models · 25 of 105 bugs have never been fixed by any model.**
 
 **Current leader:** Sonnet 5.5 at `max` effort — **51.3 / 105** (22.7/45 on repo 1, 28.7/60 on repo 2).
 

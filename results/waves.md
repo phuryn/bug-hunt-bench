@@ -349,7 +349,7 @@ subscription, so cost is a token-estimate at Google's API list, not a bill.
   beyond the brief, and slightly less thorough on the plants. Zero claimed-only on both legs, both harnesses.
 - **Ops.** The first repo-1 attempt died at 67 s on a Google backend `INTERNAL (code 500)` that `agy`
   retries only twice, one second apart, before terminating the run; the identical step reproduced clean two
-  minutes later, and the leg was re-run (the runner now retries that signature itself). One bug (H1)
+  minutes later, and the leg was re-run (the runner now retries that signature itself). One bug (#30)
   received two blind verdicts on the same diff — partial in the first pass, full in a replicate; the first
   pass's rationale is the correct one (the fix breaks containment for the root workspace), so 4 + 1
   partial stands. Survivors unchanged at 51 of 105.
@@ -3374,7 +3374,7 @@ that size against a mean, but it is a large gap pointing the opposite way from t
 > figures off the live scoreboard at publish time rather than taking them from prose. Corrected,
 > the gap is 13 points to the nearest peer rather than 16 — and it widened again at n=3.
 
-**It killed an all-time survivor.** Repo-1 bug A6 had outlived every model in every scored run
+**It killed an all-time survivor.** Repo-1 bug #6 had outlived every model in every scored run
 on this board. It is a settings-persistence ordering defect: a preference was written to storage
 *before* the change it described had actually taken effect, so a switch that failed — or a
 restart the user dismissed — left the saved value and the running session disagreeing. The
@@ -3543,7 +3543,7 @@ in what the model actually did. Repo 1 has no such illusion: 18, 16, 12, with el
 every time, nineteen fixed at least once, and three fixed by exactly one run out of three. All of
 this row's variance is in repo 1 — which is also the repo where its single survivor kill happened.
 
-**The survivor kill stands, and it was a one-run event.** Run 1 fixed repo-1 bug A6, which no
+**The survivor kill stands, and it was a one-run event.** Run 1 fixed repo-1 bug #6, which no
 scored pass by any model on this board had ever fixed. Neither replicate touched it. That is the
 honest shape of a survivor kill: a real result that the model does not repeat on demand, which is
 exactly why the board reports them as events and not as capability.

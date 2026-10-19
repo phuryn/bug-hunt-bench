@@ -5,7 +5,7 @@
     "planted_total": 105,
     "repo1_total": 45,
     "repo2_total": 60,
-    "survivors": 9,
+    "survivors": 25,
     "models": 47,
     "bug_count": 105,
     "repo1_bug_count": 45,
@@ -45,7 +45,7 @@
     "64 of the 127 rows on the board are means of two or more runs (24 of the 28 in the default view); the rest are single runs. 41 configurations have now been run three times at identical settings - same model, prompt, harness, route, effort flag and judge - and their three-run ranges are 1, 1, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 10, 10, 11, 13, 14 points of 105. The widest spread was 43, 54 and 57; the tightest was 31, 32 and 32. Rows on this board routinely sit within a point or two of each other, so a small gap between two single runs may be nothing at all. WHAT THIS DOES NOT SAY: which settings are steady. Spread does not fall cleanly as effort rises - Gemini 4 Argon's rungs came out 6, 13 and 8 going up, Grok 4.7's rungs came out 10, 7, 5 and 6 going up, Muse Spark 1.3's rungs came out 9, 6, 3, 9 and 2 going up, Opus 5.5's rungs came out 6, 1, 1, 2 and 4 going up, Sonnet 5.5's rungs came out 3, 10, 5, 5 and 14 going up - and a range drawn from three runs is a very noisy estimate of spread. 13 models have been measured three times at max effort so far. Treat every one of these as a spread that has been SEEN, not a spread that has been bounded.",
     "Wall clock is the same measure on every row: repo 1 plus repo 2 agent time, with dependency install and health checks excluded. It is taken on a working machine, not an isolated one - other agents and applications routinely run alongside - so read small differences in time loosely; scores, tokens and cost are unaffected. Which runs overlapped is recorded per leg in the receipts on GitHub. One figure is adjusted: the retired-Gemini-CLI run excludes a 35-minute harness stall, the only number here that is not what the harness measured.",
     "Cost is not one kind of number: some figures are an actual bill, some are a token-count estimate at published list rates, one CLI only allows a reconstructed lower bound, and one run was free. The key under the board names which is which - they are not interchangeable, and none of them is a quote for what you would pay.",
-    "9 of the 105 bugs have survived every model in every run to date. The count moves as new runs land: it fell from 49 to 44 during the 27-28 August waves.",
+    "25 of the 105 bugs have survived every model in every run to date. The count moves as new runs land: it fell from 49 to 44 during the 27-28 August waves.",
     "Turns count model steps: every tool call - a shell command, a file read or edit, a search - plus the final answer, summed over both repos. That is exactly what Claude Code reports as its own turn count, and it is the one definition every harness here can supply, so each run is counted from its own log the same way: Codex CLI, which counts a whole run as a single turn, by its commands and edits; Grok by the tool calls in its session log. A turn is a step, not a unit of work - one command can do several reads, and harnesses differ in how much a single call does - so turns compare most cleanly within one harness. 5 current rows have no turn count because their logs were not kept, and are left off that map rather than estimated."
   ],
   "variance_short": "64 of the 127 rows are means of two or more runs (24 of the 28 in the default view); the rest are single runs. Running a configuration three times at identical settings moved its score from the first run by a median 1.7 points of 105 - by more than 2 in 19 of 41 cases, by more than 5 in 3 - and up about as often as down (22 up, 18 down). Read a gap of a few points between two single runs as possible noise.",
@@ -139,6 +139,8 @@
       "turns": 1566,
       "turns_repo1": 915,
       "turns_repo2": 651,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 500
     },
     {
@@ -300,6 +302,8 @@
       "turns": 1330,
       "turns_repo1": 727,
       "turns_repo2": 602,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 500
     },
     {
@@ -465,6 +469,8 @@
       "turns": 1497,
       "turns_repo1": 866,
       "turns_repo2": 631,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 500
     },
     {
@@ -547,6 +553,8 @@
       "turns": 221,
       "turns_repo1": 94,
       "turns_repo2": 127,
+      "harness_version": null,
+      "model_id": "gpt-6-astra",
       "group_rank": 0
     },
     {
@@ -694,6 +702,8 @@
       "turns": 222,
       "turns_repo1": 104,
       "turns_repo2": 118,
+      "harness_version": null,
+      "model_id": "gpt-6-astra",
       "group_rank": 0
     },
     {
@@ -839,6 +849,8 @@
       "turns": 270,
       "turns_repo1": 119,
       "turns_repo2": 151,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 100
     },
     {
@@ -917,6 +929,8 @@
       "turns": 280,
       "turns_repo1": 133,
       "turns_repo2": 147,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 100
     },
     {
@@ -995,6 +1009,8 @@
       "turns": 346,
       "turns_repo1": 140,
       "turns_repo2": 206,
+      "harness_version": "Muse Code 1.4.1",
+      "model_id": "muse-wonder-full-1.0-contributor",
       "group_rank": 0
     },
     {
@@ -1073,6 +1089,8 @@
       "turns": 180,
       "turns_repo1": 65,
       "turns_repo2": 115,
+      "harness_version": "Muse Code 1.4.1",
+      "model_id": "muse-wonder-full-1.0-contributor",
       "group_rank": 1
     },
     {
@@ -1214,6 +1232,8 @@
       "turns": 1082,
       "turns_repo1": 451,
       "turns_repo2": 632,
+      "harness_version": "codex-cli 0.154.0",
+      "model_id": "gpt-5.6-sol",
       "group_rank": 400
     },
     {
@@ -1291,6 +1311,8 @@
       "turns": 159,
       "turns_repo1": 68,
       "turns_repo2": 91,
+      "harness_version": null,
+      "model_id": "gpt-6-astra",
       "group_rank": 1
     },
     {
@@ -1368,6 +1390,8 @@
       "turns": 476,
       "turns_repo1": 159,
       "turns_repo2": 317,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 200
     },
     {
@@ -1445,6 +1469,8 @@
       "turns": 459,
       "turns_repo1": 161,
       "turns_repo2": 298,
+      "harness_version": "Claude Code 2.1.251",
+      "model_id": "claude-fable-5-1",
       "group_rank": 0
     },
     {
@@ -1602,6 +1628,8 @@
       "turns": 804,
       "turns_repo1": 361,
       "turns_repo2": 443,
+      "harness_version": "dsh 0.2.1-rc.2",
+      "model_id": "deepseek-flash",
       "group_rank": 0
     },
     {
@@ -1743,6 +1771,8 @@
       "turns": 200,
       "turns_repo1": 95,
       "turns_repo2": 105,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 101
     },
     {
@@ -1894,6 +1924,8 @@
       "turns": 492,
       "turns_repo1": 232,
       "turns_repo2": 261,
+      "harness_version": "pi-coding-agent 1.3.0",
+      "model_id": "deepseek-flash",
       "group_rank": 0
     },
     {
@@ -1970,6 +2002,8 @@
       "turns": 831,
       "turns_repo1": 397,
       "turns_repo2": 434,
+      "harness_version": null,
+      "model_id": "gpt-5.6-sol",
       "group_rank": 400
     },
     {
@@ -2099,6 +2133,8 @@
       "turns": 356,
       "turns_repo1": 158,
       "turns_repo2": 198,
+      "harness_version": "Muse Code 1.4.1",
+      "model_id": "muse-wonder-full-1.0-contributor",
       "group_rank": 0
     },
     {
@@ -2232,6 +2268,8 @@
       "turns": 476,
       "turns_repo1": 186,
       "turns_repo2": 289,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 200
     },
     {
@@ -2365,6 +2403,8 @@
       "turns": 178,
       "turns_repo1": 72,
       "turns_repo2": 106,
+      "harness_version": "Muse Code 1.4.1",
+      "model_id": "muse-wonder-full-1.0-contributor",
       "group_rank": 1
     },
     {
@@ -2440,6 +2480,8 @@
       "turns": 211,
       "turns_repo1": 91,
       "turns_repo2": 120,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 101
     },
     {
@@ -2569,6 +2611,8 @@
       "turns": 481,
       "turns_repo1": 179,
       "turns_repo2": 302,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 200
     },
     {
@@ -2708,6 +2752,8 @@
       "turns": 470,
       "turns_repo1": 134,
       "turns_repo2": 336,
+      "harness_version": "agy 1.3.5",
+      "model_id": "gemini-4-argon-high",
       "group_rank": 2
     },
     {
@@ -2857,6 +2903,8 @@
       "turns": 416,
       "turns_repo1": 167,
       "turns_repo2": 249,
+      "harness_version": "pi-coding-agent 1.3.0",
+      "model_id": "deepseek-flash",
       "group_rank": 2
     },
     {
@@ -3004,6 +3052,8 @@
       "turns": 700,
       "turns_repo1": 226,
       "turns_repo2": 475,
+      "harness_version": "Claude Code 2.1.302",
+      "model_id": "deepseek-flash",
       "group_rank": 0
     },
     {
@@ -3141,6 +3191,8 @@
       "turns": 437,
       "turns_repo1": 138,
       "turns_repo2": 299,
+      "harness_version": null,
+      "model_id": "gemini-4-argon-medium",
       "group_rank": 3
     },
     {
@@ -3292,6 +3344,8 @@
       "turns": 648,
       "turns_repo1": 235,
       "turns_repo2": 414,
+      "harness_version": "dsh 0.2.1-rc.2",
+      "model_id": "deepseek-flash",
       "group_rank": 2
     },
     {
@@ -3439,6 +3493,8 @@
       "turns": 671,
       "turns_repo1": 232,
       "turns_repo2": 439,
+      "harness_version": "Claude Code 2.1.302",
+      "model_id": "deepseek-flash",
       "group_rank": 0
     },
     {
@@ -3512,6 +3568,8 @@
       "turns": 485,
       "turns_repo1": 233,
       "turns_repo2": 252,
+      "harness_version": null,
+      "model_id": "gpt-5.6-sol",
       "group_rank": 401
     },
     {
@@ -3585,6 +3643,8 @@
       "turns": 588,
       "turns_repo1": 307,
       "turns_repo2": 281,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 501
     },
     {
@@ -3724,6 +3784,8 @@
       "turns": 666,
       "turns_repo1": 234,
       "turns_repo2": 432,
+      "harness_version": "Claude Code 2.1.302",
+      "model_id": "deepseek-flash",
       "group_rank": 0
     },
     {
@@ -3796,6 +3858,8 @@
       "turns": 159,
       "turns_repo1": 53,
       "turns_repo2": 106,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 102
     },
     {
@@ -3947,6 +4011,8 @@
       "turns": 574,
       "turns_repo1": 224,
       "turns_repo2": 351,
+      "harness_version": "opencode-ai 1.19.3",
+      "model_id": "deepseek-flash",
       "group_rank": 0
     },
     {
@@ -4096,6 +4162,8 @@
       "turns": 373,
       "turns_repo1": 181,
       "turns_repo2": 192,
+      "harness_version": "opencode-ai 1.19.3",
+      "model_id": "deepseek-flash",
       "group_rank": 2
     },
     {
@@ -4221,6 +4289,8 @@
       "turns": 145,
       "turns_repo1": 54,
       "turns_repo2": 92,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 102
     },
     {
@@ -4368,6 +4438,8 @@
       "turns": 600,
       "turns_repo1": 218,
       "turns_repo2": 382,
+      "harness_version": "Claude Code 2.1.302",
+      "model_id": "deepseek-flash",
       "group_rank": 2
     },
     {
@@ -4483,6 +4555,8 @@
       "turns": 450,
       "turns_repo1": 123,
       "turns_repo2": 327,
+      "harness_version": null,
+      "model_id": "gemini-4-argon-medium",
       "group_rank": 3
     },
     {
@@ -4606,6 +4680,8 @@
       "turns": 362,
       "turns_repo1": 134,
       "turns_repo2": 228,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 201
     },
     {
@@ -4723,6 +4799,8 @@
       "turns": 362,
       "turns_repo1": 130,
       "turns_repo2": 232,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 201
     },
     {
@@ -4848,6 +4926,8 @@
       "turns": 502,
       "turns_repo1": 216,
       "turns_repo2": 285,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 501
     },
     {
@@ -4971,6 +5051,8 @@
       "turns": 684,
       "turns_repo1": 262,
       "turns_repo2": 421,
+      "harness_version": "Claude Code 2.1.302",
+      "model_id": "deepseek-flash",
       "group_rank": 0
     },
     {
@@ -5096,6 +5178,8 @@
       "turns": 483,
       "turns_repo1": 134,
       "turns_repo2": 349,
+      "harness_version": null,
+      "model_id": "gemini-4-argon-low",
       "group_rank": 4
     },
     {
@@ -5165,6 +5249,8 @@
       "turns": 131,
       "turns_repo1": 73,
       "turns_repo2": 58,
+      "harness_version": null,
+      "model_id": "gpt-6-astra",
       "group_rank": 2
     },
     {
@@ -5234,6 +5320,8 @@
       "turns": 353,
       "turns_repo1": 122,
       "turns_repo2": 231,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 201
     },
     {
@@ -5373,6 +5461,8 @@
       "turns": 520,
       "turns_repo1": 198,
       "turns_repo2": 321,
+      "harness_version": "dsh 0.2.1-rc.2",
+      "model_id": "deepseek-flash",
       "group_rank": 4
     },
     {
@@ -5504,6 +5594,8 @@
       "turns": 518,
       "turns_repo1": 192,
       "turns_repo2": 326,
+      "harness_version": "Claude Code 2.1.302",
+      "model_id": "deepseek-flash",
       "group_rank": 4
     },
     {
@@ -5619,6 +5711,8 @@
       "turns": 274,
       "turns_repo1": 116,
       "turns_repo2": 158,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 502
     },
     {
@@ -5687,6 +5781,8 @@
       "turns": 663,
       "turns_repo1": 251,
       "turns_repo2": 412,
+      "harness_version": "Claude Code 2.1.302",
+      "model_id": "deepseek-flash",
       "group_rank": 0
     },
     {
@@ -5755,6 +5851,8 @@
       "turns": 104,
       "turns_repo1": 54,
       "turns_repo2": 50,
+      "harness_version": null,
+      "model_id": "gpt-6-astra",
       "group_rank": 3
     },
     {
@@ -5823,6 +5921,8 @@
       "turns": 269,
       "turns_repo1": 129,
       "turns_repo2": 140,
+      "harness_version": null,
+      "model_id": "gpt-5.6-sol",
       "group_rank": 402
     },
     {
@@ -5954,6 +6054,8 @@
       "turns": 302,
       "turns_repo1": 143,
       "turns_repo2": 159,
+      "harness_version": "pi-coding-agent 1.3.0",
+      "model_id": "deepseek-flash",
       "group_rank": 4
     },
     {
@@ -6081,6 +6183,8 @@
       "turns": 455,
       "turns_repo1": 176,
       "turns_repo2": 279,
+      "harness_version": "Muse Code 1.1.1 / Muse Code 1.2.1",
+      "model_id": "muse-spark-1.3",
       "group_rank": 200
     },
     {
@@ -6148,6 +6252,8 @@
       "turns": 616,
       "turns_repo1": 93,
       "turns_repo2": 523,
+      "harness_version": null,
+      "model_id": "gpt-5.6-luna",
       "group_rank": 600
     },
     {
@@ -6215,6 +6321,8 @@
       "turns": 358,
       "turns_repo1": 184,
       "turns_repo2": 174,
+      "harness_version": "Muse Code 1.1.1",
+      "model_id": "muse-spark-1.3",
       "group_rank": 200
     },
     {
@@ -6282,6 +6390,8 @@
       "turns": 308,
       "turns_repo1": 136,
       "turns_repo2": 172,
+      "harness_version": "Claude Code 2.1.251",
+      "model_id": "claude-fable-5-1",
       "group_rank": 2
     },
     {
@@ -6417,6 +6527,8 @@
       "turns": 317,
       "turns_repo1": 138,
       "turns_repo2": 179,
+      "harness_version": "opencode-ai 1.19.3",
+      "model_id": "deepseek-flash",
       "group_rank": 4
     },
     {
@@ -6552,6 +6664,8 @@
       "turns": 450,
       "turns_repo1": 169,
       "turns_repo2": 281,
+      "harness_version": "Muse Code 1.1.1 / Muse Code 1.2.1 / Muse Code 1.3.0",
+      "model_id": "muse-spark-1.3",
       "group_rank": 200
     },
     {
@@ -6671,6 +6785,8 @@
       "turns": 593,
       "turns_repo1": 238,
       "turns_repo2": 355,
+      "harness_version": "Claude Code 2.1.302",
+      "model_id": "deepseek-flash",
       "group_rank": 2
     },
     {
@@ -6737,6 +6853,8 @@
       "turns": 89,
       "turns_repo1": 46,
       "turns_repo2": 43,
+      "harness_version": "Claude Code 2.1.274",
+      "model_id": "stealth/union-alpha",
       "group_rank": 6
     },
     {
@@ -6803,6 +6921,8 @@
       "turns": 462,
       "turns_repo1": 130,
       "turns_repo2": 332,
+      "harness_version": null,
+      "model_id": "gemini-4-argon-low",
       "group_rank": 4
     },
     {
@@ -6831,7 +6951,7 @@
       "featured": false,
       "superseded": "Superseded 2026-09-23 by the mean of 2 (31.0 of 105). This row reported 32 of 105 from a single run, published the night the model shipped. The replicates are byte-identical re-runs; across 2 the runs span 30 to 32. Nothing here is retracted - it is kept as the receipt for what the board showed before the extra run.",
       "caveat": "ONE RUN, not a mean, on a model measured the night it shipped - and this board has measured a 13-point spread between two runs of a single identical max-effort configuration, so treat 32 as one draw. It also runs a Codex build one version newer than every other OpenAI row here, because the build the others use refuses this model; the harness is therefore not held fixed across that comparison. Cost is a list-rate estimate and a floor - the long-context surcharge is not modelled. The wall figure is contended.",
-      "note": "OpenAI's GPT-6 Sol at max effort through OpenAI's own Codex CLI, on a ChatGPT account - the same auth path as every other Sol, Astra, Terra and Luna row here, NOT the metered API. 32 of 105: 18 of 45 on repo 1 and 14 of 60 on repo 2, 48 genuine extras, 60.4 minutes, $10.03. ONE RUN, measured the night the model shipped. *** THE NEWER CHECKPOINT DOES NOT LEAD ITS OWN FAMILY HERE *** GPT-6 Astra publishes 45 of 105 at max (mean of 3) and 43 at xhigh on this same benchmark; GPT-5.6 Sol publishes 43.5 at max (mean of 2). This row lands at 32, below all three, at a fraction of the cost - $10 against GPT-5.6 Sol's $95. A single run cannot settle a gap that size against a mean, but it is a large gap in the direction nobody would have guessed from the release order. *** IT KILLED AN ALL-TIME SURVIVOR *** one repo-1 bug, A6, had outlived every model in every scored run on this board until now - a settings-persistence ordering defect, where a preference was written to storage before the change it described had actually taken effect, so a switch that failed or was dismissed left the stored value and the running session disagreeing. The survivor count drops from 32 to 31. That is worth separating from the score: this row sits in the middle of the table and still opened ground nothing above it had touched. It is also a variance event, not a capability - survivor kills on this board have not reproduced on demand in later runs. *** IT FINDS A LOT OF THINGS NOBODY PLANTED *** 48 genuine extras - real defects in the repos that are not part of the planted set - is among the highest counts on this board, from a row in the middle of the scoring table. Extras are reported separately and never folded into the score, but a model that flags this many unplanted defects while fixing fewer planted ones is spending its attention somewhere the planted total cannot see. *** THIS ROW RUNS A DIFFERENT CLI BUILD FROM EVERY OTHER OPENAI ROW, UNAVOIDABLY *** the Codex build the rest of this board uses (0.154.0) refuses this model outright - 'The gpt-6-sol model is not supported when using Codex with a ChatGPT account'. 0.155.1 runs it on the same account, same auth, same machine, so the blocker was the client and not entitlement. There is no version of this measurement that holds the harness fixed against the other OpenAI rows; the choice was a one-version harness delta or no row at all. Read the comparison above with that in it. (The rejection message is generic - a deliberately fake slug returns it verbatim - so it is not evidence about any model's existence.) *** THE FIRST TWO ATTEMPTS AT THIS ROW WERE VOID, AND THE REASON IS WORTH KNOWING *** the arm was first pinned to npm's shim rather than the real executable. On Windows that shim resolves to a .cmd, running a .cmd makes the shell re-parse the whole argument list, and a NEWLINE ENDS THE COMMAND - so the model received the benchmark prompt's first line, the repo description, and none of the numbered instructions. Both legs launched, billed and exited 0 with nothing to show the harness: one edited code and wrote no report it had never been asked for, the other replied asking what to work on. Nothing in the leg's own output said the prompt was short. Those legs are kept in the ledger, voided and labelled. This row is a clean re-run of both repos afterwards. A third earlier attempt died on an unrelated fault in the CLI's sandbox setup, since fixed. *** COST IS A LIST ESTIMATE AND A FLOOR *** token counts at OpenAI's published short-context rates, $2 input, $0.20 cached, $10 output per million. Requests over 272K input bill 2x on input and cache and 1.5x on output, which is NOT modelled here, so any leg that crossed that line cost more than this figure says. The Codex CLI on a subscription exposes no per-run bill, hence `list`, comparable only to other list rows. *** THE JUDGE IS NOT THIS BOARD'S DEFAULT, BY RULE *** a model may never judge itself or a sibling, and the default Codex judge is an OpenAI model, so it is disqualified for this arm - as is every other first-party GPT checkpoint here, since the rule is about shared weights and not identity-knowledge. Both legs were judged by grok-4.7 (the id is the one the scoring receipt records as SERVED, not the one the judge config asked for - from 2026-09-22 the endpoint has been resolving a request for grok-4.5 to grok-4.7, and notes published before 2026-09-23 named the requested id), blinded to the arm's identity. *** RECEIPTS *** Both legs exited 0 with a report written, run SEQUENTIALLY, one repo at a time. The run shared the laptop with legs from another vendor, which the wall marker discloses - scores, tokens and cost are untouched by that, only the clock.",
+      "note": "OpenAI's GPT-6 Sol at max effort through OpenAI's own Codex CLI, on a ChatGPT account - the same auth path as every other Sol, Astra, Terra and Luna row here, NOT the metered API. 32 of 105: 18 of 45 on repo 1 and 14 of 60 on repo 2, 48 genuine extras, 60.4 minutes, $10.03. ONE RUN, measured the night the model shipped. *** THE NEWER CHECKPOINT DOES NOT LEAD ITS OWN FAMILY HERE *** GPT-6 Astra publishes 45 of 105 at max (mean of 3) and 43 at xhigh on this same benchmark; GPT-5.6 Sol publishes 43.5 at max (mean of 2). This row lands at 32, below all three, at a fraction of the cost - $10 against GPT-5.6 Sol's $95. A single run cannot settle a gap that size against a mean, but it is a large gap in the direction nobody would have guessed from the release order. *** IT KILLED AN ALL-TIME SURVIVOR *** one repo-1 bug, #6 in the public index, had outlived every model in every scored run on this board until now - a settings-persistence ordering defect, where a preference was written to storage before the change it described had actually taken effect, so a switch that failed or was dismissed left the stored value and the running session disagreeing. The survivor count drops from 32 to 31. That is worth separating from the score: this row sits in the middle of the table and still opened ground nothing above it had touched. It is also a variance event, not a capability - survivor kills on this board have not reproduced on demand in later runs. *** IT FINDS A LOT OF THINGS NOBODY PLANTED *** 48 genuine extras - real defects in the repos that are not part of the planted set - is among the highest counts on this board, from a row in the middle of the scoring table. Extras are reported separately and never folded into the score, but a model that flags this many unplanted defects while fixing fewer planted ones is spending its attention somewhere the planted total cannot see. *** THIS ROW RUNS A DIFFERENT CLI BUILD FROM EVERY OTHER OPENAI ROW, UNAVOIDABLY *** the Codex build the rest of this board uses (0.154.0) refuses this model outright - 'The gpt-6-sol model is not supported when using Codex with a ChatGPT account'. 0.155.1 runs it on the same account, same auth, same machine, so the blocker was the client and not entitlement. There is no version of this measurement that holds the harness fixed against the other OpenAI rows; the choice was a one-version harness delta or no row at all. Read the comparison above with that in it. (The rejection message is generic - a deliberately fake slug returns it verbatim - so it is not evidence about any model's existence.) *** THE FIRST TWO ATTEMPTS AT THIS ROW WERE VOID, AND THE REASON IS WORTH KNOWING *** the arm was first pinned to npm's shim rather than the real executable. On Windows that shim resolves to a .cmd, running a .cmd makes the shell re-parse the whole argument list, and a NEWLINE ENDS THE COMMAND - so the model received the benchmark prompt's first line, the repo description, and none of the numbered instructions. Both legs launched, billed and exited 0 with nothing to show the harness: one edited code and wrote no report it had never been asked for, the other replied asking what to work on. Nothing in the leg's own output said the prompt was short. Those legs are kept in the ledger, voided and labelled. This row is a clean re-run of both repos afterwards. A third earlier attempt died on an unrelated fault in the CLI's sandbox setup, since fixed. *** COST IS A LIST ESTIMATE AND A FLOOR *** token counts at OpenAI's published short-context rates, $2 input, $0.20 cached, $10 output per million. Requests over 272K input bill 2x on input and cache and 1.5x on output, which is NOT modelled here, so any leg that crossed that line cost more than this figure says. The Codex CLI on a subscription exposes no per-run bill, hence `list`, comparable only to other list rows. *** THE JUDGE IS NOT THIS BOARD'S DEFAULT, BY RULE *** a model may never judge itself or a sibling, and the default Codex judge is an OpenAI model, so it is disqualified for this arm - as is every other first-party GPT checkpoint here, since the rule is about shared weights and not identity-knowledge. Both legs were judged by grok-4.7 (the id is the one the scoring receipt records as SERVED, not the one the judge config asked for - from 2026-09-22 the endpoint has been resolving a request for grok-4.5 to grok-4.7, and notes published before 2026-09-23 named the requested id), blinded to the arm's identity. *** RECEIPTS *** Both legs exited 0 with a report written, run SEQUENTIALLY, one repo at a time. The run shared the laptop with legs from another vendor, which the wall marker discloses - scores, tokens and cost are untouched by that, only the clock.",
       "fixed_bugs": [
         6,
         13,
@@ -6869,6 +6989,8 @@
       "turns": 365,
       "turns_repo1": 154,
       "turns_repo2": 211,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-sol",
       "group_rank": 200
     },
     {
@@ -6935,6 +7057,8 @@
       "turns": 294,
       "turns_repo1": 138,
       "turns_repo2": 156,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 502
     },
     {
@@ -7044,6 +7168,8 @@
       "turns": 266,
       "turns_repo1": 97,
       "turns_repo2": 168,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 202
     },
     {
@@ -7110,6 +7236,8 @@
       "turns": 269,
       "turns_repo1": 107,
       "turns_repo2": 162,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 202
     },
     {
@@ -7176,6 +7304,8 @@
       "turns": 875,
       "turns_repo1": 389,
       "turns_repo2": 486,
+      "harness_version": null,
+      "model_id": "gpt-5.6-terra",
       "group_rank": 500
     },
     {
@@ -7287,6 +7417,8 @@
       "turns": 267,
       "turns_repo1": 92,
       "turns_repo2": 176,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 202
     },
     {
@@ -7406,6 +7538,8 @@
       "turns": 258,
       "turns_repo1": 128,
       "turns_repo2": 130,
+      "harness_version": "Muse Code 1.4.1",
+      "model_id": "muse-wonder-1.0 / muse-wonder-1.0-contributor",
       "group_rank": 100
     },
     {
@@ -7521,6 +7655,8 @@
       "turns": 876,
       "turns_repo1": 404,
       "turns_repo2": 472,
+      "harness_version": null,
+      "model_id": "gpt-5.6-luna",
       "group_rank": 600
     },
     {
@@ -7638,6 +7774,8 @@
       "turns": 990,
       "turns_repo1": 542,
       "turns_repo2": 448,
+      "harness_version": null,
+      "model_id": "gpt-5.6-luna",
       "group_rank": 600
     },
     {
@@ -7703,6 +7841,8 @@
       "turns": 91,
       "turns_repo1": 48,
       "turns_repo2": 43,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 104
     },
     {
@@ -7808,6 +7948,8 @@
       "turns": 353,
       "turns_repo1": 156,
       "turns_repo2": 196,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-sol",
       "group_rank": 200
     },
     {
@@ -7873,6 +8015,8 @@
       "turns": 325,
       "turns_repo1": 122,
       "turns_repo2": 203,
+      "harness_version": null,
+      "model_id": "gpt-5.6-sol",
       "group_rank": 402
     },
     {
@@ -7992,6 +8136,8 @@
       "turns": 113,
       "turns_repo1": 67,
       "turns_repo2": 46,
+      "harness_version": "Claude Code 2.1.274",
+      "model_id": "stealth/union-alpha",
       "group_rank": 6
     },
     {
@@ -8101,6 +8247,8 @@
       "turns": 189,
       "turns_repo1": 66,
       "turns_repo2": 123,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 203
     },
     {
@@ -8208,6 +8356,8 @@
       "turns": 190,
       "turns_repo1": 70,
       "turns_repo2": 120,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 203
     },
     {
@@ -8272,6 +8422,8 @@
       "turns": 197,
       "turns_repo1": 74,
       "turns_repo2": 123,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 203
     },
     {
@@ -8336,6 +8488,8 @@
       "turns": 457,
       "turns_repo1": 165,
       "turns_repo2": 292,
+      "harness_version": null,
+      "model_id": "grok-4.7",
       "group_rank": 3
     },
     {
@@ -8441,6 +8595,8 @@
       "turns": 352,
       "turns_repo1": 163,
       "turns_repo2": 189,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-sol",
       "group_rank": 200
     },
     {
@@ -8544,6 +8700,8 @@
       "turns": 92,
       "turns_repo1": 55,
       "turns_repo2": 37,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 103
     },
     {
@@ -8607,6 +8765,8 @@
       "turns": 143,
       "turns_repo1": 67,
       "turns_repo2": 76,
+      "harness_version": null,
+      "model_id": "gpt-5.6-sol",
       "group_rank": 403
     },
     {
@@ -8734,6 +8894,8 @@
       "turns": 503,
       "turns_repo1": 173,
       "turns_repo2": 329,
+      "harness_version": "grok 1.0.30",
+      "model_id": "grok-4.7",
       "group_rank": 1
     },
     {
@@ -8797,6 +8959,8 @@
       "turns": 234,
       "turns_repo1": 95,
       "turns_repo2": 139,
+      "harness_version": "Claude Code 2.1.251",
+      "model_id": "claude-fable-5-1",
       "group_rank": 4
     },
     {
@@ -8860,6 +9024,8 @@
       "turns": 420,
       "turns_repo1": 208,
       "turns_repo2": 212,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "claude-fable-5-1",
       "group_rank": 1
     },
     {
@@ -8923,6 +9089,8 @@
       "turns": 315,
       "turns_repo1": 104,
       "turns_repo2": 211,
+      "harness_version": "Claude Code 2.1.220",
+      "model_id": "claude-fable-5",
       "group_rank": 100
     },
     {
@@ -9042,6 +9210,8 @@
       "turns": 500,
       "turns_repo1": 176,
       "turns_repo2": 324,
+      "harness_version": "grok 1.0.30",
+      "model_id": "grok-4.7",
       "group_rank": 1
     },
     {
@@ -9159,6 +9329,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": "grok 1.0.5",
+      "model_id": "grok-4.6",
       "group_rank": 101
     },
     {
@@ -9274,6 +9446,8 @@
       "turns": 506,
       "turns_repo1": 181,
       "turns_repo2": 325,
+      "harness_version": "grok 1.0.30",
+      "model_id": "grok-4.7",
       "group_rank": 1
     },
     {
@@ -9336,6 +9510,8 @@
       "turns": 95,
       "turns_repo1": 53,
       "turns_repo2": 42,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 103
     },
     {
@@ -9398,6 +9574,8 @@
       "turns": 398,
       "turns_repo1": 126,
       "turns_repo2": 272,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "qwen3.8-max",
       "group_rank": 0
     },
     {
@@ -9459,6 +9637,8 @@
       "turns": 92,
       "turns_repo1": 49,
       "turns_repo2": 43,
+      "harness_version": null,
+      "model_id": "gpt-6-astra",
       "group_rank": 4
     },
     {
@@ -9520,6 +9700,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": "grok 1.0.5",
+      "model_id": "grok-4.6",
       "group_rank": 101
     },
     {
@@ -9581,6 +9763,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": null,
+      "model_id": "grok-4.6",
       "group_rank": 101
     },
     {
@@ -9642,6 +9826,8 @@
       "turns": 295,
       "turns_repo1": 148,
       "turns_repo2": 147,
+      "harness_version": "Claude Code 2.1.220",
+      "model_id": "claude-opus-5",
       "group_rank": 300
     },
     {
@@ -9753,6 +9939,8 @@
       "turns": 417,
       "turns_repo1": 165,
       "turns_repo2": 252,
+      "harness_version": null,
+      "model_id": "grok-4.7",
       "group_rank": 3
     },
     {
@@ -9813,6 +10001,8 @@
       "turns": 363,
       "turns_repo1": 122,
       "turns_repo2": 241,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "qwen3.8-flash",
       "group_rank": 300
     },
     {
@@ -9873,6 +10063,8 @@
       "turns": 319,
       "turns_repo1": 134,
       "turns_repo2": 185,
+      "harness_version": "Claude Code 2.1.248",
+      "model_id": "claude-opus-5",
       "group_rank": 301
     },
     {
@@ -9980,6 +10172,8 @@
       "turns": 373,
       "turns_repo1": 136,
       "turns_repo2": 236,
+      "harness_version": "Claude Code 2.1.267 / Claude Code 2.1.272",
+      "model_id": "qwen3.8-max",
       "group_rank": 0
     },
     {
@@ -10039,6 +10233,8 @@
       "turns": 260,
       "turns_repo1": 107,
       "turns_repo2": 153,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-sol",
       "group_rank": 201
     },
     {
@@ -10097,6 +10293,8 @@
       "turns": 485,
       "turns_repo1": 193,
       "turns_repo2": 292,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "deepseek-flash",
       "group_rank": 100
     },
     {
@@ -10196,6 +10394,8 @@
       "turns": 136,
       "turns_repo1": 58,
       "turns_repo2": 78,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 204
     },
     {
@@ -10254,6 +10454,8 @@
       "turns": 260,
       "turns_repo1": 107,
       "turns_repo2": 153,
+      "harness_version": "Claude Code 2.1.247",
+      "model_id": "claude-opus-5",
       "group_rank": 303
     },
     {
@@ -10312,6 +10514,8 @@
       "turns": 244,
       "turns_repo1": 110,
       "turns_repo2": 134,
+      "harness_version": "Claude Code 2.1.215 / Claude Code 2.1.218",
+      "model_id": "claude-fable-5",
       "group_rank": 102
     },
     {
@@ -10423,6 +10627,8 @@
       "turns": 415,
       "turns_repo1": 132,
       "turns_repo2": 283,
+      "harness_version": "Claude Code 2.1.278 / Claude Code 2.1.280",
+      "model_id": "xiaomi/mimo-v2.6-flash",
       "group_rank": 106
     },
     {
@@ -10530,6 +10736,8 @@
       "turns": 138,
       "turns_repo1": 48,
       "turns_repo2": 90,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 503
     },
     {
@@ -10587,6 +10795,8 @@
       "turns": 325,
       "turns_repo1": 136,
       "turns_repo2": 189,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "qwen3.8-flash",
       "group_rank": 304
     },
     {
@@ -10644,6 +10854,8 @@
       "turns": 813,
       "turns_repo1": 464,
       "turns_repo2": 349,
+      "harness_version": null,
+      "model_id": "gpt-5.6-luna",
       "group_rank": 601
     },
     {
@@ -10701,6 +10913,8 @@
       "turns": 137,
       "turns_repo1": 51,
       "turns_repo2": 86,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 204
     },
     {
@@ -10758,6 +10972,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": "grok 1.0.3",
+      "model_id": "grok-4.6",
       "group_rank": 103
     },
     {
@@ -10815,6 +11031,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": null,
+      "model_id": "grok-4.6",
       "group_rank": 102
     },
     {
@@ -10916,6 +11134,8 @@
       "turns": 308,
       "turns_repo1": 129,
       "turns_repo2": 180,
+      "harness_version": "Claude Code 2.1.278",
+      "model_id": "xiaomi/mimo-v2.6-pro",
       "group_rank": 6
     },
     {
@@ -11015,6 +11235,8 @@
       "turns": 74,
       "turns_repo1": 40,
       "turns_repo2": 34,
+      "harness_version": "codex-cli 0.159.0",
+      "model_id": "gpt-6.1-sol",
       "group_rank": 104
     },
     {
@@ -11116,6 +11338,8 @@
       "turns": 127,
       "turns_repo1": 55,
       "turns_repo2": 71,
+      "harness_version": "Claude Code 2.1.280",
+      "model_id": "claude-opus-5-5",
       "group_rank": 204
     },
     {
@@ -11207,6 +11431,8 @@
       "turns": 326,
       "turns_repo1": 131,
       "turns_repo2": 195,
+      "harness_version": "Claude Code 2.1.278",
+      "model_id": "xiaomi/mimo-v2.6-pro",
       "group_rank": 6
     },
     {
@@ -11263,6 +11489,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": "grok 1.0.5",
+      "model_id": "grok-4.6",
       "group_rank": 103
     },
     {
@@ -11319,6 +11547,8 @@
       "turns": 371,
       "turns_repo1": 137,
       "turns_repo2": 234,
+      "harness_version": "Claude Code 2.1.292",
+      "model_id": "claude-haiku-5-5",
       "group_rank": 700
     },
     {
@@ -11375,6 +11605,8 @@
       "turns": 530,
       "turns_repo1": 254,
       "turns_repo2": 276,
+      "harness_version": "Gemini CLI 0.56.0",
+      "model_id": "gemini-3.7-flash",
       "group_rank": 202
     },
     {
@@ -11478,6 +11710,8 @@
       "turns": 461,
       "turns_repo1": 193,
       "turns_repo2": 268,
+      "harness_version": "Claude Code 2.1.267 / Claude Code 2.1.270",
+      "model_id": "deepseek-flash",
       "group_rank": 100
     },
     {
@@ -11565,6 +11799,8 @@
       "turns": 328,
       "turns_repo1": 120,
       "turns_repo2": 208,
+      "harness_version": "Claude Code 2.1.292",
+      "model_id": "claude-haiku-5-5",
       "group_rank": 700
     },
     {
@@ -11620,6 +11856,8 @@
       "turns": 194,
       "turns_repo1": 88,
       "turns_repo2": 106,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "claude-fable-5-1",
       "group_rank": 3
     },
     {
@@ -11675,6 +11913,8 @@
       "turns": 394,
       "turns_repo1": 138,
       "turns_repo2": 256,
+      "harness_version": "Claude Code 2.1.215 / Claude Code 2.1.218",
+      "model_id": "moonshotai/kimi-k3",
       "group_rank": 6
     },
     {
@@ -11730,6 +11970,8 @@
       "turns": 261,
       "turns_repo1": 121,
       "turns_repo2": 140,
+      "harness_version": "Claude Code 2.1.218",
+      "model_id": "claude-opus-5",
       "group_rank": 302
     },
     {
@@ -11827,6 +12069,8 @@
       "turns": 332,
       "turns_repo1": 132,
       "turns_repo2": 200,
+      "harness_version": "Muse Code 1.2.1",
+      "model_id": "muse-spark-1.3",
       "group_rank": 201
     },
     {
@@ -11881,6 +12125,8 @@
       "turns": 329,
       "turns_repo1": 107,
       "turns_repo2": 222,
+      "harness_version": "Claude Code 2.1.278",
+      "model_id": "xiaomi/mimo-v2.6-pro",
       "group_rank": 6
     },
     {
@@ -11935,6 +12181,8 @@
       "turns": 162,
       "turns_repo1": 80,
       "turns_repo2": 82,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-sol",
       "group_rank": 202
     },
     {
@@ -11989,6 +12237,8 @@
       "turns": 119,
       "turns_repo1": 52,
       "turns_repo2": 67,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 504
     },
     {
@@ -12043,6 +12293,8 @@
       "turns": 259,
       "turns_repo1": 127,
       "turns_repo2": 132,
+      "harness_version": null,
+      "model_id": "gpt-5.6-terra",
       "group_rank": 501
     },
     {
@@ -12097,6 +12349,8 @@
       "turns": 546,
       "turns_repo1": 262,
       "turns_repo2": 284,
+      "harness_version": "agy 1.1.22",
+      "model_id": "gemini-3.8-flash-high",
       "group_rank": 102
     },
     {
@@ -12151,6 +12405,8 @@
       "turns": 356,
       "turns_repo1": 164,
       "turns_repo2": 192,
+      "harness_version": "Muse Code 1.2.1",
+      "model_id": "muse-spark-1.3",
       "group_rank": 201
     },
     {
@@ -12242,6 +12498,8 @@
       "turns": 397,
       "turns_repo1": 143,
       "turns_repo2": 254,
+      "harness_version": null,
+      "model_id": "grok-4.7",
       "group_rank": 2
     },
     {
@@ -12295,6 +12553,8 @@
       "turns": 383,
       "turns_repo1": 153,
       "turns_repo2": 230,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "deepseek-flash",
       "group_rank": 102
     },
     {
@@ -12384,6 +12644,8 @@
       "turns": 270,
       "turns_repo1": 156,
       "turns_repo2": 115,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-luna",
       "group_rank": 300
     },
     {
@@ -12437,6 +12699,8 @@
       "turns": 289,
       "turns_repo1": 100,
       "turns_repo2": 189,
+      "harness_version": "Claude Code 2.1.269",
+      "model_id": "glm-5.3-flash",
       "group_rank": 100
     },
     {
@@ -12520,6 +12784,8 @@
       "turns": 100,
       "turns_repo1": 45,
       "turns_repo2": 55,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 504
     },
     {
@@ -12573,6 +12839,8 @@
       "turns": 221,
       "turns_repo1": 141,
       "turns_repo2": 80,
+      "harness_version": "Muse Code 1.2.1",
+      "model_id": "muse-spark-1.3",
       "group_rank": 202
     },
     {
@@ -12626,6 +12894,8 @@
       "turns": 384,
       "turns_repo1": 150,
       "turns_repo2": 234,
+      "harness_version": null,
+      "model_id": "grok-4.7",
       "group_rank": 2
     },
     {
@@ -12679,6 +12949,8 @@
       "turns": 344,
       "turns_repo1": 116,
       "turns_repo2": 228,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "glm-5.3",
       "group_rank": 0
     },
     {
@@ -12732,6 +13004,8 @@
       "turns": 338,
       "turns_repo1": 158,
       "turns_repo2": 180,
+      "harness_version": "Claude Code 2.1.243",
+      "model_id": "z-ai/glm-5.3",
       "group_rank": 6
     },
     {
@@ -12785,6 +13059,8 @@
       "turns": 303,
       "turns_repo1": 154,
       "turns_repo2": 149,
+      "harness_version": "Claude Code 2.1.220",
+      "model_id": "qwen3.8-max",
       "group_rank": 6
     },
     {
@@ -12882,6 +13158,8 @@
       "turns": 268,
       "turns_repo1": 142,
       "turns_repo2": 126,
+      "harness_version": "Muse Code 1.2.1",
+      "model_id": "muse-spark-1.3",
       "group_rank": 202
     },
     {
@@ -12977,6 +13255,8 @@
       "turns": 286,
       "turns_repo1": 153,
       "turns_repo2": 133,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-luna",
       "group_rank": 300
     },
     {
@@ -13074,6 +13354,8 @@
       "turns": 246,
       "turns_repo1": 104,
       "turns_repo2": 142,
+      "harness_version": "Claude Code 2.1.292",
+      "model_id": "claude-haiku-5-5",
       "group_rank": 701
     },
     {
@@ -13126,6 +13408,8 @@
       "turns": 288,
       "turns_repo1": 113,
       "turns_repo2": 175,
+      "harness_version": "Claude Code 2.1.278",
+      "model_id": "mimo-v2.6-pro",
       "group_rank": 8
     },
     {
@@ -13178,6 +13462,8 @@
       "turns": 257,
       "turns_repo1": 101,
       "turns_repo2": 156,
+      "harness_version": "Claude Code 2.1.250",
+      "model_id": "tencent/hy4-preview",
       "group_rank": 6
     },
     {
@@ -13230,6 +13516,8 @@
       "turns": 128,
       "turns_repo1": 71,
       "turns_repo2": 57,
+      "harness_version": null,
+      "model_id": "gpt-5.6-terra",
       "group_rank": 502
     },
     {
@@ -13282,6 +13570,8 @@
       "turns": 112,
       "turns_repo1": 43,
       "turns_repo2": 69,
+      "harness_version": "Claude Code 2.1.283",
+      "model_id": "claude-sonnet-5-5",
       "group_rank": 503
     },
     {
@@ -13334,6 +13624,8 @@
       "turns": 450,
       "turns_repo1": 138,
       "turns_repo2": 312,
+      "harness_version": null,
+      "model_id": "gemini-3.7-flash-high",
       "group_rank": 202
     },
     {
@@ -13386,6 +13678,8 @@
       "turns": 235,
       "turns_repo1": 109,
       "turns_repo2": 126,
+      "harness_version": "MUSE CODE 0.1.0",
+      "model_id": "muse-spark-1.3",
       "group_rank": 202
     },
     {
@@ -13471,6 +13765,8 @@
       "turns": 658,
       "turns_repo1": 329,
       "turns_repo2": 329,
+      "harness_version": "agy 1.1.22",
+      "model_id": "gemini-3.8-flash-high",
       "group_rank": 102
     },
     {
@@ -13554,6 +13850,8 @@
       "turns": 332,
       "turns_repo1": 119,
       "turns_repo2": 213,
+      "harness_version": "Claude Code 2.1.269 / Claude Code 2.1.270",
+      "model_id": "glm-5.3-flash",
       "group_rank": 100
     },
     {
@@ -13605,6 +13903,8 @@
       "turns": 315,
       "turns_repo1": 210,
       "turns_repo2": 105,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-luna",
       "group_rank": 300
     },
     {
@@ -13656,6 +13956,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": null,
+      "model_id": "grok-4.5",
       "group_rank": 202
     },
     {
@@ -13707,6 +14009,8 @@
       "turns": 31,
       "turns_repo1": 1,
       "turns_repo2": 30,
+      "harness_version": "Claude Code 2.1.222",
+      "model_id": "muse-spark-1.2",
       "group_rank": 301
     },
     {
@@ -13757,6 +14061,8 @@
       "turns": 263,
       "turns_repo1": 118,
       "turns_repo2": 145,
+      "harness_version": "Claude Code 2.1.243",
+      "model_id": "stealth/ox-alpha",
       "group_rank": 206
     },
     {
@@ -13807,6 +14113,8 @@
       "turns": 344,
       "turns_repo1": 115,
       "turns_repo2": 229,
+      "harness_version": "Claude Code 2.1.269",
+      "model_id": "glm-5.3-flash",
       "group_rank": 102
     },
     {
@@ -13857,6 +14165,8 @@
       "turns": 354,
       "turns_repo1": 123,
       "turns_repo2": 231,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "deepseek-v4-pro",
       "group_rank": 200
     },
     {
@@ -13907,6 +14217,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": null,
+      "model_id": "grok-4.5",
       "group_rank": 202
     },
     {
@@ -13984,6 +14296,8 @@
       "turns": 216,
       "turns_repo1": 67,
       "turns_repo2": 149,
+      "harness_version": "Claude Code 2.1.292",
+      "model_id": "claude-haiku-5-5",
       "group_rank": 702
     },
     {
@@ -14034,6 +14348,8 @@
       "turns": 363,
       "turns_repo1": 136,
       "turns_repo2": 227,
+      "harness_version": "Antigravity CLI 1.1.20",
+      "model_id": "gemini-3.7-flash-high",
       "group_rank": 202
     },
     {
@@ -14117,6 +14433,8 @@
       "turns": 285,
       "turns_repo1": 142,
       "turns_repo2": 144,
+      "harness_version": null,
+      "model_id": "grok-4.7",
       "group_rank": 4
     },
     {
@@ -14166,6 +14484,8 @@
       "turns": 205,
       "turns_repo1": 65,
       "turns_repo2": 140,
+      "harness_version": "Claude Code 2.1.292",
+      "model_id": "claude-haiku-5-5",
       "group_rank": 702
     },
     {
@@ -14215,6 +14535,8 @@
       "turns": 93,
       "turns_repo1": 48,
       "turns_repo2": 45,
+      "harness_version": null,
+      "model_id": "gpt-5.6-terra",
       "group_rank": 503
     },
     {
@@ -14264,6 +14586,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": "grok 1.0.5",
+      "model_id": "grok-4.6",
       "group_rank": 104
     },
     {
@@ -14347,6 +14671,8 @@
       "turns": 292,
       "turns_repo1": 101,
       "turns_repo2": 191,
+      "harness_version": "Claude Code 2.1.268 / Claude Code 2.1.272",
+      "model_id": "qwen3.8-27b",
       "group_rank": 101
     },
     {
@@ -14396,6 +14722,8 @@
       "turns": 318,
       "turns_repo1": 120,
       "turns_repo2": 198,
+      "harness_version": "Claude Code 2.1.268",
+      "model_id": "qwen3.8-27b",
       "group_rank": 101
     },
     {
@@ -14479,6 +14807,8 @@
       "turns": 386,
       "turns_repo1": 117,
       "turns_repo2": 268,
+      "harness_version": "Claude Code 2.1.291",
+      "model_id": "mistralai/mistral-large-4-0",
       "group_rank": 2
     },
     {
@@ -14528,6 +14858,8 @@
       "turns": 469,
       "turns_repo1": 209,
       "turns_repo2": 260,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "claude-opus-4-8",
       "group_rank": 400
     },
     {
@@ -14576,6 +14908,8 @@
       "turns": 172,
       "turns_repo1": 73,
       "turns_repo2": 99,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-luna",
       "group_rank": 301
     },
     {
@@ -14624,6 +14958,8 @@
       "turns": 205,
       "turns_repo1": 66,
       "turns_repo2": 139,
+      "harness_version": "Claude Code 2.1.220",
+      "model_id": "deepseek/deepseek-v4-flash-0731",
       "group_rank": 306
     },
     {
@@ -14672,6 +15008,8 @@
       "turns": 103,
       "turns_repo1": 49,
       "turns_repo2": 54,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-sol",
       "group_rank": 203
     },
     {
@@ -14720,6 +15058,8 @@
       "turns": 424,
       "turns_repo1": 144,
       "turns_repo2": 280,
+      "harness_version": "Claude Code 2.1.222",
+      "model_id": "meta/muse-spark-1.2",
       "group_rank": 306
     },
     {
@@ -14767,6 +15107,8 @@
       "turns": 174,
       "turns_repo1": 111,
       "turns_repo2": 63,
+      "harness_version": null,
+      "model_id": "gpt-5.6-luna",
       "group_rank": 602
     },
     {
@@ -14814,6 +15156,8 @@
       "turns": 243,
       "turns_repo1": 91,
       "turns_repo2": 152,
+      "harness_version": "Claude Code 2.1.247",
+      "model_id": "z-ai/glm-5.3-flash",
       "group_rank": 106
     },
     {
@@ -14861,6 +15205,8 @@
       "turns": 288,
       "turns_repo1": 102,
       "turns_repo2": 186,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "deepseek-v4-pro",
       "group_rank": 202
     },
     {
@@ -14944,6 +15290,8 @@
       "turns": 240,
       "turns_repo1": 88,
       "turns_repo2": 152,
+      "harness_version": "Muse Code 1.2.1",
+      "model_id": "muse-spark-1.3",
       "group_rank": 203
     },
     {
@@ -14991,6 +15339,8 @@
       "turns": null,
       "turns_repo1": null,
       "turns_repo2": null,
+      "harness_version": null,
+      "model_id": "grok-4.5",
       "group_rank": 202
     },
     {
@@ -15037,6 +15387,8 @@
       "turns": 194,
       "turns_repo1": 65,
       "turns_repo2": 129,
+      "harness_version": "Claude Code 2.1.292",
+      "model_id": "claude-haiku-5-5",
       "group_rank": 703
     },
     {
@@ -15082,6 +15434,8 @@
       "turns": 127,
       "turns_repo1": 53,
       "turns_repo2": 74,
+      "harness_version": "Claude Code 2.1.292",
+      "model_id": "claude-haiku-5-5",
       "group_rank": 704
     },
     {
@@ -15127,6 +15481,8 @@
       "turns": 253,
       "turns_repo1": 101,
       "turns_repo2": 152,
+      "harness_version": null,
+      "model_id": "grok-4.7",
       "group_rank": 4
     },
     {
@@ -15200,6 +15556,8 @@
       "turns": 329,
       "turns_repo1": 153,
       "turns_repo2": 177,
+      "harness_version": "Claude Code 2.1.272",
+      "model_id": "qwen/qwen3.8-27b",
       "group_rank": 206
     },
     {
@@ -15244,6 +15602,8 @@
       "turns": 184,
       "turns_repo1": 69,
       "turns_repo2": 115,
+      "harness_version": "Claude Code 2.1.220",
+      "model_id": "deepseek/deepseek-v4-pro",
       "group_rank": 206
     },
     {
@@ -15323,6 +15683,8 @@
       "turns": 175,
       "turns_repo1": 93,
       "turns_repo2": 82,
+      "harness_version": "Muse Code 1.2.1",
+      "model_id": "muse-spark-1.3",
       "group_rank": 204
     },
     {
@@ -15366,6 +15728,8 @@
       "turns": 72,
       "turns_repo1": 29,
       "turns_repo2": 43,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-luna",
       "group_rank": 302
     },
     {
@@ -15409,6 +15773,8 @@
       "turns": 97,
       "turns_repo1": 58,
       "turns_repo2": 39,
+      "harness_version": "codex-cli 0.150.0-alpha.8",
+      "model_id": "gpt-5.6-luna",
       "group_rank": 603
     },
     {
@@ -15452,6 +15818,8 @@
       "turns": 155,
       "turns_repo1": 60,
       "turns_repo2": 95,
+      "harness_version": "Claude Code 2.1.269",
+      "model_id": "glm-5.3-flash",
       "group_rank": 104
     },
     {
@@ -15495,6 +15863,8 @@
       "turns": 228,
       "turns_repo1": 79,
       "turns_repo2": 149,
+      "harness_version": "Muse Code 1.2.1",
+      "model_id": "muse-spark-1.3",
       "group_rank": 203
     },
     {
@@ -15538,6 +15908,8 @@
       "turns": 258,
       "turns_repo1": 143,
       "turns_repo2": 115,
+      "harness_version": "Claude Code 2.1.218",
+      "model_id": "claude-sonnet-5",
       "group_rank": 602
     },
     {
@@ -15581,6 +15953,8 @@
       "turns": 411,
       "turns_repo1": 207,
       "turns_repo2": 204,
+      "harness_version": "Claude Code 2.1.267",
+      "model_id": "claude-sonnet-5",
       "group_rank": 600
     },
     {
@@ -15624,6 +15998,8 @@
       "turns": 165,
       "turns_repo1": 97,
       "turns_repo2": 68,
+      "harness_version": "Claude Code 2.1.215 / Claude Code 2.1.218",
+      "model_id": "claude-opus-4-8",
       "group_rank": 402
     },
     {
@@ -15666,6 +16042,8 @@
       "turns": 190,
       "turns_repo1": 63,
       "turns_repo2": 127,
+      "harness_version": "Claude Code 2.1.220",
+      "model_id": "deepseek/deepseek-v4-flash",
       "group_rank": 306
     },
     {
@@ -15708,6 +16086,8 @@
       "turns": 271,
       "turns_repo1": 120,
       "turns_repo2": 151,
+      "harness_version": "Claude Code 2.1.272",
+      "model_id": "qwen/qwen3.8-27b",
       "group_rank": 206
     },
     {
@@ -15748,6 +16128,8 @@
       "turns": 64,
       "turns_repo1": 40,
       "turns_repo2": 24,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-sol",
       "group_rank": 204
     },
     {
@@ -15786,6 +16168,8 @@
       "turns": 40,
       "turns_repo1": 24,
       "turns_repo2": 16,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-luna",
       "group_rank": 303
     },
     {
@@ -15824,6 +16208,8 @@
       "turns": 37,
       "turns_repo1": 18,
       "turns_repo2": 19,
+      "harness_version": "codex-cli 0.150.0-alpha.8",
+      "model_id": "gpt-5.6-luna",
       "group_rank": 604
     },
     {
@@ -15862,6 +16248,8 @@
       "turns": 130,
       "turns_repo1": 79,
       "turns_repo2": 51,
+      "harness_version": "codex-cli 0.155.1",
+      "model_id": "gpt-6-luna",
       "group_rank": 304
     },
     {
@@ -15900,6 +16288,8 @@
       "turns": 174,
       "turns_repo1": 125,
       "turns_repo2": 49,
+      "harness_version": "Claude Code 2.1.272",
+      "model_id": "google/gemma-4-31b-it",
       "group_rank": 306
     },
     {
@@ -15937,6 +16327,8 @@
       "turns": 59,
       "turns_repo1": 26,
       "turns_repo2": 33,
+      "harness_version": "Claude Code 2.1.272",
+      "model_id": "google/gemma-4-31b-it",
       "group_rank": 406
     },
     {
@@ -15980,6 +16372,8 @@
       "turns": 140,
       "turns_repo1": 78,
       "turns_repo2": 63,
+      "harness_version": "Claude Code 2.1.292",
+      "model_id": "claude-haiku-4-5-20251001",
       "group_rank": 806
     },
     {
@@ -16013,6 +16407,8 @@
       "turns": 61,
       "turns_repo1": 19,
       "turns_repo2": 42,
+      "harness_version": "Claude Code 2.1.269",
+      "model_id": "openai/gpt-oss-20b",
       "group_rank": 806
     },
     {
@@ -16048,6 +16444,8 @@
       "turns": 35,
       "turns_repo1": 11,
       "turns_repo2": 25,
+      "harness_version": "Claude Code 2.1.269 / Claude Code 2.1.272",
+      "model_id": "openai/gpt-oss-120b",
       "group_rank": 706
     },
     {
@@ -16083,6 +16481,8 @@
       "turns": 63,
       "turns_repo1": 23,
       "turns_repo2": 40,
+      "harness_version": "Claude Code 2.1.269 / Claude Code 2.1.272",
+      "model_id": "openai/gpt-oss-20b",
       "group_rank": 806
     },
     {
@@ -16116,6 +16516,8 @@
       "turns": 44,
       "turns_repo1": 11,
       "turns_repo2": 33,
+      "harness_version": "Claude Code 2.1.269",
+      "model_id": "openai/gpt-oss-120b",
       "group_rank": 706
     }
   ]
