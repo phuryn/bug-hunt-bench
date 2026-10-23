@@ -4365,3 +4365,25 @@ The same model in four harnesses, mean score (cost per run):
 What it shows. OpenCode is last at max and low and level with Claude Code at high. At max the gap is the clearest harness difference on this model so far: OpenCode's best run (40) is below every Pi run (41-44) and at the bottom of DeepSeek Harness's range (39-47). Against Claude Code at max, and against all three at high and low, the run ranges overlap, so those gaps are a lean, not an established difference. OpenCode costs more per run than Pi at every tier and less than DeepSeek Harness. Unlike Pi it can start subagents, and it did more at lower effort: 1 across the ten max legs, 8 at high, 13 at low.
 
 Effort was read on the wire for every request: every main-loop and subagent request carried its row's tier; the only exceptions are OpenCode's own session-title calls (one per leg, always sent at low), so max 2,372 of 2,382 requests, high 2,231 of 2,241, low 2,465 of 2,465 (receipt in `effort-dial-probes/`). No leg compacted its context: the main loop's prompt only ever grew (peak 803K tokens of the 1M window). Every leg ran in one segment and shared the laptop with other legs of its wave, which the wall marker discloses. A first attempt at max was discarded unjudged - a launch fault made OpenCode work outside the run folders - and all ten legs were rerun with the fault fixed. One low leg (run 2, repo 1) was flagged by the automated integrity scan for a path string and cleared on review: the string came from the repo's own test fixtures, which the agent was parsing inside its folder. Generated test-coverage reports were left out of the judged diffs. Costs are DeepSeek's own usage at its off-peak list price, which the account balance confirmed. Judged by Grok (grok-4.7). Not featured.
+
+## Kimi K3.1 Pro — max, mean of 3, 36.0 of 105 (Oct 23)
+
+Moonshot's Kimi K3.1 Pro (`kimi-k3.1-pro`), released the same day, in Claude Code pointed straight at Moonshot's own Anthropic-compatible endpoint: no proxy, no aggregator. Moonshot's launch post evaluates the model's coding benchmarks in Claude Code. Effort max: Claude Code sends `output_config.effort=max` on every call, and max is the default on Moonshot's model card (low, high, max). The endpoint also answers an invented tier with HTTP 200, so the label rests on that documented default, not on the endpoint accepting the field.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Kimi K3.1 Pro (max effort, Moonshot API) - mean of 3 | Claude Code / Moonshot API | **36.0** / 105 | 17.0 / 45 | 19.0 / 60 | 64.8 min | $13.76 |
+| Kimi K3 | Claude Code / OpenRouter | 21 / 105 | 4 / 45 | 17 / 60 | 107.8 min | $25.27 |
+| Opus 5.5 (xhigh effort) - mean of 3 | Claude Code | 36.0 / 105 | 17.0 / 45 | 19.0 / 60 | 42.5 min | $34.98 |
+| Sonnet 5.5 (xhigh effort) - mean of 3 | Claude Code | 36.0 / 105 | 16.0 / 45 | 20.0 / 60 | 72.7 min | $42.86 |
+| DeepSeek V4.1 Flash 1017 (max effort) - mean of 7 | Claude Code / DeepSeek API | 39.1 / 105 | 18.1 / 45 | 21.0 / 60 | 57.7 min | $1.01 |
+
+Runs: 36, 42 and 30 of 105 (repo 1: 14, 19 and 18 - repo 2: 22, 23 and 12). Repo 1 held within five points; repo 2 swung by eleven. Honesty profile: claimed-only fixes 0, 2 and 1; partial fixes 4, 3 and 0; genuine unplanted extras 17, 40 and 31, never folded into the score.
+
+Where it lands. 15 points above Kimi K3's 21, but that row ran through OpenRouter at the route's default effort, so the gap is model, route and effort together. On score it ties Opus 5.5 and Sonnet 5.5 at xhigh, at well under half their cost per run; DeepSeek V4.1 Flash 1017 at max in the same harness scores 3.1 higher for about a fourteenth of the price.
+
+One repo-2 attempt collapsed. In run 3 the first repo-2 attempt made 52 normal tool calls, then at about 128K tokens of context its reasoning and its final message turned into incoherent text. It ended after 3.9 minutes with no report and no change, and the API returned no error. That attempt was re-run and the re-run (12 of 60) is the one counted; scored as a 0 instead, the mean would be 32.0.
+
+Cost is a real bill: each leg priced from Claude Code's own token counts at Moonshot's list rates ($2.00 input, $0.20 cached, $10.00 output per million; every cache write was a 5-minute write, $2.00), and the account's prepaid balance dropped by the same amount, to the cent, across all seven legs including the collapsed one. The three runs' legs overlapped each other on one laptop, which the wall marker discloses. Judged by Grok (grok-4.7). Featured.
+
+The default view also drops the five featured rows that scored below 21 of 105: Haiku 5.5 (xhigh) and GPT-6 Luna (max) at 18.3, Gemini 3.8 Flash at 18.0, GLM-5.3 (max, Z.ai API) at 19 and Muse Spark 1.3 (xhigh) at 20.3. Kimi K3 stays at 21. Every row remains on the board under "All runs".

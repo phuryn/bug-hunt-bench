@@ -201,3 +201,4 @@ DeepSeek V4.1 Flash 1017 (max effort) - mean of 7,Claude Code / DeepSeek API,39.
 "DeepSeek V4.1 Flash 1017 (max effort, OpenCode) - mean of 5",OpenCode / DeepSeek API,37.6,15.8,21.8,36.2,55.7,0.96
 "DeepSeek V4.1 Flash 1017 (high effort, OpenCode) - mean of 5",OpenCode / DeepSeek API,36.6,15.4,21.2,25.6,41.6,0.79
 "DeepSeek V4.1 Flash 1017 (low effort, OpenCode) - mean of 5",OpenCode / DeepSeek API,32.8,15.8,17.0,17.6,41.2,0.66
+"Kimi K3.1 Pro (max effort, Moonshot API) - mean of 3",Claude Code / Moonshot API,36.0,17.0,19.0,29.3,64.8,13.76

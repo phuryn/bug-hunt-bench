@@ -1,0 +1,28 @@
+kimi-k3.1-pro - Moonshot first-party API - effort readback, 2026-10-23 (arm kimik31promax, Claude Code)
+
+1. Model card, GET https://api.moonshot.ai/v1/models (this account):
+   kimi-k3.1-pro  context_length 1048576  supports_thinking_type "only"
+   reasoning_efforts {"support": true, "valid_efforts": ["low", "high", "max"], "default_effort": "max"}
+   (kimi-k3.1-pro-highspeed: same enum, same default.)
+   Moonshot's K3.1 Pro quickstart: "K3.1 Pro always has thinking mode enabled"; reasoning_effort low|high|max,
+   default max.
+
+2. Anthropic-compatible route https://api.moonshot.ai/anthropic/v1/messages (the route Claude Code calls),
+   output_config.effort, one non-streamed call each, prompt "What is 17*23? Answer with the number only.":
+     effort=max        HTTP 200  model=kimi-k3.1-pro  output_tokens 54 (thinking 38)
+     effort=bogus_zzz  HTTP 200  model=kimi-k3.1-pro  output_tokens 56 (thinking 40)
+   An invented tier is ACCEPTED silently, as on kimi-k3 (20260910-kimik3-moonshot-effort.txt). Acceptance is
+   therefore no evidence that the field binds on this route.
+
+3. OpenAI-compatible route https://api.moonshot.ai/v1/chat/completions, reasoning_effort=bogus_zzz: HTTP 200 too.
+
+4. Not run: a magnitude sweep. The arm runs at max only, so no tier comparison was needed for the row.
+
+Reading: no evidence either way that the dial binds on the route the arm uses. The label still holds: max is
+the vendor's DOCUMENTED DEFAULT for this model, and Claude Code also requests max (--effort max ->
+output_config.effort=max). So the run is at max by default and by request. effort_status = first_party (the
+vendor's documented enum and default, unprobed for magnitude); max is the top tier of the enum.
+
+Side calls: the same endpoint also answers model=claude-haiku-4-5-20251001 with HTTP 200 (echoing that name),
+so any Claude Code side call on a haiku-class id is served by Moonshot rather than refused. The leg's
+modelUsage (OTHER_MODELS in the row) shows whether there were any.
