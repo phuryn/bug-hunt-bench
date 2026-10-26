@@ -202,3 +202,6 @@ DeepSeek V4.1 Flash 1017 (max effort) - mean of 7,Claude Code / DeepSeek API,39.
 "DeepSeek V4.1 Flash 1017 (high effort, OpenCode) - mean of 5",OpenCode / DeepSeek API,36.6,15.4,21.2,25.6,41.6,0.79
 "DeepSeek V4.1 Flash 1017 (low effort, OpenCode) - mean of 5",OpenCode / DeepSeek API,32.8,15.8,17.0,17.6,41.2,0.66
 "Kimi K3.1 Pro (max effort, Moonshot API) - mean of 3",Claude Code / Moonshot API,36.0,17.0,19.0,29.3,64.8,13.76
+GPT-6.1 Terra (max effort) - mean of 3,Codex CLI,40.7,18.0,22.7,48.0,37.3,3.08
+GPT-6.1 Terra (xhigh effort) - mean of 3,Codex CLI,11.3,5.0,6.3,17.0,15.9,0.75
+GPT-6.1 Terra (high effort) - mean of 3,Codex CLI,9.7,4.3,5.3,6.7,12.6,0.56
