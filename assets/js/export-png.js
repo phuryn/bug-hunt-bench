@@ -12,10 +12,10 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
-} from './format.js?v=d69cab3767';
-import { scatterLayout, resolveAxis } from './scatter.js?v=d69cab3767';
-import { coverageLayout, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=d69cab3767';
-import { runColor, activeTheme } from './theme.js?v=d69cab3767';
+} from './format.js?v=25672bc480';
+import { scatterLayout, resolveAxis } from './scatter.js?v=25672bc480';
+import { coverageLayout, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=25672bc480';
+import { runColor, activeTheme } from './theme.js?v=25672bc480';
 
 const SCALE = 2;
 const PAD = 32;
@@ -250,6 +250,22 @@ function drawTable(ctx, T, runs, state, w) {
     roundedRight(ctx, c.x + 4, top, bw, height, 4);
     return c.x + 4 + bw;
   };
+  /* The reserve is MEASURED from the widest label on this card, with the old constant as a floor. A fixed
+     58px fit "45 /105" and not "51.3 /105", so once means carried a decimal, the longest bar on a card
+     pushed its own label over the column rule (and "65.3" out of Unplanted into Wall clock). */
+  const widest = (strs, font) => {
+    ctx.font = font;
+    return Math.max(0, ...strs.map((s) => ctx.measureText(s).width));
+  };
+  const has = (v) => v !== null && v !== undefined;
+  const reserve = {
+    fixed: Math.max(58, 12 + widest(runs.map((r) => fmtInt(r.fixed)), `600 15px ${SANS}`)
+      + widest([`/${TOTALS.fixed}`], `11px ${SANS}`) + 8),
+    extras: Math.max(28, 10 + widest(runs.map((r) => fmtInt(r.extras)), `12px ${SANS}`) + 8),
+    wall: Math.max(62, 13 + widest(runs.filter((r) => has(r.wall_min)).map((r) => fmtWall(r.wall_min)),
+      `12.5px ${SANS}`) + widest(['min'], `10px ${SANS}`) + 8),
+    cost: Math.max(56, 10 + widest(runs.map((r) => fmtCost(r.cost_usd)), `12.5px ${SANS}`) + 8),
+  };
   const sorted = runs.slice().sort((a, b) => compareRuns(a, b, state.sort, state.dir));
 
   sorted.forEach((run) => {
@@ -279,16 +295,16 @@ function drawTable(ctx, T, runs, state, w) {
         text(ctx, truncate(ctx, metaStr, metaFont, c.width - 32), c.x + 26, baseline + 14, metaFont, T.muted);
       } else if (c.key === 'fixed') {
         const end = drawBar(c, top + 11, barRatio(run.fixed, fixedMax), 18,
-          runColor(run.color), 58);
+          runColor(run.color), reserve.fixed);
         ctx.font = `600 15px ${SANS}`;
         const nw = ctx.measureText(fmtInt(run.fixed)).width;
         text(ctx, fmtInt(run.fixed), end + 10, baseline + 4, `600 15px ${SANS}`, T.ink);
         text(ctx, `/${TOTALS.fixed}`, end + 12 + nw, baseline + 4, `11px ${SANS}`, T.neutral);
       } else if (c.key === 'extras') {
-        const end = drawBar(c, top + 16, barRatio(run.extras, extrasMax), 9, hatch, 28);
+        const end = drawBar(c, top + 16, barRatio(run.extras, extrasMax), 9, hatch, reserve.extras);
         text(ctx, fmtInt(run.extras), end + 10, baseline + 2, `12px ${SANS}`, T.muted);
       } else if (c.key === 'wall_min') {
-        const end = drawBar(c, top + 14, barRatio(run.wall_min, wallMax), 13, T.bar, 62);
+        const end = drawBar(c, top + 14, barRatio(run.wall_min, wallMax), 13, T.bar, reserve.wall);
         ctx.font = `12.5px ${SANS}`;
         const vw = ctx.measureText(fmtWall(run.wall_min)).width;
         text(ctx, fmtWall(run.wall_min), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
@@ -298,7 +314,7 @@ function drawTable(ctx, T, runs, state, w) {
       } else if (c.key === 'cost_usd') {
         // the figure only; which of these are bills and which are estimates is
         // one generated sentence in the footer, as it is in the key on the page
-        const end = drawBar(c, top + 13, barRatio(run.cost_usd, costMax), 13, T.bar, 56);
+        const end = drawBar(c, top + 13, barRatio(run.cost_usd, costMax), 13, T.bar, reserve.cost);
         text(ctx, fmtCost(run.cost_usd), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
       } else {
         const v = run[c.key];
