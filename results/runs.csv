@@ -140,9 +140,15 @@ gpt61solxhighr3,GPT-6.1 Sol (xhigh effort) - mean of 3,live,GPT-6.1 Sol,OpenAI,C
 gpt61terrahigh,GPT-6.1 Terra (high effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,high,2026-10-26,11,5,6,1,1,7,13.6,0.58,list,74,43,31,gpt-6.1-terra,codex-cli 0.159.0,
 gpt61terrahighr2,GPT-6.1 Terra (high effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,high,2026-10-26,8,4,4,3,0,8,14.4,0.58,list,63,38,25,gpt-6.1-terra,codex-cli 0.159.0,
 gpt61terrahighr3,GPT-6.1 Terra (high effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,high,2026-10-26,10,4,6,1,0,5,9.6,0.52,list,72,45,27,gpt-6.1-terra,codex-cli 0.159.0,
+gpt61terralow,GPT-6.1 Terra (low effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,low,2026-10-27,7,4,3,0,0,5,7.5,0.33,list,44,22,22,gpt-6.1-terra,codex-cli 0.159.0,
+gpt61terralowr2,GPT-6.1 Terra (low effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,low,2026-10-27,5,1,4,0,0,5,10.2,0.29,list,39,18,21,gpt-6.1-terra,codex-cli 0.159.0,
+gpt61terralowr3,GPT-6.1 Terra (low effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,low,2026-10-27,6,3,3,0,0,5,12.5,0.27,list,48,25,23,gpt-6.1-terra,codex-cli 0.159.0,
 gpt61terramax,GPT-6.1 Terra (max effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,max,2026-10-26,34,14,20,3,0,44,38.9,,list,421,174,247,gpt-6.1-terra,codex-cli 0.159.0,"the row's cost (3.88) is a corrected aggregate - the per-run receipts do not reconcile to it, so no per-run split is published"
 gpt61terramaxr2,GPT-6.1 Terra (max effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,max,2026-10-26,42,22,20,1,0,56,34.2,,list,385,172,213,gpt-6.1-terra,codex-cli 0.159.0,"the row's cost (3.88) is a corrected aggregate - the per-run receipts do not reconcile to it, so no per-run split is published"
 gpt61terramaxr3,GPT-6.1 Terra (max effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,max,2026-10-26,46,18,28,2,1,44,38.8,,list,266,114,152,gpt-6.1-terra,codex-cli 0.159.0,"the row's cost (3.88) is a corrected aggregate - the per-run receipts do not reconcile to it, so no per-run split is published"
+gpt61terramedium,GPT-6.1 Terra (medium effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,medium,2026-10-27,8,4,4,1,0,8,9.5,0.31,list,46,22,24,gpt-6.1-terra,codex-cli 0.159.0,
+gpt61terramediumr2,GPT-6.1 Terra (medium effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,medium,2026-10-27,6,3,3,0,0,6,10.9,0.34,list,58,34,24,gpt-6.1-terra,codex-cli 0.159.0,
+gpt61terramediumr3,GPT-6.1 Terra (medium effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,medium,2026-10-27,8,4,4,0,0,8,8.2,0.28,list,51,25,26,gpt-6.1-terra,codex-cli 0.159.0,
 gpt61terraxhigh,GPT-6.1 Terra (xhigh effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,xhigh,2026-10-26,11,5,6,1,0,20,17.9,0.88,list,130,61,69,gpt-6.1-terra,codex-cli 0.159.0,
 gpt61terraxhighr2,GPT-6.1 Terra (xhigh effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,xhigh,2026-10-26,9,4,5,1,0,18,18.8,0.75,list,135,78,57,gpt-6.1-terra,codex-cli 0.159.0,
 gpt61terraxhighr3,GPT-6.1 Terra (xhigh effort) - mean of 3,live,GPT-6.1 Terra,OpenAI,Codex CLI,xhigh,2026-10-26,14,6,8,2,1,13,10.9,0.61,list,88,44,44,gpt-6.1-terra,codex-cli 0.159.0,

@@ -193,6 +193,8 @@ Sonnet 5 (max effort),Claude Code,max,9,1,33 34 43 76 83 92 97 99 100
 Opus 4.8,Claude Code,high,9,1,20 30 50 60 71 76 83 92 99
 DeepSeek V4-Flash,Claude Code / OpenRouter,default,8,1,20 30 39 43 47 71 84 99
 Qwen3.8-27B 8-bit (OpenRouter/Parasail),Claude Code / OpenRouter,default,8,1,20 43 62 71 76 83 98 99
+GPT-6.1 Terra (medium effort) - mean of 3,Codex CLI,medium,7.3,3,30x3 33x3 34x3 37x2 49x2 77x3 84x3 100x3
+GPT-6.1 Terra (low effort) - mean of 3,Codex CLI,low,6,3,20x1 30x3 33x2 34x2 49x3 83x1 84x3 100x3
 GPT-6 Sol (low effort),Codex CLI,low,6,1,20 30 45 76 83 99
 GPT-6 Luna (medium effort),Codex CLI,medium,4,1,20 30 77 99
 GPT-5.6 Luna (low effort),Codex CLI,low,4,1,76 77 83 99

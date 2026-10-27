@@ -4406,3 +4406,20 @@ Runs: max 34, 42 and 46 of 105 (repo 1: 14, 22 and 18 - repo 2: 20, 20 and 28); 
 What it shows. At max, Terra scores 40.7, 3.6 below GPT-6.1 Sol at max (44.3), at 66% of Sol's list cost per run ($3.88 against $5.88). Below max the dial falls off a cliff: 11.3 at xhigh and 9.7 at high, where Sol holds 42.7 at xhigh and 36.5 at high (mean of 2). The runs below max were not broken: every leg exited 0 with a written report and a closing summary. The model did far less - reasoning tokens per run 4,245, 3,550 and 3,217 at xhigh and 1,557, 1,657 and 1,507 at high, against 36,249, 38,476 and 33,368 at max; turns per run 130, 135 and 88 at xhigh and 74, 63 and 72 at high, against 421, 385 and 266.
 
 Cost is a list estimate at OpenAI's GPT-6.1 Terra rates ($1 input, $0.05 cached, $5 output per million). Codex gives this model a 500K window, and 5 of the 6 max legs sent requests over 272K input (126 in all), which bill at $2, $0.10 and $7.50 on the whole request; the max row is priced request by request from Codex's own records ($3.88 per run, against $3.08 at the short-context rate the per-leg receipts carry). No xhigh or high request reached 272K. Each tier's three runs and both repos ran at once on one laptop, which the wall marker discloses. Judged by Grok (grok-4.7), never by an OpenAI model. Not featured.
+
+## GPT-6.1 Terra — medium and low, means of 3 (Oct 27)
+
+The two tiers the Oct 26 wave left out, on the same setup: OpenAI's own Codex CLI 0.159.0 on a ChatGPT account, three runs per tier, each tier's three runs and both repos at once. Every leg's Codex session record shows the tier it asked for. Ultra (above max) is not run.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| GPT-6.1 Terra (medium effort) - mean of 3 | Codex CLI | **7.3** / 105 | 3.7 / 45 | 3.7 / 60 | 9.6 min | $0.31 |
+| GPT-6.1 Terra (low effort) - mean of 3 | Codex CLI | **6** / 105 | 2.7 / 45 | 3.3 / 60 | 10.1 min | $0.30 |
+| GPT-6.1 Sol (medium effort) - mean of 2 | Codex CLI | 29 / 105 | 16 / 45 | 13 / 60 | 29.8 min | $1.76 |
+| GPT-6.1 Sol (low effort) - mean of 2 | Codex CLI | 22.5 / 105 | 11.5 / 45 | 11 / 60 | 25.4 min | $1.34 |
+
+Runs: medium 8, 6 and 8 of 105 (repo 1: 4, 3 and 4 - repo 2: 4, 3 and 4); low 7, 5 and 6 of 105 (repo 1: 4, 1 and 3 - repo 2: 3, 4 and 3).
+
+What it shows. The GPT-6.1 Terra ladder is now complete: max 40.7, xhigh 11.3, high 9.7, medium 7.3 and low 6 (means of 3) - every step down the dial scores lower. Everything below max sits between 6 and 11.3. GPT-6.1 Sol scores 29 at medium and 22.5 at low (means of 2). As at xhigh and high, the runs were not broken: every leg exited 0 with a written report. The model did far less than at max - reasoning tokens per run 908, 932 and 797 at medium and 349, 598 and 638 at low, against 36,249, 38,476 and 33,368 at max; turns per run 46, 58 and 51 at medium and 44, 39 and 48 at low, against 421, 385 and 266.
+
+Cost is a list estimate at OpenAI's GPT-6.1 Terra rates ($1 input, $0.05 cached, $5 output per million); no request reached the 272K long-context line (the largest was 71,033 tokens). Each tier's three runs and both repos ran at once on one laptop, which the wall marker discloses. Judged by Grok (grok-4.7), never by an OpenAI model. Not featured.

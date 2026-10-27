@@ -205,3 +205,5 @@ DeepSeek V4.1 Flash 1017 (max effort) - mean of 7,Claude Code / DeepSeek API,21.
 GPT-6.1 Terra (max effort) - mean of 3,Codex CLI,22.7,2.0,0.0,30.3,0,18.6,1.7
 GPT-6.1 Terra (xhigh effort) - mean of 3,Codex CLI,6.3,0.3,0.3,11.7,0,6.4,0.3
 GPT-6.1 Terra (high effort) - mean of 3,Codex CLI,5.3,0.3,0.0,3.0,0,4.6,0.17
+GPT-6.1 Terra (medium effort) - mean of 3,Codex CLI,3.7,0.0,0.0,5.3,0,4.3,0.15
+GPT-6.1 Terra (low effort) - mean of 3,Codex CLI,3.3,0.0,0.0,3.7,0,4.9,0.13
