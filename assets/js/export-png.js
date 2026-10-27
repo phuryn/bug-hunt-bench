@@ -12,10 +12,10 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
-} from './format.js?v=c6f4f9af12';
-import { scatterLayout, resolveAxis } from './scatter.js?v=c6f4f9af12';
-import { coverageLayout, coverageOrderNote, coverageSummaryNote, coverageColor } from './coverage.js?v=c6f4f9af12';
-import { runColor, activeTheme } from './theme.js?v=c6f4f9af12';
+} from './format.js?v=1b1c4223ef';
+import { scatterLayout, resolveAxis } from './scatter.js?v=1b1c4223ef';
+import { coverageLayout, coverageOrderNote, coverageSummaryNote, coverageColor } from './coverage.js?v=1b1c4223ef';
+import { runColor, activeTheme } from './theme.js?v=1b1c4223ef';
 
 const SCALE = 2;
 const PAD = 32;
@@ -581,7 +581,7 @@ function drawCoverage(ctx, T, L, w) {
           if (t.hit) {
             // A mean-of-N row shades its ticks by the FRACTION of its runs that fixed that bug -
             // 1 of 3 draws at 33% alpha. Same rule as the on-screen view (coverage.js): alpha is the
-            // rate with no floor, never a size change, and the outline stays the run's own colour so
+            // rate with no floor, never a size change, and the outline stays the vendor colour so
             // a partial tick cannot be mistaken for the neutral miss ring.
             ctx.save();
             ctx.globalAlpha = t.strength < 1 ? t.strength : 1;

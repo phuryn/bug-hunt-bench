@@ -9,15 +9,15 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
-} from './format.js?v=c6f4f9af12';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=c6f4f9af12';
+} from './format.js?v=1b1c4223ef';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=1b1c4223ef';
 import {
   renderScatter, AXES, SCALES, scaledAxis, scaleSentence,
-} from './scatter.js?v=c6f4f9af12';
-import { renderPicker, refreshGroups } from './selector.js?v=c6f4f9af12';
-import { exportView } from './export-png.js?v=c6f4f9af12';
-import { initTheme, hasAdjustedColors } from './theme.js?v=c6f4f9af12';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=c6f4f9af12';
+} from './scatter.js?v=1b1c4223ef';
+import { renderPicker, refreshGroups } from './selector.js?v=1b1c4223ef';
+import { exportView } from './export-png.js?v=1b1c4223ef';
+import { initTheme, hasAdjustedColors } from './theme.js?v=1b1c4223ef';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=1b1c4223ef';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },

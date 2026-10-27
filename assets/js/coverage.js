@@ -5,10 +5,10 @@
    colour - see coverageColor - when that run fixed it) — on the same visual language as the tick rule in
    the hero (see .tickrule in site.css): equal-height ticks, solid vs hollow,
    never a size difference standing in for a state difference. The one
-   addition here is colour, because a run's identity is the point of this
-   view: a hit is filled in the run's own colour; a miss is one neutral
-   hollow ring, never a diluted version of the run's colour, because that
-   would read as a weaker fix rather than as no fix.
+   addition here is colour: a hit is filled in the run's VENDOR colour (one
+   per lab, unshaded, so Sonnet and Opus rows compare tick for tick); a miss
+   is one neutral hollow ring, never a diluted version of that colour,
+   because that would read as a weaker fix rather than as no fix.
 
    The 105 columns are NOT bug-index order. By default they are sorted by how
    many of the runs currently on screen fixed that bug, descending (ties by
@@ -34,9 +34,9 @@
    pivot's dividers land in the same place all the way down the card, on
    screen and in the PNG export alike. */
 
-import { el, TOTALS, harnessShort, harnessTwinIds } from './format.js?v=c6f4f9af12';
-import { effortBadge } from './table.js?v=c6f4f9af12';
-import { runColor } from './theme.js?v=c6f4f9af12';
+import { el, TOTALS, harnessShort, harnessTwinIds } from './format.js?v=1b1c4223ef';
+import { effortBadge } from './table.js?v=1b1c4223ef';
+import { runColor } from './theme.js?v=1b1c4223ef';
 
 /** One colour per VENDOR here, not the per-model shade every other view uses: Sonnet and Opus fill
     their ticks in the same Anthropic colour, so two rows compare tick for tick instead of shade
@@ -332,7 +332,7 @@ export function renderCoverage(host, runs, meta, glossary, pivotSlug, onPivotTog
           if (partial) {
             // Strength is carried by the FILL's alpha, never by size - this view's rule is that a
             // size difference must not stand in for a state difference. Element opacity is not used,
-            // because it would dim the ring too: the ring stays the run's colour at full strength so
+            // because it would dim the ring too: the ring stays the vendor colour at full strength so
             // a 1-of-3 tick reads as THIS model partially, not as the neutral ring a miss uses.
             tick.style.setProperty('--tickc', c);
             tick.style.setProperty(

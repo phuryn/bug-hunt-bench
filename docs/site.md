@@ -145,6 +145,11 @@ maintenance burden.
   4.7:1 and 4.8:1 on `#101419`). Both clear the ΔE ≥ 8 gate; the second channel is
   there because clearing it is not the same as a dichromat reading it at a glance.
   Print re-declares the light pair, so paper never gets the dark steps.
+- **Coverage paints one colour per vendor (2026-10-27).** Everywhere else a run
+  carries its model's shade of the vendor hue (`color`); the coverage view, on screen
+  and in its PNG export, uses the unshaded vendor hue (`vendor_color`, written by the
+  generator) through `coverageColor()`, so Sonnet and Opus rows read as the same
+  colour and compare tick for tick. Labels, not shades, tell the rows apart there.
 - **Six columns: model, fixed, extras, wall clock, cost, date.** What is *not* on
   the grid is a decision. Partial and claimed-only are zero on most rows and were
   never worth a column of their own; the repo 1 / repo 2 split is how the 105 bugs
