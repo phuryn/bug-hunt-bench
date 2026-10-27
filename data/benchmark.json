@@ -141,7 +141,8 @@
       "turns_repo2": 651,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 500
+      "group_rank": 500,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Sonnet 5.5 (max effort) - mean of 2",
@@ -304,7 +305,8 @@
       "turns_repo2": 602,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 500
+      "group_rank": 500,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Sonnet 5.5 (max effort) - mean of 3",
@@ -471,7 +473,8 @@
       "turns_repo2": 631,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 500
+      "group_rank": 500,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "GPT-6 Astra (max effort)",
@@ -555,7 +558,8 @@
       "turns_repo2": 127,
       "harness_version": null,
       "model_id": "gpt-6-astra",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-6 Astra (max effort) - mean of 3",
@@ -704,7 +708,8 @@
       "turns_repo2": 118,
       "harness_version": null,
       "model_id": "gpt-6-astra",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-6.1 Sol (max effort) - mean of 3",
@@ -851,7 +856,8 @@
       "turns_repo2": 151,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 100
+      "group_rank": 100,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-6.1 Sol (max effort)",
@@ -931,7 +937,8 @@
       "turns_repo2": 147,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 100
+      "group_rank": 100,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Muse Wonder Full 1.0 (max effort, Muse Code, Meta API)",
@@ -1011,7 +1018,8 @@
       "turns_repo2": 206,
       "harness_version": "Muse Code 1.4.1",
       "model_id": "muse-wonder-full-1.0-contributor",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "Muse Wonder Full 1.0 (xhigh effort, Muse Code, Meta API)",
@@ -1091,7 +1099,8 @@
       "turns_repo2": 115,
       "harness_version": "Muse Code 1.4.1",
       "model_id": "muse-wonder-full-1.0-contributor",
-      "group_rank": 1
+      "group_rank": 1,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "GPT-5.6 Sol (max effort) - mean of 2",
@@ -1234,7 +1243,8 @@
       "turns_repo2": 632,
       "harness_version": "codex-cli 0.154.0",
       "model_id": "gpt-5.6-sol",
-      "group_rank": 500
+      "group_rank": 500,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-6 Astra (xhigh effort)",
@@ -1313,7 +1323,8 @@
       "turns_repo2": 91,
       "harness_version": null,
       "model_id": "gpt-6-astra",
-      "group_rank": 1
+      "group_rank": 1,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Opus 5.5 (max effort)",
@@ -1392,7 +1403,8 @@
       "turns_repo2": 317,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Fable 5.1 (max effort)",
@@ -1471,7 +1483,8 @@
       "turns_repo2": 298,
       "harness_version": "Claude Code 2.1.251",
       "model_id": "claude-fable-5-1",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (max effort, DeepSeek Harness) - mean of 7",
@@ -1630,7 +1643,8 @@
       "turns_repo2": 443,
       "harness_version": "dsh 0.2.1-rc.2",
       "model_id": "deepseek-flash",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "GPT-6.1 Sol (xhigh effort) - mean of 3",
@@ -1773,7 +1787,8 @@
       "turns_repo2": 105,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 101
+      "group_rank": 101,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (max effort, Pi) - mean of 5",
@@ -1926,7 +1941,8 @@
       "turns_repo2": 261,
       "harness_version": "pi-coding-agent 1.3.0",
       "model_id": "deepseek-flash",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "GPT-5.6 Sol (max effort)",
@@ -2004,7 +2020,8 @@
       "turns_repo2": 434,
       "harness_version": null,
       "model_id": "gpt-5.6-sol",
-      "group_rank": 500
+      "group_rank": 500,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Muse Wonder Full 1.0 (max effort, Muse Code, Meta API) - mean of 2",
@@ -2135,7 +2152,8 @@
       "turns_repo2": 198,
       "harness_version": "Muse Code 1.4.1",
       "model_id": "muse-wonder-full-1.0-contributor",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "Opus 5.5 (max effort) - mean of 3",
@@ -2270,7 +2288,8 @@
       "turns_repo2": 289,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Muse Wonder Full 1.0 (xhigh effort, Muse Code, Meta API) - mean of 2",
@@ -2405,7 +2424,8 @@
       "turns_repo2": 106,
       "harness_version": "Muse Code 1.4.1",
       "model_id": "muse-wonder-full-1.0-contributor",
-      "group_rank": 1
+      "group_rank": 1,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "GPT-6.1 Sol (xhigh effort)",
@@ -2482,7 +2502,8 @@
       "turns_repo2": 120,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 101
+      "group_rank": 101,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Opus 5.5 (max effort) - mean of 2",
@@ -2613,7 +2634,8 @@
       "turns_repo2": 302,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "GPT-6.1 Terra (max effort) - mean of 3",
@@ -2764,7 +2786,8 @@
       "turns_repo2": 204,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-terra",
-      "group_rank": 300
+      "group_rank": 300,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3",
@@ -2905,7 +2928,8 @@
       "turns_repo2": 336,
       "harness_version": "agy 1.3.5",
       "model_id": "gemini-4-argon-high",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (high effort, Pi) - mean of 5",
@@ -3056,7 +3080,8 @@
       "turns_repo2": 249,
       "harness_version": "pi-coding-agent 1.3.0",
       "model_id": "deepseek-flash",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (max effort) - mean of 5",
@@ -3205,7 +3230,8 @@
       "turns_repo2": 475,
       "harness_version": "Claude Code 2.1.302",
       "model_id": "deepseek-flash",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Gemini 4 Argon (medium effort, Antigravity CLI) - mean of 3",
@@ -3344,7 +3370,8 @@
       "turns_repo2": 299,
       "harness_version": null,
       "model_id": "gemini-4-argon-medium",
-      "group_rank": 3
+      "group_rank": 3,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (high effort, DeepSeek Harness) - mean of 5",
@@ -3497,7 +3524,8 @@
       "turns_repo2": 414,
       "harness_version": "dsh 0.2.1-rc.2",
       "model_id": "deepseek-flash",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (max effort) - mean of 7",
@@ -3646,7 +3674,8 @@
       "turns_repo2": 439,
       "harness_version": "Claude Code 2.1.302",
       "model_id": "deepseek-flash",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "GPT-5.6 Sol (xhigh effort)",
@@ -3721,7 +3750,8 @@
       "turns_repo2": 252,
       "harness_version": null,
       "model_id": "gpt-5.6-sol",
-      "group_rank": 501
+      "group_rank": 501,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Sonnet 5.5 (xhigh effort)",
@@ -3796,7 +3826,8 @@
       "turns_repo2": 281,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 501
+      "group_rank": 501,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (max effort) - mean of 3",
@@ -3937,7 +3968,8 @@
       "turns_repo2": 432,
       "harness_version": "Claude Code 2.1.302",
       "model_id": "deepseek-flash",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "GPT-6.1 Sol (high effort)",
@@ -4011,7 +4043,8 @@
       "turns_repo2": 106,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 102
+      "group_rank": 102,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (max effort, OpenCode) - mean of 5",
@@ -4164,7 +4197,8 @@
       "turns_repo2": 351,
       "harness_version": "opencode-ai 1.19.3",
       "model_id": "deepseek-flash",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (high effort, OpenCode) - mean of 5",
@@ -4315,7 +4349,8 @@
       "turns_repo2": 192,
       "harness_version": "opencode-ai 1.19.3",
       "model_id": "deepseek-flash",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "GPT-6.1 Sol (high effort) - mean of 2",
@@ -4442,7 +4477,8 @@
       "turns_repo2": 92,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 102
+      "group_rank": 102,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (high effort) - mean of 5",
@@ -4591,7 +4627,8 @@
       "turns_repo2": 382,
       "harness_version": "Claude Code 2.1.302",
       "model_id": "deepseek-flash",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Gemini 4 Argon (medium effort, Antigravity CLI) - mean of 2",
@@ -4708,7 +4745,8 @@
       "turns_repo2": 327,
       "harness_version": null,
       "model_id": "gemini-4-argon-medium",
-      "group_rank": 3
+      "group_rank": 3,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "Kimi K3.1 Pro (max effort, Moonshot API) - mean of 3",
@@ -4839,7 +4877,8 @@
       "turns_repo2": 351,
       "harness_version": "Claude Code 2.1.309",
       "model_id": "kimi-k3.1-pro",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#9333EA"
     },
     {
       "id": "Opus 5.5 (xhigh effort) - mean of 3",
@@ -4964,7 +5003,8 @@
       "turns_repo2": 228,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 201
+      "group_rank": 201,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Opus 5.5 (xhigh effort) - mean of 2",
@@ -5083,7 +5123,8 @@
       "turns_repo2": 232,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 201
+      "group_rank": 201,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Sonnet 5.5 (xhigh effort) - mean of 3",
@@ -5210,7 +5251,8 @@
       "turns_repo2": 285,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 501
+      "group_rank": 501,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (max effort) - mean of 2",
@@ -5335,7 +5377,8 @@
       "turns_repo2": 421,
       "harness_version": "Claude Code 2.1.302",
       "model_id": "deepseek-flash",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Gemini 4 Argon (low effort, Antigravity CLI) - mean of 3",
@@ -5462,7 +5505,8 @@
       "turns_repo2": 349,
       "harness_version": null,
       "model_id": "gemini-4-argon-low",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "GPT-6 Astra (high effort)",
@@ -5533,7 +5577,8 @@
       "turns_repo2": 58,
       "harness_version": null,
       "model_id": "gpt-6-astra",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Opus 5.5 (xhigh effort)",
@@ -5604,7 +5649,8 @@
       "turns_repo2": 231,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 201
+      "group_rank": 201,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (low effort, DeepSeek Harness) - mean of 5",
@@ -5745,7 +5791,8 @@
       "turns_repo2": 321,
       "harness_version": "dsh 0.2.1-rc.2",
       "model_id": "deepseek-flash",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (low effort) - mean of 5",
@@ -5878,7 +5925,8 @@
       "turns_repo2": 326,
       "harness_version": "Claude Code 2.1.302",
       "model_id": "deepseek-flash",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Sonnet 5.5 (high effort) - mean of 3",
@@ -5995,7 +6043,8 @@
       "turns_repo2": 158,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 502
+      "group_rank": 502,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (max effort)",
@@ -6065,7 +6114,8 @@
       "turns_repo2": 412,
       "harness_version": "Claude Code 2.1.302",
       "model_id": "deepseek-flash",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "GPT-6 Astra (medium effort)",
@@ -6135,7 +6185,8 @@
       "turns_repo2": 50,
       "harness_version": null,
       "model_id": "gpt-6-astra",
-      "group_rank": 3
+      "group_rank": 3,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-5.6 Sol (re-run Jul 31)",
@@ -6205,7 +6256,8 @@
       "turns_repo2": 140,
       "harness_version": null,
       "model_id": "gpt-5.6-sol",
-      "group_rank": 502
+      "group_rank": 502,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (low effort, Pi) - mean of 5",
@@ -6338,7 +6390,8 @@
       "turns_repo2": 159,
       "harness_version": "pi-coding-agent 1.3.0",
       "model_id": "deepseek-flash",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Muse Spark 1.3 (max effort, Muse Code, Meta API) - mean of 3",
@@ -6467,7 +6520,8 @@
       "turns_repo2": 279,
       "harness_version": "Muse Code 1.1.1 / Muse Code 1.2.1",
       "model_id": "muse-spark-1.3",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "GPT-5.6 Luna (max effort)",
@@ -6536,7 +6590,8 @@
       "turns_repo2": 523,
       "harness_version": null,
       "model_id": "gpt-5.6-luna",
-      "group_rank": 700
+      "group_rank": 700,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Muse Spark 1.3 (max effort, Muse Code, Meta API)",
@@ -6605,7 +6660,8 @@
       "turns_repo2": 174,
       "harness_version": "Muse Code 1.1.1",
       "model_id": "muse-spark-1.3",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "Fable 5.1",
@@ -6674,7 +6730,8 @@
       "turns_repo2": 172,
       "harness_version": "Claude Code 2.1.251",
       "model_id": "claude-fable-5-1",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (low effort, OpenCode) - mean of 5",
@@ -6811,7 +6868,8 @@
       "turns_repo2": 179,
       "harness_version": "opencode-ai 1.19.3",
       "model_id": "deepseek-flash",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Muse Spark 1.3 (max effort, Muse Code, Meta API) - mean of 5",
@@ -6948,7 +7006,8 @@
       "turns_repo2": 281,
       "harness_version": "Muse Code 1.1.1 / Muse Code 1.2.1 / Muse Code 1.3.0",
       "model_id": "muse-spark-1.3",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "DeepSeek V4.1 Flash 1017 (high effort) - mean of 2",
@@ -7069,7 +7128,8 @@
       "turns_repo2": 355,
       "harness_version": "Claude Code 2.1.302",
       "model_id": "deepseek-flash",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Union Alpha (stealth; free)",
@@ -7137,7 +7197,8 @@
       "turns_repo2": 43,
       "harness_version": "Claude Code 2.1.274",
       "model_id": "stealth/union-alpha",
-      "group_rank": 6
+      "group_rank": 6,
+      "vendor_color": "#EC13EC"
     },
     {
       "id": "Gemini 4 Argon (low effort, Antigravity CLI)",
@@ -7205,7 +7266,8 @@
       "turns_repo2": 332,
       "harness_version": null,
       "model_id": "gemini-4-argon-low",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "GPT-6 Sol (max effort)",
@@ -7273,7 +7335,8 @@
       "turns_repo2": 211,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-sol",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Sonnet 5.5 (high effort)",
@@ -7341,7 +7404,8 @@
       "turns_repo2": 156,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 502
+      "group_rank": 502,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Opus 5.5 (high effort) - mean of 2",
@@ -7452,7 +7516,8 @@
       "turns_repo2": 168,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Opus 5.5 (high effort)",
@@ -7520,7 +7585,8 @@
       "turns_repo2": 162,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "GPT-5.6 Terra (max effort)",
@@ -7588,7 +7654,8 @@
       "turns_repo2": 486,
       "harness_version": null,
       "model_id": "gpt-5.6-terra",
-      "group_rank": 600
+      "group_rank": 600,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Opus 5.5 (high effort) - mean of 3",
@@ -7701,7 +7768,8 @@
       "turns_repo2": 176,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Muse Wonder 1.0 (max effort, Muse Code, Meta API) - mean of 3",
@@ -7822,7 +7890,8 @@
       "turns_repo2": 130,
       "harness_version": "Muse Code 1.4.1",
       "model_id": "muse-wonder-1.0 / muse-wonder-1.0-contributor",
-      "group_rank": 100
+      "group_rank": 100,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "GPT-5.6 Luna (max effort) - mean of 2",
@@ -7939,7 +8008,8 @@
       "turns_repo2": 472,
       "harness_version": null,
       "model_id": "gpt-5.6-luna",
-      "group_rank": 700
+      "group_rank": 700,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-5.6 Luna (max effort) - mean of 3",
@@ -8058,7 +8128,8 @@
       "turns_repo2": 448,
       "harness_version": null,
       "model_id": "gpt-5.6-luna",
-      "group_rank": 700
+      "group_rank": 700,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-6.1 Sol (low effort)",
@@ -8125,7 +8196,8 @@
       "turns_repo2": 43,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 104
+      "group_rank": 104,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-6 Sol (max effort) - mean of 2",
@@ -8232,7 +8304,8 @@
       "turns_repo2": 196,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-sol",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-5.6 Sol",
@@ -8299,7 +8372,8 @@
       "turns_repo2": 203,
       "harness_version": null,
       "model_id": "gpt-5.6-sol",
-      "group_rank": 502
+      "group_rank": 502,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Union Alpha (stealth; free) - mean of 3",
@@ -8420,7 +8494,8 @@
       "turns_repo2": 46,
       "harness_version": "Claude Code 2.1.274",
       "model_id": "stealth/union-alpha",
-      "group_rank": 6
+      "group_rank": 6,
+      "vendor_color": "#EC13EC"
     },
     {
       "id": "Opus 5.5 (medium effort) - mean of 3",
@@ -8531,7 +8606,8 @@
       "turns_repo2": 123,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 203
+      "group_rank": 203,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Opus 5.5 (medium effort) - mean of 2",
@@ -8640,7 +8716,8 @@
       "turns_repo2": 120,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 203
+      "group_rank": 203,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Opus 5.5 (medium effort)",
@@ -8706,7 +8783,8 @@
       "turns_repo2": 123,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 203
+      "group_rank": 203,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Grok 4.7 (medium)",
@@ -8772,7 +8850,8 @@
       "turns_repo2": 292,
       "harness_version": null,
       "model_id": "grok-4.7",
-      "group_rank": 3
+      "group_rank": 3,
+      "vendor_color": "#414852"
     },
     {
       "id": "GPT-6 Sol (max effort) - mean of 3",
@@ -8879,7 +8958,8 @@
       "turns_repo2": 189,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-sol",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-6.1 Sol (medium effort) - mean of 2",
@@ -8984,7 +9064,8 @@
       "turns_repo2": 37,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 103
+      "group_rank": 103,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-5.6 Sol (medium effort)",
@@ -9049,7 +9130,8 @@
       "turns_repo2": 76,
       "harness_version": null,
       "model_id": "gpt-5.6-sol",
-      "group_rank": 503
+      "group_rank": 503,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Grok 4.7 (xhigh) - mean of 5",
@@ -9178,7 +9260,8 @@
       "turns_repo2": 329,
       "harness_version": "grok 1.0.30",
       "model_id": "grok-4.7",
-      "group_rank": 1
+      "group_rank": 1,
+      "vendor_color": "#414852"
     },
     {
       "id": "Fable 5.1 (low effort)",
@@ -9243,7 +9326,8 @@
       "turns_repo2": 139,
       "harness_version": "Claude Code 2.1.251",
       "model_id": "claude-fable-5-1",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Fable 5.1 (xhigh effort)",
@@ -9308,7 +9392,8 @@
       "turns_repo2": 212,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "claude-fable-5-1",
-      "group_rank": 1
+      "group_rank": 1,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Fable 5 (max effort)",
@@ -9373,7 +9458,8 @@
       "turns_repo2": 211,
       "harness_version": "Claude Code 2.1.220",
       "model_id": "claude-fable-5",
-      "group_rank": 100
+      "group_rank": 100,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Grok 4.7 (xhigh) seq - mean of 4",
@@ -9494,7 +9580,8 @@
       "turns_repo2": 324,
       "harness_version": "grok 1.0.30",
       "model_id": "grok-4.7",
-      "group_rank": 1
+      "group_rank": 1,
+      "vendor_color": "#414852"
     },
     {
       "id": "Grok 4.6 (xhigh) seq - mean of 3",
@@ -9613,7 +9700,8 @@
       "turns_repo2": null,
       "harness_version": "grok 1.0.5",
       "model_id": "grok-4.6",
-      "group_rank": 101
+      "group_rank": 101,
+      "vendor_color": "#414852"
     },
     {
       "id": "Grok 4.7 (xhigh) seq - mean of 3",
@@ -9730,7 +9818,8 @@
       "turns_repo2": 325,
       "harness_version": "grok 1.0.30",
       "model_id": "grok-4.7",
-      "group_rank": 1
+      "group_rank": 1,
+      "vendor_color": "#414852"
     },
     {
       "id": "GPT-6.1 Sol (medium effort)",
@@ -9794,7 +9883,8 @@
       "turns_repo2": 42,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 103
+      "group_rank": 103,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Qwen3.8-Max (max effort, Alibaba API)",
@@ -9858,7 +9948,8 @@
       "turns_repo2": 272,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "qwen3.8-max",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#E8A020"
     },
     {
       "id": "GPT-6 Astra (low effort)",
@@ -9921,7 +10012,8 @@
       "turns_repo2": 43,
       "harness_version": null,
       "model_id": "gpt-6-astra",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Grok 4.6 (xhigh) seq",
@@ -9984,7 +10076,8 @@
       "turns_repo2": null,
       "harness_version": "grok 1.0.5",
       "model_id": "grok-4.6",
-      "group_rank": 101
+      "group_rank": 101,
+      "vendor_color": "#414852"
     },
     {
       "id": "Grok 4.6 (xhigh)",
@@ -10047,7 +10140,8 @@
       "turns_repo2": null,
       "harness_version": null,
       "model_id": "grok-4.6",
-      "group_rank": 101
+      "group_rank": 101,
+      "vendor_color": "#414852"
     },
     {
       "id": "Opus 5 (max effort)",
@@ -10110,7 +10204,8 @@
       "turns_repo2": 147,
       "harness_version": "Claude Code 2.1.220",
       "model_id": "claude-opus-5",
-      "group_rank": 300
+      "group_rank": 300,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Grok 4.7 (medium) - mean of 3",
@@ -10223,7 +10318,8 @@
       "turns_repo2": 252,
       "harness_version": null,
       "model_id": "grok-4.7",
-      "group_rank": 3
+      "group_rank": 3,
+      "vendor_color": "#414852"
     },
     {
       "id": "Qwen3.8-Flash (max effort)",
@@ -10285,7 +10381,8 @@
       "turns_repo2": 241,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "qwen3.8-flash",
-      "group_rank": 300
+      "group_rank": 300,
+      "vendor_color": "#E8A020"
     },
     {
       "id": "Opus 5 (xhigh effort)",
@@ -10347,7 +10444,8 @@
       "turns_repo2": 185,
       "harness_version": "Claude Code 2.1.248",
       "model_id": "claude-opus-5",
-      "group_rank": 301
+      "group_rank": 301,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Qwen3.8-Max (max effort, Alibaba API) - mean of 3",
@@ -10456,7 +10554,8 @@
       "turns_repo2": 236,
       "harness_version": "Claude Code 2.1.267 / Claude Code 2.1.272",
       "model_id": "qwen3.8-max",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#E8A020"
     },
     {
       "id": "GPT-6 Sol (xhigh effort)",
@@ -10517,7 +10616,8 @@
       "turns_repo2": 153,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-sol",
-      "group_rank": 201
+      "group_rank": 201,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "DeepSeek V4.1 Flash (max effort)",
@@ -10577,7 +10677,8 @@
       "turns_repo2": 292,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "deepseek-flash",
-      "group_rank": 100
+      "group_rank": 100,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Opus 5.5 (low effort) - mean of 2",
@@ -10678,7 +10779,8 @@
       "turns_repo2": 78,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 204
+      "group_rank": 204,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Opus 5 (medium effort)",
@@ -10738,7 +10840,8 @@
       "turns_repo2": 153,
       "harness_version": "Claude Code 2.1.247",
       "model_id": "claude-opus-5",
-      "group_rank": 303
+      "group_rank": 303,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Fable 5",
@@ -10798,7 +10901,8 @@
       "turns_repo2": 134,
       "harness_version": "Claude Code 2.1.215 / Claude Code 2.1.218",
       "model_id": "claude-fable-5",
-      "group_rank": 102
+      "group_rank": 102,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "MiMo-V2.6-Flash - mean of 3",
@@ -10911,7 +11015,8 @@
       "turns_repo2": 283,
       "harness_version": "Claude Code 2.1.278 / Claude Code 2.1.280",
       "model_id": "xiaomi/mimo-v2.6-flash",
-      "group_rank": 106
+      "group_rank": 106,
+      "vendor_color": "#1A1AA6"
     },
     {
       "id": "Sonnet 5.5 (medium effort) - mean of 3",
@@ -11020,7 +11125,8 @@
       "turns_repo2": 90,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 503
+      "group_rank": 503,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Qwen3.8-Flash (low effort)",
@@ -11079,7 +11185,8 @@
       "turns_repo2": 189,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "qwen3.8-flash",
-      "group_rank": 304
+      "group_rank": 304,
+      "vendor_color": "#E8A020"
     },
     {
       "id": "GPT-5.6 Luna (xhigh effort)",
@@ -11138,7 +11245,8 @@
       "turns_repo2": 349,
       "harness_version": null,
       "model_id": "gpt-5.6-luna",
-      "group_rank": 701
+      "group_rank": 701,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Opus 5.5 (low effort)",
@@ -11197,7 +11305,8 @@
       "turns_repo2": 86,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 204
+      "group_rank": 204,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Grok 4.6 (medium)",
@@ -11256,7 +11365,8 @@
       "turns_repo2": null,
       "harness_version": "grok 1.0.3",
       "model_id": "grok-4.6",
-      "group_rank": 103
+      "group_rank": 103,
+      "vendor_color": "#414852"
     },
     {
       "id": "Grok 4.6 (high)",
@@ -11315,7 +11425,8 @@
       "turns_repo2": null,
       "harness_version": null,
       "model_id": "grok-4.6",
-      "group_rank": 102
+      "group_rank": 102,
+      "vendor_color": "#414852"
     },
     {
       "id": "MiMo-V2.6-Pro - mean of 3",
@@ -11418,7 +11529,8 @@
       "turns_repo2": 180,
       "harness_version": "Claude Code 2.1.278",
       "model_id": "xiaomi/mimo-v2.6-pro",
-      "group_rank": 6
+      "group_rank": 6,
+      "vendor_color": "#1A1AA6"
     },
     {
       "id": "GPT-6.1 Sol (low effort) - mean of 2",
@@ -11519,7 +11631,8 @@
       "turns_repo2": 34,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-sol",
-      "group_rank": 104
+      "group_rank": 104,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Opus 5.5 (low effort) - mean of 3",
@@ -11622,7 +11735,8 @@
       "turns_repo2": 71,
       "harness_version": "Claude Code 2.1.280",
       "model_id": "claude-opus-5-5",
-      "group_rank": 204
+      "group_rank": 204,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "MiMo-V2.6-Pro - mean of 2",
@@ -11715,7 +11829,8 @@
       "turns_repo2": 195,
       "harness_version": "Claude Code 2.1.278",
       "model_id": "xiaomi/mimo-v2.6-pro",
-      "group_rank": 6
+      "group_rank": 6,
+      "vendor_color": "#1A1AA6"
     },
     {
       "id": "Grok 4.6 (medium) seq",
@@ -11773,7 +11888,8 @@
       "turns_repo2": null,
       "harness_version": "grok 1.0.5",
       "model_id": "grok-4.6",
-      "group_rank": 103
+      "group_rank": 103,
+      "vendor_color": "#414852"
     },
     {
       "id": "Haiku 5.5 (max effort)",
@@ -11831,7 +11947,8 @@
       "turns_repo2": 234,
       "harness_version": "Claude Code 2.1.292",
       "model_id": "claude-haiku-5-5",
-      "group_rank": 700
+      "group_rank": 700,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Gemini 3.7 Flash (high)",
@@ -11889,7 +12006,8 @@
       "turns_repo2": 276,
       "harness_version": "Gemini CLI 0.56.0",
       "model_id": "gemini-3.7-flash",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "DeepSeek V4.1 Flash (max effort) - mean of 3",
@@ -11994,7 +12112,8 @@
       "turns_repo2": 268,
       "harness_version": "Claude Code 2.1.267 / Claude Code 2.1.270",
       "model_id": "deepseek-flash",
-      "group_rank": 100
+      "group_rank": 100,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Haiku 5.5 (max effort) - mean of 2",
@@ -12083,7 +12202,8 @@
       "turns_repo2": 208,
       "harness_version": "Claude Code 2.1.292",
       "model_id": "claude-haiku-5-5",
-      "group_rank": 700
+      "group_rank": 700,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Fable 5.1 (medium effort)",
@@ -12140,7 +12260,8 @@
       "turns_repo2": 106,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "claude-fable-5-1",
-      "group_rank": 3
+      "group_rank": 3,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Kimi K3",
@@ -12197,7 +12318,8 @@
       "turns_repo2": 256,
       "harness_version": "Claude Code 2.1.215 / Claude Code 2.1.218",
       "model_id": "moonshotai/kimi-k3",
-      "group_rank": 106
+      "group_rank": 106,
+      "vendor_color": "#9333EA"
     },
     {
       "id": "Opus 5",
@@ -12254,7 +12376,8 @@
       "turns_repo2": 140,
       "harness_version": "Claude Code 2.1.218",
       "model_id": "claude-opus-5",
-      "group_rank": 302
+      "group_rank": 302,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Muse Spark 1.3 (xhigh effort, Muse Code, Meta API) - mean of 3",
@@ -12353,7 +12476,8 @@
       "turns_repo2": 200,
       "harness_version": "Muse Code 1.2.1",
       "model_id": "muse-spark-1.3",
-      "group_rank": 201
+      "group_rank": 201,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "MiMo-V2.6-Pro",
@@ -12409,7 +12533,8 @@
       "turns_repo2": 222,
       "harness_version": "Claude Code 2.1.278",
       "model_id": "xiaomi/mimo-v2.6-pro",
-      "group_rank": 6
+      "group_rank": 6,
+      "vendor_color": "#1A1AA6"
     },
     {
       "id": "GPT-6 Sol (high effort)",
@@ -12465,7 +12590,8 @@
       "turns_repo2": 82,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-sol",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Sonnet 5.5 (low effort)",
@@ -12521,7 +12647,8 @@
       "turns_repo2": 67,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 504
+      "group_rank": 504,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "GPT-5.6 Terra (xhigh effort)",
@@ -12577,7 +12704,8 @@
       "turns_repo2": 132,
       "harness_version": null,
       "model_id": "gpt-5.6-terra",
-      "group_rank": 601
+      "group_rank": 601,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Gemini 3.8 Flash",
@@ -12633,7 +12761,8 @@
       "turns_repo2": 284,
       "harness_version": "agy 1.1.22",
       "model_id": "gemini-3.8-flash-high",
-      "group_rank": 102
+      "group_rank": 102,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "Muse Spark 1.3 (xhigh effort, Muse Code, Meta API)",
@@ -12689,7 +12818,8 @@
       "turns_repo2": 192,
       "harness_version": "Muse Code 1.2.1",
       "model_id": "muse-spark-1.3",
-      "group_rank": 201
+      "group_rank": 201,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "Grok 4.7 (high) - mean of 3",
@@ -12782,7 +12912,8 @@
       "turns_repo2": 254,
       "harness_version": null,
       "model_id": "grok-4.7",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#414852"
     },
     {
       "id": "DeepSeek V4.1 Flash (high effort)",
@@ -12837,7 +12968,8 @@
       "turns_repo2": 230,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "deepseek-flash",
-      "group_rank": 102
+      "group_rank": 102,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "GPT-6 Luna (max effort) - mean of 2",
@@ -12928,7 +13060,8 @@
       "turns_repo2": 115,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-luna",
-      "group_rank": 400
+      "group_rank": 400,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GLM-5.3 Flash (max effort, Z.ai API)",
@@ -12983,7 +13116,8 @@
       "turns_repo2": 189,
       "harness_version": "Claude Code 2.1.269",
       "model_id": "glm-5.3-flash",
-      "group_rank": 100
+      "group_rank": 100,
+      "vendor_color": "#14B5C9"
     },
     {
       "id": "Sonnet 5.5 (low effort) - mean of 3",
@@ -13068,7 +13202,8 @@
       "turns_repo2": 55,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 504
+      "group_rank": 504,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Muse Spark 1.3 (high effort, Muse Code, Meta API)",
@@ -13123,7 +13258,8 @@
       "turns_repo2": 80,
       "harness_version": "Muse Code 1.2.1",
       "model_id": "muse-spark-1.3",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "Grok 4.7 (high)",
@@ -13178,7 +13314,8 @@
       "turns_repo2": 234,
       "harness_version": null,
       "model_id": "grok-4.7",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#414852"
     },
     {
       "id": "GLM-5.3 (max effort, Z.ai API)",
@@ -13233,7 +13370,8 @@
       "turns_repo2": 228,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "glm-5.3",
-      "group_rank": 0
+      "group_rank": 0,
+      "vendor_color": "#14B5C9"
     },
     {
       "id": "GLM-5.3",
@@ -13288,7 +13426,8 @@
       "turns_repo2": 180,
       "harness_version": "Claude Code 2.1.243",
       "model_id": "z-ai/glm-5.3",
-      "group_rank": 6
+      "group_rank": 6,
+      "vendor_color": "#14B5C9"
     },
     {
       "id": "Qwen3.8-Max",
@@ -13343,7 +13482,8 @@
       "turns_repo2": 149,
       "harness_version": "Claude Code 2.1.220",
       "model_id": "qwen3.8-max",
-      "group_rank": 6
+      "group_rank": 6,
+      "vendor_color": "#E8A020"
     },
     {
       "id": "Muse Spark 1.3 (high effort, Muse Code, Meta API) - mean of 3",
@@ -13442,7 +13582,8 @@
       "turns_repo2": 126,
       "harness_version": "Muse Code 1.2.1",
       "model_id": "muse-spark-1.3",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "GPT-6 Luna (max effort) - mean of 3",
@@ -13539,7 +13680,8 @@
       "turns_repo2": 133,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-luna",
-      "group_rank": 400
+      "group_rank": 400,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Haiku 5.5 (xhigh effort) - mean of 3",
@@ -13638,7 +13780,8 @@
       "turns_repo2": 142,
       "harness_version": "Claude Code 2.1.292",
       "model_id": "claude-haiku-5-5",
-      "group_rank": 701
+      "group_rank": 701,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "MiMo-V2.6-Pro (first-party)",
@@ -13692,7 +13835,8 @@
       "turns_repo2": 175,
       "harness_version": "Claude Code 2.1.278",
       "model_id": "mimo-v2.6-pro",
-      "group_rank": 8
+      "group_rank": 8,
+      "vendor_color": "#1A1AA6"
     },
     {
       "id": "Hy4 Preview",
@@ -13746,7 +13890,8 @@
       "turns_repo2": 156,
       "harness_version": "Claude Code 2.1.250",
       "model_id": "tencent/hy4-preview",
-      "group_rank": 6
+      "group_rank": 6,
+      "vendor_color": "#7C2D12"
     },
     {
       "id": "GPT-5.6 Terra (high effort)",
@@ -13800,7 +13945,8 @@
       "turns_repo2": 57,
       "harness_version": null,
       "model_id": "gpt-5.6-terra",
-      "group_rank": 602
+      "group_rank": 602,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Sonnet 5.5 (medium effort)",
@@ -13854,7 +14000,8 @@
       "turns_repo2": 69,
       "harness_version": "Claude Code 2.1.283",
       "model_id": "claude-sonnet-5-5",
-      "group_rank": 503
+      "group_rank": 503,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Gemini 3.7 Flash (high; Antigravity CLI retest)",
@@ -13908,7 +14055,8 @@
       "turns_repo2": 312,
       "harness_version": null,
       "model_id": "gemini-3.7-flash-high",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "Muse Spark 1.3 (high effort, Muse Code, OpenRouter)",
@@ -13962,7 +14110,8 @@
       "turns_repo2": 126,
       "harness_version": "MUSE CODE 0.1.0",
       "model_id": "muse-spark-1.3",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "Gemini 3.8 Flash - mean of 3",
@@ -14049,7 +14198,8 @@
       "turns_repo2": 329,
       "harness_version": "agy 1.1.22",
       "model_id": "gemini-3.8-flash-high",
-      "group_rank": 102
+      "group_rank": 102,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "GLM-5.3 Flash (max effort, Z.ai API) - mean of 3",
@@ -14134,7 +14284,8 @@
       "turns_repo2": 213,
       "harness_version": "Claude Code 2.1.269 / Claude Code 2.1.270",
       "model_id": "glm-5.3-flash",
-      "group_rank": 100
+      "group_rank": 100,
+      "vendor_color": "#14B5C9"
     },
     {
       "id": "GPT-6 Luna (max effort)",
@@ -14187,7 +14338,8 @@
       "turns_repo2": 105,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-luna",
-      "group_rank": 400
+      "group_rank": 400,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Grok 4.5 (re-run Aug 6)",
@@ -14240,7 +14392,8 @@
       "turns_repo2": null,
       "harness_version": null,
       "model_id": "grok-4.5",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#414852"
     },
     {
       "id": "Muse Spark 1.2 (xhigh, Meta API)",
@@ -14293,7 +14446,8 @@
       "turns_repo2": 30,
       "harness_version": "Claude Code 2.1.222",
       "model_id": "muse-spark-1.2",
-      "group_rank": 301
+      "group_rank": 301,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "Ox Alpha (stealth; free)",
@@ -14345,7 +14499,8 @@
       "turns_repo2": 145,
       "harness_version": "Claude Code 2.1.243",
       "model_id": "stealth/ox-alpha",
-      "group_rank": 206
+      "group_rank": 206,
+      "vendor_color": "#14B5C9"
     },
     {
       "id": "GLM-5.3 Flash (high effort, Z.ai API)",
@@ -14397,7 +14552,8 @@
       "turns_repo2": 229,
       "harness_version": "Claude Code 2.1.269",
       "model_id": "glm-5.3-flash",
-      "group_rank": 102
+      "group_rank": 102,
+      "vendor_color": "#14B5C9"
     },
     {
       "id": "DeepSeek V4-Pro (max effort, DeepSeek API)",
@@ -14449,7 +14605,8 @@
       "turns_repo2": 231,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "deepseek-v4-pro",
-      "group_rank": 200
+      "group_rank": 200,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Grok 4.5",
@@ -14501,7 +14658,8 @@
       "turns_repo2": null,
       "harness_version": null,
       "model_id": "grok-4.5",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#414852"
     },
     {
       "id": "Haiku 5.5 (high effort) - mean of 2",
@@ -14580,7 +14738,8 @@
       "turns_repo2": 149,
       "harness_version": "Claude Code 2.1.292",
       "model_id": "claude-haiku-5-5",
-      "group_rank": 702
+      "group_rank": 702,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Gemini 3.7 Flash seq",
@@ -14632,7 +14791,8 @@
       "turns_repo2": 227,
       "harness_version": "Antigravity CLI 1.1.20",
       "model_id": "gemini-3.7-flash-high",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "Grok 4.7 (low) - mean of 3",
@@ -14717,7 +14877,8 @@
       "turns_repo2": 144,
       "harness_version": null,
       "model_id": "grok-4.7",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#414852"
     },
     {
       "id": "Haiku 5.5 (high effort)",
@@ -14768,7 +14929,8 @@
       "turns_repo2": 140,
       "harness_version": "Claude Code 2.1.292",
       "model_id": "claude-haiku-5-5",
-      "group_rank": 702
+      "group_rank": 702,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "GPT-5.6 Terra (medium effort)",
@@ -14819,7 +14981,8 @@
       "turns_repo2": 45,
       "harness_version": null,
       "model_id": "gpt-5.6-terra",
-      "group_rank": 603
+      "group_rank": 603,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Grok 4.6 (low)",
@@ -14870,7 +15033,8 @@
       "turns_repo2": null,
       "harness_version": "grok 1.0.5",
       "model_id": "grok-4.6",
-      "group_rank": 104
+      "group_rank": 104,
+      "vendor_color": "#414852"
     },
     {
       "id": "Qwen3.8-27B (xhigh effort, Alibaba API) - mean of 3",
@@ -14955,7 +15119,8 @@
       "turns_repo2": 191,
       "harness_version": "Claude Code 2.1.268 / Claude Code 2.1.272",
       "model_id": "qwen3.8-27b",
-      "group_rank": 101
+      "group_rank": 101,
+      "vendor_color": "#E8A020"
     },
     {
       "id": "Qwen3.8-27B (xhigh effort, Alibaba API)",
@@ -15006,7 +15171,8 @@
       "turns_repo2": 198,
       "harness_version": "Claude Code 2.1.268",
       "model_id": "qwen3.8-27b",
-      "group_rank": 101
+      "group_rank": 101,
+      "vendor_color": "#E8A020"
     },
     {
       "id": "Mistral Large 4 - mean of 3",
@@ -15091,7 +15257,8 @@
       "turns_repo2": 268,
       "harness_version": "Claude Code 2.1.291",
       "model_id": "mistralai/mistral-large-4-0",
-      "group_rank": 2
+      "group_rank": 2,
+      "vendor_color": "#E10500"
     },
     {
       "id": "Opus 4.8 (max effort)",
@@ -15142,7 +15309,8 @@
       "turns_repo2": 260,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "claude-opus-4-8",
-      "group_rank": 400
+      "group_rank": 400,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "GPT-6 Luna (xhigh effort)",
@@ -15192,7 +15360,8 @@
       "turns_repo2": 99,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-luna",
-      "group_rank": 401
+      "group_rank": 401,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "DeepSeek V4-Flash 0731",
@@ -15242,7 +15411,8 @@
       "turns_repo2": 139,
       "harness_version": "Claude Code 2.1.220",
       "model_id": "deepseek/deepseek-v4-flash-0731",
-      "group_rank": 306
+      "group_rank": 306,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "GPT-6 Sol (medium effort)",
@@ -15292,7 +15462,8 @@
       "turns_repo2": 54,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-sol",
-      "group_rank": 203
+      "group_rank": 203,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Muse Spark 1.2 (default effort, OpenRouter)",
@@ -15342,7 +15513,8 @@
       "turns_repo2": 280,
       "harness_version": "Claude Code 2.1.222",
       "model_id": "meta/muse-spark-1.2",
-      "group_rank": 306
+      "group_rank": 306,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "GPT-5.6 Luna (high effort)",
@@ -15391,7 +15563,8 @@
       "turns_repo2": 63,
       "harness_version": null,
       "model_id": "gpt-5.6-luna",
-      "group_rank": 702
+      "group_rank": 702,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GLM-5.3 Flash",
@@ -15440,7 +15613,8 @@
       "turns_repo2": 152,
       "harness_version": "Claude Code 2.1.247",
       "model_id": "z-ai/glm-5.3-flash",
-      "group_rank": 106
+      "group_rank": 106,
+      "vendor_color": "#14B5C9"
     },
     {
       "id": "DeepSeek V4-Pro (high effort, DeepSeek API)",
@@ -15489,7 +15663,8 @@
       "turns_repo2": 186,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "deepseek-v4-pro",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Muse Spark 1.3 (medium effort, Muse Code, Meta API) - mean of 3",
@@ -15574,7 +15749,8 @@
       "turns_repo2": 152,
       "harness_version": "Muse Code 1.2.1",
       "model_id": "muse-spark-1.3",
-      "group_rank": 203
+      "group_rank": 203,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "Grok 4.5 (high re-run - CLI has no max)",
@@ -15623,7 +15799,8 @@
       "turns_repo2": null,
       "harness_version": null,
       "model_id": "grok-4.5",
-      "group_rank": 202
+      "group_rank": 202,
+      "vendor_color": "#414852"
     },
     {
       "id": "Haiku 5.5 (medium effort)",
@@ -15671,7 +15848,8 @@
       "turns_repo2": 129,
       "harness_version": "Claude Code 2.1.292",
       "model_id": "claude-haiku-5-5",
-      "group_rank": 703
+      "group_rank": 703,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "GPT-6.1 Terra (xhigh effort) - mean of 3",
@@ -15744,7 +15922,8 @@
       "turns_repo2": 57,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-terra",
-      "group_rank": 301
+      "group_rank": 301,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Haiku 5.5 (low effort)",
@@ -15791,7 +15970,8 @@
       "turns_repo2": 74,
       "harness_version": "Claude Code 2.1.292",
       "model_id": "claude-haiku-5-5",
-      "group_rank": 704
+      "group_rank": 704,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Grok 4.7 (low)",
@@ -15838,7 +16018,8 @@
       "turns_repo2": 152,
       "harness_version": null,
       "model_id": "grok-4.7",
-      "group_rank": 4
+      "group_rank": 4,
+      "vendor_color": "#414852"
     },
     {
       "id": "Qwen3.8-27B 8-bit (OpenRouter/Parasail) - mean of 3",
@@ -15913,7 +16094,8 @@
       "turns_repo2": 177,
       "harness_version": "Claude Code 2.1.272",
       "model_id": "qwen/qwen3.8-27b",
-      "group_rank": 206
+      "group_rank": 206,
+      "vendor_color": "#E8A020"
     },
     {
       "id": "DeepSeek V4-Pro",
@@ -15959,7 +16141,8 @@
       "turns_repo2": 115,
       "harness_version": "Claude Code 2.1.220",
       "model_id": "deepseek/deepseek-v4-pro",
-      "group_rank": 206
+      "group_rank": 206,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "GPT-6.1 Terra (high effort) - mean of 3",
@@ -16024,7 +16207,8 @@
       "turns_repo2": 28,
       "harness_version": "codex-cli 0.159.0",
       "model_id": "gpt-6.1-terra",
-      "group_rank": 302
+      "group_rank": 302,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Muse Spark 1.3 (low effort, Muse Code, Meta API) - mean of 3",
@@ -16105,7 +16289,8 @@
       "turns_repo2": 82,
       "harness_version": "Muse Code 1.2.1",
       "model_id": "muse-spark-1.3",
-      "group_rank": 204
+      "group_rank": 204,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "GPT-6 Luna (high effort)",
@@ -16150,7 +16335,8 @@
       "turns_repo2": 43,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-luna",
-      "group_rank": 402
+      "group_rank": 402,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-5.6 Luna (medium effort)",
@@ -16195,7 +16381,8 @@
       "turns_repo2": 39,
       "harness_version": "codex-cli 0.150.0-alpha.8",
       "model_id": "gpt-5.6-luna",
-      "group_rank": 703
+      "group_rank": 703,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GLM-5.3 Flash (low effort, Z.ai API)",
@@ -16240,7 +16427,8 @@
       "turns_repo2": 95,
       "harness_version": "Claude Code 2.1.269",
       "model_id": "glm-5.3-flash",
-      "group_rank": 104
+      "group_rank": 104,
+      "vendor_color": "#14B5C9"
     },
     {
       "id": "Muse Spark 1.3 (medium effort, Muse Code, Meta API)",
@@ -16285,7 +16473,8 @@
       "turns_repo2": 149,
       "harness_version": "Muse Code 1.2.1",
       "model_id": "muse-spark-1.3",
-      "group_rank": 203
+      "group_rank": 203,
+      "vendor_color": "#D6336C"
     },
     {
       "id": "Sonnet 5",
@@ -16330,7 +16519,8 @@
       "turns_repo2": 115,
       "harness_version": "Claude Code 2.1.218",
       "model_id": "claude-sonnet-5",
-      "group_rank": 602
+      "group_rank": 602,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Sonnet 5 (max effort)",
@@ -16375,7 +16565,8 @@
       "turns_repo2": 204,
       "harness_version": "Claude Code 2.1.267",
       "model_id": "claude-sonnet-5",
-      "group_rank": 600
+      "group_rank": 600,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "Opus 4.8",
@@ -16420,7 +16611,8 @@
       "turns_repo2": 68,
       "harness_version": "Claude Code 2.1.215 / Claude Code 2.1.218",
       "model_id": "claude-opus-4-8",
-      "group_rank": 402
+      "group_rank": 402,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "DeepSeek V4-Flash",
@@ -16464,7 +16656,8 @@
       "turns_repo2": 127,
       "harness_version": "Claude Code 2.1.220",
       "model_id": "deepseek/deepseek-v4-flash",
-      "group_rank": 306
+      "group_rank": 306,
+      "vendor_color": "#5A3EC8"
     },
     {
       "id": "Qwen3.8-27B 8-bit (OpenRouter/Parasail)",
@@ -16508,7 +16701,8 @@
       "turns_repo2": 151,
       "harness_version": "Claude Code 2.1.272",
       "model_id": "qwen/qwen3.8-27b",
-      "group_rank": 206
+      "group_rank": 206,
+      "vendor_color": "#E8A020"
     },
     {
       "id": "GPT-6 Sol (low effort)",
@@ -16550,7 +16744,8 @@
       "turns_repo2": 24,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-sol",
-      "group_rank": 204
+      "group_rank": 204,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-6 Luna (medium effort)",
@@ -16590,7 +16785,8 @@
       "turns_repo2": 16,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-luna",
-      "group_rank": 403
+      "group_rank": 403,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-5.6 Luna (low effort)",
@@ -16630,7 +16826,8 @@
       "turns_repo2": 19,
       "harness_version": "codex-cli 0.150.0-alpha.8",
       "model_id": "gpt-5.6-luna",
-      "group_rank": 704
+      "group_rank": 704,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "GPT-6 Luna (low effort)",
@@ -16670,7 +16867,8 @@
       "turns_repo2": 51,
       "harness_version": "codex-cli 0.155.1",
       "model_id": "gpt-6-luna",
-      "group_rank": 404
+      "group_rank": 404,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "Gemma 4 31B (OpenRouter/Crusoe)",
@@ -16710,7 +16908,8 @@
       "turns_repo2": 49,
       "harness_version": "Claude Code 2.1.272",
       "model_id": "google/gemma-4-31b-it",
-      "group_rank": 306
+      "group_rank": 306,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "Gemma 4 31B 4-bit (OpenRouter/CoreWeave)",
@@ -16749,7 +16948,8 @@
       "turns_repo2": 33,
       "harness_version": "Claude Code 2.1.272",
       "model_id": "google/gemma-4-31b-it",
-      "group_rank": 406
+      "group_rank": 406,
+      "vendor_color": "#2C6FE0"
     },
     {
       "id": "Haiku 4.5 - mean of 2",
@@ -16794,7 +16994,8 @@
       "turns_repo2": 63,
       "harness_version": "Claude Code 2.1.292",
       "model_id": "claude-haiku-4-5-20251001",
-      "group_rank": 806
+      "group_rank": 806,
+      "vendor_color": "#D9542B"
     },
     {
       "id": "gpt-oss-20b",
@@ -16829,7 +17030,8 @@
       "turns_repo2": 42,
       "harness_version": "Claude Code 2.1.269",
       "model_id": "openai/gpt-oss-20b",
-      "group_rank": 906
+      "group_rank": 906,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "gpt-oss-120b - mean of 3",
@@ -16866,7 +17068,8 @@
       "turns_repo2": 25,
       "harness_version": "Claude Code 2.1.269 / Claude Code 2.1.272",
       "model_id": "openai/gpt-oss-120b",
-      "group_rank": 806
+      "group_rank": 806,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "gpt-oss-20b - mean of 3",
@@ -16903,7 +17106,8 @@
       "turns_repo2": 40,
       "harness_version": "Claude Code 2.1.269 / Claude Code 2.1.272",
       "model_id": "openai/gpt-oss-20b",
-      "group_rank": 906
+      "group_rank": 906,
+      "vendor_color": "#1B9E77"
     },
     {
       "id": "gpt-oss-120b",
@@ -16938,7 +17142,8 @@
       "turns_repo2": 33,
       "harness_version": "Claude Code 2.1.269",
       "model_id": "openai/gpt-oss-120b",
-      "group_rank": 806
+      "group_rank": 806,
+      "vendor_color": "#1B9E77"
     }
   ]
 }

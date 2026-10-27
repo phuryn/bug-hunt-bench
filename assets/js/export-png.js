@@ -12,10 +12,10 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText,
-} from './format.js?v=25672bc480';
-import { scatterLayout, resolveAxis } from './scatter.js?v=25672bc480';
-import { coverageLayout, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=25672bc480';
-import { runColor, activeTheme } from './theme.js?v=25672bc480';
+} from './format.js?v=c6f4f9af12';
+import { scatterLayout, resolveAxis } from './scatter.js?v=c6f4f9af12';
+import { coverageLayout, coverageOrderNote, coverageSummaryNote, coverageColor } from './coverage.js?v=c6f4f9af12';
+import { runColor, activeTheme } from './theme.js?v=c6f4f9af12';
 
 const SCALE = 2;
 const PAD = 32;
@@ -530,7 +530,7 @@ function drawCoverage(ctx, T, L, w) {
 
   L.rows.forEach(({ run, hasData, ticks }) => {
     // label line: swatch, model + badge, fixed count at the right edge
-    ctx.fillStyle = runColor(run.color);
+    ctx.fillStyle = coverageColor(run);
     ctx.fillRect(left, y + 1, 10, 10);
     const suffix = effortSuffix(run);
     const badge = `${String(run.effort || '').toUpperCase()}${suffix ? ` · ${suffix}` : ''}`;
@@ -585,11 +585,11 @@ function drawCoverage(ctx, T, L, w) {
             // a partial tick cannot be mistaken for the neutral miss ring.
             ctx.save();
             ctx.globalAlpha = t.strength < 1 ? t.strength : 1;
-            ctx.fillStyle = runColor(run.color);
+            ctx.fillStyle = coverageColor(run);
             ctx.fillRect(x, y, cellW, COV_TICK_H);
             ctx.restore();
             if (t.strength < 1) {
-              ctx.strokeStyle = runColor(run.color);
+              ctx.strokeStyle = coverageColor(run);
               ctx.lineWidth = 1;
               ctx.strokeRect(x + 0.5, y + 0.5, Math.max(0.5, cellW - 1), COV_TICK_H - 1);
             }

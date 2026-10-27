@@ -1,8 +1,8 @@
 /* The fourth view: coverage.
    Which of the 105 planted bugs each selected run fixed, and where models
    overlap. Two lines per run — a label line (model, effort badge, fixed
-   count) and a tick line (one tick per bug, filled in the run's own colour
-   when that run fixed it) — on the same visual language as the tick rule in
+   count) and a tick line (one tick per bug, filled in the run's vendor
+   colour - see coverageColor - when that run fixed it) — on the same visual language as the tick rule in
    the hero (see .tickrule in site.css): equal-height ticks, solid vs hollow,
    never a size difference standing in for a state difference. The one
    addition here is colour, because a run's identity is the point of this
@@ -34,9 +34,16 @@
    pivot's dividers land in the same place all the way down the card, on
    screen and in the PNG export alike. */
 
-import { el, TOTALS, harnessShort, harnessTwinIds } from './format.js?v=25672bc480';
-import { effortBadge } from './table.js?v=25672bc480';
-import { runColor } from './theme.js?v=25672bc480';
+import { el, TOTALS, harnessShort, harnessTwinIds } from './format.js?v=c6f4f9af12';
+import { effortBadge } from './table.js?v=c6f4f9af12';
+import { runColor } from './theme.js?v=c6f4f9af12';
+
+/** One colour per VENDOR here, not the per-model shade every other view uses: Sonnet and Opus fill
+    their ticks in the same Anthropic colour, so two rows compare tick for tick instead of shade
+    against shade (Pawel, 2026-10-27). The PNG export calls this too. */
+export function coverageColor(run) {
+  return runColor(run.vendor_color || run.color);
+}
 
 /* Plain words, not a legend of single letters — a reader should not have to
    learn A/B/C/D to read the strip. Order here IS the left-to-right order of
@@ -295,7 +302,7 @@ export function renderCoverage(host, runs, meta, glossary, pivotSlug, onPivotTog
     const rel = L.reliability.get(run.slug) || null;
 
     const label = el('div', { class: 'coverage__label' }, [
-      el('span', { class: 'swatch', style: { 'background-color': runColor(run.color) } }),
+      el('span', { class: 'swatch', style: { 'background-color': coverageColor(run) } }),
       el('span', { class: 'coverage__name' }, [run.model, ' ', effortBadge(run, glossary),
         TWINS.has(run.id) ? ` (${harnessShort(run)})` : null]),
       isPivot ? el('span', { class: 'coverage__chip', text: 'Sorted by' }) : null,
@@ -321,7 +328,7 @@ export function renderCoverage(host, runs, meta, glossary, pivotSlug, onPivotTog
           class: `tick${t.hit ? ' is-hit' : ' is-miss'}${partial ? ' is-partial' : ''}`,
         });
         if (t.hit) {
-          const c = runColor(run.color);
+          const c = coverageColor(run);
           if (partial) {
             // Strength is carried by the FILL's alpha, never by size - this view's rule is that a
             // size difference must not stand in for a state difference. Element opacity is not used,
