@@ -4478,3 +4478,21 @@ Runs: high 42 and 44 (repo 1: 18 and 21 - repo 2: 24 and 23); medium 42 and 41 (
 What it shows. Below xhigh the dial moves the cost far more than the score: high 43 for $46.67, medium 41.5 for $26.55, low 41 for $24.32 per run, against xhigh 49 and max 58. For scale, Opus 5.5 (max effort) - mean of 3 scores 41.7 for $58.53.
 
 Judged by Grok (grok-4.7), blind, like the max and xhigh rows. Cost is a list estimate at Anthropic's Fable 5.2 rates. Not featured.
+
+## Gemini 4 Carbon — high, mean of 3 (Nov 10)
+
+Google's Gemini 4 Carbon (`gemini-4-carbon`) at thinking level high, its top tier, through the Antigravity CLI 1.5.5 in gateway mode on a Gemini API key. Three runs of one configuration. Each leg ran on its own fresh Linux cloud machine (8 vCPU) with the same benchmark runner, so the walls are not comparable to laptop rows.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Gemini 4 Carbon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **57.3** / 105 | 22.3 / 45 | 35 / 60 | 114.0 min | $31.32 |
+| Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 40.7 / 105 | 13 / 45 | 27.7 / 60 | 56.5 min | $7.16 |
+| Fable 5.2 (max effort) - mean of 3 | Claude Code | 58 / 105 | 23 / 45 | 35 / 60 | 142.8 min | $139.65 |
+
+Runs: 58, 62 and 52 of 105 (repo 1: 21, 24 and 22 - repo 2: 37, 38 and 30).
+
+What it shows. Carbon at high averages 57.3 of 105, 16.6 above Gemini 4 Argon at high (40.7, mean of 3) and 0.7 below Fable 5.2 at max (58, mean of 3). The gap to Fable 5.2 is smaller than either model's run-to-run spread, so the two read as level. At list it costs $31.32 per run, 22% of Fable 5.2's $139.65.
+
+Three things to read it with. Every leg was interrupted once, about 25 minutes in, when the API account's prepaid credit ran out; each was resumed in its own conversation after a top-up, and its wall is the working time with the breaks removed. The judge: Grok (grok-4.7), blind - the same as the Fable 5.2 row, but not the Codex judge of the Argon rows. The tier: the API accepts xhigh and max for Carbon but serves them as its default, so high is the ceiling.
+
+Cost is a list estimate from Google's per-call usage at the introductory rate ($2 input, $0.10 cached input, $10 output per million), which matched the account's balance drop over the first segments. Featured.

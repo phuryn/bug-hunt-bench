@@ -212,3 +212,4 @@ Fable 5.2 (xhigh effort) - mean of 3,Claude Code,49.0,20.7,28.3,16.7,57.0,61.01
 Fable 5.2 (high effort) - mean of 2,Claude Code,43.0,19.5,23.5,16.5,39.5,46.67
 Fable 5.2 (medium effort) - mean of 2,Claude Code,41.5,18.0,23.5,17.5,19.8,26.55
 Fable 5.2 (low effort) - mean of 2,Claude Code,41.0,19.5,21.5,14.5,18.7,24.32
+"Gemini 4 Carbon (high effort, Antigravity CLI) - mean of 3",Antigravity CLI,57.3,22.3,35.0,25.0,114.0,31.32

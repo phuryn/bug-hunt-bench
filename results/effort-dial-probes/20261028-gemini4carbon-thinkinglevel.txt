@@ -1,0 +1,30 @@
+Which thinking levels does Gemini 4 Carbon accept on the Gemini API, and is high its top tier? - 2026-11-10 18:56
+
+POST .../models/gemini-4-carbon:generateContent, generationConfig.thinkingConfig.thinkingLevel = ..., one short counting prompt, n=1 each. Model metadata: input 1048576 / output 32768 tokens, thinking=True.
+
+    thinkingLevel   HTTP  thoughtsTokenCount  served / error
+    bogus_zzz       400   None                Invalid value at 'generation_config.thinking_config.thinking_level' (type.googleapis.com/google.ai.generativelanguage.v1beta.ThinkingConfig.
+    minimal         400   None                Thinking level MINIMAL is not supported for this model. Please retry with other thinking level.
+    low             200   74                  gemini-4-carbon
+    medium          200   190                 gemini-4-carbon
+    high            200   792                 gemini-4-carbon
+    xhigh           200   190                 gemini-4-carbon
+    max             200   190                 gemini-4-carbon
+    ultra           400   None                Invalid value at 'generation_config.thinking_config.thinking_level' (type.googleapis.com/google.ai.generativelanguage.v1beta.ThinkingConfig.
+    field omitted   200   190                 gemini-4-carbon
+
+FOLLOW-UP 2026-11-10 ~19:10 (Warsaw): xhigh/max answer 200 but do NOT raise thinking. Harder prompt
+("Count the prime numbers between 1 and 200, then answer with the count only."), n=2 per level:
+
+    thinkingLevel   thoughtsTokenCount (rep 0, rep 1)
+    medium          208, 309
+    high            3964, 3748
+    xhigh           200, 162
+    max             215, 233
+    field omitted   231, 232
+
+xhigh and max land with the default (field omitted), not above high: accepted, silently mapped to the
+default tier. high is Carbon's real ceiling on the Gemini API. The pre-run gate's "ACCEPTS xhigh/max above
+high" stop is a false positive: it tests HTTP status only, not thinking spend.
+Also: agy 1.5.5 gateway mode lists the bare slug `gemini-4-carbon` (no -high/-medium/-low), so an agy arm
+must pin the tier on the wire (a local gateway that sets thinkingLevel high on every request).
