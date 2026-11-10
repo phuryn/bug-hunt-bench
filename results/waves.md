@@ -4442,3 +4442,21 @@ What it shows. Fable 5.2 at max averages 58 of 105, 15 above Fable 5.1 at max (4
 Two things to read it with. The judge: these runs were scored by Grok (grok-4.7), blind; the comparison rows by gpt-5.5, which the ChatGPT account no longer serves. The board's judge calibration (`judge-calibration.md`) had GPT-5.5 and Grok 4.5 grade the same arm to the same fixed count, 17 and 17; it has not been repeated with grok-4.7. The regime: every leg compacted its context once on repo 2; on repo 1 only run 2 did. Same threshold on all six legs (the CLI default) - run 2 ran longer and crossed it - so the three are published as one mean, with that on the row.
 
 Cost is a list estimate at Anthropic's Fable 5.2 rates ($8 input, $16 1h cache write, $0.20 cache read, $40 output per million), checked to the cent against the CLI's own cost figure on a wire probe. The per-turn output cap on the wire is 128,000; Fable 5.1's row ran with less. Featured (from Nov 10).
+
+## Claude Fable 5.2 — xhigh, mean of 3 (Nov 10)
+
+The tier below max, on the same setup as the max row: Claude Code 2.1.321, first-party, each leg on its own fresh Linux cloud machine with the CLI pinned. Three runs of one configuration, all six legs at once.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Fable 5.2 (xhigh effort) - mean of 3 | Claude Code | **49** / 105 | 20.7 / 45 | 28.3 / 60 | 57.0 min | $61.01 |
+| Fable 5.2 (max effort) - mean of 3 | Claude Code | 58 / 105 | 23 / 45 | 35 / 60 | 142.8 min | $139.65 |
+| Fable 5.1 (xhigh effort) | Claude Code | 29 / 105 | 13 / 45 | 16 / 60 | 59.5 min | $40.42 |
+| Sonnet 5.5 (xhigh effort) - mean of 3 | Claude Code | 36 / 105 | 16 / 45 | 20 / 60 | 72.7 min | $42.86 |
+| Opus 5.5 (xhigh effort) - mean of 3 | Claude Code | 36 / 105 | 17 / 45 | 19 / 60 | 42.5 min | $34.98 |
+
+Runs: 54, 45 and 48 of 105 (repo 1: 22, 20 and 20 - repo 2: 32, 25 and 28).
+
+What it shows. Fable 5.2 at xhigh averages 49 of 105, 9 below its own max (58) at 44% of the cost per run ($61.01 against $139.65) and about 45% of the turns (319 against 707 per run). It is the highest xhigh row on the board (the next: GPT-6 Astra (xhigh effort), 43), 20 above Fable 5.1 at xhigh (29, one run) and 13 above Sonnet 5.5 and Opus 5.5 at xhigh (36 and 36, means of 3).
+
+Same regime on all six legs: no leg compacted its context. Judged by Grok (grok-4.7), blind, like the max row; the older Anthropic rows were judged by GPT-5.5. Cost is a list estimate at Anthropic's Fable 5.2 rates. Featured.
