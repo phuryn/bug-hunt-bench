@@ -4423,3 +4423,22 @@ Runs: medium 8, 6 and 8 of 105 (repo 1: 4, 3 and 4 - repo 2: 4, 3 and 4); low 7,
 What it shows. The GPT-6.1 Terra ladder is now complete: max 40.7, xhigh 11.3, high 9.7, medium 7.3 and low 6 (means of 3) - every step down the dial scores lower. Everything below max sits between 6 and 11.3. GPT-6.1 Sol scores 29 at medium and 22.5 at low (means of 2). As at xhigh and high, the runs were not broken: every leg exited 0 with a written report. The model did far less than at max - reasoning tokens per run 908, 932 and 797 at medium and 349, 598 and 638 at low, against 36,249, 38,476 and 33,368 at max; turns per run 46, 58 and 51 at medium and 44, 39 and 48 at low, against 421, 385 and 266.
 
 Cost is a list estimate at OpenAI's GPT-6.1 Terra rates ($1 input, $0.05 cached, $5 output per million); no request reached the 272K long-context line (the largest was 71,033 tokens). Each tier's three runs and both repos ran at once on one laptop, which the wall marker discloses. Judged by Grok (grok-4.7), never by an OpenAI model. Not featured.
+
+## Claude Fable 5.2 — max, mean of 3 (Nov 9-10)
+
+Anthropic's Claude Fable 5.2 (`claude-fable-5-2`), released Nov 9, at max effort through Claude Code 2.1.321, first-party. Three runs of one configuration. Each leg ran on its own fresh Linux cloud machine (8 vCPU) with the same benchmark runner and the CLI pinned, so the walls are not comparable to laptop rows.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Fable 5.2 (max effort) - mean of 3 | Claude Code | **58** / 105 | 23 / 45 | 35 / 60 | 142.8 min | $139.65 |
+| Fable 5.1 (max effort) | Claude Code | 43 / 105 | 19 / 45 | 24 / 60 | 73.1 min | $77.55 |
+| Sonnet 5.5 (max effort) - mean of 3 | Claude Code | 51.3 / 105 | 22.7 / 45 | 28.7 / 60 | 287.1 min | $154.03 |
+| Opus 5.5 (max effort) - mean of 3 | Claude Code | 41.7 / 105 | 19 / 45 | 22.7 / 60 | 66.9 min | $58.53 |
+
+Runs: 56, 53 and 65 of 105 (repo 1: 21, 23 and 25 - repo 2: 35, 30 and 40).
+
+What it shows. Fable 5.2 at max averages 58 of 105, 15 above Fable 5.1 at max (43, one run) and 6.7 above Sonnet 5.5 at max (51.3, mean of 3), the board's best mean of 3 until now. All three runs (53 to 65) are above that mean, and run 3's 65 is the highest single run on the board (the best before it: 57). At list it costs $139.65 per run: 91% of Sonnet 5.5's $154.03, and 1.8x Fable 5.1's $77.55.
+
+Two things to read it with. The judge: these runs were scored by Grok (grok-4.7), blind; the comparison rows by gpt-5.5, which the ChatGPT account no longer serves. The board's judge calibration (`judge-calibration.md`) had GPT-5.5 and Grok 4.5 grade the same arm to the same fixed count, 17 and 17; it has not been repeated with grok-4.7. The regime: every leg compacted its context once on repo 2; on repo 1 only run 2 did. Same threshold on all six legs (the CLI default) - run 2 ran longer and crossed it - so the three are published as one mean, with that on the row.
+
+Cost is a list estimate at Anthropic's Fable 5.2 rates ($8 input, $16 1h cache write, $0.20 cache read, $40 output per million), checked to the cent against the CLI's own cost figure on a wire probe. The per-turn output cap on the wire is 128,000; Fable 5.1's row ran with less. Not featured.

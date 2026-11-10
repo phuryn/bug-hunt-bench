@@ -1,0 +1,26 @@
+# claude-fable-5-2 - what Claude Code 2.1.321 sends, captured on the wire 2026-11-09 (Windows laptop), for the fable52max* / fable52xhigh* arms
+# CLI: claude -p 'Reply with the single word OK.' --model <m> --effort <e> --output-format stream-json --verbose --setting-sources project,local
+# leg-shaped: every CLAUDE*/ANTHROPIC* variable stripped, cwd outside the home folder, through a recording pass-through to api.anthropic.com (auth not recorded)
+# script: a local wire tap (kept unpublished); probe cost $0.54 at list (the result events below)
+
+{"run": "claude-fable-5-2 --effort max", "model": "claude-fable-5-2", "output_config": {"effort": "max"}, "thinking": {"type": "adaptive", "display": "updates"}, "max_tokens": 128000, "n_tools": 15, "context-1m flag": false, "per-turn-control": true}
+{"run": "claude-fable-5-2 --effort xhigh", "model": "claude-fable-5-2", "output_config": {"effort": "xhigh"}, "thinking": {"type": "adaptive", "display": "updates"}, "max_tokens": 128000, "n_tools": 15, "context-1m flag": false, "per-turn-control": true}
+{"run": "claude-fable-5-2[1m] --effort max", "model": "claude-fable-5-2", "output_config": {"effort": "max"}, "thinking": {"type": "adaptive", "display": "updates"}, "max_tokens": 128000, "n_tools": 15, "context-1m flag": false, "per-turn-control": true}
+{"run": "claude-fable-5-2 --effort ultra", "model": "claude-fable-5-2", "output_config": {"effort": "medium"}, "thinking": {"type": "adaptive", "display": "updates"}, "max_tokens": 128000, "n_tools": 15, "context-1m flag": false, "per-turn-control": true}
+
+{"run": "claude-fable-5-2 --effort max", "exit": 0, "init_model": "claude-fable-5-2", "cli": "2.1.321", "answer": "OK", "usage": {"input_tokens": 2, "cache_creation_input_tokens": 24423, "cache_read_input_tokens": 0, "output_tokens": 32}, "cache_write_1h": 24423, "cache_write_5m": 0, "cli_total_cost_usd": 0.392064, "arm_table_usd": 0.392064}
+{"run": "claude-fable-5-2 --effort xhigh", "exit": 0, "init_model": "claude-fable-5-2", "cli": "2.1.321", "answer": "OK", "usage": {"input_tokens": 2, "cache_creation_input_tokens": 4145, "cache_read_input_tokens": 20278, "output_tokens": 4}, "cache_write_1h": 4145, "cache_write_5m": 0, "cli_total_cost_usd": 0.0705516, "arm_table_usd": 0.0705516}
+{"run": "claude-fable-5-2[1m] --effort max", "exit": 0, "init_model": "claude-fable-5-2", "cli": "2.1.321", "answer": "OK", "usage": {"input_tokens": 2, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 24423, "output_tokens": 20}, "cache_write_1h": 0, "cache_write_5m": 0, "cli_total_cost_usd": 0.0057006, "arm_table_usd": 0.0057006}
+{"run": "claude-fable-5-2 --effort ultra", "exit": 0, "init_model": "claude-fable-5-2", "cli": "2.1.321", "answer": "OK", "usage": {"input_tokens": 2, "cache_creation_input_tokens": 4145, "cache_read_input_tokens": 20278, "output_tokens": 4}, "cache_write_1h": 4145, "cache_write_5m": 0, "cli_total_cost_usd": 0.0705516, "arm_table_usd": 0.0705516}
+
+VERDICT: the main loop sends output_config.effort=max at --effort max and xhigh at --effort xhigh, to model claude-fable-5-2,
+with adaptive thinking and per-turn max_tokens 128,000 (Fable 5.1's rows ran at 32,000 on CLI 2.1.251 and 64,000 on 2.1.272).
+per-turn-control-2026-07-01 is in anthropic-beta. The CLI knows the model: init echoes claude-fable-5-2. claude-fable-5-2[1m] sends
+the same bare id with no context-1m flag, so the two strings run the same machine; the arms use the bare id (requested = served).
+Agrees with the Mac capture of the same build except one field: thinking.display reads "updates" here where the Mac recorded
+"omitted". Display changes what the API returns, not what the model computes or bills.
+Enum: an invented tier (--effort ultra) is NOT refused - exit 0, and the wire carries effort=medium, the CLI default for this model;
+the CLI says so on stderr: "Warning: Unknown --effort value 'ultra' - ignoring it and using the default effort. Valid values: low, medium, high, xhigh, max." Tier status first_party (documented enum, accepted on the wire, not magnitude-probed);
+max is the top of the enum (verified_ceiling would need a magnitude probe).
+PRICES CONFIRMED TO THE CENT: $8 in / $16 1h cache write / $0.20 cache read / $40 out per MTok (Anthropic pricing page,
+2026-11-09) reproduce the CLI's own total_cost_usd exactly on every run above. Claude Code writes 1h caches only (5m = 0).
