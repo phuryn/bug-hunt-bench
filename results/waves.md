@@ -4460,3 +4460,21 @@ Runs: 54, 45 and 48 of 105 (repo 1: 22, 20 and 20 - repo 2: 32, 25 and 28).
 What it shows. Fable 5.2 at xhigh averages 49 of 105, 9 below its own max (58) at 44% of the cost per run ($61.01 against $139.65) and about 45% of the turns (319 against 707 per run). It is the highest xhigh row on the board (the next: GPT-6 Astra (xhigh effort), 43), 20 above Fable 5.1 at xhigh (29, one run) and 13 above Sonnet 5.5 and Opus 5.5 at xhigh (36 and 36, means of 3).
 
 Same regime on all six legs: no leg compacted its context. Judged by Grok (grok-4.7), blind, like the max row; the older Anthropic rows were judged by GPT-5.5. Cost is a list estimate at Anthropic's Fable 5.2 rates. Featured.
+
+## Claude Fable 5.2 — high, medium and low, means of 2 (Nov 10)
+
+The three tiers below xhigh, on the same setup as the max and xhigh rows: Claude Code 2.1.321, first-party, each leg on its own fresh Linux cloud machine with the CLI pinned. Two runs per tier; each wave of six legs (one run of all three tiers, both repos) ran at once.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Fable 5.2 (high effort) - mean of 2 | Claude Code | **43** / 105 | 19.5 / 45 | 23.5 / 60 | 39.5 min | $46.67 |
+| Fable 5.2 (medium effort) - mean of 2 | Claude Code | **41.5** / 105 | 18 / 45 | 23.5 / 60 | 19.8 min | $26.55 |
+| Fable 5.2 (low effort) - mean of 2 | Claude Code | **41** / 105 | 19.5 / 45 | 21.5 / 60 | 18.7 min | $24.32 |
+| Fable 5.2 (max effort) - mean of 3 | Claude Code | 58 / 105 | 23 / 45 | 35 / 60 | 142.8 min | $139.65 |
+| Fable 5.2 (xhigh effort) - mean of 3 | Claude Code | 49 / 105 | 20.7 / 45 | 28.3 / 60 | 57.0 min | $61.01 |
+
+Runs: high 42 and 44 (repo 1: 18 and 21 - repo 2: 24 and 23); medium 42 and 41 (repo 1: 20 and 16 - repo 2: 22 and 25); low 42 and 40 (repo 1: 20 and 19 - repo 2: 22 and 21).
+
+What it shows. Below xhigh the dial moves the cost far more than the score: high 43 for $46.67, medium 41.5 for $26.55, low 41 for $24.32 per run, against xhigh 49 and max 58. For scale, Opus 5.5 (max effort) - mean of 3 scores 41.7 for $58.53.
+
+Judged by Grok (grok-4.7), blind, like the max and xhigh rows. Cost is a list estimate at Anthropic's Fable 5.2 rates. Not featured.

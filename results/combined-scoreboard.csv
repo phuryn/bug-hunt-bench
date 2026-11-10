@@ -209,3 +209,6 @@ GPT-6.1 Terra (medium effort) - mean of 3,Codex CLI,7.3,3.7,3.7,7.3,9.6,0.31
 GPT-6.1 Terra (low effort) - mean of 3,Codex CLI,6.0,2.7,3.3,5.0,10.1,0.3
 Fable 5.2 (max effort) - mean of 3,Claude Code,58.0,23.0,35.0,24.7,142.8,139.65
 Fable 5.2 (xhigh effort) - mean of 3,Claude Code,49.0,20.7,28.3,16.7,57.0,61.01
+Fable 5.2 (high effort) - mean of 2,Claude Code,43.0,19.5,23.5,16.5,39.5,46.67
+Fable 5.2 (medium effort) - mean of 2,Claude Code,41.5,18.0,23.5,17.5,19.8,26.55
+Fable 5.2 (low effort) - mean of 2,Claude Code,41.0,19.5,21.5,14.5,18.7,24.32
