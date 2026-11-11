@@ -4496,3 +4496,19 @@ What it shows. Carbon at high averages 57.3 of 105, 16.6 above Gemini 4 Argon at
 Three things to read it with. Every leg was interrupted once, about 25 minutes in, when the API account's prepaid credit ran out; each was resumed in its own conversation after a top-up, and its wall is the working time with the breaks removed. The judge: Grok (grok-4.7), blind - the same as the Fable 5.2 row, but not the Codex judge of the Argon rows. The tier: the API accepts xhigh and max for Carbon but serves them as its default, so high is the ceiling.
 
 Cost is a list estimate from Google's per-call usage at the introductory rate ($2 input, $0.10 cached input, $10 output per million), which matched the account's balance drop over the first segments. Featured.
+
+## Gemini 4 Carbon — medium, mean of 3 (Nov 10-11)
+
+Google's Gemini 4 Carbon (`gemini-4-carbon`) at thinking level medium, the API's default and one tier below its high ceiling, through the Antigravity CLI 1.5.5 set up exactly as the high row. Three runs of one configuration, each leg on its own fresh Linux cloud machine (8 vCPU), three at a time.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Gemini 4 Carbon (medium effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **56** / 105 | 21.7 / 45 | 34.3 / 60 | 81.1 min | $24.95 |
+| Gemini 4 Carbon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 57.3 / 105 | 22.3 / 45 | 35 / 60 | 114.0 min | $31.32 |
+| Gemini 4 Argon (medium effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 39.3 / 105 | 13.7 / 45 | 25.7 / 60 | 59.9 min | $7.50 |
+
+Runs: 55, 57 and 56 of 105 (repo 1: 22, 21 and 22 - repo 2: 33, 36 and 34).
+
+What it shows. Carbon at medium averages 56 of 105, 1.3 below Carbon at high (57.3) and +16.7 against Gemini 4 Argon at medium (39.3). At list it costs $24.95 per run against high's $31.32. Read the gap to high against both rows' run-to-run spreads.
+
+Judged by Grok (grok-4.7), blind, the same judge as the high row; not the Codex judge of the Argon rows. Cost is a list estimate from Google's per-call usage at the introductory rate. Featured.
