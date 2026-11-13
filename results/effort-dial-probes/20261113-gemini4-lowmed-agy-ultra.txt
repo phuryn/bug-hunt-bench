@@ -1,0 +1,22 @@
+Gemini 4 Carbon and Hydrogen, low / medium / high, in agy 1.5.8 on a Google AI Ultra subscription SIGN-IN (no gateway): does each tier separate from the next? - 2026-11-13 ~19:00 (Warsaw)
+
+agy -p <probe_effort_dial.DEFAULT_PROMPT> --model <slug> --effort <tier> --output-format json; usage.thinking_tokens and usage.output_tokens are the CLI's own meter (no wire readback on the sign-in path). n=3 per slug, the six slugs in parallel, while 12 benchmark legs ran on the same machine (walls are inflated; token counts are not).
+
+`agy models` on this sign-in lists gemini-4-carbon-{low,medium,high} and gemini-4-hydrogen-{low,medium,high,xhigh}.
+
+=== RESULT ===
+gemini-4-hydrogen-low      thinking=[2041, 2233, 2335] mean=2203 range=2041-2335 output=[2690, 2989, 3165]
+gemini-4-hydrogen-medium   thinking=[3606, 3863, 3573] mean=3681 range=3573-3863 output=[4501, 4457, 4631]
+gemini-4-hydrogen-high     thinking=[4115, 5571, 4191] mean=4626 range=4115-5571 output=[5227, 6463, 5088]
+gemini-4-carbon-low        thinking=[0, 0, 0]          mean=0    range=0-0       output=[3217, 2638, 5733]
+gemini-4-carbon-medium     thinking=[5747, 5819, 4940] mean=5502 range=4940-5819 output=[6555, 6686, 6318]
+gemini-4-carbon-high       thinking=[7021, 12647, 7462] mean=9043 range=7021-12647 output=[9200, 14107, 9158]
+
+=== VERDICT ===
+Hydrogen low < medium: thinking 1.67x apart (mean), ranges do NOT overlap (thinking or output).
+Hydrogen medium < high: thinking 1.26x apart (mean), ranges do NOT overlap (thinking or output).
+Carbon low < medium: the CLI reports ZERO thinking tokens at low on all three calls; total output 2,638-5,733 against
+  medium's 6,318-6,686 - ranges do NOT overlap. Whether low thinks unmetered or not at all cannot be told from this meter
+  (the Gemini API probe of 2026-10-28 measured low at 74 thought tokens on a different prompt).
+Carbon medium < high: thinking 4,940-5,819 against 7,021-12,647 - ranges do NOT overlap.
+EVERY TIER BINDS on this path.
