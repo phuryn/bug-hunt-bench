@@ -4576,3 +4576,17 @@ Runs: 28, 26 and 20 of 105 (repo 1: 9, 14, 6 - repo 2: 19, 12, 14).
 What it shows. Medium averages 24.7 of 105 with a spread of 8. High is 28.3 and xhigh 32.7 (xhigh's runs: 43 on Google AI Pro, 27 and 28 on Google AI Ultra).
 
 Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low. Featured.
+
+## Gemini 4 Hydrogen — low, mean of 3 (Nov 13)
+
+Google's Gemini 4 Hydrogen at thinking level low, set up exactly as the high and xhigh rows (Antigravity CLI 1.5.8 on a Google AI Ultra sign-in, same prompt, timeout and judge). Three runs.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Gemini 4 Hydrogen (low effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **10.3** / 105 | 5.3 / 45 | 5.0 / 60 | 7.2 min | $0.43 |
+
+Runs: 14, 8 and 9 of 105 (repo 1: 6, 5, 5 - repo 2: 8, 3, 4).
+
+What it shows. Low averages 10.3 of 105 with a spread of 6. Medium is 24.7, high 28.3 and xhigh 32.7 (xhigh's runs: 43 on Google AI Pro, 27 and 28 on Google AI Ultra).
+
+Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low. Featured.

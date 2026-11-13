@@ -218,3 +218,4 @@ Fable 5.2 (low effort) - mean of 2,Claude Code,19.5,2.0,0.0,4.0,0,7.4,9.27
 "Gemini 4 Hydrogen (xhigh effort, Antigravity CLI) - mean of 3",Antigravity CLI,9.3,1.0,0.3,1.0,0,11.4,2.6
 "Gemini 4 Hydrogen (high effort, Antigravity CLI) - mean of 3",Antigravity CLI,10.0,0.7,0.3,1.7,0,10.0,1.98
 "Gemini 4 Hydrogen (medium effort, Antigravity CLI) - mean of 3",Antigravity CLI,9.7,0.3,0.7,5.3,0,10.2,0.9
+"Gemini 4 Hydrogen (low effort, Antigravity CLI) - mean of 3",Antigravity CLI,5.3,0.7,0.0,1.0,0,3.0,0.16
