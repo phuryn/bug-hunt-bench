@@ -4575,7 +4575,7 @@ Runs: 28, 26 and 20 of 105 (repo 1: 9, 14, 6 - repo 2: 19, 12, 14).
 
 What it shows. Medium averages 24.7 of 105 with a spread of 8. High is 28.3 and xhigh 32.7 (xhigh's runs: 43 on Google AI Pro, 27 and 28 on Google AI Ultra).
 
-Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low. Featured.
+Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low.
 
 ## Gemini 4 Hydrogen — low, mean of 3 (Nov 13)
 
@@ -4589,7 +4589,7 @@ Runs: 14, 8 and 9 of 105 (repo 1: 6, 5, 5 - repo 2: 8, 3, 4).
 
 What it shows. Low averages 10.3 of 105 with a spread of 6. Medium is 24.7, high 28.3 and xhigh 32.7 (xhigh's runs: 43 on Google AI Pro, 27 and 28 on Google AI Ultra).
 
-Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low. Featured.
+Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low.
 
 ## Gemini 4 Carbon — low, mean of 3 (Nov 13)
 
@@ -4603,4 +4603,4 @@ Runs: 48, 45 and 45 of 105 (repo 1: 19, 17, 16 - repo 2: 29, 28, 29).
 
 What it shows. Low averages 46.0 of 105 with a spread of 3, against 56.0 at medium and 57.3 at high. The judge differs from those rows, so read the gap with that in mind.
 
-Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low. Featured.
+Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low.
