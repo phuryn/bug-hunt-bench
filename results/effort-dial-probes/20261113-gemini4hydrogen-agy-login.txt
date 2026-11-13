@@ -1,0 +1,12 @@
+Gemini 4 Hydrogen in agy 1.5.8 on a Google AI Pro subscription LOGIN (no gateway): does the xhigh slug think above high? - 2026-11-13 10:35 (Warsaw)
+
+agy -p <probe_effort_dial.DEFAULT_PROMPT> --model <slug> --effort <tier> --output-format json; usage.thinking_tokens is the CLI's own meter (no wire readback on the login path). n=3 per slug.
+
+=== RESULT ===
+gemini-4-hydrogen-high     thinking=[6161, 5656, 5400] mean=5739 range=5400-6161 output=[7280, 6699, 6380] wall=[29.8456438, 27.0675222, 22.513752]
+gemini-4-hydrogen-xhigh    thinking=[12769, 11997, 7691] mean=10819 range=7691-12769 output=[13927, 13187, 9183] wall=[60.1249155, 54.8082424, 61.3102219]
+
+xhigh/high mean ratio 1.89x; ranges do NOT overlap
+VERDICT: xhigh BINDS above high
+
+agy 1.5.8 accepts --effort xhigh with the gemini-4-hydrogen-xhigh slug (1.5.7 refused it for the bare gateway id).

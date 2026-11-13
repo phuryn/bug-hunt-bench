@@ -1,0 +1,30 @@
+Which thinking levels does Gemini 4 Hydrogen (gemini-4-hydrogen) accept on the Gemini API, and is high its top tier? - 2026-11-12 19:21 (Warsaw)
+
+POST .../models/gemini-4-hydrogen:generateContent, generationConfig.thinkingConfig.thinkingLevel = ..., prompt: 'Count the prime numbers between 1 and 200, then answer with the count only.', n=2 per accepted level. Model metadata: input 1048576 / output 65536 tokens, thinking=True.
+
+    thinkingLevel   rep  HTTP  thoughtsTokenCount  served / error
+    bogus_zzz       0    400   None                Invalid value at 'generation_config.thinking_config.thinking_level' (type.googleapis.com/google.ai.generativelanguage.v1beta.ThinkingConfig.
+    minimal         0    400   None                Thinking level MINIMAL is not supported for this model. Please retry with other thinking level.
+    low             0    200   992                 gemini-4-hydrogen
+    low             1    200   1340                gemini-4-hydrogen
+    medium          0    200   2460                gemini-4-hydrogen
+    medium          1    200   2026                gemini-4-hydrogen
+    high            0    200   1364                gemini-4-hydrogen
+    high            1    200   1704                gemini-4-hydrogen
+    xhigh           0    200   5549                gemini-4-hydrogen
+    xhigh           1    200   4602                gemini-4-hydrogen
+    max             0    200   1714                gemini-4-hydrogen
+    max             1    200   1771                gemini-4-hydrogen
+    ultra           0    400   None                Invalid value at 'generation_config.thinking_config.thinking_level' (type.googleapis.com/google.ai.generativelanguage.v1beta.ThinkingConfig.
+    field omitted   0    200   2133                gemini-4-hydrogen
+    field omitted   1    200   1679                gemini-4-hydrogen
+
+FOLLOW-UP 2026-11-12 19:29 (Warsaw): prompt 'Count the prime numbers between 1 and 500, then answer with the count only.', n=4 per level.
+
+    thinkingLevel   thoughtsTokenCount (4 reps)            min-max
+    low             1071, 679, 886, 819                    679-1071
+    medium          3655, 2756, 6445, 3868                 2756-6445
+    high            5282, 3900, 4963, 5300                 3900-5300
+    xhigh           16295, 15717, 15456, 13814             13814-16295
+    max             3725, 3264, 4056, 4104                 3264-4104
+    field omitted   4206, 4250, 3986, 4844                 3986-4844
