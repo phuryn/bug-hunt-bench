@@ -199,28 +199,48 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
   const yTop = yDomainTop(allRuns);
   const y = (s) => m.top + plotH - (s / yTop) * plotH;
 
+  /* THE X AXIS FITS THE SELECTION, NOT THE BOARD (2026-11-13). It used to span every run on the board,
+     so with the most expensive, slowest or longest runs deselected the selected points sat in a corner
+     and the axis ran far past the highest value shown (Pawel: "the X scale should adjust to what is
+     currently selected, so that the diagrams would be easier to understand, and the same with linear
+     scales"). The board's full span stays in the sentence under the map (scaleSentence). A selection
+     with no usable value falls back to the board, so the axis is never empty. */
+  const fitTo = (keep) => {
+    const sel = runs.map(val).filter(keep);
+    return sel.length ? sel : allRuns.map(val).filter(keep);
+  };
   let x;
   let xTicks;
   let plotted;
   if (A.scale === 'log') {
-    const vals = allRuns.map(val).filter((c) => isNum(c) && c > 0);
-    const lo = vals.length ? Math.min(...vals) / 1.7 : 0.5;
-    const hi = vals.length ? Math.max(...vals) * 1.7 : 100;
+    const vals = fitTo((c) => isNum(c) && c > 0);
+    const ticks = A.logTicks || LOG_TICKS;
+    let lo = vals.length ? Math.min(...vals) / 1.7 : 0.5;
+    let hi = vals.length ? Math.max(...vals) * 1.7 : 100;
+    // a tight selection can fit between two ticks: widen to the neighbouring ticks so the axis always
+    // carries at least two labelled steps and still reads as a logarithmic scale
+    if (ticks.filter((t) => t >= lo && t <= hi).length < 2) {
+      const below = ticks.filter((t) => t <= lo);
+      const above = ticks.filter((t) => t >= hi);
+      if (below.length) lo = below[below.length - 1];
+      if (above.length) hi = above[0];
+    }
     const l0 = Math.log10(lo);
     const l1 = Math.log10(hi);
     x = (c) => m.left + ((Math.log10(c) - l0) / (l1 - l0)) * plotW;
-    xTicks = (A.logTicks || LOG_TICKS).filter((t) => t >= lo && t <= hi).map((t) => ({
+    xTicks = ticks.filter((t) => t >= lo && t <= hi).map((t) => ({
       v: t,
       x: x(t),
       label: A.tickLabel ? A.tickLabel(t) : String(t),
     }));
     // on a phone, half the ticks is still a readable log axis; all of them collide
-    if (compact) xTicks = xTicks.filter((_, i) => i % 2 === 0);
+    if (compact && xTicks.length > 4) xTicks = xTicks.filter((_, i) => i % 2 === 0);
     plotted = runs.filter((r) => isNum(val(r)) && val(r) > 0);
   } else {
     // a linear axis starts at zero: no dollars, no minutes and no turns are all real places
-    const vals = allRuns.map(val).filter(isNum);
-    const hi = vals.length ? Math.max(...vals) * 1.06 : 10;
+    const vals = fitTo(isNum);
+    const top = vals.length ? Math.max(...vals) : 0;
+    const hi = top > 0 ? top * 1.06 : 10;
     x = (c) => m.left + (c / hi) * plotW;
     xTicks = linearTicks(hi, plotW).map((t) => ({ v: t, x: x(t), label: A.tickLabel ? A.tickLabel(t) : String(t) }));
     plotted = runs.filter((r) => isNum(val(r)));
