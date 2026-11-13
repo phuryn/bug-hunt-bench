@@ -4528,3 +4528,21 @@ What it shows. One Hydrogen run at xhigh scores 43 of 105, between Gemini 4 Argo
 Three things to read it with. The judge: Codex (gpt-6.1-sol), blind, because the Grok judge's balance was exhausted; not Grok like the Carbon rows or gpt-5.5 like the Argon rows. In the one cross-check this board has (Fable 5.2 max, repo 1, three legs) it scored 21, 22 and 24 where Grok scored 21, 23 and 25. The path: the subscription sign-in talks to Google's own backend, so the tier could not be read back on the wire; the CLI reported serving gemini-4-hydrogen-xhigh, and a probe through the same sign-in showed xhigh thinking about twice as much as high. The extras: 74 genuine unplanted fixes, 73 on repo 2 - the model edited widely; extras never count toward the score.
 
 Cost is a list estimate, not a bill (the run used subscription quota): Google's rate for Hydrogen ($1.50 input, $0.075 cached input, $7.50 output per million) applied to the CLI's own token counts, which on the Argon rows read 10-38% below Google's per-call usage, so it likely reads low. Featured.
+
+## Gemini 4 Hydrogen — xhigh, mean of 3 (Nov 13)
+
+Google's Gemini 4 Hydrogen at thinking level xhigh, its top tier, through the Antigravity CLI 1.5.8 signed in with a Google subscription instead of an API key. Three runs of one configuration; this mean replaces the single-run row published earlier the same day (43 of 105).
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Gemini 4 Hydrogen (xhigh effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **32.7** / 105 | 9.3 / 45 | 23.3 / 60 | 35.8 min | $7.07 |
+| Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 40.7 / 105 | 13 / 45 | 27.7 / 60 | 56.5 min | $7.16 |
+| Gemini 4 Carbon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 57.3 / 105 | 22.3 / 45 | 35 / 60 | 114.0 min | $31.32 |
+
+Runs: 43, 27 and 28 of 105 (repo 1: 12, 8, 8 - repo 2: 31, 19, 20).
+
+What it shows. Hydrogen at xhigh averages 32.7 of 105, below Gemini 4 Argon at high (40.7) and well below Gemini 4 Carbon at high (57.3), at a list-estimate cost of $7.07 per run. The first run's 43 was the high one: the other two scored 27 and 28.
+
+Three things to read it with. The plan changed between runs: run 1 ran on Google AI Pro, runs 2 and 3 on Google AI Ultra (same sign-in, model, CLI and judge; every leg reported serving gemini-4-hydrogen-xhigh with a similar thinking share). Runs 2 and 3 used fewer tokens and edited less widely; with one Pro run the board cannot separate the plan from run-to-run variance. The judge: Codex (gpt-6.1-sol), blind, because the Grok judge's balance was exhausted - not Grok like the Carbon rows or gpt-5.5 like the Argon rows. The path: the subscription sign-in talks to Google's own backend, so nothing was read back on the wire.
+
+Cost is a list estimate, not a bill: Google's rate for Hydrogen applied to the CLI's own token counts, which on the Argon rows read 10-38% below Google's per-call usage. Featured.

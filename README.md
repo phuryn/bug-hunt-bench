@@ -7,9 +7,9 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Nov 13, 2026](assets/leaderboard.png?v=2026-11-13-3ebd070e)
+![Bug Hunt Bench leaderboard, the featured runs, updated Nov 13, 2026](assets/leaderboard.png?v=2026-11-13-f5614375)
 
-**Updated Nov 13, 2026 · 215 rows from 327 scored runs · 52 models · 23 of 105 bugs have never been fixed by any model.**
+**Updated Nov 13, 2026 · 216 rows from 329 scored runs · 52 models · 23 of 105 bugs have never been fixed by any model.**
 
 **Current leader:** Fable 5.2 at `max` effort — **58 / 105** (23/45 on repo 1, 35/60 on repo 2).
 
@@ -25,42 +25,42 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 6 | GPT-6 Astra | Codex CLI | max | 3 | **45** | 22 | 23 | 55 | 90 min | $33.03 | 2026-09-14 |
 | 7 | GPT-6.1 Sol | Codex CLI | max | 3 | **44.3** | 22.3 | 22 | 65.3 | 139 min | $5.88 | 2026-09-30 |
 | 8 | GPT-5.6 Sol | Codex CLI | max | 2 | **43.5** | 19 | 24.5 | 48.5 | 253 min | $95.35 | 2026-09-16 |
-| 9 | Gemini 4 Hydrogen | Antigravity CLI | xhigh | 1 | **43** | 12 | 31 | 74 | 49 min | $8.77 | 2026-11-13 |
-| 10 | GPT-6 Astra | Codex CLI | xhigh | 1 | **43** | 23 | 20 | 53 | 59 min | $24.22 | 2026-09-04 |
-| 11 | Fable 5.2 | Claude Code | high | 2 | **43** | 19.5 | 23.5 | 16.5 | 40 min | $46.67 | 2026-11-10 |
-| 12 | Fable 5.1 | Claude Code | max | 1 | **43** | 19 | 24 | 11 | 73 min | $87.18 | 2026-09-01 |
-| 13 | DeepSeek V4.1 Flash 1017 | DeepSeek Harness / DeepSeek API | max | 7 | **42.7** | 19 | 23.7 | 44 | 62 min | $1.84 bill | 2026-10-18 |
-| 14 | GPT-6.1 Sol | Codex CLI | xhigh | 3 | **42.7** | 22.3 | 20.3 | 56.7 | 99 min | $4.35 | 2026-09-30 |
-| 15 | DeepSeek V4.1 Flash 1017 | Pi / DeepSeek API | max | 5 | **42.2** | 17.8 | 24.4 | 41.8 | 54 min | $0.83 bill | 2026-10-18 |
-| 16 | Muse Wonder Full 1.0 | Muse Code / Meta API | max | 2 | **42** | 21.5 | 20.5 | 36.5 | 145 min | — | 2026-10-14 |
-| 17 | Opus 5.5 | Claude Code | max | 3 | **41.7** | 19 | 22.7 | 9 | 67 min | $58.53 | 2026-09-23 |
-| 18 | Fable 5.2 | Claude Code | medium | 2 | **41.5** | 18 | 23.5 | 17.5 | 20 min | $26.55 | 2026-11-10 |
-| 19 | Muse Wonder Full 1.0 | Muse Code / Meta API | xhigh | 2 | **41.5** | 16 | 25.5 | 24.5 | 90 min | — | 2026-10-14 |
-| 20 | Fable 5.2 | Claude Code | low | 2 | **41** | 19.5 | 21.5 | 14.5 | 19 min | $24.32 | 2026-11-10 |
-| 21 | GPT-6.1 Terra | Codex CLI | max | 3 | **40.7** | 18 | 22.7 | 48 | 37 min | $3.88 | 2026-10-26 |
-| 22 | Gemini 4 Argon | Antigravity CLI | high | 3 | **40.7** | 13 | 27.7 | 7.3 | 56 min | $7.16 | 2026-10-14 |
-| 23 | DeepSeek V4.1 Flash 1017 | Pi / DeepSeek API | high | 5 | **40.4** | 16 | 24.4 | 29.4 | 48 min | $0.64 bill | 2026-10-18 |
-| 24 | Gemini 4 Argon | Antigravity CLI | medium | 3 | **39.3** | 13.7 | 25.7 | 11.3 | 60 min | $7.50 | 2026-10-14 |
-| 25 | DeepSeek V4.1 Flash 1017 | DeepSeek Harness / DeepSeek API | high | 5 | **39.2** | 17 | 22.2 | 43.8 | 53 min | $1.27 bill | 2026-10-18 |
-| 26 | DeepSeek V4.1 Flash 1017 | Claude Code / DeepSeek API | max | 7 | **39.1** | 18.1 | 21 | 22.9 | 58 min | $1.01 bill | 2026-10-18 |
-| 27 | GPT-5.6 Sol | Codex CLI | xhigh | 1 | **39** | 18 | 21 | 59 | 126 min | $52.75 | 2026-08-28 |
-| 28 | DeepSeek V4.1 Flash 1017 | OpenCode / DeepSeek API | max | 5 | **37.6** | 15.8 | 21.8 | 36.2 | 56 min | $0.96 bill | 2026-10-18 |
-| 29 | DeepSeek V4.1 Flash 1017 | OpenCode / DeepSeek API | high | 5 | **36.6** | 15.4 | 21.2 | 25.6 | 42 min | $0.79 bill | 2026-10-19 |
-| 30 | GPT-6.1 Sol | Codex CLI | high | 2 | **36.5** | 17 | 19.5 | 40 | 70 min | $3.26 | 2026-09-30 |
-| 31 | DeepSeek V4.1 Flash 1017 | Claude Code / DeepSeek API | high | 5 | **36.4** | 15.2 | 21.2 | 24.4 | 54 min | $0.82 bill | 2026-10-17 |
-| 32 | Kimi K3.1 Pro | Claude Code / Moonshot API | max | 3 | **36** | 17 | 19 | 29.3 | 65 min | $13.76 bill | 2026-10-23 |
-| 33 | Opus 5.5 | Claude Code | xhigh | 3 | **36** | 17 | 19 | 13.3 | 42 min | $34.98 | 2026-09-23 |
-| 34 | Sonnet 5.5 | Claude Code | xhigh | 3 | **36** | 16 | 20 | 14 | 73 min | $42.86 | 2026-09-29 |
-| 35 | Gemini 4 Argon | Antigravity CLI | low | 3 | **35.3** | 12.7 | 22.7 | 5.7 | 60 min | $6.47 | 2026-10-14 |
-| 36 | GPT-6 Astra | Codex CLI | high | 1 | **35** | 19 | 16 | 40 | 40 min | $20.60 | 2026-09-04 |
-| 37 | DeepSeek V4.1 Flash 1017 | DeepSeek Harness / DeepSeek API | low | 5 | **34.8** | 16.4 | 18.4 | 34.4 | 34 min | $1.06 bill | 2026-10-18 |
-| 38 | DeepSeek V4.1 Flash 1017 | Claude Code / DeepSeek API | low | 5 | **34.4** | 16.4 | 18 | 16.8 | 44 min | $0.71 bill | 2026-10-17 |
-| 39 | Sonnet 5.5 | Claude Code | high | 3 | **34.3** | 15.7 | 18.7 | 10.7 | 28 min | $19.85 | 2026-09-29 |
-| 40 | GPT-6 Astra | Codex CLI | medium | 1 | **34** | 19 | 15 | 33 | 28 min | $15.78 | 2026-09-05 |
-| 41 | GPT-5.6 Sol | Codex CLI | high | 1 | **34** | 13 | 21 | 28 | 67 min | $33.92 | 2026-07-31 |
-| 42 | DeepSeek V4.1 Flash 1017 | Pi / DeepSeek API | low | 5 | **33.8** | 14 | 19.8 | 19.6 | 33 min | $0.46 bill | 2026-10-18 |
-| 43 | Fable 5.1 | Claude Code | high | 1 | **33** | 15 | 18 | 7 | 36 min | $48.58 | 2026-09-01 |
-| 44 | DeepSeek V4.1 Flash 1017 | OpenCode / DeepSeek API | low | 5 | **32.8** | 15.8 | 17 | 17.6 | 41 min | $0.66 bill | 2026-10-19 |
+| 9 | GPT-6 Astra | Codex CLI | xhigh | 1 | **43** | 23 | 20 | 53 | 59 min | $24.22 | 2026-09-04 |
+| 10 | Fable 5.2 | Claude Code | high | 2 | **43** | 19.5 | 23.5 | 16.5 | 40 min | $46.67 | 2026-11-10 |
+| 11 | Fable 5.1 | Claude Code | max | 1 | **43** | 19 | 24 | 11 | 73 min | $87.18 | 2026-09-01 |
+| 12 | DeepSeek V4.1 Flash 1017 | DeepSeek Harness / DeepSeek API | max | 7 | **42.7** | 19 | 23.7 | 44 | 62 min | $1.84 bill | 2026-10-18 |
+| 13 | GPT-6.1 Sol | Codex CLI | xhigh | 3 | **42.7** | 22.3 | 20.3 | 56.7 | 99 min | $4.35 | 2026-09-30 |
+| 14 | DeepSeek V4.1 Flash 1017 | Pi / DeepSeek API | max | 5 | **42.2** | 17.8 | 24.4 | 41.8 | 54 min | $0.83 bill | 2026-10-18 |
+| 15 | Muse Wonder Full 1.0 | Muse Code / Meta API | max | 2 | **42** | 21.5 | 20.5 | 36.5 | 145 min | — | 2026-10-14 |
+| 16 | Opus 5.5 | Claude Code | max | 3 | **41.7** | 19 | 22.7 | 9 | 67 min | $58.53 | 2026-09-23 |
+| 17 | Fable 5.2 | Claude Code | medium | 2 | **41.5** | 18 | 23.5 | 17.5 | 20 min | $26.55 | 2026-11-10 |
+| 18 | Muse Wonder Full 1.0 | Muse Code / Meta API | xhigh | 2 | **41.5** | 16 | 25.5 | 24.5 | 90 min | — | 2026-10-14 |
+| 19 | Fable 5.2 | Claude Code | low | 2 | **41** | 19.5 | 21.5 | 14.5 | 19 min | $24.32 | 2026-11-10 |
+| 20 | GPT-6.1 Terra | Codex CLI | max | 3 | **40.7** | 18 | 22.7 | 48 | 37 min | $3.88 | 2026-10-26 |
+| 21 | Gemini 4 Argon | Antigravity CLI | high | 3 | **40.7** | 13 | 27.7 | 7.3 | 56 min | $7.16 | 2026-10-14 |
+| 22 | DeepSeek V4.1 Flash 1017 | Pi / DeepSeek API | high | 5 | **40.4** | 16 | 24.4 | 29.4 | 48 min | $0.64 bill | 2026-10-18 |
+| 23 | Gemini 4 Argon | Antigravity CLI | medium | 3 | **39.3** | 13.7 | 25.7 | 11.3 | 60 min | $7.50 | 2026-10-14 |
+| 24 | DeepSeek V4.1 Flash 1017 | DeepSeek Harness / DeepSeek API | high | 5 | **39.2** | 17 | 22.2 | 43.8 | 53 min | $1.27 bill | 2026-10-18 |
+| 25 | DeepSeek V4.1 Flash 1017 | Claude Code / DeepSeek API | max | 7 | **39.1** | 18.1 | 21 | 22.9 | 58 min | $1.01 bill | 2026-10-18 |
+| 26 | GPT-5.6 Sol | Codex CLI | xhigh | 1 | **39** | 18 | 21 | 59 | 126 min | $52.75 | 2026-08-28 |
+| 27 | DeepSeek V4.1 Flash 1017 | OpenCode / DeepSeek API | max | 5 | **37.6** | 15.8 | 21.8 | 36.2 | 56 min | $0.96 bill | 2026-10-18 |
+| 28 | DeepSeek V4.1 Flash 1017 | OpenCode / DeepSeek API | high | 5 | **36.6** | 15.4 | 21.2 | 25.6 | 42 min | $0.79 bill | 2026-10-19 |
+| 29 | GPT-6.1 Sol | Codex CLI | high | 2 | **36.5** | 17 | 19.5 | 40 | 70 min | $3.26 | 2026-09-30 |
+| 30 | DeepSeek V4.1 Flash 1017 | Claude Code / DeepSeek API | high | 5 | **36.4** | 15.2 | 21.2 | 24.4 | 54 min | $0.82 bill | 2026-10-17 |
+| 31 | Kimi K3.1 Pro | Claude Code / Moonshot API | max | 3 | **36** | 17 | 19 | 29.3 | 65 min | $13.76 bill | 2026-10-23 |
+| 32 | Opus 5.5 | Claude Code | xhigh | 3 | **36** | 17 | 19 | 13.3 | 42 min | $34.98 | 2026-09-23 |
+| 33 | Sonnet 5.5 | Claude Code | xhigh | 3 | **36** | 16 | 20 | 14 | 73 min | $42.86 | 2026-09-29 |
+| 34 | Gemini 4 Argon | Antigravity CLI | low | 3 | **35.3** | 12.7 | 22.7 | 5.7 | 60 min | $6.47 | 2026-10-14 |
+| 35 | GPT-6 Astra | Codex CLI | high | 1 | **35** | 19 | 16 | 40 | 40 min | $20.60 | 2026-09-04 |
+| 36 | DeepSeek V4.1 Flash 1017 | DeepSeek Harness / DeepSeek API | low | 5 | **34.8** | 16.4 | 18.4 | 34.4 | 34 min | $1.06 bill | 2026-10-18 |
+| 37 | DeepSeek V4.1 Flash 1017 | Claude Code / DeepSeek API | low | 5 | **34.4** | 16.4 | 18 | 16.8 | 44 min | $0.71 bill | 2026-10-17 |
+| 38 | Sonnet 5.5 | Claude Code | high | 3 | **34.3** | 15.7 | 18.7 | 10.7 | 28 min | $19.85 | 2026-09-29 |
+| 39 | GPT-6 Astra | Codex CLI | medium | 1 | **34** | 19 | 15 | 33 | 28 min | $15.78 | 2026-09-05 |
+| 40 | GPT-5.6 Sol | Codex CLI | high | 1 | **34** | 13 | 21 | 28 | 67 min | $33.92 | 2026-07-31 |
+| 41 | DeepSeek V4.1 Flash 1017 | Pi / DeepSeek API | low | 5 | **33.8** | 14 | 19.8 | 19.6 | 33 min | $0.46 bill | 2026-10-18 |
+| 42 | Fable 5.1 | Claude Code | high | 1 | **33** | 15 | 18 | 7 | 36 min | $48.58 | 2026-09-01 |
+| 43 | DeepSeek V4.1 Flash 1017 | OpenCode / DeepSeek API | low | 5 | **32.8** | 15.8 | 17 | 17.6 | 41 min | $0.66 bill | 2026-10-19 |
+| 44 | Gemini 4 Hydrogen | Antigravity CLI | xhigh | 3 | **32.7** | 9.3 | 23.3 | 34.3 | 36 min | $7.07 | 2026-11-13 |
 | 45 | Muse Spark 1.3 | Muse Code / Meta API | max | 5 | **32.2** | 14.2 | 18 | 24 | 86 min | $18.11 | 2026-09-17 |
 | 46 | GPT-5.6 Terra | Codex CLI | max | 1 | **32** | 16 | 16 | 45 | 160 min | $27.98 | 2026-08-27 |
 | 47 | Opus 5.5 | Claude Code | high | 3 | **31.7** | 13 | 18.7 | 10.7 | 24 min | $22.25 | 2026-09-23 |
@@ -164,7 +164,7 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 Extras are real, unplanted defects a model fixed on the way; they are counted and never added to the score. Costs are token estimates at published list rates unless tagged **bill** (an actual invoice or credits delta) or **floor** (a reconstructed lower bound). `default` effort means the serving path had no working effort dial; *ran lower* marks a run whose CLI quietly replaced the requested tier. Wall clock is repo 1 plus repo 2 agent time, dependency install excluded.
 Every row's full note, caveat and supersession history is in [results/run-notes.md](https://github.com/phuryn/bug-hunt-bench/blob/main/results/run-notes.md); the runs behind each one are in the metrics CSVs.
 
-74 superseded re-runs stay in the CSVs and on the [live board](https://bughunt.productcompass.pm/?preset=all) but are left off this table.
+75 superseded re-runs stay in the CSVs and on the [live board](https://bughunt.productcompass.pm/?preset=all) but are left off this table.
 <!-- leaderboard:end -->
 
 ## What Bug Hunt Bench is
