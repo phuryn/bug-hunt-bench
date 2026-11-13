@@ -4546,3 +4546,19 @@ What it shows. Hydrogen at xhigh averages 32.7 of 105, below Gemini 4 Argon at h
 Three things to read it with. The plan changed between runs: run 1 ran on Google AI Pro, runs 2 and 3 on Google AI Ultra (same sign-in, model, CLI and judge; every leg reported serving gemini-4-hydrogen-xhigh with a similar thinking share). Runs 2 and 3 used fewer tokens and edited less widely; with one Pro run the board cannot separate the plan from run-to-run variance. The judge: Codex (gpt-6.1-sol), blind, because the Grok judge's balance was exhausted - not Grok like the Carbon rows or gpt-5.5 like the Argon rows. The path: the subscription sign-in talks to Google's own backend, so nothing was read back on the wire.
 
 Cost is a list estimate, not a bill: Google's rate for Hydrogen applied to the CLI's own token counts, which on the Argon rows read 10-38% below Google's per-call usage. Featured.
+
+## Gemini 4 Hydrogen — high, mean of 3 (Nov 13)
+
+Google's Gemini 4 Hydrogen at thinking level high, one tier below its xhigh ceiling, set up exactly as the xhigh row (Antigravity CLI 1.5.8 on a Google subscription sign-in, same prompt, timeout and judge). Three runs, all on Google AI Ultra, six legs at once on the laptop.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Gemini 4 Hydrogen (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **28.3** / 105 | 10.0 / 45 | 18.3 / 60 | 22.4 min | $4.42 |
+| Gemini 4 Hydrogen (xhigh effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 32.7 / 105 | 9.3 / 45 | 23.3 / 60 | 35.8 min | $7.07 |
+| Gemini 4 Argon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 40.7 / 105 | 13 / 45 | 27.7 / 60 | 56.5 min | $7.16 |
+
+Runs: 27, 30 and 28 of 105 (repo 1: 10, 10, 10 - repo 2: 17, 20, 18).
+
+What it shows. High averages 28.3 of 105 with a spread of 3. The xhigh row is 32.7, but its runs were 43 on Google AI Pro and 27 and 28 on Google AI Ultra; on the same plan as this row xhigh averages 27.5, level with high, which costs $4.42 per run against $6.21 for those two xhigh runs and finishes sooner. The xhigh lead on the board rests on one Pro run.
+
+Judged by Codex (gpt-6.1-sol), blind, the same judge as the xhigh row. Cost is a list estimate from the CLI's own token counts and likely reads low. Featured.
