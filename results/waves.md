@@ -4590,3 +4590,17 @@ Runs: 14, 8 and 9 of 105 (repo 1: 6, 5, 5 - repo 2: 8, 3, 4).
 What it shows. Low averages 10.3 of 105 with a spread of 6. Medium is 24.7, high 28.3 and xhigh 32.7 (xhigh's runs: 43 on Google AI Pro, 27 and 28 on Google AI Ultra).
 
 Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low. Featured.
+
+## Gemini 4 Carbon — low, mean of 3 (Nov 13)
+
+Google's Gemini 4 Carbon at thinking level low, the bottom of its three tiers, through the Antigravity CLI 1.5.8 on a Google AI Ultra sign-in. Unlike the medium and high rows - API key through a local gateway, Linux cloud machines, judged by grok-4.7 - it ran on the laptop and was judged by Codex (gpt-6.1-sol), because the Grok judge's balance was exhausted. Three runs.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Gemini 4 Carbon (low effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **46.0** / 105 | 17.3 / 45 | 28.7 / 60 | 60.4 min | $7.67 |
+
+Runs: 48, 45 and 45 of 105 (repo 1: 19, 17, 16 - repo 2: 29, 28, 29).
+
+What it shows. Low averages 46.0 of 105 with a spread of 3, against 56.0 at medium and 57.3 at high. The judge differs from those rows, so read the gap with that in mind.
+
+Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low. Featured.
