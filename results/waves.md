@@ -4604,3 +4604,23 @@ Runs: 48, 45 and 45 of 105 (repo 1: 19, 17, 16 - repo 2: 29, 28, 29).
 What it shows. Low averages 46.0 of 105 with a spread of 3, against 56.0 at medium and 57.3 at high. The judge differs from those rows, so read the gap with that in mind.
 
 Judged by Codex (gpt-6.1-sol), blind. Cost is a list estimate from the CLI's own token counts and likely reads low.
+
+## GPT-6.2 Astra — max and xhigh, means of 3 (Nov 18)
+
+OpenAI's GPT-6.2 Astra (`gpt-6.2-astra`) through OpenAI's own Codex CLI on a ChatGPT account. Two tiers, three runs each. Codex 0.166.0, because the 0.159.0 build the GPT-6.1 rows use refuses this model; and for the first time on this board for an OpenAI model, the legs ran on Linux cloud machines (one leg per machine, bash as the shell) instead of the Windows laptop, in a fresh Codex home with no plugins or connectors. A gap against GPT-6 Astra is model plus client plus machine. Every leg's Codex session record shows the tier it asked for; the account's model list also offers low, medium, high and ultra (above max).
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| GPT-6.2 Astra (max effort) - mean of 3 | Codex CLI | **62.7** / 105 | 25.7 / 45 | 37 / 60 | 121.8 min | $28.35 |
+| GPT-6.2 Astra (xhigh effort) - mean of 3 | Codex CLI | **60** / 105 | 25.3 / 45 | 34.7 / 60 | 105.5 min | $23.53 |
+| GPT-6 Astra (max effort) - mean of 3 | Codex CLI | 45 / 105 | 22 / 45 | 23 / 60 | 89.8 min | $33.03 |
+| GPT-6 Astra (xhigh effort) | Codex CLI | 43 / 105 | 23 / 45 | 20 / 60 | 58.8 min | $24.22 |
+| Fable 5.2 (max effort) - mean of 3 | Claude Code | 58 / 105 | 23 / 45 | 35 / 60 | 142.8 min | $139.65 |
+
+Runs: max 65, 62 and 61 of 105 (repo 1: 28, 26 and 23 - repo 2: 37, 36 and 38); xhigh 60, 61 and 59 of 105 (repo 1: 25, 26 and 25 - repo 2: 35, 35 and 34).
+
+What it shows. At max GPT-6.2 Astra averages 62.7 of 105, 17.7 above GPT-6 Astra at max (45) and 4.7 above the previous top row, Fable 5.2 at max (58). At xhigh it averages 60, 17.0 above GPT-6 Astra's single xhigh run (43). The step from xhigh to max is 2.7. Max's three runs sit within 4 points of each other (65, 62 and 61); xhigh's within 2 (60, 61 and 59).
+
+A re-run. The first GPT-6.2 Astra runs (never published) scored 70.3 at max and 65.0 at xhigh with the pristine repos' file modification times intact; those times mark the files edited when the bugs were planted, and the model used them as a shortlist (it said so when asked). Every file now carries one timestamp, in the run copy and on each machine, checked before launch; the runner refuses a leg with mixed times. The other rows on this board ran with the times intact, and whether any other model used them was not checked.
+
+Cost is a list estimate at OpenAI's GPT-6.2 Astra rates ($8 input, $0.40 cached, $40 output per million); Codex caps the working window at 258,400 tokens, so no request reached the 272K long-context rates. Judged by Grok (grok-4.7), never by an OpenAI model. Featured.
