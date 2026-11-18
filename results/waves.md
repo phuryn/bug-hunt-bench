@@ -4624,3 +4624,24 @@ What it shows. At max GPT-6.2 Astra averages 62.7 of 105, 17.7 above GPT-6 Astra
 A re-run. The first GPT-6.2 Astra runs (never published) scored 70.3 at max and 65.0 at xhigh with the pristine repos' file modification times intact; those times mark the files edited when the bugs were planted, and the model used them as a shortlist (it said so when asked). Every file now carries one timestamp, in the run copy and on each machine, checked before launch; the runner refuses a leg with mixed times. The other rows on this board ran with the times intact, and whether any other model used them was not checked.
 
 Cost is a list estimate at OpenAI's GPT-6.2 Astra rates ($8 input, $0.40 cached, $40 output per million); Codex caps the working window at 258,400 tokens, so no request reached the 272K long-context rates. Judged by Grok (grok-4.7), never by an OpenAI model. Featured.
+
+## GPT-6.2 Sol — max and xhigh, means of 3 (Nov 18)
+
+OpenAI's GPT-6.2 Sol (`gpt-6.2-sol`) through OpenAI's own Codex CLI on a ChatGPT account. Two tiers, three runs each, on the same set-up as GPT-6.2 Astra: Codex 0.166.0 (the 0.159.0 build the GPT-6.1 rows use refuses this model), Linux cloud machines with one leg per machine, a fresh Codex home with no plugins or connectors, and every file in the repos carrying one timestamp. A gap against GPT-6.1 Sol is model plus client plus machine. Every leg's Codex session record shows the tier it asked for; the account's model list also offers low, medium, high and ultra (above max).
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| GPT-6.2 Sol (max effort) - mean of 3 | Codex CLI | **54.7** / 105 | 20.7 / 45 | 34 / 60 | 68.2 min | $7.00 |
+| GPT-6.2 Sol (xhigh effort) - mean of 3 | Codex CLI | **49** / 105 | 18.7 / 45 | 30.3 / 60 | 41.4 min | $3.89 |
+| GPT-6.1 Sol (max effort) - mean of 3 | Codex CLI | 44.3 / 105 | 22.3 / 45 | 22 / 60 | 139.3 min | $5.88 |
+| GPT-6.1 Sol (xhigh effort) - mean of 3 | Codex CLI | 42.7 / 105 | 22.3 / 45 | 20.3 / 60 | 98.7 min | $4.35 |
+| GPT-6.2 Astra (max effort) - mean of 3 | Codex CLI | 62.7 / 105 | 25.7 / 45 | 37 / 60 | 121.8 min | $28.35 |
+| GPT-6.2 Astra (xhigh effort) - mean of 3 | Codex CLI | 60 / 105 | 25.3 / 45 | 34.7 / 60 | 105.5 min | $23.53 |
+
+Runs: max 54, 54 and 56 of 105 (repo 1: 21, 21 and 20 - repo 2: 33, 33 and 36); xhigh 46, 49 and 52 of 105 (repo 1: 18, 19 and 19 - repo 2: 28, 30 and 33).
+
+What it shows. At max GPT-6.2 Sol averages 54.7 of 105, 10.4 above GPT-6.1 Sol at max (44.3) and 8.0 below GPT-6.2 Astra at max (62.7). At xhigh it averages 49, 6.3 above GPT-6.1 Sol at xhigh (42.7). The step from xhigh to max is 5.7. Max's three runs sit within 2 points of each other (54, 54 and 56); xhigh's within 6 (46, 49 and 52).
+
+A re-run. The first GPT-6.2 Sol runs (never published) scored 61.3 at max and 57.0 at xhigh with the pristine repos' file modification times intact. Those times mark the files edited when the bugs were planted; GPT-6.2 Astra was seen using them as a shortlist, so every GPT-6.2 run was cancelled and re-run with one timestamp on every file. Whether Sol itself used them was not checked. The other rows on this board, GPT-6.2 Astra's aside, ran with the times intact.
+
+Cost is a list estimate at OpenAI's GPT-6.2 Sol rates ($2 input, $0.10 cached, $10 output per million). Codex gives this model a 475,000-token working window, and a request over 272K input bills at $4, $0.20 and $15 on the whole request; 6 of the 6 max legs sent such requests (111 in all), so the max row is priced request by request from Codex's own records ($7.00 per run, against $5.49 at the short-context rate the per-leg receipts carry); 3 of the 6 xhigh legs sent such requests (7 in all), so the xhigh row is priced request by request from Codex's own records ($3.89 per run, against $3.82 at the short-context rate the per-leg receipts carry). Judged by Grok (grok-4.7), never by an OpenAI model. Not featured.

@@ -222,3 +222,5 @@ Fable 5.2 (low effort) - mean of 2,Claude Code,41.0,19.5,21.5,14.5,18.7,24.32
 "Gemini 4 Carbon (low effort, Antigravity CLI) - mean of 3",Antigravity CLI,46.0,17.3,28.7,18.0,60.4,7.67
 GPT-6.2 Astra (max effort) - mean of 3,Codex CLI,62.7,25.7,37.0,60.0,121.8,28.35
 GPT-6.2 Astra (xhigh effort) - mean of 3,Codex CLI,60.0,25.3,34.7,76.0,105.5,23.53
+GPT-6.2 Sol (max effort) - mean of 3,Codex CLI,54.7,20.7,34.0,56.0,68.2,5.49
+GPT-6.2 Sol (xhigh effort) - mean of 3,Codex CLI,49.0,18.7,30.3,52.3,41.4,3.82
