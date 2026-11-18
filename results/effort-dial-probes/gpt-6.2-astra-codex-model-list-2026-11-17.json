@@ -1,0 +1,38 @@
+{
+ "source": "~/.codex/models_cache.json (the ChatGPT account's own Codex model list, read on a run machine), entry for gpt-6.2-astra",
+ "fetched_at": "2026-11-18T01:14:10.030471760Z",
+ "client_version": "0.166.0",
+ "entry": {
+  "slug": "gpt-6.2-astra",
+  "display_name": "GPT-6.2-Astra",
+  "visibility": "list",
+  "default_reasoning_level": "low",
+  "supported_reasoning_levels": [
+   {
+    "effort": "low",
+    "description": "Fast responses with lighter reasoning"
+   },
+   {
+    "effort": "medium",
+    "description": "Balances speed and reasoning depth for everyday tasks"
+   },
+   {
+    "effort": "high",
+    "description": "Greater reasoning depth for complex problems"
+   },
+   {
+    "effort": "xhigh",
+    "description": "Extra high reasoning depth for complex problems"
+   },
+   {
+    "effort": "max",
+    "description": "Maximum reasoning depth for the hardest problems"
+   },
+   {
+    "effort": "ultra",
+    "description": "Maximum reasoning with automatic task delegation"
+   }
+  ],
+  "context_window": 272000
+ }
+}
