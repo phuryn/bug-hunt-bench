@@ -227,3 +227,7 @@ GPT-6.2 Sol (xhigh effort) - mean of 3,Codex CLI,49.0,18.7,30.3,52.3,41.4,3.82
 GPT-6.2 Sol (high effort) - mean of 3,Codex CLI,49.7,19.7,30.0,52.7,42.4,4.14
 GPT-6.2 Sol (medium effort) - mean of 3,Codex CLI,45.7,16.3,29.3,49.3,31.7,3.22
 GPT-6.2 Sol (low effort) - mean of 3,Codex CLI,36.0,13.7,22.3,28.7,18.9,1.96
+GPT-6.2 Astra (xhigh effort) - mean of 5,Codex CLI,60.2,25.6,34.6,72.0,84.0,22.82
+GPT-6.2 Astra (high effort) - mean of 5,Codex CLI,59.6,24.8,34.8,76.2,48.5,19.84
+GPT-6.2 Astra (medium effort) - mean of 3,Codex CLI,50.3,21.0,29.3,62.7,30.2,12.34
+GPT-6.2 Astra (low effort) - mean of 3,Codex CLI,46.3,18.7,27.7,39.0,17.7,7.28

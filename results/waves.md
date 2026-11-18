@@ -4663,3 +4663,21 @@ Runs: high 49, 48 and 52 of 105 (repo 1: 17, 20 and 22 - repo 2: 32, 28 and 30);
 What it shows. Steps up the dial: low to medium +9.7; medium to high +4.0; high to xhigh -0.7; xhigh to max +5.7. *** HIGH SCORES LEVEL WITH XHIGH *** the expected order puts xhigh above high, but high's mean (49.7) is at or above xhigh's (49), inside both tiers' run-to-run spread. The runner's token records show the two tiers doing about the same work on this model: 20K reasoning tokens per run at high against 22K at xhigh and 56K at max. Published as measured. The withdrawn runs with the file times intact tied the same way (high 56.7, xhigh 57). Against the previous generation at the same tier: high 49.7 against GPT-6.1 Sol's 36.5; medium 45.7 against GPT-6.1 Sol's 29; low 36 against GPT-6.1 Sol's 22.5. 
 
 Cost is a list estimate at OpenAI's GPT-6.2 Sol rates ($2 input, $0.10 cached, $10 output per million). No request reached the 272K long-context rates. Judged by Grok (grok-4.7), never by an OpenAI model. Not featured.
+
+## GPT-6.2 Astra — xhigh (mean of 5), high (mean of 5), medium (mean of 3) and low (mean of 3) (Nov 18)
+
+OpenAI's GPT-6.2 Astra (`gpt-6.2-astra`) through OpenAI's own Codex CLI on a ChatGPT account: xhigh 5 runs, high 5 runs, medium 3 runs and low 3 runs, on the same set-up as its max and xhigh rows - Codex 0.166.0, Linux cloud machines with one leg per machine, a fresh Codex home with no plugins or connectors, and every file in the repos carrying one timestamp. Every leg's Codex session record shows its main loop at the tier it asked for. The whole dial, max and xhigh from their own rows:
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| GPT-6.2 Astra (max effort) - mean of 3 | Codex CLI | 62.7 / 105 | 25.7 / 45 | 37 / 60 | 121.8 min | $28.35 |
+| GPT-6.2 Astra (xhigh effort) - mean of 5 | Codex CLI | **60.2** / 105 | 25.6 / 45 | 34.6 / 60 | 84.0 min | $22.82 |
+| GPT-6.2 Astra (high effort) - mean of 5 | Codex CLI | **59.6** / 105 | 24.8 / 45 | 34.8 / 60 | 48.5 min | $19.84 |
+| GPT-6.2 Astra (medium effort) - mean of 3 | Codex CLI | **50.3** / 105 | 21 / 45 | 29.3 / 60 | 30.2 min | $12.34 |
+| GPT-6.2 Astra (low effort) - mean of 3 | Codex CLI | **46.3** / 105 | 18.7 / 45 | 27.7 / 60 | 17.7 min | $7.28 |
+
+Runs: xhigh 60, 61, 59, 59 and 62 of 105 (repo 1: 25, 26, 25, 25 and 27 - repo 2: 35, 35, 34, 34 and 35); high 57, 65, 62, 57 and 57 of 105 (repo 1: 26, 29, 26, 21 and 22 - repo 2: 31, 36, 36, 36 and 35); medium 49, 49 and 53 of 105 (repo 1: 21, 22 and 20 - repo 2: 28, 27 and 33); low 49, 46 and 44 of 105 (repo 1: 20, 18 and 18 - repo 2: 29, 28 and 26).
+
+What it shows. Steps up the dial: low to medium +4.0; medium to high +9.3; high to xhigh +0.6; xhigh to max +2.5. *** RUNS 4 AND 5 WERE ADDED AFTER AN INVERSION *** high's first three runs (57, 65 and 62, mean 61.3) scored above xhigh's first three (60, 61 and 59, mean 60), so xhigh got two more identical runs (59 and 62) and, with xhigh's mean of five (60.2) still below high's 61.3, high got two more (57 and 57). They were added because of that result, not planned in advance. With five runs each, xhigh (60.2) sits above high (59.6). Against the previous generation at the same tier: xhigh 60.2 against GPT-6 Astra's 43; high 59.6 against GPT-6 Astra's 35; medium 50.3 against GPT-6 Astra's 34; low 46.3 against GPT-6 Astra's 27.
+
+Cost is a list estimate at OpenAI's GPT-6.2 Astra rates ($8 input, $0.40 cached, $40 output per million). No request reached the 272K long-context rates. Judged by Grok (grok-4.7), never by an OpenAI model. Not featured.
