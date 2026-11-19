@@ -231,3 +231,5 @@ GPT-6.2 Astra (xhigh effort) - mean of 5,Codex CLI,60.2,25.6,34.6,72.0,84.0,22.8
 GPT-6.2 Astra (high effort) - mean of 5,Codex CLI,59.6,24.8,34.8,76.2,48.5,19.84
 GPT-6.2 Astra (medium effort) - mean of 3,Codex CLI,50.3,21.0,29.3,62.7,30.2,12.34
 GPT-6.2 Astra (low effort) - mean of 3,Codex CLI,46.3,18.7,27.7,39.0,17.7,7.28
+"Gemini 4 Neon (xhigh effort, Antigravity CLI) - mean of 3",Antigravity CLI,63.0,24.3,38.7,60.3,75.9,21.6
+"Gemini 4 Neon (high effort, Antigravity CLI) - mean of 3",Antigravity CLI,57.0,22.3,34.7,43.7,45.4,9.96

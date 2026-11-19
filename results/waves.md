@@ -4681,3 +4681,24 @@ Runs: xhigh 60, 61, 59, 59 and 62 of 105 (repo 1: 25, 26, 25, 25 and 27 - repo 2
 What it shows. Steps up the dial: low to medium +4.0; medium to high +9.3; high to xhigh +0.6; xhigh to max +2.5. *** RUNS 4 AND 5 WERE ADDED AFTER AN INVERSION *** high's first three runs (57, 65 and 62, mean 61.3) scored above xhigh's first three (60, 61 and 59, mean 60), so xhigh got two more identical runs (59 and 62) and, with xhigh's mean of five (60.2) still below high's 61.3, high got two more (57 and 57). They were added because of that result, not planned in advance. With five runs each, xhigh (60.2) sits above high (59.6). Against the previous generation at the same tier: xhigh 60.2 against GPT-6 Astra's 43; high 59.6 against GPT-6 Astra's 35; medium 50.3 against GPT-6 Astra's 34; low 46.3 against GPT-6 Astra's 27.
 
 Cost is a list estimate at OpenAI's GPT-6.2 Astra rates ($8 input, $0.40 cached, $40 output per million). No request reached the 272K long-context rates. Judged by Grok (grok-4.7), never by an OpenAI model. Not featured.
+
+## Gemini 4 Neon — xhigh and high, means of 3 (Nov 19)
+
+Google's Gemini 4 Neon through the Antigravity CLI 1.5.11, signed in with a Google AI Ultra subscription (no API key), on the Windows laptop. Two tiers, three runs each: xhigh, Neon's top tier, and high, one below. On a probe through the same sign-in xhigh thought 7,815 to 7,916 tokens against high's 3,484 to 5,117, so the two are distinct tiers. Every file in the run copies carried one modification time.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Gemini 4 Neon (xhigh effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **63** / 105 | 24.3 / 45 | 38.7 / 60 | 75.9 min | $21.60 |
+| Gemini 4 Neon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **57** / 105 | 22.3 / 45 | 34.7 / 60 | 45.4 min | $9.96 |
+| Gemini 4 Carbon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 57.3 / 105 | 22.3 / 45 | 35 / 60 | 114.0 min | $31.32 |
+| Gemini 4 Carbon (medium effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 56 / 105 | 21.7 / 45 | 34.3 / 60 | 81.1 min | $24.95 |
+
+Runs: xhigh 65, 63 and 61 of 105 (repo 1: 26, 24 and 23 - repo 2: 39, 39 and 38); high 57, 59 and 55 of 105 (repo 1: 22, 23 and 22 - repo 2: 35, 36 and 33).
+
+What it shows. At xhigh Neon averages 63 of 105, 5.7 above Gemini 4 Carbon at its top tier, high (57.3). At high it averages 57, level with Carbon high (0.3 below it, inside both rows' run-to-run spread). The step from high to xhigh is 6.0; xhigh's three runs span 61 to 65 and high's 55 to 59.
+
+Not set up like the Carbon rows. Carbon ran through the CLI's gateway mode with a Gemini API key on Linux cloud machines, with Google's per-call usage as the cost receipt; Neon ran on the laptop on the subscription sign-in, where nothing can be read back on the wire. Same Grok judge, so the scores compare; walls and costs do not compare directly.
+
+Quota stops. The subscription's five-hour usage window ran out 22 to 27 minutes into the xhigh runs, six legs at once. Five legs stopped before writing a report; after the window reset each continued its own conversation and finished. Their walls are working time only. The high runs never hit the limit.
+
+Cost is a list estimate at Google's gemini-4-neon rate ($3 input, $0.15 cached, $15 output per million) from the CLI's own token counts, which likely read low: on the Argon rows they read 10 to 38% below Google's per-call usage, and Neon delegated to sub-agents whose tokens the final count may leave out. Judged by Grok (grok-4.7), the judge of the Carbon rows. Both rows featured on Pawel's word.
