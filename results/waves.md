@@ -4688,8 +4688,8 @@ Google's Gemini 4 Neon through the Antigravity CLI 1.5.11, signed in with a Goog
 
 | Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
 |---|---|---|---|---|---|---|
-| Gemini 4 Neon (xhigh effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **63** / 105 | 24.3 / 45 | 38.7 / 60 | 75.9 min | $21.60 |
-| Gemini 4 Neon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **57** / 105 | 22.3 / 45 | 34.7 / 60 | 45.4 min | $9.96 |
+| Gemini 4 Neon (xhigh effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **63** / 105 | 24.3 / 45 | 38.7 / 60 | 75.9 min | $46.34 |
+| Gemini 4 Neon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **57** / 105 | 22.3 / 45 | 34.7 / 60 | 45.4 min | $29.11 |
 | Gemini 4 Carbon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 57.3 / 105 | 22.3 / 45 | 35 / 60 | 114.0 min | $31.32 |
 | Gemini 4 Carbon (medium effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 56 / 105 | 21.7 / 45 | 34.3 / 60 | 81.1 min | $24.95 |
 
@@ -4701,4 +4701,4 @@ Not set up like the Carbon rows. Carbon ran through the CLI's gateway mode with 
 
 Quota stops. The subscription's five-hour usage window ran out 22 to 27 minutes into the xhigh runs, six legs at once. Five legs stopped before writing a report; after the window reset each continued its own conversation and finished. Their walls are working time only. The high runs never hit the limit.
 
-Cost is a list estimate at Google's gemini-4-neon rate ($3 input, $0.15 cached, $15 output per million) from the CLI's own token counts, which likely read low: on the Argon rows they read 10 to 38% below Google's per-call usage, and Neon delegated to sub-agents whose tokens the final count may leave out. Judged by Grok (grok-4.7), the judge of the Carbon rows. Both rows featured on Pawel's word.
+Cost is a list estimate at Google's gemini-4-neon rate ($3 input, $0.15 cached, $15 output per million) from the CLI's own per-step token counts, sub-agents included. The CLI's final count covers the main conversation only; Neon started sub-agents in 11 of the 12 legs, each with its own counts in the CLI's local transcripts, and adding them raised the estimates from the $21.60 and $9.96 first published. On the Argon rows the CLI's counts read 10 to 38% below Google's per-call usage, so these may still read low. Judged by Grok (grok-4.7), the judge of the Carbon rows. Both rows featured on Pawel's word.

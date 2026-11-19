@@ -7,7 +7,7 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Nov 19, 2026](assets/leaderboard.png?v=2026-11-19-17e70f3b)
+![Bug Hunt Bench leaderboard, the featured runs, updated Nov 19, 2026](assets/leaderboard.png?v=2026-11-19-a07e5e66)
 
 **Updated Nov 19, 2026 · 233 rows from 381 scored runs · 55 models · 19 of 105 bugs have never been fixed by any model.**
 
@@ -17,13 +17,13 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 
 | # | Model | Harness | Effort | Runs | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Extras | Wall | Cost | Date |
 |--:|---|---|---|--:|--:|--:|--:|--:|--:|--:|---|
-| 1 | Gemini 4 Neon | Antigravity CLI | xhigh | 3 | **63** | 24.3 | 38.7 | 60.3 | 76 min | $21.60 | 2026-11-19 |
+| 1 | Gemini 4 Neon | Antigravity CLI | xhigh | 3 | **63** | 24.3 | 38.7 | 60.3 | 76 min | $46.34 | 2026-11-19 |
 | 2 | GPT-6.2 Astra | Codex CLI | max | 3 | **62.7** | 25.7 | 37 | 60 | 122 min | $28.35 | 2026-11-18 |
 | 3 | GPT-6.2 Astra | Codex CLI | xhigh | 5 | **60.2** | 25.6 | 34.6 | 72 | 84 min | $22.82 | 2026-11-18 |
 | 4 | GPT-6.2 Astra | Codex CLI | high | 5 | **59.6** | 24.8 | 34.8 | 76.2 | 48 min | $19.84 | 2026-11-18 |
 | 5 | Fable 5.2 | Claude Code | max | 3 | **58** | 23 | 35 | 24.7 | 143 min | $139.65 | 2026-11-09 |
 | 6 | Gemini 4 Carbon | Antigravity CLI | high | 3 | **57.3** | 22.3 | 35 | 25 | 114 min | $31.32 | 2026-11-10 |
-| 7 | Gemini 4 Neon | Antigravity CLI | high | 3 | **57** | 22.3 | 34.7 | 43.7 | 45 min | $9.96 | 2026-11-19 |
+| 7 | Gemini 4 Neon | Antigravity CLI | high | 3 | **57** | 22.3 | 34.7 | 43.7 | 45 min | $29.11 | 2026-11-19 |
 | 8 | Gemini 4 Carbon | Antigravity CLI | medium | 3 | **56** | 21.7 | 34.3 | 46.7 | 81 min | $24.95 | 2026-11-10 |
 | 9 | GPT-6.2 Sol | Codex CLI | max | 3 | **54.7** | 20.7 | 34 | 56 | 68 min | $7.00 | 2026-11-18 |
 | 10 | Sonnet 5.5 | Claude Code | max | 3 | **51.3** | 22.7 | 28.7 | 26.3 | 287 min | $154.03 | 2026-09-29 |
