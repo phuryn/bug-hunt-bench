@@ -1,0 +1,10 @@
+Gemini 4 Neon in agy on a Google AI Ultra subscription LOGIN (no gateway), laptop W64: does the xhigh slug think above high? - 2026-11-19 00:12 (Warsaw)
+
+agy -p <probe_effort_dial.DEFAULT_PROMPT> --model <slug> --effort <tier> --output-format json; usage.thinking_tokens is the CLI's own meter (no wire readback on the login path). n=3 per slug.
+
+=== RESULT ===
+gemini-4-neon-high         thinking=[4405, 3484, 5117] mean=4335 range=3484-5117 output=[5430, 4493, 5947] wall=[42.9, 34.2, 44.7] exits=[0, 0, 0]
+gemini-4-neon-xhigh        thinking=[7836, 7916, 7815] mean=7856 range=7815-7916 output=[8930, 8970, 8761] wall=[66.9, 67.0, 67.6] exits=[0, 0, 0]
+
+xhigh/high mean ratio 1.81x; ranges do NOT overlap
+VERDICT: xhigh BINDS above high
