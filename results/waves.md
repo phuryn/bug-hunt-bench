@@ -4702,3 +4702,15 @@ Not set up like the Carbon rows. Carbon ran through the CLI's gateway mode with 
 Quota stops. The subscription's five-hour usage window ran out 22 to 27 minutes into the xhigh runs, six legs at once. Five legs stopped before writing a report; after the window reset each continued its own conversation and finished. Their walls are working time only. The high runs never hit the limit.
 
 Cost is a list estimate at Google's gemini-4-neon rate ($3 input, $0.15 cached, $15 output per million) from the CLI's own per-step token counts, sub-agents included. The CLI's final count covers the main conversation only; Neon started sub-agents in 11 of the 12 legs, each with its own counts in the CLI's local transcripts, and adding them raised the estimates from the $21.60 and $9.96 first published. On the Argon rows the CLI's counts read 10 to 38% below Google's per-call usage, so these may still read low. Judged by Grok (grok-4.7), the judge of the Carbon rows. Both rows featured on Pawel's word.
+
+## Gemini 4 Neon — medium, mean of 3 (Nov 19)
+
+Google's Gemini 4 Neon at thinking level medium through the Antigravity CLI 1.5.11, signed in with a Google AI Ultra subscription (no API key), on the Windows laptop, three runs at once. On a probe through the same sign-in medium thought 3,194 to 3,246 tokens against high's 4,289 to 4,465 (three calls each, no overlap), so it is a real step below high.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Gemini 4 Neon (medium effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **47.7** / 105 | 19.3 / 45 | 28.3 / 60 | 24.5 min | $12.84 |
+
+Runs: 43, 51 and 49 of 105 (repo 1: 18, 19 and 21 - repo 2: 25, 32 and 28). For comparison: Gemini 4 Neon xhigh 63, Gemini 4 Neon high 57 and Gemini 4 Carbon medium 56 of 105.
+
+Cost is a list estimate at Google's gemini-4-neon rate ($3 input, $0.15 cached, $15 output per million) from the CLI's own per-step token counts, sub-agents included; on the Argon rows those counts read 10 to 38% below Google's per-call usage, so it may still read low. Judged by Grok (grok-4.7), the judge of the Carbon rows. Published automatically on Pawel's word, not featured.

@@ -1,0 +1,14 @@
+Gemini 4 Neon in agy on a Google AI Ultra subscription LOGIN (no gateway), laptop W64: do the low and medium slugs think below high? - 2026-11-19 10:52 (Warsaw)
+
+agy -p <probe_effort_dial.DEFAULT_PROMPT> --model <slug> --effort <tier> --output-format json; usage.thinking_tokens is the CLI's own meter (no wire readback on the login path). n=3 per slug.
+
+=== RESULT ===
+gemini-4-neon-low          thinking=[2400, 2204, 1959] mean=2188 range=1959-2400 output=[3272, 3101, 2860] wall=[29.3, 25.3, 26.2] exits=[0, 0, 0]
+gemini-4-neon-medium       thinking=[3246, 3194, 3240] mean=3227 range=3194-3246 output=[4070, 4177, 4249] wall=[40.0, 34.3, 34.7] exits=[0, 0, 0]
+gemini-4-neon-high         thinking=[4289, 4465, 4337] mean=4364 range=4289-4465 output=[5241, 5491, 5447] wall=[42.0, 48.2, 49.7] exits=[0, 0, 0]
+
+medium/low mean ratio 1.47x; ranges do NOT overlap
+VERDICT medium/low: BINDS
+
+high/medium mean ratio 1.35x; ranges do NOT overlap
+VERDICT high/medium: BINDS
