@@ -234,3 +234,4 @@ GPT-6.2 Astra (low effort) - mean of 3,Codex CLI,46.3,18.7,27.7,39.0,17.7,7.28
 "Gemini 4 Neon (xhigh effort, Antigravity CLI) - mean of 3",Antigravity CLI,63.0,24.3,38.7,60.3,75.9,21.6
 "Gemini 4 Neon (high effort, Antigravity CLI) - mean of 3",Antigravity CLI,57.0,22.3,34.7,43.7,45.4,9.96
 "Gemini 4 Neon (medium effort, Antigravity CLI) - mean of 3",Antigravity CLI,47.7,19.3,28.3,23.0,24.5,12.84
+"Gemini 4 Neon (low effort, Antigravity CLI) - mean of 3",Antigravity CLI,29.7,12.7,17.0,6.3,10.8,5.29
