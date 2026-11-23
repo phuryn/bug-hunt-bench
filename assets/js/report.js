@@ -1,11 +1,11 @@
 /* The report keeps every harness in view. Shared renderers take the benchmark's
    score scale, measurement labels and per-run observations from the report data. */
-import { COLUMNS, GROUPS, el } from './format.js?v=65a4cf7ac8';
-import { renderColgroup, renderHead, renderBody } from './table.js?v=65a4cf7ac8';
-import { AXES, renderScatter } from './scatter.js?v=65a4cf7ac8';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=65a4cf7ac8';
-import { initTheme } from './theme.js?v=65a4cf7ac8';
-import './nav.js?v=65a4cf7ac8';
+import { COLUMNS, GROUPS, el } from './format.js?v=e8cfadb125';
+import { renderColgroup, renderHead, renderBody } from './table.js?v=e8cfadb125';
+import { AXES, renderScatter } from './scatter.js?v=e8cfadb125';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=e8cfadb125';
+import { initTheme } from './theme.js?v=e8cfadb125';
+import './nav.js?v=e8cfadb125';
 
 const $ = (id) => document.getElementById(id);
 
@@ -89,6 +89,9 @@ async function boot() {
       ];
       if (layout.flagged.length) parts.push(' * Marks harnesses with runs affected by overlapping work or recorded machine contention.');
       if (key === 'turns') parts.push(' Turns count tool calls plus one per repository leg.');
+      if (layout.points.some((p) => p.incompleteCost)) {
+        parts.push(' Cost whiskers are omitted for harnesses with missing task costs.');
+      }
       return parts;
     });
   }

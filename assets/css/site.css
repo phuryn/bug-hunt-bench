@@ -53,6 +53,7 @@
   --wrap: 1280px;
   --target: 44px;
   --control-radius: 4px;
+  --note-size: 0.8125rem;
   --menu-width: 340px;
   --menu-layer: 20;
   --menu-shadow: 0 14px 34px -14px var(--shadow);
@@ -529,6 +530,19 @@ h1 em { font-style: normal; color: var(--accent); }
 /* ------------------------------------------------------------------- views */
 
 .views { padding-block: clamp(20px, 2.8vw, 34px) 0; }
+.link-notice, .link-notice__links, #link-notice-reports {
+  display: flex; align-items: center; flex-wrap: wrap; column-gap: calc(var(--gap) / 2);
+}
+.link-notice {
+  justify-content: space-between; row-gap: calc(var(--gap) / 4);
+  padding: calc(var(--gap) / 2); margin-bottom: calc(var(--gap) / 2);
+  background: var(--plate); color: var(--ink-2); border: 1px solid var(--rule);
+  border-radius: var(--control-radius); font-size: var(--note-size);
+}
+.link-notice p, .link-notice .btn { margin: 0; }
+.link-notice :is(a, .btn) { min-height: var(--target); }
+.link-notice a { display: inline-flex; align-items: center; }
+#link-notice-reports:empty { display: none; }
 .views__bar {
   display: flex; align-items: flex-end; justify-content: space-between;
   gap: 16px; flex-wrap: wrap;

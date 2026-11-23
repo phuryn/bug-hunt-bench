@@ -19446,5 +19446,105 @@
       "group_rank": 1006,
       "vendor_color": "#1B9E77"
     }
+  ],
+  "harness_comparison_runs": [
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (max effort, Pi) - mean of 5",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Pi / DeepSeek API",
+      "effort": "max",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (high effort, Pi) - mean of 5",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Pi / DeepSeek API",
+      "effort": "high",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (max effort) - mean of 5",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "max",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (max effort) - mean of 7",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "max",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (max effort) - mean of 3",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "max",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (max effort, OpenCode) - mean of 5",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "OpenCode / DeepSeek API",
+      "effort": "max",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (high effort, OpenCode) - mean of 5",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "OpenCode / DeepSeek API",
+      "effort": "high",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (high effort) - mean of 5",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "high",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (max effort) - mean of 2",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "max",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (low effort) - mean of 5",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "low",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (max effort)",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "max",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (low effort, Pi) - mean of 5",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Pi / DeepSeek API",
+      "effort": "low",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (low effort, OpenCode) - mean of 5",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "OpenCode / DeepSeek API",
+      "effort": "low",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    },
+    {
+      "id": "DeepSeek V4.1 Flash 1017 (high effort) - mean of 2",
+      "model": "DeepSeek V4.1 Flash 1017",
+      "harness": "Claude Code / DeepSeek API",
+      "effort": "high",
+      "report_slug": "bug-hunt-bench-deepseek-v4-1-flash-1017"
+    }
   ]
 }

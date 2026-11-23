@@ -40,8 +40,8 @@
    model's efforts to behave "just like the whole provider" is asking for exactly
    this, at both levels. */
 
-import { el, fmtDate, effortSuffix, harnessShort } from './format.js?v=65a4cf7ac8';
-import { runColor } from './theme.js?v=65a4cf7ac8';
+import { el, fmtDate, effortSuffix, harnessShort } from './format.js?v=e8cfadb125';
+import { runColor } from './theme.js?v=e8cfadb125';
 
 const OTHER_MAX_RUNS = 3;
 const OTHER_LABEL = 'Other';
@@ -232,10 +232,14 @@ function multiVendorFieldset(label, id, runsForGroup, opts, sortBySize) {
 }
 
 export function matchingRuns(runs, query) {
-  const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean).map((term) => {
+    const literal = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const charClass = /^\p{L}/u.test(term) ? '\\p{L}' : /^\p{Nd}/u.test(term) ? '\\p{Nd}' : '';
+    return new RegExp(charClass ? `(?:^|[^${charClass}])${literal}` : literal, 'u');
+  });
   return runs.filter((r) => {
     const text = [r.model, r.vendor, r.harness, r.harness_version, r.effort].join(' ').toLowerCase();
-    return terms.every((term) => text.includes(term));
+    return terms.every((term) => term.test(text));
   });
 }
 

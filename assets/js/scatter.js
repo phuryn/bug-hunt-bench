@@ -17,8 +17,8 @@
 import {
   pointLabels, fmtCost, fmtWall, fmtTurns, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
   harnessShort, runName, sampleCost,
-} from './format.js?v=65a4cf7ac8';
-import { runColor } from './theme.js?v=65a4cf7ac8';
+} from './format.js?v=e8cfadb125';
+import { runColor } from './theme.js?v=e8cfadb125';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -184,6 +184,15 @@ function linearTicks(hi, plotW) {
   return out;
 }
 
+function hasMissingTaskCosts(run) {
+  return run.samples?.some((sample) => sample.cost_missing_tasks > 0);
+}
+
+function sampleValues(run, key) {
+  if (key === 'cost_usd' && hasMissingTaskCosts(run)) return [];
+  return (run.samples || []).map((sample) => sample[key]);
+}
+
 export function scatterLayout(runs, allRuns, width, height, axis) {
   const A = resolveAxis(axis);
   const report = A.scoreTotal !== undefined;
@@ -199,7 +208,7 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
 
   const val = (r) => r[A.key];
   const isNum = (v) => v !== null && v !== undefined;
-  const values = (rows, key) => rows.flatMap((r) => [r[key], ...(r.samples || []).map((s) => s[key])]);
+  const values = (rows, key) => rows.flatMap((r) => [r[key], ...sampleValues(r, key)]);
   const scores = report ? values(allRuns, 'fixed') : [];
   const yBottom = report ? Math.max(0, Math.floor((Math.min(...scores) - 3) / 5) * 5) : 0;
   const yTop = report ? Math.min(A.scoreTotal, Math.ceil((Math.max(...scores) + 3) / 5) * 5) : yDomainTop(allRuns);
@@ -276,8 +285,9 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
 
   if (report) {
     points.forEach((p) => {
-      const measures = p.run.samples.map(val).filter((v) => isNum(v) && (A.scale !== 'log' || v > 0));
+      const measures = sampleValues(p.run, A.key).filter((v) => isNum(v) && (A.scale !== 'log' || v > 0));
       const scores = p.run.samples.map((r) => r.fixed);
+      p.incompleteCost = A.id === 'cost' && hasMissingTaskCosts(p.run);
       p.range = {
         left: measures.length ? x(Math.min(...measures)) : null,
         right: measures.length ? x(Math.max(...measures)) : null,
@@ -391,9 +401,12 @@ function tooltipContent(p, axis) {
   if (axis.scoreTotal) {
     frag.appendChild(tipRow('Version', r.harness_version));
     if (r.native || r.authors_harness) frag.appendChild(el('div', { class: 'tip-row', text: r.native ? 'Native harness' : 'Site author’s harness' }));
-    frag.appendChild(tipRow(axis.noun, (axis.id === 'cost' && r.cost_estimated ? '≈' : '') + axis.fmt(r[axis.key])));
+    const label = p.incompleteCost ? 'Published cost per run' : axis.noun;
+    frag.appendChild(tipRow(label, (axis.id === 'cost' && r.cost_estimated ? '≈' : '') + axis.fmt(r[axis.key])));
     r.samples.forEach((sample) => {
-      const metric = axis.id === 'cost' ? sampleCost(sample) : axis.fmt(sample[axis.key]);
+      const missing = sample.cost_missing_tasks;
+      const metric = p.incompleteCost ? `${missing} ${missing === 1 ? 'task' : 'tasks'} without a recorded cost`
+        : axis.id === 'cost' ? sampleCost(sample) : axis.fmt(sample[axis.key]);
       frag.appendChild(tipRow(`Run ${sample.run}`, `${sample.fixed} · ${metric}`));
     });
     if (r.caveat) frag.appendChild(el('div', { class: 'tip-row', text: r.caveat }));
@@ -528,8 +541,12 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
     if (p.range) {
       const { top, bottom, left, right } = p.range;
       const yRange = `M${p.cx} ${top}V${bottom}m-3 0h6 M${p.cx - 3} ${top}h6`;
-      const xRange = left === null ? '' : `M${left} ${p.cy}H${right}m0 -3v6 M${left} ${p.cy - 3}v6`;
-      ranges.appendChild(svgEl('path', { class: 'sample-range', d: `${yRange} ${xRange}`, stroke: p.color }));
+      const attrs = { stroke: p.color, 'data-run': p.run.slug };
+      ranges.appendChild(svgEl('path', { ...attrs, class: 'sample-range sample-range--score', d: yRange }));
+      if (left !== null) {
+        const xRange = `M${left} ${p.cy}H${right}m0 -3v6 M${left} ${p.cy - 3}v6`;
+        ranges.appendChild(svgEl('path', { ...attrs, class: 'sample-range sample-range--measure', d: xRange }));
+      }
       if (p.labelPos?.leader) ranges.appendChild(svgEl('line', {
         class: 'sample-leader', x1: p.cx, x2: p.labelPos.x, y1: p.cy, y2: p.labelPos.y - 3,
       }));

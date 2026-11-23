@@ -9,16 +9,16 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
-} from './format.js?v=65a4cf7ac8';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=65a4cf7ac8';
+} from './format.js?v=e8cfadb125';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=e8cfadb125';
 import {
   renderScatter, AXES, SCALES, scaledAxis, scaleSentence,
-} from './scatter.js?v=65a4cf7ac8';
-import { matchingRuns, renderPicker, refreshGroups } from './selector.js?v=65a4cf7ac8';
-import { exportView } from './export-png.js?v=65a4cf7ac8';
-import { initTheme, hasAdjustedColors } from './theme.js?v=65a4cf7ac8';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=65a4cf7ac8';
-import { comparisonIndex } from './nav.js?v=65a4cf7ac8';
+} from './scatter.js?v=e8cfadb125';
+import { matchingRuns, renderPicker, refreshGroups } from './selector.js?v=e8cfadb125';
+import { exportView } from './export-png.js?v=e8cfadb125';
+import { initTheme, hasAdjustedColors } from './theme.js?v=e8cfadb125';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=e8cfadb125';
+import { comparisonIndex } from './nav.js?v=e8cfadb125';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -164,12 +164,31 @@ function sanitizePivot() {
   if (!run || !state.selected.has(run.slug) || !Array.isArray(run.fixed_bugs)) state.pivot = null;
 }
 
+function showUnavailableRuns(missing) {
+  const notice = $('link-notice');
+  notice.hidden = missing.length === 0;
+  if (notice.hidden) return;
+
+  const count = missing.length === 1 ? '1 run in this link is' : `${missing.length} runs in this link are`;
+  $('link-notice-text').textContent = `${count} no longer on the board. The board keeps each model in its lab’s own harness when available.`;
+  const moved = new Map((DATA.harness_comparison_runs || []).map((r) => [slugify(r.id), r]));
+  const reports = new Map();
+  for (const slug of missing) {
+    const row = moved.get(slug);
+    if (row?.report_slug) reports.set(row.report_slug, row.model);
+  }
+  $('link-notice-reports').replaceChildren(...Array.from(reports, ([slug, model]) =>
+    el('a', { href: `/harness/${slug}`, text: `${model} harness comparison (high effort)` })));
+}
+
 function readUrl() {
   const p = new URLSearchParams(location.search);
   const runsParam = p.get('runs');
+  let missing = [];
   if (runsParam !== null) {
     const wanted = new Set(runsParam.split(',').filter(Boolean));
     state.selected = new Set(RUNS.filter((r) => wanted.has(r.slug)).map((r) => r.slug));
+    missing = [...wanted].filter((slug) => !state.selected.has(slug));
     state.preset = detectPreset();
   } else {
     const preset = p.get('preset');
@@ -192,6 +211,7 @@ function readUrl() {
   // checked by sanitizePivot() on the first render, same as a link typed by
   // hand rather than produced by this page.
   state.pivot = p.get('pivot') || null;
+  showUnavailableRuns(missing);
 }
 
 function writeUrl() {
@@ -671,6 +691,10 @@ function setView(view, focus) {
 }
 
 function wire() {
+  $('link-notice-dismiss').addEventListener('click', () => {
+    $('link-notice').hidden = true;
+    $(VIEWS[state.view].tab).focus({ preventScroll: true });
+  });
   document.querySelectorAll('.preset').forEach((btn) => {
     btn.addEventListener('click', () => {
       applyPreset(btn.dataset.preset);
