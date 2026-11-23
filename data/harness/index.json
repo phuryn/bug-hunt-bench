@@ -8,7 +8,8 @@
     "title": "Bug Hunt Bench · DeepSeek V4.1 Flash 1017",
     "board_model": "DeepSeek V4.1 Flash 1017",
     "score_total": 105,
-    "other_harness_count": 9
+    "other_harness_count": 9,
+    "updated": "2026-11-06"
   },
   {
     "slug": "terminal-bench-2-1-claude-haiku-5-5",
@@ -19,7 +20,8 @@
     "title": "Terminal-Bench 2.1 · Claude Haiku 5.5",
     "board_model": null,
     "score_total": 89,
-    "other_harness_count": null
+    "other_harness_count": null,
+    "updated": "2026-11-06"
   },
   {
     "slug": "terminal-bench-2-1-deepseek-v4-1-flash-1017",
@@ -30,6 +32,7 @@
     "title": "Terminal-Bench 2.1 · DeepSeek V4.1 Flash 1017",
     "board_model": null,
     "score_total": 89,
-    "other_harness_count": null
+    "other_harness_count": null,
+    "updated": "2026-11-07"
   }
 ]

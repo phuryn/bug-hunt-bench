@@ -8,9 +8,9 @@
    straight at them: a reader who clicks "cost tag" under the table should land
    on that definition, not at the top of this page. */
 
-import { glossaryTerm, fmtDate, el } from './format.js?v=7325175aae';
-import { initTheme } from './theme.js?v=7325175aae';
-import './nav.js?v=7325175aae';
+import { glossaryTerm, fmtDate, el } from './format.js?v=cc1f84b407';
+import { initTheme } from './theme.js?v=cc1f84b407';
+import './nav.js?v=cc1f84b407';
 
 const $ = (id) => document.getElementById(id);
 

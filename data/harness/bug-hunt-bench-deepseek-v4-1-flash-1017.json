@@ -9,6 +9,7 @@
     "board_model": "DeepSeek V4.1 Flash 1017",
     "score_total": 105,
     "other_harness_count": 9,
+    "updated": "2026-11-06",
     "effort": "high",
     "source": "https://github.com/phuryn/mini-harness/tree/main/benchmarks/bug-hunt-bench--deepseek-v4.1-flash-1017",
     "has_turns": true,

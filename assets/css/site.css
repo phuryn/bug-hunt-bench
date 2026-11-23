@@ -992,8 +992,9 @@ h1 em { font-style: normal; color: var(--accent); }
 .report-head .lede { max-width: 66ch; margin-top: 10px; }
 .crumbs { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
 .crumbs span { margin-inline: 3px; }
-.report-links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; margin: 0; }
+.report-links { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; font-size: 12.5px; margin: 0; }
 .report-links a { display: inline-flex; align-items: center; min-height: var(--target); }
+.report-links time { color: var(--muted); }
 .report .views { padding-top: 6px; }
 .report .tab { min-height: var(--target); }
 .report .sortbtn { min-height: var(--target); }

@@ -11,11 +11,12 @@
 import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
-  costSentence, segmentsText,
-} from './format.js?v=7325175aae';
-import { scatterLayout, resolveAxis } from './scatter.js?v=7325175aae';
-import { coverageLayout, coverageOrderNote, coverageSummaryNote, coverageColor } from './coverage.js?v=7325175aae';
-import { runColor, activeTheme } from './theme.js?v=7325175aae';
+  costSentence, segmentsText, runName,
+} from './format.js?v=cc1f84b407';
+import { scatterLayout, resolveAxis } from './scatter.js?v=cc1f84b407';
+import { coverageLayout, coverageOrderNote, coverageSummaryNote, coverageColor } from './coverage.js?v=cc1f84b407';
+import { runColor, activeTheme } from './theme.js?v=cc1f84b407';
+import { nRuns } from './table.js?v=cc1f84b407';
 
 const SCALE = 2;
 const PAD = 32;
@@ -30,6 +31,7 @@ function theme() {
     page: cssVar('--page') || '#eef0f3',
     panel: cssVar('--panel') || '#e3e6ea',
     hairline: cssVar('--hairline') || '#d6dae1',
+    chipRing: cssVar('--chip-ring'),
     rule: cssVar('--rule') || '#c4cad3',
     ink: cssVar('--ink') || '#1c2026',
     ink2: cssVar('--ink-2') || '#3d444d',
@@ -156,7 +158,7 @@ function truncate(ctx, str, font, maxW) {
 
 /* ------------------------------------------------------------------ header */
 
-function drawHeader(ctx, T, w, title, subtitle, meta, siteUrl) {
+function drawHeader(ctx, T, w, title, subtitle, meta, siteUrl, runsLine) {
   const y0 = PAD + 14;
   let y = y0;
   ctx.save();
@@ -169,6 +171,10 @@ function drawHeader(ctx, T, w, title, subtitle, meta, siteUrl) {
   text(ctx, title, PAD, y, `500 32px ${SERIF}`, T.ink);
   y += 22;
   text(ctx, subtitle, PAD, y, `13px ${SANS}`, T.ink2);
+  if (runsLine) {
+    y += 18;
+    text(ctx, runsLine, PAD, y, `12px ${SANS}`, T.ink2);
+  }
   y += 18;
   text(ctx, siteUrl, PAD, y, `12px ${SANS}`, T.muted);
   y += 14;
@@ -188,25 +194,58 @@ function drawFooter(ctx, T, w, y, lines) {
 
 /* ------------------------------------------------------------------- table */
 
-function drawTable(ctx, T, runs, state, w) {
+const REPORT_CAVEAT_FONT = `11px ${SANS}`;
+
+function drawHarness(ctx, T, run, c, baseline, caveats) {
+  const x = c.x + 26;
+  const name = runName(run);
+  const nameFont = `600 14px ${SANS}`;
+  text(ctx, name, x, baseline, nameFont, T.ink);
+  let tagX = x + ctx.measureText(name).width + 6;
+  const tags = [
+    run.native ? ['NATIVE', []] : null,
+    run.authors_harness ? ['AUTHOR’S HARNESS', [2, 2]] : null,
+  ].filter(Boolean);
+  tags.forEach(([label, dash]) => {
+    const font = `9.5px ${SANS}`;
+    ctx.font = font;
+    const width = ctx.measureText(label).width + 8;
+    ctx.save();
+    ctx.strokeStyle = T.neutral;
+    ctx.lineWidth = 1;
+    ctx.setLineDash(dash);
+    ctx.beginPath();
+    ctx.roundRect(tagX, baseline - 12, width, 15, 2);
+    ctx.stroke();
+    ctx.restore();
+    text(ctx, label, tagX + 4, baseline - 1, font, T.ink2);
+    tagX += width + 4;
+  });
+  const detail = [run.harness_version, `n=${nRuns(run)}`].filter(Boolean).join(' · ');
+  const detailFont = fitMono(ctx, detail, c.width - 34, 9.5, 7.5);
+  text(ctx, detail, x, baseline + 14, detailFont, T.muted);
+  caveats.forEach((note, i) => text(ctx, note, x, baseline + 27 + i * 13, REPORT_CAVEAT_FONT, T.muted));
+}
+
+function drawTable(ctx, T, runs, state, w, report) {
   /* the same geometry as the screen: every bar scaled to the longest figure
      among the rows ON THIS CARD, so an exported selection reads like the
      selection it was exported from */
   const { fixedMax, extrasMax, wallMax, costMax } = barScales(runs);
-  const cols = COLUMNS.map((c) => ({ ...c }));
+  const { columns = COLUMNS, groups = GROUPS, scoreTotal = TOTALS.fixed, rowDetails } = report || {};
+  const cols = columns.map((c) => ({ ...c }));
   const totalW = cols.reduce((s, c) => s + c.w, 0);
   const scale = (w - PAD * 2) / totalW;
   let x = PAD;
   cols.forEach((c) => { c.x = x; c.width = c.w * scale; x += c.width; });
 
   let y = ctx.__y;
-  const rowH = 50;
 
   /* Group header. "Tracked, not scored" heads a single column now, so a label
      can be wider than the group it describes - it wraps inside its own width
      rather than running over the neighbour it does not describe. */
   y += 34;
-  GROUPS.forEach((g) => {
+  groups.forEach((g) => {
     const groupCols = cols.filter((c) => c.group === g.id);
     if (!groupCols.length || !g.label) return;
     const gx = groupCols[0].x;
@@ -242,8 +281,9 @@ function drawTable(ctx, T, runs, state, w) {
   /* the on-screen geometry, in canvas terms: bar from the left edge of the
      column, value printed at its end, the value's width reserved out of the
      track so a full-length bar cannot push its own number off the column */
+  const trackWidth = (c, reserve) => Math.max(10, c.width - 8 - reserve);
   const drawBar = (c, top, ratio, height, fill, reserve) => {
-    const trackW = Math.max(10, c.width - 8 - reserve);
+    const trackW = trackWidth(c, reserve);
     if (ratio === null || ratio === 0) return c.x + 4;
     const bw = Math.max(1.5, ratio * trackW);
     ctx.fillStyle = fill;
@@ -258,19 +298,26 @@ function drawTable(ctx, T, runs, state, w) {
     return Math.max(0, ...strs.map((s) => ctx.measureText(s).width));
   };
   const has = (v) => v !== null && v !== undefined;
+  const wallValue = report ? fmtInt : fmtWall;
+  const costValue = (r) => (report && r.cost_estimated ? '≈' : '') + fmtCost(r.cost_usd);
+  const denominator = `/${scoreTotal}`;
   const reserve = {
-    fixed: Math.max(58, 12 + widest(runs.map((r) => fmtInt(r.fixed)), `600 15px ${SANS}`)
-      + widest([`/${TOTALS.fixed}`], `11px ${SANS}`) + 8),
+    fixed: Math.max(report ? 78 : 58, 12 + widest(runs.map((r) => fmtInt(r.fixed)), `600 15px ${SANS}`)
+      + widest([denominator], `11px ${SANS}`) + 8),
     extras: Math.max(28, 10 + widest(runs.map((r) => fmtInt(r.extras)), `12px ${SANS}`) + 8),
-    wall: Math.max(62, 13 + widest(runs.filter((r) => has(r.wall_min)).map((r) => fmtWall(r.wall_min)),
+    wall: Math.max(62, 13 + widest(runs.filter((r) => has(r.wall_min)).map((r) => wallValue(r.wall_min)),
       `12.5px ${SANS}`) + widest(['min'], `10px ${SANS}`) + 8),
-    cost: Math.max(56, 10 + widest(runs.map((r) => fmtCost(r.cost_usd)), `12.5px ${SANS}`) + 8),
+    cost: Math.max(56, 10 + widest(runs.map(costValue), `12.5px ${SANS}`) + 8),
   };
+  const denWidth = report ? widest([denominator], `11px ${SANS}`) : 0;
+  const sampleRadius = report ? parseFloat(cssVar('--sample-size')) / 2 : 0;
+  const sampleStep = report ? parseFloat(cssVar('--sample-step')) : 0;
   const sorted = runs.slice().sort((a, b) => compareRuns(a, b, state.sort, state.dir));
 
   sorted.forEach((run) => {
     const top = y;
-    y += rowH;
+    const details = rowDetails?.get(run);
+    y += details?.height ?? 50;
     const baseline = top + 19;
 
     cols.forEach((c) => {
@@ -278,6 +325,10 @@ function drawTable(ctx, T, runs, state, w) {
       if (c.key === 'model') {
         ctx.fillStyle = runColor(run.color);
         ctx.fillRect(c.x + 8, top + 12, 11, 11);
+        if (report) {
+          drawHarness(ctx, T, run, c, baseline, details.caveats);
+          return;
+        }
         /* name and badge on one line, vendor · harness under it — the screen's
            two lines, and nothing else: what the tier means is in the footer */
         const suffix = effortSuffix(run);
@@ -294,20 +345,36 @@ function drawTable(ctx, T, runs, state, w) {
         const metaFont = fitMono(ctx, metaStr, c.width - 32, 9.5, 7.5);
         text(ctx, truncate(ctx, metaStr, metaFont, c.width - 32), c.x + 26, baseline + 14, metaFont, T.muted);
       } else if (c.key === 'fixed') {
-        const end = drawBar(c, top + 11, barRatio(run.fixed, fixedMax), 18,
-          runColor(run.color), reserve.fixed);
+        const color = runColor(run.color);
+        const end = drawBar(c, top + 11, barRatio(run.fixed, report ? scoreTotal : fixedMax), 18,
+          color, reserve.fixed);
+        if (report) {
+          ctx.fillStyle = color;
+          ctx.strokeStyle = T.plate;
+          ctx.lineWidth = 1;
+          run.samples.forEach((sample, i) => {
+            const sx = c.x + 4 + barRatio(sample.fixed, scoreTotal) * trackWidth(c, reserve.fixed);
+            ctx.beginPath();
+            ctx.arc(sx, top + 7 + i * sampleStep, sampleRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+          });
+          text(ctx, fmtInt(run.fixed), rightX - denWidth - 2, baseline + 4, `600 15px ${SANS}`, T.ink, 'right');
+          text(ctx, denominator, rightX, baseline + 4, `11px ${SANS}`, T.neutral, 'right');
+          return;
+        }
         ctx.font = `600 15px ${SANS}`;
         const nw = ctx.measureText(fmtInt(run.fixed)).width;
         text(ctx, fmtInt(run.fixed), end + 10, baseline + 4, `600 15px ${SANS}`, T.ink);
-        text(ctx, `/${TOTALS.fixed}`, end + 12 + nw, baseline + 4, `11px ${SANS}`, T.neutral);
+        text(ctx, denominator, end + 12 + nw, baseline + 4, `11px ${SANS}`, T.neutral);
       } else if (c.key === 'extras') {
         const end = drawBar(c, top + 16, barRatio(run.extras, extrasMax), 9, hatch, reserve.extras);
         text(ctx, fmtInt(run.extras), end + 10, baseline + 2, `12px ${SANS}`, T.muted);
       } else if (c.key === 'wall_min') {
         const end = drawBar(c, top + 14, barRatio(run.wall_min, wallMax), 13, T.bar, reserve.wall);
         ctx.font = `12.5px ${SANS}`;
-        const vw = ctx.measureText(fmtWall(run.wall_min)).width;
-        text(ctx, fmtWall(run.wall_min), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
+        const vw = ctx.measureText(wallValue(run.wall_min)).width;
+        text(ctx, wallValue(run.wall_min), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
         if (run.wall_min !== null && run.wall_min !== undefined) {
           text(ctx, 'min', end + 13 + vw, baseline + 2, `10px ${SANS}`, T.neutral);
         }
@@ -315,7 +382,7 @@ function drawTable(ctx, T, runs, state, w) {
         // the figure only; which of these are bills and which are estimates is
         // one generated sentence in the footer, as it is in the key on the page
         const end = drawBar(c, top + 13, barRatio(run.cost_usd, costMax), 13, T.bar, reserve.cost);
-        text(ctx, fmtCost(run.cost_usd), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
+        text(ctx, costValue(run), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
       } else {
         const v = run[c.key];
         text(ctx, fmtInt(v), rightX, baseline, `12px ${SANS}`, v === 0 ? T.neutral : T.ink2, 'right');
@@ -340,12 +407,12 @@ function drawTable(ctx, T, runs, state, w) {
 
 /* ----------------------------------------------------------------- scatter */
 
-function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
+function drawScatter(ctx, T, runs, allRuns, w, axis, defLines, reportLayout) {
   const A = resolveAxis(axis);
   const top = ctx.__y + 20;
   const plotW = w - PAD * 2;
   const height = Math.round(plotW * 0.5);
-  const L = scatterLayout(runs, allRuns, plotW, height, A);
+  const L = reportLayout || scatterLayout(runs, allRuns, plotW, height, A);
   ctx.save();
   ctx.translate(PAD, top);
 
@@ -369,13 +436,14 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
     line(ctx, L.m.left, L.ceilingY, L.m.left + L.plotW, L.ceilingY, T.rule);
     text(ctx, '105 — every planted bug', L.m.left + L.plotW, L.ceilingY - 7, `10.5px ${SANS}`, T.muted, 'right');
   }
-  text(ctx, A.corner.toUpperCase(), L.m.left + 8, L.m.top + 16, `10px ${SANS}`, T.muted);
+  if (!reportLayout) text(ctx, A.corner.toUpperCase(), L.m.left + 8, L.m.top + 16, `10px ${SANS}`, T.muted);
 
   text(ctx, A.exportTitle, L.m.left, height - 12, `600 10px ${SANS}`, T.ink2);
   ctx.save();
   ctx.translate(12, L.m.top + L.plotH / 2);
   ctx.rotate(-Math.PI / 2);
-  text(ctx, 'PLANTED BUGS FIXED, OUT OF 105', 0, 0, `600 10px ${SANS}`, T.ink2, 'center');
+  const scoreTitle = reportLayout ? `${A.scoreLabel}, of ${A.scoreTotal}`.toUpperCase() : 'PLANTED BUGS FIXED, OUT OF 105';
+  text(ctx, scoreTitle, 0, 0, `600 10px ${SANS}`, T.ink2, 'center');
   ctx.restore();
 
   L.familyLines.forEach((f) => {
@@ -392,12 +460,22 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
   });
   // Pareto frontier removed 2026-08-27 (Pawel) - kept in scatterLayout for a later rethink.
 
+  if (reportLayout) {
+    ctx.lineWidth = 1;
+    L.points.forEach((p) => {
+      ctx.strokeStyle = p.color;
+      ctx.stroke(new Path2D(p.range.score));
+      if (p.range.measure) ctx.stroke(new Path2D(p.range.measure));
+      if (p.labelPos?.leader) line(ctx, p.cx, p.cy, p.labelPos.x, p.labelPos.y - 3, T.muted);
+    });
+  }
+
   L.points.forEach((p) => {
     ctx.fillStyle = T.plate;
     ctx.beginPath();
     ctx.arc(p.cx, p.cy, 7, 0, Math.PI * 2);
     ctx.fill();
-    ctx.strokeStyle = T.hairline;
+    ctx.strokeStyle = reportLayout ? T.chipRing : T.hairline;
     ctx.lineWidth = 1;
     ctx.stroke();
     ctx.fillStyle = p.color;
@@ -430,13 +508,16 @@ function drawScatter(ctx, T, runs, allRuns, w, axis, defLines) {
      page to read it against. */
   if (defLines && defLines.length) {
     let dy = ctx.__y + 14;
-    line(ctx, PAD, dy - 10, w - PAD, dy - 10, T.hairline);
+    const ruleY = dy - (reportLayout ? 16 : 10);
+    line(ctx, PAD, ruleY, w - PAD, ruleY, T.hairline);
     defLines.forEach((l) => {
       text(ctx, l, PAD, dy, `11.5px ${SANS}`, T.ink2);
       dy += 15;
     });
     ctx.__y = dy - 4;
   }
+
+  if (reportLayout) return L;
 
   // legend — identity is never colour alone
   const cols = 3;
@@ -554,10 +635,10 @@ function drawCoverage(ctx, T, L, w) {
     const countW = ctx.measureText(countStr).width;
     const nameMaxW = Math.max(40, plotW - 26 - countW - relW - chipW - 16);
     ctx.font = `600 13px ${SANS}`;
-    const name = truncate(ctx, run.model, `600 13px ${SANS}`, nameMaxW);
+    const name = truncate(ctx, L.report ? runName(run) : run.model, `600 13px ${SANS}`, nameMaxW);
     text(ctx, name, left + 18, y + 10, `600 13px ${SANS}`, run.superseded ? T.muted : T.ink);
     const nameW = ctx.measureText(name).width;
-    text(ctx, badge, left + 18 + nameW + 6, y + 9, `600 9px ${SANS}`, T.ink2);
+    if (!L.report) text(ctx, badge, left + 18 + nameW + 6, y + 9, `600 9px ${SANS}`, T.ink2);
     if (isPivot) {
       ctx.font = `600 9px ${SANS}`;
       const badgeW = ctx.measureText(badge).width;
@@ -622,7 +703,7 @@ function unplottedNote(runs, axis) {
   const missing = runs.filter((r) => v(r) === null || v(r) === undefined);
   const zero = axis.scale === 'log' ? runs.filter((r) => v(r) === 0) : [];
   if (!missing.length && !zero.length) return null;
-  const name = (r) => `${r.model}${r.effort ? ` · ${r.effort}` : ''}`;
+  const name = (r) => axis.scoreTotal !== undefined ? runName(r) : `${r.model}${r.effort ? ` · ${r.effort}` : ''}`;
   const parts = [];
   if (missing.length) parts.push(`${missing.map(name).join(', ')} (no ${what} figure)`);
   if (zero.length) parts.push(`${zero.map(name).join(', ')} (zero, which a logarithmic axis cannot place)`);
@@ -633,7 +714,7 @@ function unplottedNote(runs, axis) {
 /* -------------------------------------------------------------------- main */
 
 export async function exportView({
-  view, axis, runs, allRuns, state, meta, glossary, caveat, siteUrl, presetName,
+  view, axis, runs, allRuns, state, meta, glossary, caveat, siteUrl, presetName, report,
 }) {
   if (document.fonts && document.fonts.ready) await document.fonts.ready;
   const T = theme();
@@ -646,15 +727,19 @@ export async function exportView({
   const covL = isCoverage ? coverageLayout(runs, meta, state.pivot) : null;
 
   const w = isChart ? 1100 : 1240;
-  const sortCol = COLUMNS.find((c) => c.key === state.sort);
+  const plotW = w - PAD * 2;
+  const sortCol = (report?.columns || COLUMNS).find((c) => c.key === state.sort);
   const sortLabel = `${sortCol ? sortCol.label : state.sort} ${state.dir === 'asc' ? 'ascending' : 'descending'}`;
+  const reportChart = report && isChart ? scatterLayout(runs, allRuns, plotW, Math.round(plotW * 0.5), axis) : null;
 
   /* The definition line, and — only when there are any on this card — how many of
      the runs shown carry a note on their own figure. Measured before the canvas
      is sized, because wrapping decides how tall the card has to be. */
   const measure = document.createElement('canvas').getContext('2d');
   let defLines = [];
-  if (isChart && caveat) {
+  if (reportChart) {
+    defLines = wrapText(measure, report.chartCaption(reportChart), `11.5px ${SANS}`, plotW);
+  } else if (isChart && caveat) {
     const flagged = axis.flag ? runs.filter((r) => r[axis.flag]).length : 0;
     const defText = firstSentence(caveat)
       + (flagged ? ` ${NOTE_MARK} ${flagged} of the ${runs.length} runs shown carry a note on how that figure was taken.` : '');
@@ -667,10 +752,14 @@ export async function exportView({
      THIS card, exactly as the key generates it from the runs on screen. */
   // coverage has no cost sentence of its own — the caption there is the order
   // note and the summary counts, added to the footer lines below instead
-  const costLine = (isChart ? axis.id === 'cost' : !isCoverage)
+  const costLine = !report && (isChart ? axis.id === 'cost' : !isCoverage)
     ? segmentsText(costSentence(runs, glossary))
     : '';
-  const footerLines = [
+  const viewNotes = report ? [
+    !isChart && !isCoverage ? `Sorted by ${sortLabel}.` : null,
+    isChart ? unplottedNote(runs, resolveAxis(axis)) : null,
+    ...report.notes,
+  ] : [
     isChart
       ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${resolveAxis(axis).noun} on a ${resolveAxis(axis).scale === 'log' ? 'logarithmic' : 'linear'} axis; the score axis stops above the board's best run, which is out of 105.`
       : isCoverage
@@ -681,21 +770,24 @@ export async function exportView({
     'Score = planted bugs fixed, verified blind against a withheld answer key. Unplanted defects are real, but they are counted separately and never added to the score.',
     // the same sentence the page carries, because an exported PNG travels alone
     isChart || isCoverage ? null : BAR_SCALE_NOTE,
+  ];
+  const footerLines = [
+    ...viewNotes,
+    costLine || null,
     isCoverage ? coverageOrderNote(covL) : null,
     isCoverage ? coverageSummaryNote(covL) : null,
-    costLine || null,
     siteUrl,
   ].filter(Boolean)
     // the canvas has no line breaking: wrap here or a long sentence runs off the card
     .flatMap((l) => wrapText(measure, l, `11.5px ${SANS}`, w - PAD * 2));
 
-  const headH = 150;
+  const headH = report ? 168 : 150;
+  let reportTable;
   let bodyH;
   if (isChart) {
-    const plotW = w - PAD * 2;
     bodyH = 20 + Math.round(plotW * 0.5) + 8
       + (defLines.length ? 14 + defLines.length * 15 - 4 : 0)
-      + 16 + Math.ceil(runs.length / 3) * 17 + 16;
+      + (reportChart ? 20 : 16 + Math.ceil(runs.length / 3) * 17 + 16);
   } else if (isCoverage) {
     // the same rhythm drawCoverage() draws in, so the canvas is never too
     // short (clipped) or too tall (a band of empty plate before the footer) —
@@ -704,7 +796,21 @@ export async function exportView({
       + COV_COLKEY_H + COV_AFTER_KEY_GAP
       + covL.rows.length * (COV_LABEL_H + COV_TICK_H + COV_ROW_GAP);
   } else {
-    bodyH = 34 + 8 + 20 + 9 + runs.length * 50 + 20;
+    let rowsHeight = runs.length * 50;
+    if (report) {
+      const { columns, groups } = report;
+      const nameWidth = plotW * columns.find((c) => c.key === 'model').w / columns.reduce((sum, c) => sum + c.w, 0);
+      const step = parseFloat(cssVar('--sample-step'));
+      const size = parseFloat(cssVar('--sample-size'));
+      const rowDetails = new Map(runs.map((run) => {
+        const caveats = run.caveat ? wrapText(measure, run.caveat, REPORT_CAVEAT_FONT, nameWidth - 34) : [];
+        const height = Math.max(50, 15 + step * (run.samples.length - 1) + size, 38 + caveats.length * 13);
+        return [run, { caveats, height }];
+      }));
+      rowsHeight = [...rowDetails.values()].reduce((sum, { height }) => sum + height, 0);
+      reportTable = { columns, groups, scoreTotal: meta.score_total, rowDetails };
+    }
+    bodyH = 34 + 8 + 20 + 9 + rowsHeight + 20;
   }
   const footH = 18 + footerLines.length * 15 + 14;
   const h = headH + bodyH + footH;
@@ -721,15 +827,16 @@ export async function exportView({
   ctx.lineWidth = 1;
   ctx.strokeRect(0.5, 0.5, w - 1, h - 1);
 
-  const title = isChart ? axis.chartTitle : isCoverage ? 'Coverage' : 'Leaderboard';
-  const subtitle = isCoverage
+  const title = report ? report.title : isChart ? axis.chartTitle : isCoverage ? 'Coverage' : 'Leaderboard';
+  const subtitle = report ? `Harness Comparisons · ${report.viewName}` : isCoverage
     ? 'Which of the 105 planted bugs each run fixed, and where models overlap.'
     : 'Planted bugs only — unplanted fixes are never added to the score.';
-  ctx.__y = drawHeader(ctx, T, w, title, subtitle, { updatedLong: fmtDate(meta.updated) }, siteUrl);
+  const runsLine = report ? `${meta.harness_count} harnesses × ${meta.runs_per_harness} runs each` : null;
+  ctx.__y = drawHeader(ctx, T, w, title, subtitle, { updatedLong: fmtDate(meta.updated) }, siteUrl, runsLine);
 
-  if (isChart) drawScatter(ctx, T, runs, allRuns, w, axis, defLines);
+  if (isChart) drawScatter(ctx, T, runs, allRuns, w, axis, defLines, reportChart);
   else if (isCoverage) drawCoverage(ctx, T, covL, w);
-  else drawTable(ctx, T, runs, state, w);
+  else drawTable(ctx, T, runs, state, w, reportTable);
 
   drawFooter(ctx, T, w, Math.max(ctx.__y + 10, h - footH), footerLines);
 
@@ -738,7 +845,8 @@ export async function exportView({
   const a = document.createElement('a');
   a.href = url;
   // the view and the theme are both baked into the file name, so two exports never collide
-  a.download = `bug-hunt-bench-${isChart ? axis.slug : isCoverage ? 'coverage' : 'leaderboard'}-${activeTheme()}-${meta.updated}.png`;
+  const fileRoot = report ? meta.slug : 'bug-hunt-bench';
+  a.download = `${fileRoot}-${isChart ? axis.slug : isCoverage ? 'coverage' : 'leaderboard'}-${activeTheme()}-${meta.updated}.png`;
   document.body.appendChild(a);
   a.click();
   a.remove();

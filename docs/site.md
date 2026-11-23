@@ -67,7 +67,8 @@ Bench coverage uses anonymized indices. The report's cost and time notes explain
 what the sources measure, including subtotal costs when Terminal-Bench trials
 lack costs. The Mini Harness tag discloses the site author's own harness. The
 report shells use the same CSS tokens and primitives, including a 44 px target
-for new controls and a 320 px reflow floor. PNG export is available on the board.
+for report tabs and links and a 320 px reflow floor. The board and each report
+offer PNG export on every view they render.
 
 The split cost no duplication, because the moved sections were never markup in the
 first place: `method`, `caveats` and `glossary` are rendered from
@@ -369,12 +370,16 @@ measured text width; a silent font substitution would shift every label. The
 layout maths is shared with the on-screen chart (`scatterLayout()` in
 `scatter.js`), so the two cannot drift.
 
-Every export bakes in the title, the "planted bugs only — extras are never added
-to the score" line, the update date, the selection and sort, and the site URL —
-read from the canonical tag, so it follows the domain — which is what keeps a
-screenshot of a screenshot attributable. The cost-tag warning is printed only
-where a dollar figure is actually on the card. The three views land as
+Board exports include the score definition, the update date, the selection and
+sort, and the canonical URL. The cost note appears where the card shows a
+dollar figure. The five views land as
 `bug-hunt-bench-{leaderboard|score-vs-cost|score-vs-time|score-vs-turns|coverage}-{theme}-{date}.png`.
+
+Report exports use the same renderer. They carry the report heading, selected
+view, harness and run counts, visible measurement notes, and the report's
+canonical URL. The generator records the committer date of the last commit
+that touched the report's source folder in Mini Harness. The page and PNG
+read it from the report JSON. File names follow `{report-slug}-{view}-{theme}-{date}.png`.
 
 ## Deploy to Netlify
 

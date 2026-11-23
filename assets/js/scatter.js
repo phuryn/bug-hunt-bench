@@ -17,8 +17,8 @@
 import {
   pointLabels, fmtCost, fmtWall, fmtTurns, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
   harnessShort, runName, sampleCost,
-} from './format.js?v=7325175aae';
-import { runColor } from './theme.js?v=7325175aae';
+} from './format.js?v=cc1f84b407';
+import { runColor } from './theme.js?v=cc1f84b407';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -288,10 +288,13 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
       const measures = sampleValues(p.run, A.key).filter((v) => isNum(v) && (A.scale !== 'log' || v > 0));
       const scores = p.run.samples.map((r) => r.fixed);
       p.incompleteCost = A.id === 'cost' && hasMissingTaskCosts(p.run);
+      const top = y(Math.max(...scores));
+      const bottom = y(Math.min(...scores));
+      const left = x(Math.min(...measures));
+      const right = x(Math.max(...measures));
       p.range = {
-        left: measures.length ? x(Math.min(...measures)) : null,
-        right: measures.length ? x(Math.max(...measures)) : null,
-        top: y(Math.max(...scores)), bottom: y(Math.min(...scores)),
+        score: `M${p.cx} ${top}V${bottom}m-3 0h6 M${p.cx - 3} ${top}h6`,
+        measure: measures.length ? `M${left} ${p.cy}H${right}m0 -3v6 M${left} ${p.cy - 3}v6` : null,
       };
     });
   }
@@ -537,13 +540,10 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
   L.points.forEach((p) => {
     const g = svgEl('g', { class: 'pt' });
     if (p.range) {
-      const { top, bottom, left, right } = p.range;
-      const yRange = `M${p.cx} ${top}V${bottom}m-3 0h6 M${p.cx - 3} ${top}h6`;
       const attrs = { stroke: p.color, 'data-run': p.run.slug };
-      ranges.appendChild(svgEl('path', { ...attrs, class: 'sample-range sample-range--score', d: yRange }));
-      if (left !== null) {
-        const xRange = `M${left} ${p.cy}H${right}m0 -3v6 M${left} ${p.cy - 3}v6`;
-        ranges.appendChild(svgEl('path', { ...attrs, class: 'sample-range sample-range--measure', d: xRange }));
+      ranges.appendChild(svgEl('path', { ...attrs, class: 'sample-range sample-range--score', d: p.range.score }));
+      if (p.range.measure) {
+        ranges.appendChild(svgEl('path', { ...attrs, class: 'sample-range sample-range--measure', d: p.range.measure }));
       }
       if (p.labelPos?.leader) ranges.appendChild(svgEl('line', {
         class: 'sample-leader', x1: p.cx, x2: p.labelPos.x, y1: p.cy, y2: p.labelPos.y - 3,

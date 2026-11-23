@@ -13,7 +13,7 @@
 
 <!-- The pages share the board's render-blocking theme stamp,
      and a reader who picked dark on one must not get a white flash on the other. -->
-<script src="/assets/js/theme-boot.js?v=7325175aae"></script>
+<script src="/assets/js/theme-boot.js?v=cc1f84b407"></script>
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Bug Hunt Bench">
@@ -36,11 +36,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=7325175aae">
+<link rel="stylesheet" href="/assets/css/site.css?v=cc1f84b407">
 
-<script type="module" src="/assets/js/report.js?v=7325175aae"></script>
+<script type="module" src="/assets/js/report.js?v=cc1f84b407"></script>
 <!-- Microsoft Clarity analytics. A file, not an inline block: the CSP has no 'unsafe-inline'. -->
-<script src="/assets/js/clarity.js?v=7325175aae" async></script>
+<script src="/assets/js/clarity.js?v=cc1f84b407" async></script>
 </head>
 <body class="report">
 <a class="skip-link" href="#main">Skip to content</a>
@@ -97,15 +97,19 @@
     <h1>Terminal-Bench 2.1&nbsp;· <em>Claude Haiku 5.5</em></h1>
     <p class="lede" id="report-lede"></p>
     <p class="report-links"><a href="https://github.com/phuryn/mini-harness/tree/main/benchmarks/terminal-bench-2.1--claude-haiku-5.5" id="report-source">Published results on GitHub</a>
-      <a href="/data/harness/terminal-bench-2-1-claude-haiku-5-5.json" id="report-json">Report JSON</a></p>
+      <a href="/data/harness/terminal-bench-2-1-claude-haiku-5-5.json" id="report-json">Report JSON</a>
+      <time id="report-updated" hidden></time></p>
   </div>
   <section class="views wrap" id="report-views" aria-label="Harness comparison results">
     <div class="views__bar">
-      <div class="tabs" role="tablist" aria-label="View">
-      <button type="button" class="tab" role="tab" id="tab-table" aria-controls="panel-table" aria-selected="true" tabindex="0" data-view="table">Leaderboard</button>
-      <button type="button" class="tab" role="tab" id="tab-cost" aria-controls="panel-cost" aria-selected="false" tabindex="-1" data-view="cost">Score vs cost</button>
-      <button type="button" class="tab" role="tab" id="tab-time" aria-controls="panel-time" aria-selected="false" tabindex="-1" data-view="time">Score vs time</button>
-      <button type="button" class="tab" role="tab" id="tab-coverage" aria-controls="panel-coverage" aria-selected="false" tabindex="-1" data-view="coverage">Coverage</button>
+      <div class="views__actions">
+        <div class="tabs" role="tablist" aria-label="View">
+          <button type="button" class="tab" role="tab" id="tab-table" aria-controls="panel-table" aria-selected="true" tabindex="0" data-view="table">Leaderboard</button>
+          <button type="button" class="tab" role="tab" id="tab-cost" aria-controls="panel-cost" aria-selected="false" tabindex="-1" data-view="cost">Score vs cost</button>
+          <button type="button" class="tab" role="tab" id="tab-time" aria-controls="panel-time" aria-selected="false" tabindex="-1" data-view="time">Score vs time</button>
+          <button type="button" class="tab" role="tab" id="tab-coverage" aria-controls="panel-coverage" aria-selected="false" tabindex="-1" data-view="coverage">Coverage</button>
+        </div>
+        <button type="button" class="btn btn--export" id="export-png" title="Download the current view as a PNG">Export this view (PNG)</button>
       </div>
     </div>
     <div class="panel" id="panel-table" role="tabpanel" tabindex="0" aria-labelledby="tab-table">

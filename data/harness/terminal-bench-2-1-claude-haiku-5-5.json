@@ -9,6 +9,7 @@
     "board_model": null,
     "score_total": 89,
     "other_harness_count": null,
+    "updated": "2026-11-06",
     "effort": "high",
     "source": "https://github.com/phuryn/mini-harness/tree/main/benchmarks/terminal-bench-2.1--claude-haiku-5.5",
     "has_turns": false,
