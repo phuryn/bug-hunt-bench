@@ -9,16 +9,16 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
-} from './format.js?v=6a8ac2259b';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=6a8ac2259b';
+} from './format.js?v=7325175aae';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=7325175aae';
 import {
   renderScatter, AXES, SCALES, scaledAxis, scaleSentence,
-} from './scatter.js?v=6a8ac2259b';
-import { matchingRuns, renderPicker, refreshGroups } from './selector.js?v=6a8ac2259b';
-import { exportView } from './export-png.js?v=6a8ac2259b';
-import { initTheme, hasAdjustedColors } from './theme.js?v=6a8ac2259b';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=6a8ac2259b';
-import { comparisonIndex } from './nav.js?v=6a8ac2259b';
+} from './scatter.js?v=7325175aae';
+import { matchingRuns, renderPicker, refreshGroups } from './selector.js?v=7325175aae';
+import { exportView } from './export-png.js?v=7325175aae';
+import { initTheme, hasAdjustedColors } from './theme.js?v=7325175aae';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=7325175aae';
+import { comparisonIndex } from './nav.js?v=7325175aae';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },

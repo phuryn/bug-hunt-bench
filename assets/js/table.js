@@ -26,8 +26,8 @@
 import {
   COLUMNS, GROUPS, TOTALS, fmtCost, fmtWall, fmtInt,
   barRatio, barScales, effortSuffix, effortDefKey, defHref, el, svgEl, compareRuns, sampleTitle,
-} from './format.js?v=6a8ac2259b';
-import { runColor } from './theme.js?v=6a8ac2259b';
+} from './format.js?v=7325175aae';
+import { runColor } from './theme.js?v=7325175aae';
 
 const MOBILE_LABEL = {
   extras: 'Unplanted (not scored)',

@@ -206,7 +206,8 @@
           ],
           "wall_min": 836.6766666666666,
           "cost_usd": 2.922585,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 2,
@@ -294,7 +295,8 @@
           ],
           "wall_min": 735.9083333333333,
           "cost_usd": 2.813172,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 3,
@@ -379,7 +381,8 @@
           ],
           "wall_min": 747.3083333333333,
           "cost_usd": 2.791717,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         }
       ],
       "native": false,
@@ -658,7 +661,8 @@
           ],
           "wall_min": 759.305,
           "cost_usd": 2.446447,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 2,
@@ -744,7 +748,8 @@
           ],
           "wall_min": 752.5933333333334,
           "cost_usd": 2.582433,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 3,
@@ -831,7 +836,8 @@
           ],
           "wall_min": 659.4083333333333,
           "cost_usd": 2.293968,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         }
       ],
       "native": false,
@@ -1111,7 +1117,8 @@
           ],
           "wall_min": 720.5283333333333,
           "cost_usd": 1.532052,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 2,
@@ -1195,7 +1202,8 @@
           ],
           "wall_min": 708.5866666666667,
           "cost_usd": 1.574152,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 3,
@@ -1278,7 +1286,8 @@
           ],
           "wall_min": 697.0233333333333,
           "cost_usd": 1.582276,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         }
       ],
       "native": false,
@@ -1549,7 +1558,8 @@
           ],
           "wall_min": 855.1033333333334,
           "cost_usd": 2.063386,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 2,
@@ -1634,7 +1644,8 @@
           ],
           "wall_min": 836.715,
           "cost_usd": 2.451869,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 3,
@@ -1719,7 +1730,8 @@
           ],
           "wall_min": 860.4366666666666,
           "cost_usd": 2.228878,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         }
       ],
       "native": false,
@@ -1997,7 +2009,8 @@
           ],
           "wall_min": 665.0683333333334,
           "cost_usd": 1.716331,
-          "cost_missing_tasks": 2
+          "cost_missing_tasks": 2,
+          "cost_estimated": false
         },
         {
           "run": 2,
@@ -2076,7 +2089,8 @@
           ],
           "wall_min": 681.255,
           "cost_usd": 1.956339,
-          "cost_missing_tasks": 1
+          "cost_missing_tasks": 1,
+          "cost_estimated": false
         },
         {
           "run": 3,
@@ -2161,7 +2175,8 @@
           ],
           "wall_min": 728.4233333333333,
           "cost_usd": 1.861282,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         }
       ],
       "native": false,
@@ -2430,7 +2445,8 @@
           ],
           "wall_min": 681.65,
           "cost_usd": 1.921713,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 2,
@@ -2512,7 +2528,8 @@
           ],
           "wall_min": 654.9783333333334,
           "cost_usd": 1.824103,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 3,
@@ -2597,7 +2614,8 @@
           ],
           "wall_min": 744.3916666666667,
           "cost_usd": 1.937667,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         }
       ],
       "native": false,
@@ -2867,7 +2885,8 @@
           ],
           "wall_min": 683.9983333333333,
           "cost_usd": 1.638383,
-          "cost_missing_tasks": 1
+          "cost_missing_tasks": 1,
+          "cost_estimated": false
         },
         {
           "run": 2,
@@ -2948,7 +2967,8 @@
           ],
           "wall_min": 692.8216666666667,
           "cost_usd": 1.728654,
-          "cost_missing_tasks": 1
+          "cost_missing_tasks": 1,
+          "cost_estimated": false
         },
         {
           "run": 3,
@@ -3027,7 +3047,8 @@
           ],
           "wall_min": 634.3083333333333,
           "cost_usd": 1.789216,
-          "cost_missing_tasks": 1
+          "cost_missing_tasks": 1,
+          "cost_estimated": false
         }
       ],
       "native": false,
@@ -3291,7 +3312,8 @@
           ],
           "wall_min": 1083.8766666666668,
           "cost_usd": 1.482476,
-          "cost_missing_tasks": 23
+          "cost_missing_tasks": 23,
+          "cost_estimated": false
         },
         {
           "run": 2,
@@ -3367,7 +3389,8 @@
           ],
           "wall_min": 1010.1133333333333,
           "cost_usd": 2.026847,
-          "cost_missing_tasks": 19
+          "cost_missing_tasks": 19,
+          "cost_estimated": false
         },
         {
           "run": 3,
@@ -3447,7 +3470,8 @@
           ],
           "wall_min": 992.2283333333334,
           "cost_usd": 2.147083,
-          "cost_missing_tasks": 17
+          "cost_missing_tasks": 17,
+          "cost_estimated": false
         }
       ],
       "native": false,
@@ -3713,7 +3737,8 @@
           ],
           "wall_min": 828.5766666666667,
           "cost_usd": 3.670549,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 2,
@@ -3790,7 +3815,8 @@
           ],
           "wall_min": 907.1683333333333,
           "cost_usd": 3.707293,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         },
         {
           "run": 3,
@@ -3870,7 +3896,8 @@
           ],
           "wall_min": 886.8516666666667,
           "cost_usd": 3.780161,
-          "cost_missing_tasks": 0
+          "cost_missing_tasks": 0,
+          "cost_estimated": false
         }
       ],
       "native": false,

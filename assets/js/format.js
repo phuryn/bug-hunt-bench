@@ -257,10 +257,13 @@ export function fmtInt(v) {
 
 export const runName = (run) => run.label || run.model;
 
-export function sampleCost(sample, estimated = false) {
+export function sampleCost(sample) {
   const missing = sample.cost_missing_tasks;
-  return (estimated ? '≈' : '') + fmtCost(sample.cost_usd) + (missing
-    ? ` (${estimated ? 'estimated' : 'recorded'} subtotal, ${missing} ${missing === 1 ? 'task' : 'tasks'} without a cost)` : '');
+  const tasks = `${missing} ${missing === 1 ? 'task' : 'tasks'} without a cost`;
+  if (!isNum(sample.cost_usd)) return missing ? `— (${tasks})` : fmtCost(sample.cost_usd);
+  const estimated = sample.cost_estimated === true;
+  return (estimated ? '≈' : '') + fmtCost(sample.cost_usd)
+    + (missing ? ` (${estimated ? 'estimated' : 'recorded'} subtotal, ${tasks})` : '');
 }
 
 export function sampleTitle(run) {
@@ -269,7 +272,7 @@ export function sampleTitle(run) {
     const repo = sample.repo1_fixed == null ? '' : ` (repo 1: ${sample.repo1_fixed}, repo 2: ${sample.repo2_fixed})`;
     const fields = [
       `Run ${sample.run}: ${sample.fixed}${repo}`,
-      `${fmtWall(sample.wall_min)} min`, sampleCost(sample, run.cost_estimated),
+      `${fmtWall(sample.wall_min)} min`, sampleCost(sample),
       sample.turns == null ? null : `${fmtTurns(sample.turns)} turns`,
       sample.partial == null ? null : `${sample.partial} partial`,
       sample.claimed_only == null ? null : `${sample.claimed_only} claimed-only`,
