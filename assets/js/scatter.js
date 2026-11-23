@@ -18,8 +18,8 @@ import {
   pointLabels, fmtCost, fmtWall, fmtTurns, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
   reportRunNotes,
   harnessShort, runName, sampleCost,
-} from './format.js?v=2e42582cba';
-import { runColor } from './theme.js?v=2e42582cba';
+} from './format.js?v=b73833cb8d';
+import { runColor } from './theme.js?v=b73833cb8d';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];

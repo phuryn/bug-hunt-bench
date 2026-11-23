@@ -1,12 +1,12 @@
 /* The report keeps every harness in view. Shared renderers take the benchmark's
    score scale, measurement labels and per-run observations from the report data. */
-import { COLUMNS, GROUPS, el, fmtDate, runName, reportFootnotes } from './format.js?v=2e42582cba';
-import { renderColgroup, renderHead, renderBody } from './table.js?v=2e42582cba';
-import { AXES, renderScatter } from './scatter.js?v=2e42582cba';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=2e42582cba';
-import { initTheme } from './theme.js?v=2e42582cba';
-import { exportView } from './export-png.js?v=2e42582cba';
-import './nav.js?v=2e42582cba';
+import { COLUMNS, GROUPS, el, fmtDate, runName, reportFootnotes } from './format.js?v=b73833cb8d';
+import { renderColgroup, renderHead, renderBody } from './table.js?v=b73833cb8d';
+import { AXES, renderScatter } from './scatter.js?v=b73833cb8d';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=b73833cb8d';
+import { initTheme } from './theme.js?v=b73833cb8d';
+import { exportView } from './export-png.js?v=b73833cb8d';
+import './nav.js?v=b73833cb8d';
 
 const $ = (id) => document.getElementById(id);
 const names = (runs) => new Intl.ListFormat('en').format(runs.map(runName).sort());
@@ -53,7 +53,10 @@ function renderKeys(meta, runs) {
   ]));
   keys.appendChild(el('div', {}, [
     el('h3', { text: 'Who built the harness' }),
-    el('p', { text: 'Mini Harness is built by Pawel Huryn, the author of this site.' }),
+    el('p', {}, [
+      el('a', { href: 'https://github.com/phuryn/mini-harness' }, ['Mini Harness']),
+      ' is built by Pawel Huryn, the author of this site.',
+    ]),
     runs.some((r) => r.native) ? el('p', { text: 'A native harness is built by the lab that made the model.' }) : null,
   ]));
 }

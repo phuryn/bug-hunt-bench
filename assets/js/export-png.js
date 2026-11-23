@@ -12,11 +12,11 @@ import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
   costSentence, segmentsText, runName, reportRunNotes, reportFootnotes,
-} from './format.js?v=2e42582cba';
-import { scatterLayout, resolveAxis } from './scatter.js?v=2e42582cba';
-import { coverageLayout, coverageOrderNote, coverageSummaryNote, coverageColor } from './coverage.js?v=2e42582cba';
-import { runColor, activeTheme } from './theme.js?v=2e42582cba';
-import { nRuns } from './table.js?v=2e42582cba';
+} from './format.js?v=b73833cb8d';
+import { scatterLayout, resolveAxis } from './scatter.js?v=b73833cb8d';
+import { coverageLayout, coverageOrderNote, coverageSummaryNote, coverageColor } from './coverage.js?v=b73833cb8d';
+import { runColor, activeTheme } from './theme.js?v=b73833cb8d';
+import { nRuns } from './table.js?v=b73833cb8d';
 
 const SCALE = 2;
 const PAD = 32;
