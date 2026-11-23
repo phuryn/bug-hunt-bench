@@ -1,7 +1,7 @@
 # results/ — the receipts
 
-Every number on [bughunt.productcompass.pm](https://bughunt.productcompass.pm) and in the [repo README](../README.md)
-is generated from the files in this folder. They are appended by the private runner's publish step after each
+Every board number on [bughunt.productcompass.pm](https://bughunt.productcompass.pm) and in the [repo README](../README.md)
+is generated from receipts in this folder and the runner's scoring records. Scoreboard receipts are appended after each
 run is scored; nothing here is edited by hand, and a row is never deleted — a superseded or voided run stays in
 place, marked.
 
@@ -48,8 +48,9 @@ https://bughunt.productcompass.pm/?view=coverage
 
 `runs.csv` exists because a board row is not always one run. A `- mean of N` row is an average, and until
 2026-09-29 the runs behind it were published only as per-leg metrics. Each line here is one run, keyed by the
-same run id the metrics files use, with the board row it belongs to (`board_row`) and whether that row is live
-or superseded. A run that once had a row of its own and is now part of a mean is filed under the mean.
+same run id the metrics files use and the row it belongs to (`board_row`). The `row_status` is
+`live`, `superseded`, or `harness_comparison` for a row that moved off the board under the native-harness rule.
+A run that once had a row of its own and is now part of a mean is filed under the mean.
 
 The file is generated with the board, never by hand. For a single-run row the figures are the row's own; for a
 run inside a mean they come from that run's own verdicts and metrics, and the build refuses to publish if the

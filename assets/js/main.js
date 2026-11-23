@@ -9,15 +9,16 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
-} from './format.js?v=1b1c4223ef';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=1b1c4223ef';
+} from './format.js?v=65a4cf7ac8';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=65a4cf7ac8';
 import {
   renderScatter, AXES, SCALES, scaledAxis, scaleSentence,
-} from './scatter.js?v=1b1c4223ef';
-import { renderPicker, refreshGroups } from './selector.js?v=1b1c4223ef';
-import { exportView } from './export-png.js?v=1b1c4223ef';
-import { initTheme, hasAdjustedColors } from './theme.js?v=1b1c4223ef';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=1b1c4223ef';
+} from './scatter.js?v=65a4cf7ac8';
+import { matchingRuns, renderPicker, refreshGroups } from './selector.js?v=65a4cf7ac8';
+import { exportView } from './export-png.js?v=65a4cf7ac8';
+import { initTheme, hasAdjustedColors } from './theme.js?v=65a4cf7ac8';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=65a4cf7ac8';
+import { comparisonIndex } from './nav.js?v=65a4cf7ac8';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -110,6 +111,9 @@ const state = {
 
 let DATA = null;
 let RUNS = [];
+let comparisons = new Map();
+let pickerMatches = [];
+const MATCH_ACTIONS = { only: 'Show only these', add: 'Select all', remove: 'Unselect all' };
 let SITE_URL = '';
 // set once at boot: whether any run on the board carries `fixed_bugs` at all
 let coverageEnabled = false;
@@ -525,7 +529,25 @@ function renderPickerIfOpen() {
     grid.textContent = '';
     return;
   }
-  renderPicker(grid, RUNS, state.selected, onToggleRun, onToggleVendor);
+  const query = $('picker-search').value.trim();
+  const searching = query.length > 0;
+  pickerMatches = matchingRuns(RUNS, query);
+  const slugs = new Set(pickerMatches.map((r) => r.slug));
+  const n = slugs.size;
+  const count = $('picker-count');
+  const text = searching ? `${n} ${n === 1 ? 'run matches' : 'runs match'}` : '';
+  if (count.textContent !== text) count.textContent = text;
+  $('picker-clear').hidden = !$('picker-search').value;
+  $('picker-empty').hidden = n > 0;
+  $('picker-actions').hidden = !searching;
+  for (const button of $('picker-actions').querySelectorAll('button')) {
+    button.textContent = `${MATCH_ACTIONS[button.dataset.matchAction]} ${n}`;
+    button.disabled = n === 0;
+  }
+  renderPicker(grid, RUNS, {
+    selected: state.selected, onToggle: onToggleRun, onGroupToggle: onToggleVendor,
+    comparisons, matches: (r) => slugs.has(r.slug), searching,
+  });
 }
 
 function renderViews() {
@@ -612,8 +634,18 @@ function onToggleVendor(group, on) {
     if (on) state.selected.add(r.slug);
     else state.selected.delete(r.slug);
   });
+  syncPickerSelection();
+}
+
+function syncPickerSelection() {
   state.preset = detectPreset();
-  renderAll();
+  for (const run of pickerMatches) {
+    const input = $(`run-${run.slug}`);
+    if (input) input.checked = state.selected.has(run.slug);
+  }
+  refreshGroups(state.selected);
+  renderViews();
+  writeUrl();
 }
 
 function setView(view, focus) {
@@ -647,6 +679,30 @@ function wire() {
   });
 
   $('picker').addEventListener('toggle', renderPickerIfOpen);
+  const search = $('picker-search');
+  const clearSearch = () => {
+    search.value = '';
+    renderPickerIfOpen();
+    search.focus();
+  };
+  search.addEventListener('input', renderPickerIfOpen);
+  search.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || !search.value) return;
+    e.preventDefault();
+    e.stopPropagation();
+    clearSearch();
+  });
+  $('picker-clear').addEventListener('click', clearSearch);
+  $('picker-actions').addEventListener('click', (e) => {
+    const action = e.target.dataset.matchAction;
+    if (!action || !pickerMatches.length) return;
+    if (action === 'only') {
+      state.selected = new Set(pickerMatches.map((r) => r.slug));
+      syncPickerSelection();
+    } else {
+      onToggleVendor(pickerMatches, action === 'add');
+    }
+  });
 
   // a hidden tab (Coverage, with no coverage data on the board) is not a stop
   // on the keyboard cycle any more than it is a click target
@@ -759,8 +815,12 @@ async function boot() {
   const canonical = document.querySelector('link[rel="canonical"]');
   SITE_URL = canonical ? canonical.href : '';
 
-  const res = await fetch('data/benchmark.json', { cache: 'no-cache' });
+  const [res, reportIndex] = await Promise.all([
+    fetch('data/benchmark.json', { cache: 'no-cache' }),
+    comparisonIndex,
+  ]);
   DATA = await res.json();
+  comparisons = new Map(reportIndex.filter((r) => r.board_model).map((r) => [r.board_model, r]));
 
   RUNS = newestPerTier(DATA.runs.filter((r) => !r.superseded)).map((r) => ({ ...r, slug: slugify(r.id) }));
 

@@ -15,7 +15,7 @@
      <html> before the first paint, so a dark-theme visitor never sees a white
      flash. It is a file rather than an inline block because the CSP has no
      'unsafe-inline'. -->
-<script src="/assets/js/theme-boot.js?v=1b1c4223ef"></script>
+<script src="/assets/js/theme-boot.js?v=65a4cf7ac8"></script>
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Bug Hunt Bench">
@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=1b1c4223ef">
+<link rel="stylesheet" href="/assets/css/site.css?v=65a4cf7ac8">
 
 <!-- dateModified and url are patched at runtime from data/benchmark.json; keep the static values in sync anyway. -->
 <script type="application/ld+json" id="dataset-schema">
@@ -47,7 +47,7 @@
   "@type": "Dataset",
   "name": "Bug Hunt Bench",
   "alternateName": "Bug Hunt Bench coding-model benchmark",
-  "description": "A blind-graded benchmark of frontier coding models on real bugs planted in two production codebases: a TypeScript VS Code extension and a React/Supabase LMS. Each model gets one round per repo in its own native agentic CLI, and an independent judge grades the resulting diff against a withheld answer key. The headline score counts planted bugs only.",
+  "description": "A blind-graded benchmark of frontier coding models on real bugs planted in two production codebases: a TypeScript VS Code extension and a React/Supabase LMS. Each run gets one round per repo, and an independent judge grades the resulting diff against a withheld answer key. The headline score counts planted bugs only.",
   "url": "https://bughunt.productcompass.pm/",
   "sameAs": "https://github.com/phuryn/bug-hunt-bench",
   "license": "https://opensource.org/licenses/MIT",
@@ -76,9 +76,9 @@
   ]
 }
 </script>
-<script type="module" src="/assets/js/main.js?v=1b1c4223ef"></script>
+<script type="module" src="/assets/js/main.js?v=65a4cf7ac8"></script>
 <!-- Microsoft Clarity analytics. A file, not an inline block: the CSP has no 'unsafe-inline'. -->
-<script src="/assets/js/clarity.js?v=1b1c4223ef" async></script>
+<script src="/assets/js/clarity.js?v=65a4cf7ac8" async></script>
 </head>
 <body>
 <a class="skip-link" href="#leaderboard">Skip to the leaderboard</a>
@@ -89,6 +89,29 @@
     <div class="masthead__right">
       <nav class="masthead__nav" aria-label="Sections">
         <a href="#leaderboard" aria-current="page">The board</a>
+        <details class="navmenu">
+          <summary>Harness Comparisons</summary>
+          <div class="navmenu__panel">
+            <div class="navmenu__group">
+              <p class="navmenu__bench">Bug Hunt Bench</p>
+              <a class="navmenu__item" href="/harness/bug-hunt-bench-deepseek-v4-1-flash-1017" data-board-comparison>
+                <span class="navmenu__title">DeepSeek V4.1 Flash 1017</span>
+                <span class="navmenu__meta"></span>
+              </a>
+            </div>
+            <div class="navmenu__group">
+              <p class="navmenu__bench">Terminal-Bench 2.1</p>
+              <a class="navmenu__item" href="/harness/terminal-bench-2-1-claude-haiku-5-5">
+                <span class="navmenu__title">Claude Haiku 5.5</span>
+                <span class="navmenu__meta"></span>
+              </a>
+              <a class="navmenu__item" href="/harness/terminal-bench-2-1-deepseek-v4-1-flash-1017">
+                <span class="navmenu__title">DeepSeek V4.1 Flash 1017</span>
+                <span class="navmenu__meta"></span>
+              </a>
+            </div>
+          </div>
+        </details>
         <a href="/method">Method</a>
         <a href="/method#caveats">Caveats</a>
         <a href="/method#definitions">Definitions</a>
@@ -121,7 +144,7 @@
          stays here, and it carries no figures, so it cannot go stale. -->
     <aside class="bridge" aria-label="What this is">
       <p class="eyebrow">What this is</p>
-      <p>Same prompt, one round per repo, each model in its own agentic CLI. An independent judge grades the diff against an answer key the model never sees.</p>
+      <p>Each run gets the same prompt and one round per repo. An independent judge grades the diff against an answer key the model never sees.</p>
       <p class="bridge__more"><a href="/method">Method, caveats and definitions</a></p>
     </aside>
 
@@ -145,8 +168,25 @@
     </div>
     <details class="picker" id="picker">
       <summary><span id="picker-summary">Choose runs</span></summary>
+      <div class="picker__find">
+        <label class="sr-only" for="picker-search">Find a model, lab, harness or effort</label>
+        <div class="picker__search">
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <circle cx="7" cy="7" r="4.6"></circle><path d="M10.4 10.4 14 14"></path>
+          </svg>
+          <input id="picker-search" type="search" placeholder="Find a model, lab, harness or effort" autocomplete="off" spellcheck="false" aria-describedby="picker-search-hint">
+        </div>
+        <button type="button" class="btn" id="picker-clear" hidden>Clear</button>
+        <span class="picker__count" id="picker-count" role="status" aria-live="polite"></span>
+        <div class="picker__actions" id="picker-actions" hidden>
+          <button type="button" class="btn picker__primary" data-match-action="only">Show only these</button>
+          <button type="button" class="btn" data-match-action="add">Select all</button>
+          <button type="button" class="btn" data-match-action="remove">Unselect all</button>
+        </div>
+        <p class="picker__hint" id="picker-search-hint">Search all runs in this list. Use the buttons or checkboxes to change the board.</p>
+      </div>
+      <p class="empty picker__empty" id="picker-empty" hidden>No runs match your search.</p>
       <div class="picker__grid" id="picker-grid"></div>
-      <p class="picker__note">A model can appear more than once — different reasoning tiers, or a different harness. Runs tagged <span class="tag tag--superseded">superseded</span> are historical and stay out of the default view.</p>
     </details>
   </section>
 

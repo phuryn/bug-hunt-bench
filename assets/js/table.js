@@ -25,12 +25,11 @@
 
 import {
   COLUMNS, GROUPS, TOTALS, fmtCost, fmtWall, fmtInt,
-  barRatio, barScales, effortSuffix, effortDefKey, defHref, el, svgEl, compareRuns,
-} from './format.js?v=1b1c4223ef';
-import { runColor } from './theme.js?v=1b1c4223ef';
+  barRatio, barScales, effortSuffix, effortDefKey, defHref, el, svgEl, compareRuns, sampleTitle,
+} from './format.js?v=65a4cf7ac8';
+import { runColor } from './theme.js?v=65a4cf7ac8';
 
 const MOBILE_LABEL = {
-  fixed: 'Fixed of 105',
   extras: 'Unplanted (not scored)',
   wall_min: 'Wall clock (min)',
   cost_usd: 'Cost',
@@ -45,11 +44,11 @@ function arrow(dir) {
   ]);
 }
 
-export function renderColgroup(tableEl) {
+export function renderColgroup(tableEl, columns = COLUMNS) {
   const existing = tableEl.querySelector('colgroup');
   if (existing) existing.remove();
   const cg = el('colgroup');
-  COLUMNS.forEach((c) => {
+  columns.forEach((c) => {
     const col = el('col');
     col.style.setProperty('width', `${c.pct}%`);
     cg.appendChild(col);
@@ -57,13 +56,13 @@ export function renderColgroup(tableEl) {
   tableEl.insertBefore(cg, tableEl.firstChild);
 }
 
-export function renderHead(headEl, state, onSort) {
+export function renderHead(headEl, state, onSort, columns = COLUMNS, groups = GROUPS) {
   headEl.textContent = '';
   headEl.setAttribute('role', 'rowgroup');
 
   const groupRow = el('tr', { class: 'groups', role: 'row' });
-  GROUPS.forEach((g) => {
-    const span = COLUMNS.filter((c) => c.group === g.id).length;
+  groups.forEach((g) => {
+    const span = columns.filter((c) => c.group === g.id).length;
     if (!span) return;
     /* the group label is the one header that is not a sort button, so it is
        where a column can carry a link to its own definition without stealing
@@ -82,10 +81,10 @@ export function renderHead(headEl, state, onSort) {
   headEl.appendChild(groupRow);
 
   const colRow = el('tr', { class: 'cols', role: 'row' });
-  COLUMNS.forEach((c) => {
+  columns.forEach((c) => {
     const active = state.sort === c.key;
     const cls = [];
-    if (c.group !== 'run' && COLUMNS.filter((x) => x.group === c.group)[0].key === c.key) cls.push('divide');
+    if (c.group !== 'run' && columns.find((x) => x.group === c.group).key === c.key) cls.push('divide');
     if (c.align === 'left' && c.key !== 'model') cls.push('col--bar');
     const th = el('th', {
       scope: 'col',
@@ -160,17 +159,23 @@ function modelCell(run, glossary) {
      "mean of 3 runs" tag drew more eye than the score it qualifies. Without the term the
      row renders identically to a single run - same name, same badge, same columns - and
      the decimal on the score has nothing to explain it. */
-  const meta = [run.vendor, run.harness, nRuns(run) > 1 ? `n=${nRuns(run)}` : null]
+  const report = Boolean(run.samples);
+  const meta = (report ? [run.harness_version, `n=${nRuns(run)}`] :
+    [run.vendor, run.harness, nRuns(run) > 1 ? `n=${nRuns(run)}` : null])
     .filter(Boolean).join(' · ');
-  const badge = effortBadge(run, glossary);
+  const badges = report ? [
+    run.native ? el('span', { class: 'tag tag--native', text: 'native' }) : null,
+    run.authors_harness ? el('span', { class: 'tag tag--author', text: 'author’s harness' }) : null,
+  ] : [effortBadge(run, glossary)];
 
   const body = el('span', { class: 'model__body' }, [
-    el('span', { class: 'model__name' }, [run.model, ' ', badge]),
+    el('span', { class: 'model__name' }, [run.label || run.model, ' ', ...badges]),
     el('span', { class: 'model__meta' }, [
       document.createTextNode(meta),
       run.superseded ? document.createTextNode(' ') : null,
       run.superseded ? el('span', { class: 'tag tag--superseded', text: 'superseded' }) : null,
     ]),
+    report && run.caveat ? el('span', { class: 'model__caveat', text: run.caveat }) : null,
   ]);
   return el('td', { class: 'model-cell', role: 'cell' }, [
     el('span', { class: 'model' }, [
@@ -185,27 +190,36 @@ function modelCell(run, glossary) {
    shows a tick, and that floor must not invent a mark for a run worth nothing.
    The value's own width is reserved out of the track in CSS (--reserve), so a
    full-length bar cannot push its number out of the cell. */
-function barRow(kind, ratio, color, value) {
+function barRow(kind, ratio, color, value, marks = []) {
   const blank = ratio === null || ratio === 0;
   const bar = el('span', { class: `bar bar--${kind}${blank ? ' bar--empty' : ''}` });
   bar.style.setProperty('width', blank ? '0'
     : `calc((100% - var(--reserve)) * ${ratio.toFixed(4)})`);
   if (color) bar.style.setProperty('background-color', color);
-  return el('span', { class: `bar-row bar-row--${kind}` }, [
-    bar,
+  return el('span', { class: `bar-row bar-row--${kind}${marks.length ? ' bar-row--samples' : ''}` }, [
+    bar, ...marks,
     el('span', { class: 'bar-val' }, [value]),
   ]);
 }
 
-function scoreCell(run, fixedMax) {
+function scoreCell(run, fixedMax, scoreTotal) {
+  const color = runColor(run.color);
+  const marks = (run.samples || []).map((sample, i) => el('span', {
+    class: 'bar__sample', 'aria-hidden': 'true', title: `Run ${sample.run}: ${sample.fixed}`,
+    style: {
+      '--sample-position': barRatio(sample.fixed, fixedMax),
+      '--sample-lane': i,
+      '--sample-color': color,
+    },
+  }));
   return el('td', {
-    class: 'score divide col--bar', role: 'cell', 'data-label': MOBILE_LABEL.fixed,
+    class: 'score divide col--bar', role: 'cell', 'data-label': `Score of ${scoreTotal}`,
   }, [
-    barRow('score', barRatio(run.fixed, fixedMax), runColor(run.color),
+    barRow('score', barRatio(run.fixed, fixedMax), color,
       el('span', { class: 'score__num' }, [
         document.createTextNode(fmtInt(run.fixed)),
-        el('span', { class: 'score__den', text: `/${TOTALS.fixed}` }),
-      ])),
+        el('span', { class: 'score__den', text: `/${scoreTotal}` }),
+      ]), marks),
   ]);
 }
 
@@ -222,16 +236,17 @@ function extrasCell(run, extrasMax) {
    figure was taken; that sentence rides on the cell rather than on a marker, and
    the same rows wear a broken ring on the score-vs-time map, which is where a
    bent minute figure would actually mislead a reader. */
-function wallCell(run, wallMax) {
+function wallCell(run, wallMax, timeLabel) {
   const has = run.wall_min !== null && run.wall_min !== undefined;
   return el('td', {
     class: 'divide col--bar',
     role: 'cell',
-    'data-label': MOBILE_LABEL.wall_min,
+    'data-label': timeLabel ? `${timeLabel} (min)` : MOBILE_LABEL.wall_min,
+    title: run.wall_note,
   }, [
     barRow('wall', barRatio(run.wall_min, wallMax), null,
       el('span', {}, [
-        el('span', { class: 'wall__num', text: fmtWall(run.wall_min) }),
+        el('span', { class: 'wall__num', text: run.samples ? fmtInt(run.wall_min) : fmtWall(run.wall_min) }),
         has ? el('span', { class: 'wall__unit', text: 'min' }) : null,
       ])),
   ]);
@@ -244,14 +259,22 @@ function wallCell(run, wallMax) {
 function costCell(run, costMax) {
   return el('td', { class: 'col--bar', role: 'cell', 'data-label': MOBILE_LABEL.cost_usd }, [
     barRow('cost', barRatio(run.cost_usd, costMax), null,
-      el('span', { class: 'cost__val', text: fmtCost(run.cost_usd) })),
+      el('span', { class: 'cost__val', text: (run.cost_estimated ? '≈' : '') + fmtCost(run.cost_usd) })),
   ]);
 }
 
-export function renderBody(bodyEl, runs, state, glossary) {
+export function renderBody(bodyEl, runs, state, glossary, options = {}) {
+  const { columns = COLUMNS, scoreTotal = TOTALS.fixed, timeLabel } = options;
   /* The scales come from the rows being drawn, so the leader fills its column
      and every other bar reads as a share of the leader. */
   const { fixedMax, extrasMax, wallMax, costMax } = barScales(runs);
+  const cells = {
+    model: (r) => modelCell(r, glossary),
+    fixed: (r) => scoreCell(r, r.samples ? scoreTotal : fixedMax, scoreTotal),
+    extras: (r) => extrasCell(r, extrasMax),
+    wall_min: (r) => wallCell(r, wallMax, timeLabel),
+    cost_usd: (r) => costCell(r, costMax),
+  };
   bodyEl.textContent = '';
   bodyEl.setAttribute('role', 'rowgroup');
   const sorted = runs.slice().sort((a, b) => compareRuns(a, b, state.sort, state.dir));
@@ -261,21 +284,10 @@ export function renderBody(bodyEl, runs, state, glossary) {
       role: 'row',
       class: run.superseded ? 'is-superseded' : null,
       'data-run': run.slug,
+      title: run.samples ? sampleTitle(run) : null,
     });
 
-    tr.appendChild(modelCell(run, glossary));
-    tr.appendChild(scoreCell(run, fixedMax));
-    tr.appendChild(extrasCell(run, extrasMax));
-    tr.appendChild(wallCell(run, wallMax));
-    tr.appendChild(costCell(run, costMax));
-
-    // The head is generated from COLUMNS but the body is appended by hand, so the two
-    // can drift: dropping the date column from COLUMNS left this row one cell longer
-    // than its header (2026-08-25). Fail loudly in that case rather than shipping a
-    // table whose columns do not line up with their headings.
-    if (tr.children.length !== COLUMNS.length) {
-      throw new Error(`row has ${tr.children.length} cells, COLUMNS has ${COLUMNS.length}`);
-    }
+    columns.forEach(({ key }) => tr.appendChild(cells[key](run)));
     bodyEl.appendChild(tr);
   });
 

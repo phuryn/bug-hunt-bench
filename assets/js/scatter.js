@@ -16,9 +16,9 @@
 
 import {
   pointLabels, fmtCost, fmtWall, fmtTurns, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
-  harnessShort,
-} from './format.js?v=1b1c4223ef';
-import { runColor } from './theme.js?v=1b1c4223ef';
+  harnessShort, runName, sampleCost,
+} from './format.js?v=65a4cf7ac8';
+import { runColor } from './theme.js?v=65a4cf7ac8';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -156,6 +156,8 @@ const CANDIDATES = [
   [9, 15, 'start'], [-9, 15, 'end'],
   [16, 4, 'start'], [-16, 4, 'end'],
 ];
+const REPORT_CANDIDATES = [...CANDIDATES, ...[24, 36, 49, 63, 78, 95, 116].flatMap((offset) =>
+  [[10, -offset, 'start'], [-10, -offset, 'end'], [10, offset, 'start'], [-10, offset, 'end']])];
 
 function overlaps(a, b) {
   return !(a.x1 < b.x0 || b.x1 < a.x0 || a.y1 < b.y0 || b.y1 < a.y0);
@@ -184,6 +186,7 @@ function linearTicks(hi, plotW) {
 
 export function scatterLayout(runs, allRuns, width, height, axis) {
   const A = resolveAxis(axis);
+  const report = A.scoreTotal !== undefined;
   const compact = width < 620;
   const m = {
     top: 38,
@@ -196,8 +199,11 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
 
   const val = (r) => r[A.key];
   const isNum = (v) => v !== null && v !== undefined;
-  const yTop = yDomainTop(allRuns);
-  const y = (s) => m.top + plotH - (s / yTop) * plotH;
+  const values = (rows, key) => rows.flatMap((r) => [r[key], ...(r.samples || []).map((s) => s[key])]);
+  const scores = report ? values(allRuns, 'fixed') : [];
+  const yBottom = report ? Math.max(0, Math.floor((Math.min(...scores) - 3) / 5) * 5) : 0;
+  const yTop = report ? Math.min(A.scoreTotal, Math.ceil((Math.max(...scores) + 3) / 5) * 5) : yDomainTop(allRuns);
+  const y = (s) => m.top + plotH - ((s - yBottom) / (yTop - yBottom)) * plotH;
 
   /* THE X AXIS FITS THE SELECTION, NOT THE BOARD (2026-11-13). It used to span every run on the board,
      so with the most expensive, slowest or longest runs deselected the selected points sat in a corner
@@ -206,8 +212,8 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
      scales"). The board's full span stays in the sentence under the map (scaleSentence). A selection
      with no usable value falls back to the board, so the axis is never empty. */
   const fitTo = (keep) => {
-    const sel = runs.map(val).filter(keep);
-    return sel.length ? sel : allRuns.map(val).filter(keep);
+    const sel = values(runs, A.key).filter(keep);
+    return sel.length ? sel : values(allRuns, A.key).filter(keep);
   };
   let x;
   let xTicks;
@@ -265,8 +271,20 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
     cx: x(val(r)),
     cy: y(r.fixed),
     flagged: Boolean(A.flag && r[A.flag]),
-    label: (labels.get(r.id) || r.model) + (A.flag && r[A.flag] ? ` ${NOTE_MARK}` : ''),
+    label: (labels.get(r.id) || runName(r)) + (A.flag && r[A.flag] ? ` ${NOTE_MARK}` : ''),
   })).sort((a, b) => b.score - a.score);
+
+  if (report) {
+    points.forEach((p) => {
+      const measures = p.run.samples.map(val).filter((v) => isNum(v) && (A.scale !== 'log' || v > 0));
+      const scores = p.run.samples.map((r) => r.fixed);
+      p.range = {
+        left: measures.length ? x(Math.min(...measures)) : null,
+        right: measures.length ? x(Math.max(...measures)) : null,
+        top: y(Math.max(...scores)), bottom: y(Math.min(...scores)),
+      };
+    });
+  }
 
   // Greedy label placement: first come, first served, in score order.
   const placedRects = [];
@@ -276,25 +294,26 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
   points.forEach((p) => {
     const w = measureText(p.label, LABEL_FONT);
     let done = false;
-    for (const [dx, dy, anchor] of CANDIDATES) {
+    for (const [dx, dy, anchor] of report ? REPORT_CANDIDATES : CANDIDATES) {
       const lx = p.cx + dx;
       const ly = p.cy + dy;
       const x0 = anchor === 'start' ? lx : anchor === 'end' ? lx - w : lx - w / 2;
       const rect = { x0: x0 - 2, x1: x0 + w + 2, y0: ly - 9, y1: ly + 3 };
-      if (rect.x0 < 2 || rect.x1 > width - 2 || rect.y0 < 6 || rect.y1 > m.top + plotH + 4) continue;
+      const inset = report ? 12 : 2;
+      if (rect.x0 < inset || rect.x1 > width - inset || rect.y0 < 6 || rect.y1 > m.top + plotH + 4) continue;
       if (placedRects.some((r) => overlaps(rect, r))) continue;
       if (pointRects.some((r) => overlaps(rect, r))) continue;
       placedRects.push(rect);
-      p.labelPos = { x: lx, y: ly, anchor };
+      p.labelPos = { x: lx, y: ly, anchor, leader: report && Math.abs(dy) >= 24 };
       done = true;
       break;
     }
     if (!done) p.labelPos = null;
   });
 
-  const yStep = yTop > 60 ? 20 : 10;
+  const yStep = report ? (yTop - yBottom > 40 ? 10 : 5) : yTop > 60 ? 20 : 10;
   const yTicks = [];
-  for (let v = 0; v <= yTop; v += yStep) yTicks.push({ v, y: y(v) });
+  for (let v = yBottom; v <= yTop; v += yStep) yTicks.push({ v, y: y(v) });
 
   // Family lines (Pawel 2026-08-27): join one model's efforts in dial order (low -> max) and give
   // the whole family one colour on these two maps, so a reader sees a trajectory, not loose dots.
@@ -310,7 +329,7 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
   // the harness in the point labels.
   const fam = new Map();
   points.forEach((p) => {
-    const k = `${p.run.model}|${harnessShort(p.run)}`;
+    const k = `${runName(p.run)}|${harnessShort(p.run)}`;
     if (!fam.has(k)) fam.set(k, []);
     fam.get(k).push(p);
   });
@@ -351,7 +370,7 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
     x, y, xTicks, yTicks, yTop, points, frontier, frontierPath, familyLines,
     skipped, zeroRuns, missingRuns,
     flagged: points.filter((p) => p.flagged),
-    ceilingY: yTop === CEILING ? y(CEILING) : null, baseY: y(0),
+    ceilingY: !report && yTop === CEILING ? y(CEILING) : null, baseY: y(yBottom),
   };
 }
 
@@ -363,11 +382,24 @@ function tooltipContent(p, axis) {
   const r = p.run;
   const kind = COST_KIND_LABEL[r.cost_kind] || r.cost_kind;
   const frag = document.createDocumentFragment();
-  frag.appendChild(el('span', { class: 'tip-val', text: `${r.fixed} of 105 fixed` }));
+  const score = axis.scoreTotal ? `${r.fixed} of ${axis.scoreTotal} · mean score` : `${r.fixed} of 105 fixed`;
+  frag.appendChild(el('span', { class: 'tip-val', text: score }));
   frag.appendChild(el('div', { class: 'tip-name' }, [
     el('i', { class: 'tip-key', style: { 'background-color': p.color } }),
-    `${r.model}${r.effort ? ` · ${r.effort}` : ''}`,
+    `${runName(r)}${r.effort ? ` · ${r.effort}` : ''}`,
   ]));
+  if (axis.scoreTotal) {
+    frag.appendChild(tipRow('Version', r.harness_version));
+    if (r.native || r.authors_harness) frag.appendChild(el('div', { class: 'tip-row', text: r.native ? 'Native harness' : 'Site author’s harness' }));
+    frag.appendChild(tipRow(axis.noun, (axis.id === 'cost' && r.cost_estimated ? '≈' : '') + axis.fmt(r[axis.key])));
+    r.samples.forEach((sample) => {
+      const metric = axis.id === 'cost' ? sampleCost(sample) : axis.fmt(sample[axis.key]);
+      frag.appendChild(tipRow(`Run ${sample.run}`, `${sample.fixed} · ${metric}`));
+    });
+    if (r.caveat) frag.appendChild(el('div', { class: 'tip-row', text: r.caveat }));
+    if (p.flagged) frag.appendChild(el('div', { class: 'tip-row', text: r[axis.flag] }));
+    return frag;
+  }
   if (r.harness) frag.appendChild(tipRow('Harness', r.harness));
   const rows = {
     cost: () => tipRow('Cost', `${fmtCost(r.cost_usd)} (${kind})`),
@@ -378,6 +410,7 @@ function tooltipContent(p, axis) {
   const order = [axis.id, ...['cost', 'time', 'turns'].filter((k) => k !== axis.id)];
   order.forEach((k) => { if (rows[k]) frag.appendChild(rows[k]()); });
   frag.appendChild(tipRow('Unplanted, not scored', String(r.extras)));
+  if (r.partial != null) frag.appendChild(tipRow('Partial', String(r.partial)));
   frag.appendChild(tipRow('Claimed only', String(r.claimed_only)));
   frag.appendChild(tipRow('Run date', fmtDate(r.date)));
   return frag;
@@ -387,12 +420,13 @@ function tooltipContent(p, axis) {
    log / linear switch, which CSS lifts onto the x-axis title row. */
 export function renderScatter(host, runs, allRuns, axis, footnote, control) {
   const A = resolveAxis(axis);
+  const report = A.scoreTotal !== undefined;
   host.classList.add('chart-host');
   host.textContent = '';
   if (!runs.length) return null;
 
-  const width = Math.max(320, host.clientWidth || 900);
-  const height = width < 620 ? 400 : Math.min(520, Math.round(width * 0.46));
+  const width = Math.max(report ? 280 : 320, host.clientWidth || 900);
+  const height = width < 620 ? (report ? 510 : 400) : Math.min(520, Math.round(width * 0.46));
   const L = scatterLayout(runs, allRuns, width, height, A);
   // the switch sits ON the axis-title row at full width; a compact plot has no room
   // there beside its tick labels, so it gets its own row under the axis instead
@@ -402,9 +436,10 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
     viewBox: `0 0 ${width} ${height}`,
     width,
     height,
-    'aria-label': `Planted bugs fixed plotted against ${MEASURE_ARIA[A.id] || 'run cost'}, on a ${A.scale === 'log' ? 'logarithmic' : 'linear'} axis. Every value is also in the leaderboard table.`,
+    'aria-label': `${A.scoreLabel || 'Planted bugs fixed'} plotted against ${A.measureLabel || MEASURE_ARIA[A.id]}, on a ${A.scale === 'log' ? 'logarithmic' : 'linear'} axis.`
+      + (report ? '' : ' Every value is also in the leaderboard table.'),
   });
-  svg.appendChild(svgEl('title', { text: `${A.chartTitle}, for the selected runs` }));
+  svg.appendChild(svgEl('title', { text: report ? A.chartTitle : `${A.chartTitle}, for the selected runs` }));
 
   const grid = svgEl('g', { 'aria-hidden': 'true' });
   L.yTicks.forEach((t) => {
@@ -441,7 +476,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
       text: '105 — every planted bug',
     }));
   }
-  ceil.appendChild(svgEl('text', {
+  if (!report) ceil.appendChild(svgEl('text', {
     class: 'corner-label', x: L.m.left + 8, y: L.m.top + 16, text: A.corner,
   }));
   svg.appendChild(ceil);
@@ -454,7 +489,8 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
   svg.appendChild(svgEl('text', {
     class: 'axis-title', x: -(L.m.top + L.plotH / 2), y: 13,
     transform: 'rotate(-90)', 'text-anchor': 'middle',
-    text: L.compact ? 'Fixed, of 105' : 'Planted bugs fixed, out of 105',
+    text: report ? `${A.scoreLabel}, of ${A.scoreTotal}` :
+      (L.compact ? 'Fixed, of 105' : 'Planted bugs fixed, out of 105'),
   }));
 
   L.familyLines.forEach((f) => {
@@ -465,6 +501,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
   // L.frontierPath as a <path class="frontier"> here.
 
   const tip = el('div', { class: 'chart__tip', role: 'status', hidden: true });
+  const ranges = svgEl('g', { 'aria-hidden': 'true' });
   const marks = svgEl('g', {});
 
   const showTip = (p, group) => {
@@ -488,6 +525,15 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
 
   L.points.forEach((p) => {
     const g = svgEl('g', { class: 'pt' });
+    if (p.range) {
+      const { top, bottom, left, right } = p.range;
+      const yRange = `M${p.cx} ${top}V${bottom}m-3 0h6 M${p.cx - 3} ${top}h6`;
+      const xRange = left === null ? '' : `M${left} ${p.cy}H${right}m0 -3v6 M${left} ${p.cy - 3}v6`;
+      ranges.appendChild(svgEl('path', { class: 'sample-range', d: `${yRange} ${xRange}`, stroke: p.color }));
+      if (p.labelPos?.leader) ranges.appendChild(svgEl('line', {
+        class: 'sample-leader', x1: p.cx, x2: p.labelPos.x, y1: p.cy, y2: p.labelPos.y - 3,
+      }));
+    }
     g.appendChild(svgEl('circle', { class: 'pt-halo', cx: p.cx, cy: p.cy, r: 9 }));
     g.appendChild(svgEl('circle', { class: 'pt-ring', cx: p.cx, cy: p.cy, r: 7 }));
     g.appendChild(svgEl('circle', { cx: p.cx, cy: p.cy, r: 5, fill: p.color }));
@@ -506,9 +552,11 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
         'text-anchor': p.labelPos.anchor, text: p.label,
       }));
     }
+    const name = report ? runName(p.run) :
+      `${p.run.model}${p.run.effort ? ` · ${p.run.effort}` : ''}${p.run.harness ? ` · ${p.run.harness}` : ''}`;
     const hit = svgEl('circle', {
       class: 'hit', cx: p.cx, cy: p.cy, r: 18, tabindex: '0', role: 'button',
-      'aria-label': `${p.run.model}${p.run.effort ? ` · ${p.run.effort}` : ''}${p.run.harness ? ` · ${p.run.harness}` : ''}: ${p.run.fixed} of 105 fixed, ${A.fmt(p.xv)}${p.flagged ? `. Note on this figure: ${p.run[A.flag]}` : ''}`,
+      'aria-label': `${name}: ${p.run.fixed} of ${A.scoreTotal || 105}${report ? '' : ' fixed'}, ${A.fmt(p.xv)}${p.flagged ? `. Note on this figure: ${p.run[A.flag]}` : ''}`,
     });
     hit.addEventListener('pointerenter', () => showTip(p, g));
     hit.addEventListener('pointerleave', () => hideTip(g));
@@ -517,6 +565,7 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
     g.appendChild(hit);
     marks.appendChild(g);
   });
+  svg.appendChild(ranges);
   svg.appendChild(marks);
 
   host.appendChild(svg);

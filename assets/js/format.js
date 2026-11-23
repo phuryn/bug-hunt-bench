@@ -255,6 +255,30 @@ export function fmtInt(v) {
   return v === null || v === undefined ? '—' : String(v);
 }
 
+export const runName = (run) => run.label || run.model;
+
+export function sampleCost(sample) {
+  return fmtCost(sample.cost_usd) + (sample.cost_missing_tasks
+    ? ` (recorded subtotal, ${sample.cost_missing_tasks} tasks without a cost)` : '');
+}
+
+export function sampleTitle(run) {
+  if (!run.samples) return '';
+  return run.samples.map((sample) => {
+    const repo = sample.repo1_fixed == null ? '' : ` (repo 1: ${sample.repo1_fixed}, repo 2: ${sample.repo2_fixed})`;
+    const fields = [
+      `Run ${sample.run}: ${sample.fixed}${repo}`,
+      `${fmtWall(sample.wall_min)} min`, sampleCost(sample),
+      sample.turns == null ? null : `${fmtTurns(sample.turns)} turns`,
+      sample.partial == null ? null : `${sample.partial} partial`,
+      sample.claimed_only == null ? null : `${sample.claimed_only} claimed-only`,
+      sample.extras == null ? null : `${sample.extras} unplanted`,
+      sample.wall_note,
+    ];
+    return fields.filter(Boolean).join(' · ');
+  }).join('\n');
+}
+
 /** Column model, shared by the table, the sorter and the PNG export.
     `pct` sizes the on-screen colgroup; `w` is the export's own ratio, tuned
     separately because the canvas has no line wrapping and the model column needs
@@ -306,8 +330,8 @@ export function compareRuns(a, b, key, dir) {
   let av;
   let bv;
   if (key === 'model') {
-    av = a.id.toLowerCase();
-    bv = b.id.toLowerCase();
+    av = (a.label || a.id).toLowerCase();
+    bv = (b.label || b.id).toLowerCase();
   } else {
     av = a[key];
     bv = b[key];
@@ -341,6 +365,7 @@ export function harnessTwinIds(runs) {
 
 /** Build a display label for a run inside a chart, disambiguating shared model names. */
 export function pointLabels(runs) {
+  if (runs.every((r) => r.label)) return new Map(runs.map((r) => [r.id, r.label]));
   const byModel = new Map();
   runs.forEach((r) => {
     if (!byModel.has(r.model)) byModel.set(r.model, []);

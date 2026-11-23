@@ -70,12 +70,12 @@ def main() -> int:
             return m.group(0)
         return f"{pre}{path}?v={token}{post}"
 
-    for html in sorted(ROOT.glob("*.html")):
+    for html in sorted([*ROOT.glob("*.html"), *(ROOT / "harness").glob("*.html")]):
         text = html.read_text(encoding="utf-8")
         out = HTML_REF.sub(stamp_html, text)
         if out != text:
             html.write_text(out, encoding="utf-8")
-            changed.append(html.name)
+            changed.append(html.relative_to(ROOT).as_posix())
 
     for js in sorted(ASSETS.rglob("*.js")):
         text = js.read_text(encoding="utf-8")

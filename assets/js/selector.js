@@ -40,8 +40,8 @@
    model's efforts to behave "just like the whole provider" is asking for exactly
    this, at both levels. */
 
-import { el, fmtDate, effortSuffix } from './format.js?v=1b1c4223ef';
-import { runColor } from './theme.js?v=1b1c4223ef';
+import { el, fmtDate, effortSuffix, harnessShort } from './format.js?v=65a4cf7ac8';
+import { runColor } from './theme.js?v=65a4cf7ac8';
 
 const OTHER_MAX_RUNS = 3;
 const OTHER_LABEL = 'Other';
@@ -59,7 +59,6 @@ const openGroups = new Map();
    When one model + tier + effort label is shared by runs from more than one harness, every such row
    gets its harness as a suffix - all of them, so neither reads as the default. Recomputed per render. */
 let harnessTwins = new Set();
-const harnessName = (r) => String(r.harness || '').split(' / ')[0].split(' (')[0].split(' + ')[0].trim();
 const twinKey = (r) => `${r.model}|${r.effort}|${effortSuffix(r) || ''}`;
 
 function findHarnessTwins(runs) {
@@ -67,7 +66,7 @@ function findHarnessTwins(runs) {
   runs.forEach((r) => {
     const k = twinKey(r);
     if (!seen.has(k)) seen.set(k, new Set());
-    seen.get(k).add(harnessName(r));
+    seen.get(k).add(harnessShort(r));
   });
   return new Set([...seen].filter(([, hs]) => hs.size > 1).map(([k]) => k));
 }
@@ -103,7 +102,7 @@ function runRow(r, selected, onToggle, { showName, showSwatch }) {
 
   /* the tier the run was asked for, as the board's badge shows it - plus the two
      words the clamped row carries there */
-  const harness = harnessTwins.has(twinKey(r)) && harnessName(r) ? ` (${harnessName(r)})` : '';
+  const harness = harnessTwins.has(twinKey(r)) && harnessShort(r) ? ` (${harnessShort(r)})` : '';
   const meta = [String(r.effort || '').toUpperCase(), effortSuffix(r), fmtDate(r.date)]
     .filter(Boolean).join(' · ') + harness;
 
@@ -135,9 +134,22 @@ function runRow(r, selected, onToggle, { showName, showSwatch }) {
    the heading names the VENDOR, so the rows still have to name their model - a row
    reading only "DEFAULT - 26 Jul" under a heading reading "Moonshot AI" has lost
    the one thing a reader was looking for. */
-function subGroup(id, title, group, selected, onToggle, onGroupToggle, nameRows) {
-  if (group.length === 1) {
-    return runRow(group[0], selected, onToggle, { showName: true, showSwatch: true });
+function comparisonLink(report) {
+  return report ? el('a', {
+    class: 'picker__out',
+    href: `/harness/${report.slug}`,
+    text: `Same model in ${report.other_harness_count} other harnesses →`,
+  }) : null;
+}
+
+function subGroup(id, title, all, opts, nameRows) {
+  const { selected, onToggle, onGroupToggle, matches, searching, comparisons } = opts;
+  const group = all.filter(matches);
+  if (!group.length) return null;
+  const link = !nameRows && comparisonLink(comparisons.get(title));
+  if (all.length === 1) {
+    const row = runRow(group[0], selected, onToggle, { showName: true, showSwatch: true });
+    return link ? el('div', {}, [row, link]) : row;
   }
   const shared = !nameRows && new Set(group.map((r) => r.color)).size === 1;
 
@@ -158,11 +170,12 @@ function subGroup(id, title, group, selected, onToggle, onGroupToggle, nameRows)
   ]);
 
   const details = el('details', { class: 'group' }, [summary]);
-  details.open = groupOpen(id);
-  details.addEventListener('toggle', () => openGroups.set(id, details.open));
+  details.open = searching || groupOpen(id);
+  if (!searching) details.addEventListener('toggle', () => openGroups.set(id, details.open));
   group.forEach((r) => details.appendChild(
     runRow(r, selected, onToggle, { showName: !shared, showSwatch: !shared }),
   ));
+  if (link) details.appendChild(link);
   return details;
 }
 
@@ -181,7 +194,7 @@ function vendorFieldset(name, group, selected, onGroupToggle, children) {
     ]),
   ]);
   const fs = el('fieldset', {}, [legend]);
-  children.forEach((c) => fs.appendChild(c));
+  children.filter(Boolean).forEach((c) => fs.appendChild(c));
   return fs;
 }
 
@@ -205,18 +218,29 @@ const rank = (a, b) => (a.group_rank ?? 1e9) - (b.group_rank ?? 1e9);
    always agree. `sortBySize` puts the biggest vendor first (OTHER's many one-off vendors read
    better that way); LOCAL AI keeps natural order - it is a short, curated list, not a pile of
    leftovers, and size-sorting it would just reshuffle three groups for no reason. */
-function multiVendorFieldset(label, id, runsForGroup, selected, onToggle, onGroupToggle, sortBySize) {
+function multiVendorFieldset(label, id, runsForGroup, opts, sortBySize) {
+  const group = runsForGroup.filter(opts.matches);
+  if (!group.length) return null;
   const { order: vendors, map: byVendor } = byKey(runsForGroup, 'vendor');
   const ordered = sortBySize
     ? vendors.slice().sort((a, b) => byVendor.get(b).length - byVendor.get(a).length)
     : vendors;
   const children = ordered.map((v) => subGroup(
-    `${id}/${v}`, v, byVendor.get(v).slice().sort(rank), selected, onToggle, onGroupToggle, true,
+    `${id}/${v}`, v, byVendor.get(v).slice().sort(rank), opts, true,
   ));
-  return vendorFieldset(label, runsForGroup, selected, onGroupToggle, children);
+  return vendorFieldset(label, group, opts.selected, opts.onGroupToggle, children);
 }
 
-export function renderPicker(gridEl, runs, selected, onToggle, onGroupToggle) {
+export function matchingRuns(runs, query) {
+  const terms = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  return runs.filter((r) => {
+    const text = [r.model, r.vendor, r.harness, r.harness_version, r.effort].join(' ').toLowerCase();
+    return terms.every((term) => text.includes(term));
+  });
+}
+
+export function renderPicker(gridEl, runs, opts) {
+  const { selected, onGroupToggle, matches } = opts;
   gridEl.textContent = '';
   groupBoxes.length = 0;
   harnessTwins = findHarnessTwins(runs);
@@ -235,12 +259,13 @@ export function renderPicker(gridEl, runs, selected, onToggle, onGroupToggle) {
   const small = vendors.filter((v) => byVendor.get(v).length <= OTHER_MAX_RUNS);
 
   big.forEach((vendor) => {
-    const group = byVendor.get(vendor).slice().sort(rank);
-    const { order: models, map: byModel } = byKey(group, 'model');
-    const children = models.length > 1
-      ? models.map((m) => subGroup(`${vendor}/${m}`, m, byModel.get(m),
-        selected, onToggle, onGroupToggle, false))
-      : group.map((r) => runRow(r, selected, onToggle, { showName: true, showSwatch: true }));
+    const all = byVendor.get(vendor).slice().sort(rank);
+    const group = all.filter(matches);
+    if (!group.length) return;
+    const { order: models, map: byModel } = byKey(all, 'model');
+    const children = models.length > 1 || opts.comparisons.has(models[0])
+      ? models.map((m) => subGroup(`${vendor}/${m}`, m, byModel.get(m), opts, false))
+      : group.map((r) => runRow(r, selected, opts.onToggle, { showName: true, showSwatch: true }));
     gridEl.appendChild(vendorFieldset(vendor, group, selected, onGroupToggle, children));
   });
 
@@ -250,7 +275,8 @@ export function renderPicker(gridEl, runs, selected, onToggle, onGroupToggle) {
      bucket is new). Each run keeps its own vendor's colour and MODEL_ORDER rank; only its picker
      location moves. */
   if (localRuns.length) {
-    gridEl.appendChild(multiVendorFieldset(LOCAL_LABEL, 'local', localRuns, selected, onToggle, onGroupToggle, false));
+    const local = multiVendorFieldset(LOCAL_LABEL, 'local', localRuns, opts, false);
+    if (local) gridEl.appendChild(local);
   }
 
   if (!small.length) return;
@@ -258,5 +284,6 @@ export function renderPicker(gridEl, runs, selected, onToggle, onGroupToggle) {
      keeps its own. Ordered by size, so the single-row vendors sit together at the
      bottom instead of being scattered through the group. */
   const all = small.flatMap((v) => byVendor.get(v));
-  gridEl.appendChild(multiVendorFieldset(OTHER_LABEL, 'other', all, selected, onToggle, onGroupToggle, true));
+  const other = multiVendorFieldset(OTHER_LABEL, 'other', all, opts, true);
+  if (other) gridEl.appendChild(other);
 }

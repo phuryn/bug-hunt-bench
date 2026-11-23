@@ -34,9 +34,9 @@
    pivot's dividers land in the same place all the way down the card, on
    screen and in the PNG export alike. */
 
-import { el, TOTALS, harnessShort, harnessTwinIds } from './format.js?v=1b1c4223ef';
-import { effortBadge } from './table.js?v=1b1c4223ef';
-import { runColor } from './theme.js?v=1b1c4223ef';
+import { el, TOTALS, harnessShort, harnessTwinIds, runName } from './format.js?v=65a4cf7ac8';
+import { effortBadge } from './table.js?v=65a4cf7ac8';
+import { runColor } from './theme.js?v=65a4cf7ac8';
 
 /** One colour per VENDOR here, not the per-model shade every other view uses: Sonnet and Opus fill
     their ticks in the same Anthropic colour, so two rows compare tick for tick instead of shade
@@ -62,7 +62,9 @@ const ZONE_META = [
     selection and pivot. */
 export function coverageLayout(runs, meta, pivotSlug) {
   TWINS = harnessTwinIds(runs);
-  const bugCount = meta && Number.isFinite(meta.bug_count) ? meta.bug_count : TOTALS.fixed;
+  const tasks = meta?.task_names;
+  const report = Boolean(meta?.slug);
+  const bugCount = tasks?.length ?? meta?.bug_count ?? TOTALS.fixed;
   const repo1Count = meta && Number.isFinite(meta.repo1_bug_count) ? meta.repo1_bug_count : TOTALS.repo1_fixed;
 
   const withData = runs.filter((r) => Array.isArray(r.fixed_bugs));
@@ -144,7 +146,7 @@ export function coverageLayout(runs, meta, pivotSlug) {
     })
     // best-scoring run on top — the leaderboard's own default rhythm. The
     // pivot changes column order, never row order.
-    .sort((a, b) => (b.run.fixed || 0) - (a.run.fixed || 0) || a.run.model.localeCompare(b.run.model));
+    .sort((a, b) => (b.run.fixed || 0) - (a.run.fixed || 0) || runName(a.run).localeCompare(runName(b.run)));
 
   // Per mean row: how many distinct bugs it ever fixed, and how many it fixed in EVERY run. The
   // gap between the two is the point of an n=3 row, and the published score sits between them.
@@ -165,6 +167,8 @@ export function coverageLayout(runs, meta, pivotSlug) {
 
   return {
     bugCount,
+    tasks,
+    report,
     repo1Count,
     order,
     zones,
@@ -193,6 +197,11 @@ const runLabel = (run) => `${run.model}${run.effort ? ` · ${run.effort}` : ''}$
     both call it, so they can never say two different things about the same
     columns. */
 export function coverageOrderNote(L) {
+  if (L.report) {
+    const item = L.tasks ? 'tasks' : 'planted bugs';
+    const verb = L.tasks ? 'passed' : 'fixed';
+    return `Columns show all ${L.bugCount} ${item}, ordered by how many harnesses ${verb} each at least once.`;
+  }
   if (L.pivot) {
     const {
       run, shared, onlyPivot, missedByPivot, nobody,
@@ -211,6 +220,10 @@ export function coverageOrderNote(L) {
     does not change with the pivot: it is a fact about the whole selection,
     not about one run's place in it. */
 export function coverageSummaryNote(L) {
+  if (L.report) {
+    const item = L.tasks ? 'tasks' : 'bugs';
+    return `A solid tick means every run ${L.tasks ? 'passed the task' : 'fixed the bug'}. A lighter fill means some runs did, and an open tick means none did. Across harnesses, ${L.fixedByAll} ${item} were covered by all, ${L.uniqueWins} by one, and ${L.fixedByNone} by none.`;
+  }
   if (L.withDataCount === 0) {
     return L.withoutDataCount > 0 ? 'None of the selected runs carry per-bug data yet.' : '';
   }
@@ -303,13 +316,13 @@ export function renderCoverage(host, runs, meta, glossary, pivotSlug, onPivotTog
 
     const label = el('div', { class: 'coverage__label' }, [
       el('span', { class: 'swatch', style: { 'background-color': coverageColor(run) } }),
-      el('span', { class: 'coverage__name' }, [run.model, ' ', effortBadge(run, glossary),
-        TWINS.has(run.id) ? ` (${harnessShort(run)})` : null]),
+      el('span', { class: 'coverage__name' }, L.report ? [runName(run)] :
+        [run.model, ' ', effortBadge(run, glossary), TWINS.has(run.id) ? ` (${harnessShort(run)})` : null]),
       isPivot ? el('span', { class: 'coverage__chip', text: 'Sorted by' }) : null,
       rel ? el('span', {
         class: 'coverage__rel',
-        title: `${rel.ever} distinct bugs fixed in at least one of ${rel.runs} runs; `
-          + `${rel.always} fixed in every run`,
+        title: `${rel.ever} distinct ${L.tasks ? 'tasks passed' : 'bugs fixed'} in at least one of ${rel.runs} runs. `
+          + `${rel.always} in every run.`,
         text: `n=${rel.runs} · ${rel.ever} ever · ${rel.always} always`,
       }) : null,
       el('span', {
@@ -327,6 +340,10 @@ export function renderCoverage(host, runs, meta, glossary, pivotSlug, onPivotTog
         const tick = el('span', {
           class: `tick${t.hit ? ' is-hit' : ' is-miss'}${partial ? ' is-partial' : ''}`,
         });
+        if (L.report) {
+          const name = L.tasks?.[bugIdx - 1] || `Bug ${bugIdx}`;
+          tick.title = `${name} · ${L.tasks ? 'passed' : 'fixed'} in ${t.hits} of ${t.runs} runs`;
+        }
         if (t.hit) {
           const c = coverageColor(run);
           if (partial) {
@@ -337,7 +354,7 @@ export function renderCoverage(host, runs, meta, glossary, pivotSlug, onPivotTog
             tick.style.setProperty('--tickc', c);
             tick.style.setProperty(
               'background-color', `color-mix(in srgb, ${c} ${Math.round(t.strength * 100)}%, transparent)`);
-            tick.title = `fixed in ${t.hits} of ${t.runs} runs (${Math.round(t.strength * 100)}%)`;
+            if (!L.report) tick.title = `fixed in ${t.hits} of ${t.runs} runs (${Math.round(t.strength * 100)}%)`;
           } else {
             tick.style.setProperty('background-color', c);
           }
@@ -368,7 +385,7 @@ export function renderCoverage(host, runs, meta, glossary, pivotSlug, onPivotTog
       rowEl.addEventListener('click', (e) => {
         // the effort badge is its own link (effortBadge() in table.js) — let
         // it navigate on its own rather than also toggling the pivot
-        if (e.target.closest('a')) return;
+      if (e.target.closest('a')) return;
         onPivotToggle(run.slug);
       });
       rowEl.addEventListener('keydown', (e) => {

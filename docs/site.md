@@ -3,12 +3,12 @@
 *Moved here from the repo root on 2026-09-05; the root README is now the public front page (leaderboard, FAQ). This file is the design and maintenance notes for the site itself.*
 
 The public site for **Bug Hunt Bench**: 105 real bugs planted in two production
-codebases, frontier coding models given one round per repo in their own native
-agentic CLI, and every diff graded blind against a withheld answer key.
+codebases, frontier coding models given one round per repo, and every diff
+graded blind against a withheld answer key.
 
 Static HTML, CSS and vanilla ES modules. No build step, no framework, no bundler,
 no dependencies, no backend. The only third-party code is the Microsoft Clarity
-analytics snippet (`assets/js/clarity.js`) and, at the foot of both pages, Substack's
+analytics snippet (`assets/js/clarity.js`) and, at the foot of the board and method, Substack's
 own subscribe form in a frame (`www.productcompass.pm/embed`). Open `index.html`
 through any local server and it runs.
 
@@ -20,10 +20,12 @@ through any local server and it runs.
 .
 ├── index.html                 THE BOARD: markup, head, JSON-LD
 ├── method.html                THE METHOD PAGE: method, caveats, definitions
+├── harness/*.html             STATIC HARNESS COMPARISONS: one shell per report
 ├── data/
-│   └── benchmark.json         GENERATED — the single source of every number
+│   ├── benchmark.json         GENERATED — board and method data
+│   └── harness/*.json         GENERATED — report runs and menu index
 ├── assets/
-│   ├── css/site.css           all styles for both pages, incl. responsive + print
+│   ├── css/site.css           shared theme tokens and components, responsive + print
 │   ├── favicon.svg
 │   └── js/
 │       ├── theme-boot.js      classic, render-blocking: stamps the theme pre-paint
@@ -31,27 +33,41 @@ through any local server and it runs.
 │       ├── theme.js           theme state, the toggle, the dark run-colour rule
 │       ├── main.js            the board: boot, state, URL sync, section rendering
 │       ├── method.js          the method page: renders method/caveats/glossary
+│       ├── nav.js             Harness Comparisons disclosure and index metadata
+│       ├── report.js          fixed-model report pages and their view tabs
 │       ├── format.js          vocabularies, formatters, column model, DOM helpers
 │       ├── table.js           leaderboard table: colgroup, sortable head, rows
 │       ├── scatter.js         all three maps — one layout function, three axis specs
-│       ├── selector.js        run picker (native checkboxes, grouped by vendor)
+│       ├── coverage.js        coverage of anonymized bugs or public tasks
+│       ├── selector.js        searchable run picker grouped by vendor
 │       └── export-png.js      canvas renderer for "Export this view (PNG)"
-├── netlify.toml               publish = repo root, no build command, /method rewrite
+├── netlify.toml               publish = repo root, asset-stamp command, page rewrites
 ├── _headers                   security headers, CSP, cache policy
 ├── robots.txt
 ├── sitemap.xml
 └── og-image.png               social card, 1200×630
 ```
 
-## Two pages, not a router
+## Static pages
 
 `/` is the board and nothing else: masthead, headline, the 105-tick rule, the run
-picker, the table, the two maps, the export, and the key that makes the columns
+picker, the table, the maps, coverage, export, and the key that makes the columns
 readable. `/method` is the argument: **The method**, **What this board does not
 tell you**, **Definitions**. Both are real HTML files sharing one stylesheet, one
-theme system and one masthead — there is no client-side router. Both end on the
+theme system and masthead. Both end on the
 same coda: one serif sentence about the newsletter and Substack's subscribe frame,
 above the footer, so it sits on every view and never between a reader and a number.
+
+`/harness/<slug>` compares a single model across harnesses. The menu groups the
+reports by benchmark and loads its counts from `data/harness/index.json`. Every
+report shows all its harnesses across the shared table, charts and coverage
+renderers. Per-run score dots, row titles and chart whiskers show the observations
+under the published means. Terminal-Bench coverage names public tasks. Bug Hunt
+Bench coverage uses anonymized indices. The report's cost and time notes explain
+what the sources measure, including subtotal costs when Terminal-Bench trials
+lack costs. The Mini Harness tag discloses the site author's own harness. The
+report shells use the same CSS tokens and primitives, including a 44 px target
+for new controls and a 320 px reflow floor. PNG export is available on the board.
 
 The split cost no duplication, because the moved sections were never markup in the
 first place: `method`, `caveats` and `glossary` are rendered from
@@ -80,12 +96,18 @@ python -m http.server 8899
 
 ## Where the numbers come from
 
-**Never hand-edit `data/benchmark.json`, and never type a number into the HTML.**
+**Generate all JSON and take measurements printed in the UI from that JSON.**
 
 The file is generated by the private runner's generator, which reads the public scoreboards in
 [`results/`](../results/) (this repo) and writes `meta`, `method`, `glossary`, `caveats` and `runs`.
 The runner's go-live step regenerates it together with the README leaderboard table,
 `assets/leaderboard.png` and `og-image.png`, then commits and pushes; Netlify deploys on push.
+
+The generator also writes `data/harness/` using the published
+[Mini Harness benchmarks](https://github.com/phuryn/mini-harness/tree/main/benchmarks).
+The Bug Hunt Bench comparison joins each published trial with the private verdicts
+and turn receipts. Only fixed bug indices and numeric totals go into public report
+data. The two Terminal-Bench reports use the published trial and summary CSVs.
 
 Everything on the page — every score, bar, tick, axis, label, definition and
 caveat — is read from that file at runtime. The page contains no duplicated
@@ -150,7 +172,7 @@ maintenance burden.
   and in its PNG export, uses the unshaded vendor hue (`vendor_color`, written by the
   generator) through `coverageColor()`, so Sonnet and Opus rows read as the same
   colour and compare tick for tick. Labels, not shades, tell the rows apart there.
-- **Six columns: model, fixed, extras, wall clock, cost, date.** What is *not* on
+- **Five columns: model, fixed, extras, wall clock, cost.** What is *not* on
   the grid is a decision. Partial and claimed-only are zero on most rows and were
   never worth a column of their own; the repo 1 / repo 2 split is how the 105 bugs
   are distributed, not a ranking, and it is not dashboard material. All three stay
@@ -168,13 +190,13 @@ maintenance burden.
 - **There is no row detail and no `†`.** A caveat, a note or a supersession rides
   on the model cell as a plain `title`: still there for anyone who wants it, no
   marker, no layout cost, and nothing to expand.
-- **Contention is not drawn (2026-10-08).** Rows still carry a `wall_note` in the
-  data when their legs overlapped another leg, but the site no longer shows it —
-  no marked point on the score-vs-time map, no tooltip line, no table `title`, no
-  PNG marker (the wall axis has `flag: null` in `scatter.js`). Every run here shares
+- **Wall-time notes.** The board's time cells carry their note as a title, and
+  its time map has `flag: null` in `scatter.js`. Every run here shares
   a working machine with other agents, so marking only the runs whose legs recorded
   a peer singled them out. The wall-clock caveat says that in general terms; which
   legs overlapped stays in the receipts (`concurrent_with=` in the metrics CSVs).
+  The Bug Hunt Bench comparison marks recorded overlap or contention with a
+  broken ring and an asterisk on its time map.
 - **Extras are never added to the score, anywhere.** They live in a column group
   headed *Tracked, not scored*, drawn as a hatched grey ghost bar at half the
   height of the score bar and scaled against the highest extras count on screen —
@@ -196,9 +218,16 @@ maintenance burden.
   `clamped` run wears "ran lower" beside its badge, because that is a published
   correction on a single row, and a key cannot carry a correction for a row nobody
   scrolls to.
-- **Superseded runs stay reachable but out of the default view.** They are
-  excluded from the `featured` preset, tagged in the picker and in the table, and
-  carry their explanation in the row's `title`.
+- **The board prefers a model's own lab's harness.** A model with an active
+  native row keeps its active native rows. A model with no active native
+  measurement keeps every measured harness. Superseded rows stay in the data
+  and receipts as history and count toward headline totals and the survivor count.
+  The generator checks that moving rows preserves the union of fixed bug
+  indices. The per-run CSV labels moved rows `harness_comparison`.
+- **Picker search narrows the list.** The board changes when a reader uses the
+  matching-set actions, a checkbox or a preset. The search includes unselected
+  runs and matches model, vendor, harness and effort. The DeepSeek model group
+  links to its report using the index's `board_model` field.
 
 ## Linkable state
 
@@ -351,9 +380,9 @@ where a dollar figure is actually on the card. The three views land as
 
 1. Push this repo to GitHub (`phuryn/bug-hunt-bench`).
 2. In Netlify: **Add new site → Import an existing project** → pick the repo.
-3. Netlify reads `netlify.toml`: **build command empty, publish directory `.`**
+3. Netlify reads `netlify.toml`: **build command `python3 stamp-assets.py`, publish directory `.`**
    (the repository root — there is nothing to compile, so there is no `/public`),
-   plus the `/method` rewrite and the `/data` shortcut.
+   plus the `/method` and report rewrites and the `/data` shortcut.
 4. Deploy. `_headers` is picked up automatically for security headers and caching.
 
 The CSP in `_headers` allows exactly what the page uses: same-origin scripts and
@@ -367,13 +396,12 @@ is blocked: `default-src 'self'` is the fallback). If you self-host the fonts
 later, drop both Google hosts; if you remove Clarity, drop its two hosts and
 `assets/js/clarity.js` together; if you remove the coda, drop `frame-src`.
 
-Assets are cached for a day with `stale-while-revalidate` rather than marked
-`immutable`, because there is no build step and therefore no content hashing in
-the filenames.
+Asset URLs carry the content hash written by `stamp-assets.py`. The cache
+revalidates assets after 300 seconds and data after 60 seconds.
 
 ## Open Graph image
 
-`og-image.png` sits at the repo root and both heads point at
+`og-image.png` sits at the repo root and all page heads point at
 `https://bughunt.productcompass.pm/og-image.png` (1200×630) in the `og:image`
 and `twitter:image` tags. To refresh it: open the site **in the light theme**,
 select the featured runs, hit **Export this view (PNG)** and crop the top of the

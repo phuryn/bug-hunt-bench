@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terminal-Bench 2.1 · Claude Haiku 5.5 | Harness Comparisons</title>
+<meta name="description" content="Compare scores, cost, time and coverage across harnesses running Claude Haiku 5.5 on Terminal-Bench 2.1.">
+<link rel="canonical" href="https://bughunt.productcompass.pm/harness/terminal-bench-2-1-claude-haiku-5-5">
+<meta name="color-scheme" content="light dark">
+<!-- theme-boot.js rewrites this to the dark surface when the dark theme is on -->
+<meta name="theme-color" content="#eef0f3">
+<meta name="author" content="Pawel Huryn">
+
+<!-- The pages share the board's render-blocking theme stamp,
+     and a reader who picked dark on one must not get a white flash on the other. -->
+<script src="/assets/js/theme-boot.js?v=65a4cf7ac8"></script>
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Bug Hunt Bench">
+<meta property="og:title" content="Terminal-Bench 2.1 · Claude Haiku 5.5">
+<meta property="og:description" content="Compare scores, cost, time and coverage across harnesses running Claude Haiku 5.5 on Terminal-Bench 2.1.">
+<meta property="og:url" content="https://bughunt.productcompass.pm/harness/terminal-bench-2-1-claude-haiku-5-5">
+<meta property="og:image" content="https://bughunt.productcompass.pm/og-image.png?v=2026-11-19-d2e2fb43">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Bug Hunt Bench leaderboard">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Terminal-Bench 2.1 · Claude Haiku 5.5">
+<meta name="twitter:description" content="Compare scores, cost, time and coverage across harnesses running Claude Haiku 5.5 on Terminal-Bench 2.1.">
+<meta name="twitter:image" content="https://bughunt.productcompass.pm/og-image.png?v=2026-11-19-d2e2fb43">
+<meta name="twitter:creator" content="@PawelHuryn">
+
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
+<link rel="stylesheet" href="/assets/css/site.css?v=65a4cf7ac8">
+
+<script type="module" src="/assets/js/report.js?v=65a4cf7ac8"></script>
+<!-- Microsoft Clarity analytics. A file, not an inline block: the CSP has no 'unsafe-inline'. -->
+<script src="/assets/js/clarity.js?v=65a4cf7ac8" async></script>
+</head>
+<body class="report">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="wrap masthead__inner">
+    <a class="wordmark" href="/">Bug&nbsp;Hunt&nbsp;Bench</a>
+    <div class="masthead__right">
+      <nav class="masthead__nav" aria-label="Sections">
+        <a href="/">The board</a>
+        <details class="navmenu">
+          <summary>Harness Comparisons</summary>
+          <div class="navmenu__panel">
+            <div class="navmenu__group">
+              <p class="navmenu__bench">Bug Hunt Bench</p>
+              <a class="navmenu__item" href="/harness/bug-hunt-bench-deepseek-v4-1-flash-1017" data-board-comparison>
+                <span class="navmenu__title">DeepSeek V4.1 Flash 1017</span>
+                <span class="navmenu__meta"></span>
+              </a>
+            </div>
+            <div class="navmenu__group">
+              <p class="navmenu__bench">Terminal-Bench 2.1</p>
+              <a class="navmenu__item" href="/harness/terminal-bench-2-1-claude-haiku-5-5" aria-current="page">
+                <span class="navmenu__title">Claude Haiku 5.5</span>
+                <span class="navmenu__meta"></span>
+              </a>
+              <a class="navmenu__item" href="/harness/terminal-bench-2-1-deepseek-v4-1-flash-1017">
+                <span class="navmenu__title">DeepSeek V4.1 Flash 1017</span>
+                <span class="navmenu__meta"></span>
+              </a>
+            </div>
+          </div>
+        </details>
+        <a href="/method">Method</a>
+        <a href="/method#caveats">Caveats</a>
+        <a href="/method#definitions">Definitions</a>
+        <a id="source-link" href="https://github.com/phuryn/bug-hunt-bench/tree/main/results" target="_blank" rel="noopener" aria-label="Raw data (opens in a new tab)">Raw data</a>
+        <a id="star-link" class="masthead__star" href="https://github.com/phuryn/bug-hunt-bench" target="_blank" rel="noopener" aria-label="Star Bug Hunt Bench on GitHub (opens in a new tab)">&#9733; Star on GitHub</a>
+      </nav>
+      <button type="button" class="themetoggle" id="theme-toggle" aria-pressed="false" aria-label="Dark theme">
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <circle class="disc" cx="8" cy="8" r="6"></circle>
+          <path class="half" d="M8 2a6 6 0 0 1 0 12z"></path>
+        </svg>
+        <span>Dark</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap report-head">
+    <p class="crumbs">Harness Comparisons <span aria-hidden="true">›</span> Terminal-Bench 2.1</p>
+    <h1>Terminal-Bench 2.1&nbsp;· <em>Claude Haiku 5.5</em></h1>
+    <p class="lede" id="report-lede"></p>
+    <p class="report-links"><a href="https://github.com/phuryn/mini-harness/tree/main/benchmarks/terminal-bench-2.1--claude-haiku-5.5" id="report-source">Published results on GitHub</a>
+      <a href="/data/harness/terminal-bench-2-1-claude-haiku-5-5.json" id="report-json">Report JSON</a></p>
+  </div>
+  <section class="views wrap" id="report-views" aria-label="Harness comparison results">
+    <div class="views__bar">
+      <div class="tabs" role="tablist" aria-label="View">
+      <button type="button" class="tab" role="tab" id="tab-table" aria-controls="panel-table" aria-selected="true" tabindex="0" data-view="table">Leaderboard</button>
+      <button type="button" class="tab" role="tab" id="tab-cost" aria-controls="panel-cost" aria-selected="false" tabindex="-1" data-view="cost">Score vs cost</button>
+      <button type="button" class="tab" role="tab" id="tab-time" aria-controls="panel-time" aria-selected="false" tabindex="-1" data-view="time">Score vs time</button>
+      <button type="button" class="tab" role="tab" id="tab-coverage" aria-controls="panel-coverage" aria-selected="false" tabindex="-1" data-view="coverage">Coverage</button>
+      </div>
+    </div>
+    <div class="panel" id="panel-table" role="tabpanel" tabindex="0" aria-labelledby="tab-table">
+      <div class="tablewrap">
+        <table class="board report-board" id="report-board" role="table" aria-label="Harness leaderboard">
+          <thead id="board-head"></thead>
+          <tbody id="board-body"></tbody>
+        </table>
+      </div>
+      <div class="keys" id="table-keys"></div>
+    </div>
+    <div class="panel" id="panel-cost" role="tabpanel" tabindex="0" aria-labelledby="tab-cost" hidden>
+      <div class="chart chart-host"></div>
+    </div>
+    <div class="panel" id="panel-time" role="tabpanel" tabindex="0" aria-labelledby="tab-time" hidden>
+      <div class="chart chart-host"></div>
+    </div>
+    <div class="panel" id="panel-coverage" role="tabpanel" tabindex="0" aria-labelledby="tab-coverage" hidden>
+      <div class="chart coverage" id="coverage-host"></div>
+      <div id="coverage-note"></div>
+    </div>
+    <p class="chart__note" id="report-cost-note"></p>
+    <p class="chart__note" id="report-time-note"></p>
+  </section>
+  <noscript>
+    <p class="wrap">This comparison uses JavaScript to display its data. Read the <a href="/data/harness/terminal-bench-2-1-claude-haiku-5-5.json">report JSON</a> directly.</p>
+  </noscript>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <p><strong>Bug Hunt Bench</strong> by <a href="https://www.productcompass.pm">Pawel Huryn</a>.</p>
+    <p>Every number on this page is read from <a href="/data/harness/terminal-bench-2-1-claude-haiku-5-5.json">data/harness/terminal-bench-2-1-claude-haiku-5-5.json</a>,
+      generated from the published results in <a href="https://github.com/phuryn/mini-harness/tree/main/benchmarks/terminal-bench-2.1--claude-haiku-5.5" id="report-footer-source">phuryn/mini-harness/benchmarks</a>.</p>
+  </div>
+</footer>
+</body>
+</html>

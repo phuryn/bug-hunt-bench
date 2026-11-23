@@ -1,0 +1,35 @@
+[
+  {
+    "slug": "bug-hunt-bench-deepseek-v4-1-flash-1017",
+    "bench": "Bug Hunt Bench",
+    "model": "DeepSeek V4.1 Flash 1017",
+    "harness_count": 10,
+    "runs_per_harness": 5,
+    "title": "Bug Hunt Bench · DeepSeek V4.1 Flash 1017",
+    "board_model": "DeepSeek V4.1 Flash 1017",
+    "score_total": 105,
+    "other_harness_count": 9
+  },
+  {
+    "slug": "terminal-bench-2-1-claude-haiku-5-5",
+    "bench": "Terminal-Bench 2.1",
+    "model": "Claude Haiku 5.5",
+    "harness_count": 9,
+    "runs_per_harness": 3,
+    "title": "Terminal-Bench 2.1 · Claude Haiku 5.5",
+    "board_model": null,
+    "score_total": 89,
+    "other_harness_count": null
+  },
+  {
+    "slug": "terminal-bench-2-1-deepseek-v4-1-flash-1017",
+    "bench": "Terminal-Bench 2.1",
+    "model": "DeepSeek V4.1 Flash 1017",
+    "harness_count": 9,
+    "runs_per_harness": 3,
+    "title": "Terminal-Bench 2.1 · DeepSeek V4.1 Flash 1017",
+    "board_model": null,
+    "score_total": 89,
+    "other_harness_count": null
+  }
+]

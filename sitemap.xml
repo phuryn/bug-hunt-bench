@@ -12,4 +12,13 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://bughunt.productcompass.pm/harness/bug-hunt-bench-deepseek-v4-1-flash-1017</loc>
+  </url>
+  <url>
+    <loc>https://bughunt.productcompass.pm/harness/terminal-bench-2-1-claude-haiku-5-5</loc>
+  </url>
+  <url>
+    <loc>https://bughunt.productcompass.pm/harness/terminal-bench-2-1-deepseek-v4-1-flash-1017</loc>
+  </url>
 </urlset>

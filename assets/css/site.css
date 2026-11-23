@@ -51,6 +51,14 @@
   /* rhythm */
   --gap: 24px;
   --wrap: 1280px;
+  --target: 44px;
+  --control-radius: 4px;
+  --menu-width: 340px;
+  --menu-layer: 20;
+  --menu-shadow: 0 14px 34px -14px var(--shadow);
+  --sample-size: 5px;
+  --sample-step: 6px;
+  --sample-band: 32px;
 
   color-scheme: light;
 }
@@ -108,6 +116,7 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  overflow-wrap: anywhere;
 }
 
 .wrap {
@@ -132,6 +141,11 @@ a:hover { color: var(--ink); }
 }
 .skip-link:focus { left: 0; }
 
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+
 .eyebrow {
   font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
   color: var(--muted); margin: 0 0 14px; font-weight: 500;
@@ -148,7 +162,7 @@ a:hover { color: var(--ink); }
 
 /* ---------------------------------------------------------------- masthead */
 
-.masthead { border-bottom: 1px solid var(--hairline); background: var(--page); }
+.masthead { position: relative; border-bottom: 1px solid var(--hairline); background: var(--page); }
 .masthead__inner {
   display: flex; align-items: baseline; justify-content: space-between;
   gap: 20px; flex-wrap: wrap; padding-block: 14px;
@@ -172,6 +186,42 @@ a.wordmark:hover { color: var(--accent); }
 /* the star ask is the one nav item allowed to read as a request: ink, not muted, still no button chrome */
 .masthead__nav a.masthead__star { color: var(--ink); white-space: nowrap; }
 .masthead__nav a.masthead__star:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+.navmenu { position: relative; }
+.navmenu > summary {
+  display: flex; align-items: center; gap: 7px; min-height: var(--target);
+  color: var(--muted); font-size: 12.5px; cursor: pointer; list-style: none;
+}
+.navmenu > summary::-webkit-details-marker { display: none; }
+.navmenu > summary::after {
+  content: ""; width: 5px; height: 5px; flex: none;
+  border-right: 1px solid currentColor; border-bottom: 1px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+.navmenu[open] > summary::after { transform: translateY(1px) rotate(225deg); }
+.navmenu[open] > summary, .navmenu > summary:hover { color: var(--ink); }
+.navmenu:has([aria-current]) > summary { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+.navmenu__panel {
+  position: absolute; top: 100%; left: -14px; z-index: var(--menu-layer);
+  width: var(--menu-width); padding: 12px 0; background: var(--plate);
+  border: 1px solid var(--rule); border-radius: var(--control-radius); box-shadow: var(--menu-shadow);
+}
+.navmenu__group { padding: 0 14px; }
+.navmenu__group + .navmenu__group { border-top: 1px solid var(--hairline); margin-top: 6px; padding-top: 10px; }
+.navmenu__bench {
+  color: var(--muted); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  font-weight: 600; margin: 0 0 2px;
+}
+.masthead__nav .navmenu__item {
+  display: block; min-height: var(--target); padding: 6px 0;
+  color: var(--ink); border: 0; line-height: 1.35;
+}
+.navmenu__item:hover .navmenu__title, .navmenu__item[aria-current] .navmenu__title {
+  text-decoration: underline; text-underline-offset: 3px;
+}
+.navmenu__title { display: block; font-size: 13.5px; }
+.navmenu__meta { display: block; margin-top: 2px; font-size: 11.5px; color: var(--muted); }
+.navmenu__meta:empty { display: none; }
 /* the external link is nav, not a call to action: same weight as its neighbours
    (Pawel, 2026-08-25). The .masthead__out accent rule was removed, not overridden. */
 
@@ -365,6 +415,7 @@ h1 em { font-style: normal; color: var(--accent); }
 .picker > summary {
   cursor: pointer; font-size: 12.5px; color: var(--ink);
   padding: 6px 0; list-style: none; display: flex; align-items: center; gap: 8px;
+  min-height: var(--target);
 }
 .picker > summary::-webkit-details-marker { display: none; }
 .picker > summary::before {
@@ -445,9 +496,35 @@ h1 em { font-style: normal; color: var(--accent); }
 }
 .run input:checked ~ .run__body .run__name { color: var(--ink); font-weight: 500; }
 
-.picker__note {
-  font-size: 12px; color: var(--muted); margin: 12px 0 0; max-width: 76ch;
+.picker__find {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+  padding: 8px 0 2px;
 }
+.picker__search { position: relative; display: flex; align-items: center; flex: 1 1 230px; min-width: 0; max-width: 350px; }
+.picker__search svg {
+  position: absolute; left: 10px; width: 16px; height: 16px; pointer-events: none;
+  fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-linecap: round;
+}
+.picker__search input {
+  min-height: var(--target); width: 100%; min-width: 0; padding: 7px 10px 7px 32px;
+  color: var(--ink); background: var(--plate); font: inherit; font-size: 16px;
+  border: 1px solid var(--muted); border-radius: var(--control-radius);
+}
+.picker__search input::placeholder { color: var(--muted); opacity: 1; font-size: 13px; }
+.picker__search input::-webkit-search-cancel-button { display: none; }
+.picker__count { color: var(--ink-2); font-size: 12.5px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.picker__count:empty { position: absolute; }
+.picker__actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.picker__find .btn { min-height: var(--target); margin: 0; }
+.picker__find .picker__primary { background: var(--on-bg); color: var(--on-ink); border-color: var(--on-bg); }
+.picker__hint { flex-basis: 100%; margin: 0; color: var(--muted); font-size: 12px; }
+.picker__empty { margin: 12px 0 0; }
+.picker__out {
+  display: flex; align-items: center; min-height: var(--target); margin-left: 20px;
+  border-top: 1px dotted var(--rule); font-size: 12px;
+}
+.picker :is(.run, .vendor, .group > summary) { min-height: var(--target); align-items: center; }
+.picker .run :is(input, .swatch) { margin-top: 0; }
 
 /* ------------------------------------------------------------------- views */
 
@@ -895,6 +972,37 @@ h1 em { font-style: normal; color: var(--accent); }
 .coverage__row[role="button"]:focus-visible { background: var(--accent-wash); }
 .coverage__row.is-pivot { background: var(--accent-wash); box-shadow: inset 3px 0 0 var(--accent); }
 
+/* Harness comparisons share the board's table, bars, tabs and chart plate. */
+.report-head { padding-top: clamp(24px, 3.2vw, 40px); }
+.report-head h1 { max-width: 34ch; margin: 0; }
+.report-head .lede { max-width: 66ch; margin-top: 10px; }
+.crumbs { margin: 0 0 12px; color: var(--muted); font-size: 12px; }
+.crumbs span { margin-inline: 3px; }
+.report-links { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; margin: 0; }
+.report-links a { display: inline-flex; align-items: center; min-height: var(--target); }
+.report .views { padding-top: 6px; }
+.report .tab { min-height: var(--target); }
+.report .sortbtn { min-height: var(--target); }
+.report .board tbody tr:hover { background: var(--plate); }
+.report .tag { margin-left: 4px; vertical-align: 1px; color: var(--ink-2); }
+.tag--native { border-style: solid; }
+.tag--author { border-style: dashed; }
+.model__caveat { display: block; margin-top: 4px; color: var(--muted); font-size: 11px; white-space: normal; }
+.bar-row--samples { position: relative; min-height: var(--sample-band); --reserve: 78px; }
+.bar-row--samples .bar-val { margin-left: auto; }
+.bar__sample {
+  position: absolute; left: calc((100% - var(--reserve)) * var(--sample-position));
+  top: calc(1px + var(--sample-step) * var(--sample-lane));
+  width: var(--sample-size); height: var(--sample-size); transform: translateX(-50%);
+  border-radius: 50%; background: var(--sample-color); box-shadow: 0 0 0 1px var(--plate);
+}
+.report .chart .sample-range { fill: none; stroke-width: 1; }
+.report .chart .sample-leader { stroke: var(--muted); stroke-width: 1; }
+
+@media (max-width: 620px) {
+  .report .tabs { flex-wrap: wrap; gap: 0 16px; overflow: visible; }
+}
+
 .coverage__label {
   display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px;
   margin-bottom: 5px; font-size: 13px; color: var(--ink-2);
@@ -1061,9 +1169,10 @@ h1 em { font-style: normal; color: var(--accent); }
 }
 
 @media (max-width: 700px) {
-  .masthead__inner { padding-block: 11px; }
-  .masthead__nav { gap: 14px; }
-  .themetoggle { padding: 4px 7px; }
+  .masthead__inner { padding-block: 11px; gap: 6px; }
+  .masthead__right { width: 100%; }
+  .masthead__nav { align-items: center; gap: 0 14px; }
+  .themetoggle { position: absolute; top: 10px; right: max(18px, 4vw); padding: 4px 7px; }
   .views__bar { align-items: flex-start; }
   .views__actions { width: 100%; justify-content: space-between; }
   .board__caption { padding-bottom: 10px; }
@@ -1073,6 +1182,8 @@ h1 em { font-style: normal; color: var(--accent); }
   .glossary dt { border-bottom: 0; padding-bottom: 0; }
   .glossary dd { padding-top: 4px; }
   .keys { grid-template-columns: 1fr; }
+  .navmenu { position: static; }
+  .navmenu__panel { inset: 100% 0 auto; width: auto; border-radius: 0 0 var(--control-radius) var(--control-radius); }
 }
 
 /* On a phone the table stops being a grid and becomes a stack of run cards.
@@ -1103,6 +1214,7 @@ h1 em { font-style: normal; color: var(--accent); }
   .board td.model-cell::before, .board td.score::before { display: none; }
   /* a card is narrower than a table cell, so the reserved value width shrinks with it */
   .bar-row--score { --reserve: 62px; }
+  .bar-row--samples { --reserve: 78px; }
   .bar-row--wall { --reserve: 68px; }
   .bar-row--cost { --reserve: 66px; }
   .bar-row--extras { --reserve: 30px; }
@@ -1146,7 +1258,7 @@ h1 em { font-style: normal; color: var(--accent); }
      paper that is the difference between a date that fits and one that clips */
   .board th:first-child, .board td:first-child { padding-left: 6px; }
   .board th:last-child, .board td:last-child { padding-right: 6px; }
-  .bar, .swatch, .keys .swatch-key,
+  .bar, .bar__sample, .swatch, .keys .swatch-key,
   .tickrule__plot .tick, .tickkey__mark {
     -webkit-print-color-adjust: exact; print-color-adjust: exact;
   }

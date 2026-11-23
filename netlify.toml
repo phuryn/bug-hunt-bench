@@ -32,3 +32,33 @@
   from = "/method.html"
   to = "/method"
   status = 301
+
+[[redirects]]
+  from = "/harness/bug-hunt-bench-deepseek-v4-1-flash-1017"
+  to = "/harness/bug-hunt-bench-deepseek-v4-1-flash-1017.html"
+  status = 200
+
+[[redirects]]
+  from = "/harness/bug-hunt-bench-deepseek-v4-1-flash-1017.html"
+  to = "/harness/bug-hunt-bench-deepseek-v4-1-flash-1017"
+  status = 301
+
+[[redirects]]
+  from = "/harness/terminal-bench-2-1-claude-haiku-5-5"
+  to = "/harness/terminal-bench-2-1-claude-haiku-5-5.html"
+  status = 200
+
+[[redirects]]
+  from = "/harness/terminal-bench-2-1-claude-haiku-5-5.html"
+  to = "/harness/terminal-bench-2-1-claude-haiku-5-5"
+  status = 301
+
+[[redirects]]
+  from = "/harness/terminal-bench-2-1-deepseek-v4-1-flash-1017"
+  to = "/harness/terminal-bench-2-1-deepseek-v4-1-flash-1017.html"
+  status = 200
+
+[[redirects]]
+  from = "/harness/terminal-bench-2-1-deepseek-v4-1-flash-1017.html"
+  to = "/harness/terminal-bench-2-1-deepseek-v4-1-flash-1017"
+  status = 301

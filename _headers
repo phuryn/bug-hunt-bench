@@ -32,5 +32,8 @@
 /method
   Cache-Control: public, max-age=0, must-revalidate
 
+/harness/*
+  Cache-Control: public, max-age=0, must-revalidate
+
 /
   Cache-Control: public, max-age=0, must-revalidate

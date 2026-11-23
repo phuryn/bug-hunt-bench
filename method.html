@@ -13,7 +13,7 @@
 
 <!-- Same render-blocking theme stamp as the board: both pages share the theme,
      and a reader who picked dark on one must not get a white flash on the other. -->
-<script src="/assets/js/theme-boot.js?v=1b1c4223ef"></script>
+<script src="/assets/js/theme-boot.js?v=65a4cf7ac8"></script>
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Bug Hunt Bench">
@@ -36,11 +36,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;family=Inter:wght@400;500;600&amp;display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=1b1c4223ef">
+<link rel="stylesheet" href="/assets/css/site.css?v=65a4cf7ac8">
 
-<script type="module" src="/assets/js/method.js?v=1b1c4223ef"></script>
+<script type="module" src="/assets/js/method.js?v=65a4cf7ac8"></script>
 <!-- Microsoft Clarity analytics. A file, not an inline block: the CSP has no 'unsafe-inline'. -->
-<script src="/assets/js/clarity.js?v=1b1c4223ef" async></script>
+<script src="/assets/js/clarity.js?v=65a4cf7ac8" async></script>
 </head>
 <body>
 <a class="skip-link" href="#method">Skip to the method</a>
@@ -51,6 +51,29 @@
     <div class="masthead__right">
       <nav class="masthead__nav" aria-label="Sections">
         <a href="/">The board</a>
+        <details class="navmenu">
+          <summary>Harness Comparisons</summary>
+          <div class="navmenu__panel">
+            <div class="navmenu__group">
+              <p class="navmenu__bench">Bug Hunt Bench</p>
+              <a class="navmenu__item" href="/harness/bug-hunt-bench-deepseek-v4-1-flash-1017" data-board-comparison>
+                <span class="navmenu__title">DeepSeek V4.1 Flash 1017</span>
+                <span class="navmenu__meta"></span>
+              </a>
+            </div>
+            <div class="navmenu__group">
+              <p class="navmenu__bench">Terminal-Bench 2.1</p>
+              <a class="navmenu__item" href="/harness/terminal-bench-2-1-claude-haiku-5-5">
+                <span class="navmenu__title">Claude Haiku 5.5</span>
+                <span class="navmenu__meta"></span>
+              </a>
+              <a class="navmenu__item" href="/harness/terminal-bench-2-1-deepseek-v4-1-flash-1017">
+                <span class="navmenu__title">DeepSeek V4.1 Flash 1017</span>
+                <span class="navmenu__meta"></span>
+              </a>
+            </div>
+          </div>
+        </details>
         <a href="#method" aria-current="page">Method</a>
         <a href="#caveats">Caveats</a>
         <a href="#definitions">Definitions</a>

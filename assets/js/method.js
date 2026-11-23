@@ -8,8 +8,9 @@
    straight at them: a reader who clicks "cost tag" under the table should land
    on that definition, not at the top of this page. */
 
-import { glossaryTerm, fmtDate, el } from './format.js?v=1b1c4223ef';
-import { initTheme } from './theme.js?v=1b1c4223ef';
+import { glossaryTerm, fmtDate, el } from './format.js?v=65a4cf7ac8';
+import { initTheme } from './theme.js?v=65a4cf7ac8';
+import './nav.js?v=65a4cf7ac8';
 
 const $ = (id) => document.getElementById(id);
 
@@ -44,11 +45,13 @@ function render(DATA) {
   }
 
   const body = $('method-body');
+  const comparison = document.querySelector('[data-board-comparison]');
   body.textContent = '';
   DATA.method.forEach((p, i) => {
     body.appendChild(el('div', { class: 'method-p', id: `step-${i + 1}` }, [
       el('span', { class: 'n', text: String(i + 1) }),
-      el('p', { text: p }),
+      el('p', {}, [p, i === 1 && comparison ? ' ' : null, i === 1 && comparison
+        ? el('a', { href: comparison.href }, ['See the DeepSeek harness comparison.']) : null]),
     ]));
   });
 
