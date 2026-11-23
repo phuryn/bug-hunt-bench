@@ -1,12 +1,12 @@
 /* The report keeps every harness in view. Shared renderers take the benchmark's
    score scale, measurement labels and per-run observations from the report data. */
-import { COLUMNS, GROUPS, el, fmtDate, runName, reportFootnotes } from './format.js?v=b73833cb8d';
-import { renderColgroup, renderHead, renderBody } from './table.js?v=b73833cb8d';
-import { AXES, renderScatter } from './scatter.js?v=b73833cb8d';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=b73833cb8d';
-import { initTheme } from './theme.js?v=b73833cb8d';
-import { exportView } from './export-png.js?v=b73833cb8d';
-import './nav.js?v=b73833cb8d';
+import { COLUMNS, GROUPS, el, fmtDate, runName, reportFootnotes } from './format.js?v=5919157f8a';
+import { renderColgroup, renderHead, renderBody } from './table.js?v=5919157f8a';
+import { AXES, renderScatter } from './scatter.js?v=5919157f8a';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=5919157f8a';
+import { initTheme } from './theme.js?v=5919157f8a';
+import { exportView } from './export-png.js?v=5919157f8a';
+import './nav.js?v=5919157f8a';
 
 const $ = (id) => document.getElementById(id);
 const names = (runs) => new Intl.ListFormat('en').format(runs.map(runName).sort());

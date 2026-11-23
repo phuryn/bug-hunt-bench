@@ -40,8 +40,8 @@
    model's efforts to behave "just like the whole provider" is asking for exactly
    this, at both levels. */
 
-import { el, fmtDate, effortSuffix, harnessShort } from './format.js?v=b73833cb8d';
-import { runColor } from './theme.js?v=b73833cb8d';
+import { el, fmtDate, effortSuffix, harnessShort } from './format.js?v=5919157f8a';
+import { runColor } from './theme.js?v=5919157f8a';
 
 const OTHER_MAX_RUNS = 3;
 const OTHER_LABEL = 'Other';
