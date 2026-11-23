@@ -258,8 +258,9 @@ export function fmtInt(v) {
 export const runName = (run) => run.label || run.model;
 
 export function sampleCost(sample) {
-  return fmtCost(sample.cost_usd) + (sample.cost_missing_tasks
-    ? ` (recorded subtotal, ${sample.cost_missing_tasks} tasks without a cost)` : '');
+  const missing = sample.cost_missing_tasks;
+  return fmtCost(sample.cost_usd) + (missing
+    ? ` (recorded subtotal, ${missing} ${missing === 1 ? 'task' : 'tasks'} without a cost)` : '');
 }
 
 export function sampleTitle(run) {

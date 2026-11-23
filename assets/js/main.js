@@ -9,16 +9,16 @@
 import {
   COLUMNS, BAR_SCALE_NOTE, NOTE_MARK, costSentence, firstSentence,
   caveatHref, defHref, methodHref, slugify, fmtDate, el, EFFORT_RANK,
-} from './format.js?v=e8cfadb125';
-import { renderHead, renderBody, renderColgroup } from './table.js?v=e8cfadb125';
+} from './format.js?v=d0d4ea03c4';
+import { renderHead, renderBody, renderColgroup } from './table.js?v=d0d4ea03c4';
 import {
   renderScatter, AXES, SCALES, scaledAxis, scaleSentence,
-} from './scatter.js?v=e8cfadb125';
-import { matchingRuns, renderPicker, refreshGroups } from './selector.js?v=e8cfadb125';
-import { exportView } from './export-png.js?v=e8cfadb125';
-import { initTheme, hasAdjustedColors } from './theme.js?v=e8cfadb125';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=e8cfadb125';
-import { comparisonIndex } from './nav.js?v=e8cfadb125';
+} from './scatter.js?v=d0d4ea03c4';
+import { matchingRuns, renderPicker, refreshGroups } from './selector.js?v=d0d4ea03c4';
+import { exportView } from './export-png.js?v=d0d4ea03c4';
+import { initTheme, hasAdjustedColors } from './theme.js?v=d0d4ea03c4';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=d0d4ea03c4';
+import { comparisonIndex } from './nav.js?v=d0d4ea03c4';
 
 const PRESETS = {
   featured: { test: (r) => r.featured === true, name: 'Featured runs' },
@@ -93,6 +93,7 @@ const CHART_CAVEAT = {
 
 const state = {
   selected: new Set(),
+  unavailableSlugs: [],
   sort: 'fixed',
   dir: 'desc',
   view: 'table',
@@ -166,29 +167,42 @@ function sanitizePivot() {
 
 function showUnavailableRuns(missing) {
   const notice = $('link-notice');
-  notice.hidden = missing.length === 0;
+  if (!notice) return;
+  const text = $('link-notice-text');
+  const links = $('link-notice-reports');
+  notice.hidden = !missing.length || !text || !links;
   if (notice.hidden) return;
 
   const count = missing.length === 1 ? '1 run in this link is' : `${missing.length} runs in this link are`;
-  $('link-notice-text').textContent = `${count} no longer on the board. The board keeps each model in its lab’s own harness when available.`;
   const moved = new Map((DATA.harness_comparison_runs || []).map((r) => [slugify(r.id), r]));
+  const movedRows = missing.map((slug) => moved.get(slug)).filter(Boolean);
+  const rule = 'keeps each model in its lab’s own harness when available.';
+  const detail = movedRows.length === missing.length
+    ? `The board ${rule}`
+    : movedRows.length ? `Some moved because the board ${rule} See the run records for the others.`
+      : 'See the run records for details.';
+  text.textContent = `${count} no longer on the board. ${detail}`;
   const reports = new Map();
-  for (const slug of missing) {
-    const row = moved.get(slug);
-    if (row?.report_slug) reports.set(row.report_slug, row.model);
+  for (const row of movedRows) {
+    if (row.report_slug) reports.set(row.report_slug, row.model);
   }
-  $('link-notice-reports').replaceChildren(...Array.from(reports, ([slug, model]) =>
+  links.replaceChildren(...Array.from(reports, ([slug, model]) =>
     el('a', { href: `/harness/${slug}`, text: `${model} harness comparison (high effort)` })));
+}
+
+function clearUnavailableRuns() {
+  state.unavailableSlugs = [];
+  showUnavailableRuns(state.unavailableSlugs);
 }
 
 function readUrl() {
   const p = new URLSearchParams(location.search);
   const runsParam = p.get('runs');
-  let missing = [];
+  state.unavailableSlugs = [];
   if (runsParam !== null) {
     const wanted = new Set(runsParam.split(',').filter(Boolean));
     state.selected = new Set(RUNS.filter((r) => wanted.has(r.slug)).map((r) => r.slug));
-    missing = [...wanted].filter((slug) => !state.selected.has(slug));
+    state.unavailableSlugs = [...wanted].filter((slug) => !state.selected.has(slug));
     state.preset = detectPreset();
   } else {
     const preset = p.get('preset');
@@ -211,12 +225,14 @@ function readUrl() {
   // checked by sanitizePivot() on the first render, same as a link typed by
   // hand rather than produced by this page.
   state.pivot = p.get('pivot') || null;
-  showUnavailableRuns(missing);
+  showUnavailableRuns(state.unavailableSlugs);
 }
 
 function writeUrl() {
   const p = new URLSearchParams();
-  if (state.preset) p.set('preset', state.preset);
+  if (state.unavailableSlugs.length) {
+    p.set('runs', [...state.selected, ...state.unavailableSlugs].join(','));
+  } else if (state.preset) p.set('preset', state.preset);
   else p.set('runs', [...state.selected].join(','));
   if (state.sort !== 'fixed') p.set('sort', state.sort);
   if (state.dir !== 'desc') p.set('dir', state.dir);
@@ -640,6 +656,7 @@ function onSort(key) {
 function onToggleRun(slug, on) {
   if (on) state.selected.add(slug);
   else state.selected.delete(slug);
+  clearUnavailableRuns();
   state.preset = detectPreset();
   /* the vendor and model headings are checkboxes now, so they have to follow a
      single run's toggle - in place, because rebuilding the picker here would
@@ -658,6 +675,7 @@ function onToggleVendor(group, on) {
 }
 
 function syncPickerSelection() {
+  clearUnavailableRuns();
   state.preset = detectPreset();
   for (const run of pickerMatches) {
     const input = $(`run-${run.slug}`);
@@ -691,13 +709,15 @@ function setView(view, focus) {
 }
 
 function wire() {
-  $('link-notice-dismiss').addEventListener('click', () => {
-    $('link-notice').hidden = true;
+  $('link-notice-dismiss')?.addEventListener('click', () => {
+    clearUnavailableRuns();
+    writeUrl();
     $(VIEWS[state.view].tab).focus({ preventScroll: true });
   });
   document.querySelectorAll('.preset').forEach((btn) => {
     btn.addEventListener('click', () => {
       applyPreset(btn.dataset.preset);
+      clearUnavailableRuns();
       renderAll();
     });
   });

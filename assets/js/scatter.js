@@ -17,8 +17,8 @@
 import {
   pointLabels, fmtCost, fmtWall, fmtTurns, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
   harnessShort, runName, sampleCost,
-} from './format.js?v=e8cfadb125';
-import { runColor } from './theme.js?v=e8cfadb125';
+} from './format.js?v=d0d4ea03c4';
+import { runColor } from './theme.js?v=d0d4ea03c4';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -404,9 +404,7 @@ function tooltipContent(p, axis) {
     const label = p.incompleteCost ? 'Published cost per run' : axis.noun;
     frag.appendChild(tipRow(label, (axis.id === 'cost' && r.cost_estimated ? '≈' : '') + axis.fmt(r[axis.key])));
     r.samples.forEach((sample) => {
-      const missing = sample.cost_missing_tasks;
-      const metric = p.incompleteCost ? `${missing} ${missing === 1 ? 'task' : 'tasks'} without a recorded cost`
-        : axis.id === 'cost' ? sampleCost(sample) : axis.fmt(sample[axis.key]);
+      const metric = axis.id === 'cost' ? sampleCost(sample) : axis.fmt(sample[axis.key]);
       frag.appendChild(tipRow(`Run ${sample.run}`, `${sample.fixed} · ${metric}`));
     });
     if (r.caveat) frag.appendChild(el('div', { class: 'tip-row', text: r.caveat }));
