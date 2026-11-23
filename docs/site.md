@@ -59,14 +59,17 @@ same coda: one serif sentence about the newsletter and Substack's subscribe fram
 above the footer, so it sits on every view and never between a reader and a number.
 
 `/harness/<slug>` compares a single model across harnesses. The menu groups the
-reports by benchmark and loads its counts from `data/harness/index.json`. Every
-report shows all its harnesses across the shared table, charts and coverage
-renderers. Per-run score dots, row titles and chart whiskers show the observations
+reports by benchmark and loads its counts from `data/harness/index.json`. Each
+report uses the shared table, charts and coverage renderers. Per-run score dots,
+row titles and chart whiskers show the observations
 under the published means. Terminal-Bench coverage names public tasks. Bug Hunt
 Bench coverage uses anonymized indices. The report's cost and time notes explain
 what the sources measure, including subtotal costs when Terminal-Bench trials
-lack costs. The Mini Harness tag discloses the site author's own harness. The
-report shells use the same CSS tokens and primitives, including a 44 px target
+lack costs. The Mini Harness tag discloses the site author's own harness.
+The Terminal-Bench DeepSeek report shows turns only for harnesses with a count for
+every published trial. The chart names the omissions, and the Haiku report
+explains that only Mini Harness has complete logs. The report shells use the
+same CSS tokens and primitives, including a 44 px target
 for report tabs and links and a 320 px reflow floor. The board and each report
 offer PNG export on every view they render.
 
@@ -377,8 +380,9 @@ dollar figure. The five views land as
 
 Report exports use the same renderer. They carry the report heading, selected
 view, harness and run counts, visible measurement notes, and the report's
-canonical URL. The generator records the committer date of the last commit
-that touched the report's source folder in Mini Harness. The page and PNG
+canonical URL. An asterisk marks a figure or harness with a note. The footer
+prints the note and names its harness. The generator records the committer
+date of the last commit that touched the report's source folder in Mini Harness. The page and PNG
 read it from the report JSON. File names follow `{report-slug}-{view}-{theme}-{date}.png`.
 
 ## Deploy to Netlify

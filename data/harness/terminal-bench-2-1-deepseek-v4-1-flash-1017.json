@@ -12,7 +12,7 @@
     "updated": "2026-11-07",
     "effort": "high",
     "source": "https://github.com/phuryn/mini-harness/tree/main/benchmarks/terminal-bench-2.1--deepseek-v4.1-flash-1017",
-    "has_turns": false,
+    "has_turns": true,
     "planted_total": 89,
     "repo1_bug_count": null,
     "repo2_total": null,
@@ -208,7 +208,8 @@
           "wall_min": 836.6766666666666,
           "cost_usd": 2.922585,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3249
         },
         {
           "run": 2,
@@ -297,7 +298,8 @@
           "wall_min": 735.9083333333333,
           "cost_usd": 2.813172,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3226
         },
         {
           "run": 3,
@@ -383,7 +385,8 @@
           "wall_min": 747.3083333333333,
           "cost_usd": 2.791717,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3119
         }
       ],
       "native": false,
@@ -567,7 +570,8 @@
         "88": 2,
         "89": 3
       },
-      "coverage_runs": 3
+      "coverage_runs": 3,
+      "turns": 3198
     },
     {
       "id": "mini-swe-agent",
@@ -663,7 +667,8 @@
           "wall_min": 759.305,
           "cost_usd": 2.446447,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3193
         },
         {
           "run": 2,
@@ -750,7 +755,8 @@
           "wall_min": 752.5933333333334,
           "cost_usd": 2.582433,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3409
         },
         {
           "run": 3,
@@ -838,7 +844,8 @@
           "wall_min": 659.4083333333333,
           "cost_usd": 2.293968,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3156
         }
       ],
       "native": false,
@@ -1022,7 +1029,8 @@
         "88": 3,
         "89": 3
       },
-      "coverage_runs": 3
+      "coverage_runs": 3,
+      "turns": 3252.6666666666665
     },
     {
       "id": "opencode",
@@ -1119,7 +1127,8 @@
           "wall_min": 720.5283333333333,
           "cost_usd": 1.532052,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2350
         },
         {
           "run": 2,
@@ -1204,7 +1213,8 @@
           "wall_min": 708.5866666666667,
           "cost_usd": 1.574152,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2522
         },
         {
           "run": 3,
@@ -1288,7 +1298,8 @@
           "wall_min": 697.0233333333333,
           "cost_usd": 1.582276,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2389
         }
       ],
       "native": false,
@@ -1468,7 +1479,8 @@
         "88": 3,
         "89": 3
       },
-      "coverage_runs": 3
+      "coverage_runs": 3,
+      "turns": 2420.3333333333335
     },
     {
       "id": "mini-harness",
@@ -1560,7 +1572,8 @@
           "wall_min": 855.1033333333334,
           "cost_usd": 2.063386,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3059
         },
         {
           "run": 2,
@@ -1646,7 +1659,8 @@
           "wall_min": 836.715,
           "cost_usd": 2.451869,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3009
         },
         {
           "run": 3,
@@ -1732,7 +1746,8 @@
           "wall_min": 860.4366666666666,
           "cost_usd": 2.228878,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2966
         }
       ],
       "native": false,
@@ -1918,7 +1933,8 @@
         "88": 3,
         "89": 3
       },
-      "coverage_runs": 3
+      "coverage_runs": 3,
+      "turns": 3011.3333333333335
     },
     {
       "id": "opencode2",
@@ -2447,7 +2463,8 @@
           "wall_min": 681.65,
           "cost_usd": 1.921713,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2441
         },
         {
           "run": 2,
@@ -2530,7 +2547,8 @@
           "wall_min": 654.9783333333334,
           "cost_usd": 1.824103,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2441
         },
         {
           "run": 3,
@@ -2616,7 +2634,8 @@
           "wall_min": 744.3916666666667,
           "cost_usd": 1.937667,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2622
         }
       ],
       "native": false,
@@ -2796,7 +2815,8 @@
         "88": 3,
         "89": 3
       },
-      "coverage_runs": 3
+      "coverage_runs": 3,
+      "turns": 2501.3333333333335
     },
     {
       "id": "pi",
@@ -2887,7 +2907,8 @@
           "wall_min": 683.9983333333333,
           "cost_usd": 1.638383,
           "cost_missing_tasks": 1,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2476
         },
         {
           "run": 2,
@@ -2969,7 +2990,8 @@
           "wall_min": 692.8216666666667,
           "cost_usd": 1.728654,
           "cost_missing_tasks": 1,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2520
         },
         {
           "run": 3,
@@ -3049,7 +3071,8 @@
           "wall_min": 634.3083333333333,
           "cost_usd": 1.789216,
           "cost_missing_tasks": 1,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 2567
         }
       ],
       "native": false,
@@ -3219,7 +3242,8 @@
         "88": 3,
         "89": 2
       },
-      "coverage_runs": 3
+      "coverage_runs": 3,
+      "turns": 2521
     },
     {
       "id": "hermes",
@@ -3739,7 +3763,8 @@
           "wall_min": 828.5766666666667,
           "cost_usd": 3.670549,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3669
         },
         {
           "run": 2,
@@ -3817,7 +3842,8 @@
           "wall_min": 907.1683333333333,
           "cost_usd": 3.707293,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3863
         },
         {
           "run": 3,
@@ -3898,7 +3924,8 @@
           "wall_min": 886.8516666666667,
           "cost_usd": 3.780161,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 3989
         }
       ],
       "native": false,
@@ -4068,7 +4095,9 @@
         "88": 3,
         "89": 3
       },
-      "coverage_runs": 3
+      "coverage_runs": 3,
+      "turns": 3840.3333333333335,
+      "turns_note": "Sends keystrokes in batches, and each batch is a tool call, so its turn count is higher per model response than other harnesses’ counts."
     }
   ]
 }

@@ -1073,7 +1073,8 @@
           "wall_min": 566.3266666666667,
           "cost_usd": 3.481945,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 1457
         },
         {
           "run": 2,
@@ -1154,7 +1155,8 @@
           "wall_min": 547.51,
           "cost_usd": 3.48247,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 1432
         },
         {
           "run": 3,
@@ -1238,7 +1240,8 @@
           "wall_min": 598.185,
           "cost_usd": 2.879213,
           "cost_missing_tasks": 0,
-          "cost_estimated": false
+          "cost_estimated": false,
+          "turns": 1461
         }
       ],
       "native": false,
@@ -1420,7 +1423,8 @@
         "88": 1,
         "89": 3
       },
-      "coverage_runs": 3
+      "coverage_runs": 3,
+      "turns": 1450
     },
     {
       "id": "hermes",

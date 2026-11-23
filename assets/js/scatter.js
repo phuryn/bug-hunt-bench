@@ -16,9 +16,10 @@
 
 import {
   pointLabels, fmtCost, fmtWall, fmtTurns, fmtDate, COST_KIND_LABEL, NOTE_MARK, svgEl, el, measureText, EFFORT_RANK,
+  reportRunNotes,
   harnessShort, runName, sampleCost,
-} from './format.js?v=cc1f84b407';
-import { runColor } from './theme.js?v=cc1f84b407';
+} from './format.js?v=2e42582cba';
+import { runColor } from './theme.js?v=2e42582cba';
 
 const LABEL_FONT = '10.5px Inter, system-ui, sans-serif';
 const LOG_TICKS = [0.2, 0.5, 1, 2, 5, 10, 20, 50, 100, 200, 500];
@@ -270,18 +271,22 @@ export function scatterLayout(runs, allRuns, width, height, axis) {
   const skipped = runs.length - plotted.length;
   const labels = pointLabels(plotted);
 
-  const points = plotted.map((r) => ({
-    run: r,
-    id: r.id,
-    // the drawn colour, not the raw one: a couple of hues get a dark-mode variant
-    color: runColor(r.color),
-    xv: val(r),
-    score: r.fixed,
-    cx: x(val(r)),
-    cy: y(r.fixed),
-    flagged: Boolean(A.flag && r[A.flag]),
-    label: (labels.get(r.id) || runName(r)) + (A.flag && r[A.flag] ? ` ${NOTE_MARK}` : ''),
-  })).sort((a, b) => b.score - a.score);
+  const points = plotted.map((r) => {
+    const notes = report ? reportRunNotes(r, A.key) : [];
+    const flagged = Boolean(A.flag && r[A.flag]);
+    return {
+      run: r,
+      id: r.id,
+      // the drawn colour, not the raw one: a couple of hues get a dark-mode variant
+      color: runColor(r.color),
+      xv: val(r),
+      score: r.fixed,
+      cx: x(val(r)),
+      cy: y(r.fixed),
+      flagged, notes,
+      label: (labels.get(r.id) || runName(r)) + (flagged || notes.length ? ` ${NOTE_MARK}` : ''),
+    };
+  }).sort((a, b) => b.score - a.score);
 
   if (report) {
     points.forEach((p) => {
@@ -410,8 +415,10 @@ function tooltipContent(p, axis) {
       const metric = axis.id === 'cost' ? sampleCost(sample) : axis.fmt(sample[axis.key]);
       frag.appendChild(tipRow(`Run ${sample.run}`, `${sample.fixed} · ${metric}`));
     });
-    if (r.caveat) frag.appendChild(el('div', { class: 'tip-row', text: r.caveat }));
-    if (p.flagged) frag.appendChild(el('div', { class: 'tip-row', text: r[axis.flag] }));
+    p.notes.filter((note) => !note.shownWithSamples).forEach((note) => {
+      const runs = note.passes.length ? `Run${note.passes.length > 1 ? 's' : ''} ${note.passes.join(', ')}: ` : '';
+      frag.appendChild(el('div', { class: 'tip-row', text: runs + note.text }));
+    });
     return frag;
   }
   if (r.harness) frag.appendChild(tipRow('Harness', r.harness));
@@ -595,6 +602,10 @@ export function renderScatter(host, runs, allRuns, axis, footnote, control) {
   }
 
   if (L.skipped > 0) {
+    if (A.describeSkipped) {
+      host.appendChild(el('p', { class: 'chart__def chart__def--skip', text: A.describeSkipped(L) }));
+      return L;
+    }
     const parts = [];
     const zero = L.zeroRuns || [];
     const missing = L.missingRuns || [];

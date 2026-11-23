@@ -11,12 +11,12 @@
 import {
   COLUMNS, GROUPS, TOTALS, BAR_SCALE_NOTE, NOTE_MARK, fmtCost, fmtWall, fmtInt,
   fmtDate, barRatio, barScales, effortSuffix, compareRuns, firstSentence,
-  costSentence, segmentsText, runName,
-} from './format.js?v=cc1f84b407';
-import { scatterLayout, resolveAxis } from './scatter.js?v=cc1f84b407';
-import { coverageLayout, coverageOrderNote, coverageSummaryNote, coverageColor } from './coverage.js?v=cc1f84b407';
-import { runColor, activeTheme } from './theme.js?v=cc1f84b407';
-import { nRuns } from './table.js?v=cc1f84b407';
+  costSentence, segmentsText, runName, reportRunNotes, reportFootnotes,
+} from './format.js?v=2e42582cba';
+import { scatterLayout, resolveAxis } from './scatter.js?v=2e42582cba';
+import { coverageLayout, coverageOrderNote, coverageSummaryNote, coverageColor } from './coverage.js?v=2e42582cba';
+import { runColor, activeTheme } from './theme.js?v=2e42582cba';
+import { nRuns } from './table.js?v=2e42582cba';
 
 const SCALE = 2;
 const PAD = 32;
@@ -194,11 +194,9 @@ function drawFooter(ctx, T, w, y, lines) {
 
 /* ------------------------------------------------------------------- table */
 
-const REPORT_CAVEAT_FONT = `11px ${SANS}`;
-
-function drawHarness(ctx, T, run, c, baseline, caveats) {
+function drawHarness(ctx, T, run, c, baseline, mark) {
   const x = c.x + 26;
-  const name = runName(run);
+  const name = runName(run) + mark;
   const nameFont = `600 14px ${SANS}`;
   text(ctx, name, x, baseline, nameFont, T.ink);
   let tagX = x + ctx.measureText(name).width + 6;
@@ -224,7 +222,6 @@ function drawHarness(ctx, T, run, c, baseline, caveats) {
   const detail = [run.harness_version, `n=${nRuns(run)}`].filter(Boolean).join(' · ');
   const detailFont = fitMono(ctx, detail, c.width - 34, 9.5, 7.5);
   text(ctx, detail, x, baseline + 14, detailFont, T.muted);
-  caveats.forEach((note, i) => text(ctx, note, x, baseline + 27 + i * 13, REPORT_CAVEAT_FONT, T.muted));
 }
 
 function drawTable(ctx, T, runs, state, w, report) {
@@ -298,21 +295,23 @@ function drawTable(ctx, T, runs, state, w, report) {
     return Math.max(0, ...strs.map((s) => ctx.measureText(s).width));
   };
   const has = (v) => v !== null && v !== undefined;
+  const markFor = (run, key) => rowDetails?.get(run).marks.has(key) ? ` ${NOTE_MARK}` : '';
   const wallValue = report ? fmtInt : fmtWall;
-  const costValue = (r) => (report && r.cost_estimated ? '≈' : '') + fmtCost(r.cost_usd);
+  const wallUnit = (r) => 'min' + markFor(r, 'wall_min');
+  const costValue = (r) => (report && r.cost_estimated ? '≈' : '') + fmtCost(r.cost_usd) + markFor(r, 'cost_usd');
   const denominator = `/${scoreTotal}`;
   const reserve = {
     fixed: Math.max(report ? 78 : 58, 12 + widest(runs.map((r) => fmtInt(r.fixed)), `600 15px ${SANS}`)
       + widest([denominator], `11px ${SANS}`) + 8),
     extras: Math.max(28, 10 + widest(runs.map((r) => fmtInt(r.extras)), `12px ${SANS}`) + 8),
     wall: Math.max(62, 13 + widest(runs.filter((r) => has(r.wall_min)).map((r) => wallValue(r.wall_min)),
-      `12.5px ${SANS}`) + widest(['min'], `10px ${SANS}`) + 8),
+      `12.5px ${SANS}`) + widest(report ? runs.map(wallUnit) : ['min'], `10px ${SANS}`) + 8),
     cost: Math.max(56, 10 + widest(runs.map(costValue), `12.5px ${SANS}`) + 8),
   };
   const denWidth = report ? widest([denominator], `11px ${SANS}`) : 0;
   const sampleRadius = report ? parseFloat(cssVar('--sample-size')) / 2 : 0;
   const sampleStep = report ? parseFloat(cssVar('--sample-step')) : 0;
-  const sorted = runs.slice().sort((a, b) => compareRuns(a, b, state.sort, state.dir));
+  const sorted = rowDetails ? [...rowDetails.keys()] : runs.slice().sort((a, b) => compareRuns(a, b, state.sort, state.dir));
 
   sorted.forEach((run) => {
     const top = y;
@@ -326,7 +325,7 @@ function drawTable(ctx, T, runs, state, w, report) {
         ctx.fillStyle = runColor(run.color);
         ctx.fillRect(c.x + 8, top + 12, 11, 11);
         if (report) {
-          drawHarness(ctx, T, run, c, baseline, details.caveats);
+          drawHarness(ctx, T, run, c, baseline, markFor(run, c.key));
           return;
         }
         /* name and badge on one line, vendor · harness under it — the screen's
@@ -376,7 +375,9 @@ function drawTable(ctx, T, runs, state, w, report) {
         const vw = ctx.measureText(wallValue(run.wall_min)).width;
         text(ctx, wallValue(run.wall_min), end + 10, baseline + 2, `12.5px ${SANS}`, T.ink2);
         if (run.wall_min !== null && run.wall_min !== undefined) {
-          text(ctx, 'min', end + 13 + vw, baseline + 2, `10px ${SANS}`, T.neutral);
+          text(ctx, wallUnit(run), end + 13 + vw, baseline + 2, `10px ${SANS}`, T.neutral);
+        } else if (markFor(run, c.key)) {
+          text(ctx, NOTE_MARK, end + 13 + vw, baseline + 2, `10px ${SANS}`, T.neutral);
         }
       } else if (c.key === 'cost_usd') {
         // the figure only; which of these are bills and which are estimates is
@@ -731,6 +732,12 @@ export async function exportView({
   const sortCol = (report?.columns || COLUMNS).find((c) => c.key === state.sort);
   const sortLabel = `${sortCol ? sortCol.label : state.sort} ${state.dir === 'asc' ? 'ascending' : 'descending'}`;
   const reportChart = report && isChart ? scatterLayout(runs, allRuns, plotW, Math.round(plotW * 0.5), axis) : null;
+  const tableNotes = report && !isChart && !isCoverage
+    ? new Map(runs.slice().sort((a, b) => compareRuns(a, b, state.sort, state.dir)).map((r) => [r, reportRunNotes(r)]))
+    : null;
+  const harnessNotes = reportFootnotes(reportChart
+    ? reportChart.points.map(({ run, notes }) => [run, notes])
+    : tableNotes || []);
 
   /* The definition line, and — only when there are any on this card — how many of
      the runs shown carry a note on their own figure. Measured before the canvas
@@ -755,10 +762,14 @@ export async function exportView({
   const costLine = !report && (isChart ? axis.id === 'cost' : !isCoverage)
     ? segmentsText(costSentence(runs, glossary))
     : '';
+  const skippedReportRuns = reportChart && (axis.describeSkipped
+    ? axis.describeSkipped(reportChart)
+    : unplottedNote(runs, reportChart.axis));
   const viewNotes = report ? [
     !isChart && !isCoverage ? `Sorted by ${sortLabel}.` : null,
-    isChart ? unplottedNote(runs, resolveAxis(axis)) : null,
+    skippedReportRuns,
     ...report.notes,
+    ...harnessNotes,
   ] : [
     isChart
       ? `${runs.length} of ${allRuns.length} runs shown — ${presetName}. ${resolveAxis(axis).noun} on a ${resolveAxis(axis).scale === 'log' ? 'logarithmic' : 'linear'} axis; the score axis stops above the board's best run, which is out of 105.`
@@ -799,13 +810,13 @@ export async function exportView({
     let rowsHeight = runs.length * 50;
     if (report) {
       const { columns, groups } = report;
-      const nameWidth = plotW * columns.find((c) => c.key === 'model').w / columns.reduce((sum, c) => sum + c.w, 0);
       const step = parseFloat(cssVar('--sample-step'));
       const size = parseFloat(cssVar('--sample-size'));
-      const rowDetails = new Map(runs.map((run) => {
-        const caveats = run.caveat ? wrapText(measure, run.caveat, REPORT_CAVEAT_FONT, nameWidth - 34) : [];
-        const height = Math.max(50, 15 + step * (run.samples.length - 1) + size, 38 + caveats.length * 13);
-        return [run, { caveats, height }];
+      const keys = new Set(columns.map((c) => c.key));
+      const rowDetails = new Map([...tableNotes].map(([run, notes]) => {
+        const marks = new Set(notes.map(({ column }) => keys.has(column) ? column : 'model'));
+        const height = Math.max(50, 15 + step * (run.samples.length - 1) + size);
+        return [run, { marks, height }];
       }));
       rowsHeight = [...rowDetails.values()].reduce((sum, { height }) => sum + height, 0);
       reportTable = { columns, groups, scoreTotal: meta.score_total, rowDetails };

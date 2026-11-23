@@ -1,23 +1,31 @@
 /* The report keeps every harness in view. Shared renderers take the benchmark's
    score scale, measurement labels and per-run observations from the report data. */
-import { COLUMNS, GROUPS, el, fmtDate } from './format.js?v=cc1f84b407';
-import { renderColgroup, renderHead, renderBody } from './table.js?v=cc1f84b407';
-import { AXES, renderScatter } from './scatter.js?v=cc1f84b407';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=cc1f84b407';
-import { initTheme } from './theme.js?v=cc1f84b407';
-import { exportView } from './export-png.js?v=cc1f84b407';
-import './nav.js?v=cc1f84b407';
+import { COLUMNS, GROUPS, el, fmtDate, runName, reportFootnotes } from './format.js?v=2e42582cba';
+import { renderColgroup, renderHead, renderBody } from './table.js?v=2e42582cba';
+import { AXES, renderScatter } from './scatter.js?v=2e42582cba';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=2e42582cba';
+import { initTheme } from './theme.js?v=2e42582cba';
+import { exportView } from './export-png.js?v=2e42582cba';
+import './nav.js?v=2e42582cba';
 
 const $ = (id) => document.getElementById(id);
+const names = (runs) => new Intl.ListFormat('en').format(runs.map(runName).sort());
 
-function renderIntro(meta) {
+function renderIntro(meta, runs) {
   const setup = meta.task_names
     ? `the same ${meta.score_total} Terminal-Bench tasks`
     : 'the same planted bugs across both repositories';
   $('report-lede').textContent =
     `Every run uses ${meta.model} at ${meta.effort} effort on ${setup}. `
-    + `Only the harness varies, with ${meta.runs_per_harness} runs for each of ${meta.harness_count} harnesses`
-    + (meta.has_turns ? '.' : ', and the published Terminal-Bench results carry no turn counts.');
+    + `Only the harness varies, with ${meta.runs_per_harness} runs for each of ${meta.harness_count} harnesses.`;
+  if (meta.task_names) {
+    const counted = runs.filter((run) => Number.isFinite(run.turns));
+    if (meta.has_turns) {
+      $('report-lede').textContent += ` Turn counts are available for ${counted.length} of ${runs.length} harnesses.`;
+    } else if (counted.length) {
+      $('report-lede').textContent += ` Only ${names(counted)}’s logs from these runs were kept.`;
+    }
+  }
   $('report-source').href = meta.source;
   $('report-footer-source').href = meta.source;
   const updated = $('report-updated');
@@ -89,7 +97,15 @@ async function boot() {
         chartTitle: `Score against ${meta.time_label.toLowerCase()}`,
         measureLabel: meta.time_label.toLowerCase(), flag: meta.task_names ? null : 'wall_note',
       } : {}),
+      ...(key === 'turns' && meta.task_names ? { describeSkipped: terminalTurnsOmissions } : {}),
     };
+  }
+
+  function terminalTurnsOmissions({ missingRuns, zeroRuns }) {
+    return [
+      missingRuns.length && `${names(missingRuns)} ${missingRuns.length === 1 ? 'is' : 'are'} left out: some of their runs left no log to count turns from.`,
+      zeroRuns.length && `${names(zeroRuns)} recorded zero turns, which the logarithmic axis cannot show.`,
+    ].filter(Boolean).join(' ');
   }
 
   function chartCaption(layout) {
@@ -97,8 +113,10 @@ async function boot() {
       'Dots show means. Whiskers span the lowest and highest recorded values across runs. The score axis focuses on the measured range. ',
       'The horizontal axis is logarithmic.',
     ];
-    if (layout.flagged.length) parts.push(' * Marks harnesses with runs affected by overlapping work or recorded machine contention.');
-    if (layout.axis.id === 'turns') parts.push(' Turns count tool calls plus one per repository leg.');
+    if (layout.flagged.length) parts.push(' A broken ring marks harnesses with runs affected by overlapping work or recorded machine contention.');
+    if (layout.axis.id === 'turns') {
+      parts.push(` Turns count tool calls plus one per ${meta.task_names ? 'task' : 'repository leg'}.`);
+    }
     if (layout.points.some((p) => p.incompleteCost)) {
       parts.push(' Cost whiskers are omitted for harnesses with missing task costs.');
     }
@@ -107,7 +125,13 @@ async function boot() {
 
   function renderChart() {
     const key = state.view;
-    renderScatter(panels.get(key).querySelector('.chart-host'), runs, runs, axisFor(key), chartCaption);
+    const host = panels.get(key).querySelector('.chart-host');
+    const layout = renderScatter(host, runs, runs, axisFor(key), chartCaption);
+    if (key === 'turns' && meta.task_names && layout) {
+      const notes = reportFootnotes(layout.points.map(({ run, notes }) =>
+        [run, notes.filter((note) => note.column === 'turns')]));
+      host.append(...notes.map((note) => el('p', { class: 'chart__def', text: note })));
+    }
   }
 
   function render() {
@@ -135,7 +159,7 @@ async function boot() {
     render();
   }
 
-  renderIntro(meta);
+  renderIntro(meta, runs);
   renderColgroup($('report-board'), columns);
   renderKeys(meta, runs);
   tabs.forEach((tab, i) => {
@@ -167,7 +191,7 @@ async function boot() {
           viewName: $('report-views').querySelector('.tab[aria-selected="true"]').textContent.trim(),
           columns, groups, chartCaption,
           notes: [
-            view === 'table' ? scoreNote(meta) : null,
+            ...(view === 'table' ? [...$('table-keys').querySelectorAll('p')].map((note) => note.textContent) : []),
             ...['report-cost-note', 'report-time-note'].map($).filter((note) => !note.hidden)
               .map((note) => note.textContent),
           ],

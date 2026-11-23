@@ -34,9 +34,9 @@
    pivot's dividers land in the same place all the way down the card, on
    screen and in the PNG export alike. */
 
-import { el, TOTALS, harnessShort, harnessTwinIds, runName } from './format.js?v=cc1f84b407';
-import { effortBadge } from './table.js?v=cc1f84b407';
-import { runColor } from './theme.js?v=cc1f84b407';
+import { el, TOTALS, harnessShort, harnessTwinIds, runName } from './format.js?v=2e42582cba';
+import { effortBadge } from './table.js?v=2e42582cba';
+import { runColor } from './theme.js?v=2e42582cba';
 
 /** One colour per VENDOR here, not the per-model shade every other view uses: Sonnet and Opus fill
     their ticks in the same Anthropic colour, so two rows compare tick for tick instead of shade

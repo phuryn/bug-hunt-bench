@@ -257,6 +257,53 @@ export function fmtInt(v) {
 
 export const runName = (run) => run.label || run.model;
 
+const REPORT_NOTES = {
+  note: 'model', caveat: 'model', cost_note: 'cost_usd', wall_note: 'wall_min', turns_note: 'turns',
+};
+
+// Keep hover and export in sync. When only individual passes carry a note,
+// list those passes together so the text appears once per harness.
+export function reportRunNotes(run, measure) {
+  const notes = new Map();
+  for (const [field, column] of Object.entries(REPORT_NOTES)) {
+    if (measure && column !== 'model' && column !== measure) continue;
+    if (run[field]) notes.set(run[field], { column, text: run[field], passes: [] });
+    for (const sample of run.samples || []) {
+      const text = sample[field];
+      if (!text) continue;
+      if (!notes.has(text)) notes.set(text, { column, text, passes: [sample.run] });
+      else if (notes.get(text).passes.length) notes.get(text).passes.push(sample.run);
+    }
+  }
+  if (!measure || measure === 'cost_usd') {
+    const gaps = (run.samples || []).filter((sample) => sample.cost_missing_tasks > 0);
+    if (gaps.length) {
+      const counts = gaps.map((sample) => `run ${sample.run} (${sample.cost_missing_tasks})`).join(', ');
+      const text = `Tasks without a cost by run — ${counts}.`;
+      notes.set(text, { column: 'cost_usd', text, passes: [], shownWithSamples: true });
+    }
+  }
+  return [...notes.values()];
+}
+
+export function reportFootnotes(rows) {
+  const byNote = new Map();
+  for (const [run, notes] of rows) {
+    for (const { text, passes } of notes) {
+      const subjects = byNote.get(text) || new Map();
+      const passLabel = passes.length ? ` (run${passes.length > 1 ? 's' : ''} ${passes.join(', ')})` : '';
+      const harnesses = subjects.get(passLabel) || [];
+      harnesses.push(runName(run));
+      subjects.set(passLabel, harnesses);
+      byNote.set(text, subjects);
+    }
+  }
+  return [...byNote].map(([note, subjects]) => {
+    const attribution = [...subjects].map(([passes, harnesses]) => harnesses.join(', ') + passes).join(' · ');
+    return `${NOTE_MARK} ${attribution}: ${note}`;
+  });
+}
+
 export function sampleCost(sample) {
   const missing = sample.cost_missing_tasks;
   const tasks = `${missing} ${missing === 1 ? 'task' : 'tasks'} without a cost`;
@@ -277,10 +324,10 @@ export function sampleTitle(run) {
       sample.partial == null ? null : `${sample.partial} partial`,
       sample.claimed_only == null ? null : `${sample.claimed_only} claimed-only`,
       sample.extras == null ? null : `${sample.extras} unplanted`,
-      sample.wall_note,
+      ...reportRunNotes(sample).map((note) => note.text),
     ];
     return fields.filter(Boolean).join(' · ');
-  }).join('\n');
+  }).concat(run.turns_note || []).join('\n');
 }
 
 /** Column model, shared by the table, the sorter and the PNG export.
