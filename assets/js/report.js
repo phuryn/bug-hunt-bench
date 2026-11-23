@@ -1,11 +1,11 @@
 /* The report keeps every harness in view. Shared renderers take the benchmark's
    score scale, measurement labels and per-run observations from the report data. */
-import { COLUMNS, GROUPS, el } from './format.js?v=d0d4ea03c4';
-import { renderColgroup, renderHead, renderBody } from './table.js?v=d0d4ea03c4';
-import { AXES, renderScatter } from './scatter.js?v=d0d4ea03c4';
-import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=d0d4ea03c4';
-import { initTheme } from './theme.js?v=d0d4ea03c4';
-import './nav.js?v=d0d4ea03c4';
+import { COLUMNS, GROUPS, el } from './format.js?v=6a8ac2259b';
+import { renderColgroup, renderHead, renderBody } from './table.js?v=6a8ac2259b';
+import { AXES, renderScatter } from './scatter.js?v=6a8ac2259b';
+import { renderCoverage, coverageOrderNote, coverageSummaryNote } from './coverage.js?v=6a8ac2259b';
+import { initTheme } from './theme.js?v=6a8ac2259b';
+import './nav.js?v=6a8ac2259b';
 
 const $ = (id) => document.getElementById(id);
 

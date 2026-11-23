@@ -109,7 +109,7 @@
     "score_label": "Tasks passed",
     "time_label": "Agent time",
     "time_note": "Agent time sums the time spent by the agent across the tasks in each run, excluding container setup.",
-    "cost_note": "Costs are token estimates at DeepSeek’s off-peak list rates, including reasoning tokens. The published mean scales the average priced task to a full run. Per-run costs sum recorded task costs and are lower bounds when tasks lack a price."
+    "cost_note": "Costs are token counts priced at DeepSeek’s off-peak list rates, including reasoning tokens. The published mean scales the average priced task to a full run. Per-run costs sum recorded task costs and are lower bounds when tasks lack a price."
   },
   "runs": [
     {

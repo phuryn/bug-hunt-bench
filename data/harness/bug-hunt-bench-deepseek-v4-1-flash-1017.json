@@ -19,7 +19,7 @@
     "score_label": "Planted bugs fixed",
     "time_label": "Wall time",
     "time_note": "Wall time adds the agent time from both repos, with dependency installation excluded.",
-    "cost_note": "Costs are token estimates at DeepSeek’s off-peak list rates."
+    "cost_note": "Costs are token counts priced at DeepSeek’s off-peak list rates."
   },
   "runs": [
     {
