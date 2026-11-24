@@ -1,0 +1,45 @@
+Does Z.ai's own endpoint serve glm-5.4, and does its effort dial bind? - 2026-11-23 (launch day)
+
+Path: Claude Code -> https://api.z.ai/api/anthropic (Anthropic-compatible), a Coding Plan key. The probe script and the sweep rows are kept unpublished.
+
+VERDICT: SERVED, AND THE DIAL BINDS AT HIGH - BUT THE ENDPOINT NO LONGER VALIDATES THE ENUM, AND ABOVE HIGH IT IS
+INCONCLUSIVE. Arm glm54zaimax runs at max, the top tier Claude Code can send. Whether max thinks longer than high is
+not shown at n=2.
+
+1. WHAT THE CLI SENDS (a wire tap, which now also records output_config and thinking):
+   CLI 2.1.330 (laptop) and 2.1.321 (the droplets' pinned build), `--effort max`, model `glm-5.4[1m]`:
+       model=glm-5.4  output_config={"effort": "max"}  thinking={"type": "adaptive", "display": "omitted"}  max_tokens=32000
+   `--effort high` sends output_config.effort=high, same thinking field. The [1m] suffix is stripped on the wire.
+
+2. THE ENUM IS NOT VALIDATED for glm-5.4 (unlike glm-5.3 and glm-5.3-flash, 20260912-glm53flash-zai-anthropic.txt,
+   which 400/1210 everything outside low|high|max). Every output_config.effort value returned HTTP 200 with the served
+   model reading back glm-5.4: none, minimal, low, medium, high, xhigh, max, ultra and an invented bogus_zzz. A bad model
+   id (glm-5.4-zzz) is still refused 400/1211, so the endpoint is reading the request. Acceptance proves nothing here.
+
+3. TWO STATES ARE MEASURED. "Reply with the single word OK.", one call each:
+       shape                     none/minimal/low/medium/omitted     high/xhigh/max/ultra/bogus_zzz
+       no thinking field         3 output tokens, no thinking block   29-64 tokens, a thinking block (112-233 chars)
+       CLI shape (adaptive)      low 3, medium 3: no thinking block   high 156 (715 chars), max 105 (494 chars)
+   So low and medium switch thinking OFF on this path, and high and above switch it on. The dial binds; what the
+   Anthropic tiers map to is Z.ai's choice, and it is not the GLM-5.3 mapping.
+
+4. ABOVE HIGH: INCONCLUSIVE. CLI shape, a two-part reasoning prompt (arithmetic chain + smallest n with n^2+n+41
+   composite, with proof), max_tokens 32000, n=2 per tier, output tokens (thinking included):
+       high        3,246   5,521
+       max         6,367   4,534
+       ultra       4,901   5,009      (the CLI cannot send ultra; probed at the endpoint only)
+       bogus_zzz   6,879  15,919
+   high and max overlap (max mean 5,451 vs high 4,384, 1.24x, inside the within-tier spread), and an invented value
+   lands in the same band or above. Every answer was correct (62 animals; n=40). Small n and a wide spread: this does
+   not show max above high, and it does not show them equal. An earlier pass without the thinking field gave one high
+   call at 6,406 tokens before it was stopped for the shape change.
+
+Z.AI'S OWN MAPPING (https://docs.z.ai/devpack/latest-model, read 2026-11-23 after the probe): default max; effort
+minimal/light/low -> low, medium/high -> high, xhigh/max/ultra -> max, unknown strings -> max; explicit effort beats the
+thinking toggle. That explains the probe: bogus_zzz and ultra land with max because they ARE max, and the CLI's max is
+the vendor's top tier. (The docs map medium to high; on the one-word prompt medium gave no thinking block - one call,
+adaptive thinking may simply skip a trivial prompt.)
+
+LABEL FOR THE ROW: effort=max (what ran, asserted on the wire). max is the top tier by Z.ai's documented mapping (first_party, ceiling); not
+verified_ceiling, because no probe here separates max from high. Recheck when Z.ai documents the dial or the
+pay-per-token API opens.

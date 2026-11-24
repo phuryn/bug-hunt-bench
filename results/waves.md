@@ -4726,3 +4726,18 @@ Google's Gemini 4 Neon at thinking level low through the Antigravity CLI 1.5.11,
 Runs: 27, 31 and 31 of 105 (repo 1: 12, 12 and 14 - repo 2: 15, 19 and 17). For comparison: Gemini 4 Neon xhigh 63, Gemini 4 Neon high 57, Gemini 4 Neon medium 47.7 and Gemini 4 Carbon low 46 of 105.
 
 Cost is a list estimate at Google's gemini-4-neon rate ($3 input, $0.15 cached, $15 output per million) from the CLI's own per-step token counts, sub-agents included; on the Argon rows those counts read 10 to 38% below Google's per-call usage, so it may still read low. Judged by Grok (grok-4.7), the judge of the Carbon rows. Published automatically on Pawel's word, not featured.
+
+## GLM-5.4 — max effort on Z.ai's API, first run (Nov 24)
+
+Z.ai's GLM-5.4 at max effort through Claude Code on Z.ai's own Anthropic-compatible API, on a GLM Coding Plan Pro subscription, one run on Linux cloud machines.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall |
+|---|---|---|---|---|---|
+| GLM-5.4 (max effort, Z.ai API) | Claude Code / Z.ai API | **28** / 105 | 13 / 45 | 15 / 60 | 70.4 min |
+| GLM-5.3 (max effort, Z.ai API) | Claude Code / Z.ai API | 19 / 105 | 9 / 45 | 10 / 60 | 40.4 min |
+
+What it shows. One run of GLM-5.4 at max scores 28 of 105, 9 above GLM-5.3 at max on the same API (one run each).
+
+Z.ai's API refused 73 requests with HTTP 529 "The service may be temporarily overloaded" during the run. Repo 1 finished on Claude Code's retries. On repo 2 a first attempt ended with no report when the 429 rate-limit retries ran out and was voided; the rerun was cut off by the 529s at 04:45 Warsaw time, and Z.ai kept refusing the requests sent to resume it from 08:15 to about 10:15. Then the leg continued its own conversation and finished. Walls are working time only, without the waits for the plan's five-hour credit window or for the outage.
+
+Effort: Z.ai maps xhigh, max and ultra to max, its top tier. A probe shows the dial binds at high; max above high was not shown. No cost: Z.ai publishes no per-token price for GLM-5.4. Judged by Grok (grok-4.7). Not featured.

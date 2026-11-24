@@ -7,13 +7,13 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Nov 19, 2026](assets/leaderboard.png?v=2026-11-19-2ccd7f16)
+![Bug Hunt Bench leaderboard, the featured runs, updated Nov 24, 2026](assets/leaderboard.png?v=2026-11-24-b6297a3d)
 
-**Updated Nov 19, 2026 · 221 rows from 340 scored runs · 55 models · 19 of 105 bugs have never been fixed by any model.**
+**Updated Nov 24, 2026 · 222 rows from 341 scored runs · 56 models · 19 of 105 bugs have never been fixed by any model.**
 
 **Current leader:** Gemini 4 Neon at `xhigh` effort — **63 / 105** (24.3/45 on repo 1, 38.7/60 on repo 2).
 
-**Best per lab:** Google: Gemini 4 Neon (`xhigh`) 63 · OpenAI: GPT-6.2 Astra (`max`) 62.7 · Anthropic: Fable 5.2 (`max`) 58 · DeepSeek: DeepSeek V4.1 Flash 1017 (`max`) 42.7 · Meta: Muse Wonder Full 1.0 (`max`) 42 · Moonshot AI: Kimi K3.1 Pro (`max`) 36 · Unbiased: Pareto (ex-Union Alpha) (`default`) 30.7 · xAI: Grok 4.7 (`xhigh`) 29 · Alibaba: Qwen3.8-Flash (`max`) 26 · Xiaomi: MiMo-V2.6-Flash (`default`) 23.3 · Z.ai: GLM-5.3 (`max`) 19 · Tencent: Hy4 Preview (`default`) 18 · Mistral: Mistral Large 4 (`high`) 15
+**Best per lab:** Google: Gemini 4 Neon (`xhigh`) 63 · OpenAI: GPT-6.2 Astra (`max`) 62.7 · Anthropic: Fable 5.2 (`max`) 58 · DeepSeek: DeepSeek V4.1 Flash 1017 (`max`) 42.7 · Meta: Muse Wonder Full 1.0 (`max`) 42 · Moonshot AI: Kimi K3.1 Pro (`max`) 36 · Unbiased: Pareto (ex-Union Alpha) (`default`) 30.7 · xAI: Grok 4.7 (`xhigh`) 29 · Z.ai: GLM-5.4 (`max`) 28 · Alibaba: Qwen3.8-Flash (`max`) 26 · Xiaomi: MiMo-V2.6-Flash (`default`) 23.3 · Tencent: Hy4 Preview (`default`) 18 · Mistral: Mistral Large 4 (`high`) 15
 
 | # | Model | Harness | Effort | Runs | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Extras | Wall | Cost | Date |
 |--:|---|---|---|--:|--:|--:|--:|--:|--:|--:|---|
@@ -83,90 +83,91 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 64 | Fable 5 | Claude Code | max | 1 | **29** | 12 | 17 | 5 | 57 min | $112.40 | 2026-08-01 |
 | 65 | Grok 4.6 | Grok Build CLI (ACP) | xhigh | 3 | **28.7** | 11.7 | 17 | 18 | 43 min | $18.60 floor | 2026-09-14 |
 | 66 | Gemini 4 Hydrogen | Antigravity CLI | high | 3 | **28.3** | 10 | 18.3 | 12.7 | 22 min | $4.42 | 2026-11-13 |
-| 67 | GPT-6 Astra | Codex CLI | low | 1 | **27** | 18 | 9 | 25 | 32 min | $11.69 | 2026-09-05 |
-| 68 | Opus 5 | Claude Code | max | 1 | **27** | 13 | 14 | 2 | 60 min | $54.94 | 2026-08-01 |
-| 69 | Grok 4.7 | Grok Build CLI (ACP) | medium | 3 | **26.7** | 12 | 14.7 | 22.7 | 31 min | $16.76 floor | 2026-09-21 |
-| 70 | Qwen3.8-Flash | Claude Code / Alibaba API | max | 1 | **26** | 13 | 13 | 7 | 97 min | $1.81 | 2026-09-11 |
-| 71 | Opus 5 | Claude Code | xhigh | 1 | **26** | 14 | 12 | 3 | 50 min | $63.25 | 2026-08-28 |
-| 72 | Qwen3.8-Max | Claude Code / Alibaba API | max | 3 | **25.7** | 12.3 | 13.3 | 7 | 117 min | $26.76 | 2026-09-15 |
-| 73 | GPT-6 Sol | Codex CLI | xhigh | 1 | **25** | 10 | 15 | 24 | 51 min | $7.67 | 2026-09-23 |
-| 74 | Gemini 4 Hydrogen | Antigravity CLI | medium | 3 | **24.7** | 9.7 | 15 | 17.7 | 20 min | $2.10 | 2026-11-13 |
-| 75 | Opus 5 | Claude Code | medium | 1 | **24** | 11 | 13 | 4 | 30 min | $37.40 | 2026-08-27 |
-| 76 | Fable 5 | Claude Code | high | 1 | **24** | 9 | 15 | 3 | 31 min | $74.52 | 2026-07-26 |
-| 77 | MiMo-V2.6-Flash | Claude Code / OpenRouter | default | 3 | **23.3** | 8 | 15.3 | 7.3 | 71 min | $0.49 bill | 2026-09-22 |
-| 78 | Sonnet 5.5 | Claude Code | medium | 3 | **23.3** | 8.7 | 14.7 | 8.7 | 17 min | $11.11 | 2026-09-30 |
-| 79 | Qwen3.8-Flash | Claude Code / Alibaba API | low | 1 | **23** | 11 | 12 | 7 | 98 min | $1.37 | 2026-09-11 |
-| 80 | GPT-5.6 Luna | Codex CLI | xhigh | 1 | **23** | 10 | 13 | 53 | 136 min | $2.50 | 2026-08-28 |
-| 81 | Grok 4.6 | Grok Build CLI (ACP) | high | 1 | **23** | 7 | 16 | 16 | 33 min | $15.73 floor | 2026-08-28 |
-| 82 | MiMo-V2.6-Pro | Claude Code / OpenRouter | default | 3 | **22.7** | 11.3 | 11.3 | 5.3 | 91 min | $0.86 bill | 2026-09-22 |
-| 83 | GPT-6.1 Sol | Codex CLI | low | 2 | **22.5** | 11.5 | 11 | 24 | 25 min | $1.34 | 2026-10-01 |
-| 84 | Opus 5.5 | Claude Code | low | 3 | **22.3** | 11.3 | 11 | 9.7 | 12 min | $8.34 | 2026-09-23 |
-| 85 | Grok 4.6 | Grok Build CLI (ACP) | medium | 1 | **22** | 9 | 13 | 11 | 26 min | $5.80 floor | 2026-08-28 |
-| 86 | Gemini 3.7 Flash | Gemini CLI (retired) + model-pinning gateway | high | 1 | **22** | 8 | 14 | 4 | 97 min | $8.43 | 2026-08-24 |
-| 87 | DeepSeek V4.1 Flash | Claude Code / DeepSeek API | max | 3 | **21.7** | 11.3 | 10.3 | 6.7 | 56 min | $0.78 bill | 2026-09-15 |
-| 88 | Haiku 5.5 | Claude Code | max | 2 | **21.5** | 10 | 11.5 | 9 | 32 min | $5.83 | 2026-10-07 |
-| 89 | Fable 5.1 | Claude Code | medium | 1 | **21** | 8 | 13 | 3 | 23 min | $23.73 | 2026-09-10 |
-| 90 | Kimi K3 | Claude Code / OpenRouter | default | 1 | **21** | 4 | 17 | 6 | 108 min | $25.27 | 2026-07-26 |
-| 91 | Opus 5 | Claude Code | high | 1 | **21** | 11 | 10 | 6 | 37 min | $41.51 | 2026-07-26 |
-| 92 | Muse Spark 1.3 | Muse Code / Meta API | xhigh | 3 | **20.3** | 8 | 12.3 | 13.3 | 64 min | $13.71 | 2026-09-14 |
-| 93 | GPT-6 Sol | Codex CLI | high | 1 | **20** | 10 | 10 | 15 | 34 min | $4.16 | 2026-09-23 |
-| 94 | GPT-5.6 Terra | Codex CLI | xhigh | 1 | **20** | 9 | 11 | 29 | 57 min | $8.98 | 2026-08-28 |
-| 95 | Grok 4.7 | Grok Build CLI (ACP) | high | 3 | **19.3** | 8.7 | 10.7 | 15.7 | 38 min | $12.29 floor | 2026-09-21 |
-| 96 | DeepSeek V4.1 Flash | Claude Code / DeepSeek API | high | 1 | **19** | 9 | 10 | 4 | 26 min | $0.31 bill | 2026-09-10 |
-| 97 | Sonnet 5.5 | Claude Code | low | 3 | **19** | 6.7 | 12.3 | 8 | 8 min | $5.73 | 2026-09-30 |
-| 98 | GLM-5.3 | Claude Code / Z.ai API | max | 1 | **19** | 9 | 10 | 2 | 40 min | $15.93 | 2026-09-10 |
-| 99 | Muse Spark 1.3 | Muse Code / Meta API | high | 3 | **18.7** | 8.7 | 10 | 19.3 | 76 min | $12.94 | 2026-09-14 |
-| 100 | GPT-6 Luna | Codex CLI | max | 3 | **18.3** | 6.3 | 12 | 22.7 | 99 min | $0.52 | 2026-09-23 |
-| 101 | Haiku 5.5 | Claude Code | xhigh | 3 | **18.3** | 9 | 9.3 | 6.7 | 24 min | $4.80 | 2026-10-07 |
-| 102 | MiMo-V2.6-Pro | Claude Code / Xiaomi first-party | enabled | 1 | **18** | 9 | 9 | 4 | 75 min | $0.59 | 2026-09-22 |
-| 103 | Hy4 Preview | Claude Code / OpenRouter | default | 1 | **18** | 9 | 9 | 2 | 68 min | $3.13 bill | 2026-08-28 |
-| 104 | GPT-5.6 Terra | Codex CLI | high | 1 | **18** | 7 | 11 | 17 | 28 min | $5.89 | 2026-08-27 |
-| 105 | Gemini 3.8 Flash | Antigravity CLI | high | 3 | **18** | 6.7 | 11.3 | 4 | 39 min | $11.03 | 2026-09-15 |
-| 106 | GLM-5.3 Flash | Claude Code / Z.ai API | max | 3 | **17.7** | 9.3 | 8.3 | 3.3 | 63 min | $1.03 | 2026-09-15 |
-| 107 | Grok 4.5 | Grok Build CLI (ACP) | high | 1 | **17** | 5 | 12 | 10 | 28 min | $8.50 floor | 2026-08-06 |
-| 108 | Muse Spark 1.2 | Claude Code / Meta API | xhigh | 1 | **17** | 6 | 11 | 12 | 36 min | $13.99 | 2026-08-06 |
-| 109 | Ox Alpha (stealth) | Claude Code / OpenRouter | default | 1 | **16** | 8 | 8 | 3 | 59 min | free | 2026-08-25 |
-| 110 | GLM-5.3 Flash | Claude Code / Z.ai API | high | 1 | **16** | 9 | 7 | 4 | 62 min | $0.94 | 2026-09-13 |
-| 111 | DeepSeek V4-Pro | Claude Code / DeepSeek API | max | 1 | **16** | 8 | 8 | 4 | 37 min | $1.89 bill | 2026-09-10 |
-| 112 | Haiku 5.5 | Claude Code | high | 2 | **16** | 5 | 11 | 4 | 19 min | $3.56 | 2026-10-07 |
-| 113 | Gemini 3.7 Flash | Antigravity CLI | high | 1 | **16** | 4 | 12 | 2 | 23 min | $6.36 | 2026-08-28 |
-| 114 | Grok 4.7 | Grok Build CLI (ACP) | low | 3 | **15.7** | 10.3 | 5.3 | 18.3 | 22 min | $9.36 floor | 2026-09-21 |
-| 115 | GPT-5.6 Terra | Codex CLI | medium | 1 | **15** | 4 | 11 | 6 | 20 min | $3.87 | 2026-08-27 |
-| 116 | Grok 4.6 | Grok Build CLI (ACP) | low | 1 | **15** | 6 | 9 | 9 | 18 min | $4.14 floor | 2026-08-27 |
-| 117 | Qwen3.8-27B | Claude Code / Alibaba API | xhigh | 3 | **15** | 5.7 | 9.3 | 2.3 | 57 min | $5.55 | 2026-09-15 |
-| 118 | Mistral Large 4 | Claude Code / OpenRouter | high | 3 | **15** | 5 | 10 | 3.3 | 111 min | $11.95 bill | 2026-10-07 |
-| 119 | Opus 4.8 | Claude Code | max | 1 | **15** | 6 | 9 | 3 | 109 min | $58.11 | 2026-09-10 |
-| 120 | GPT-6 Luna | Codex CLI | xhigh | 1 | **14** | 4 | 10 | 12 | 57 min | $0.39 | 2026-09-23 |
-| 121 | DeepSeek V4-Flash | Claude Code / OpenRouter | default | 1 | **14** | 6 | 8 | 0 | 48 min | $1.52 bill | 2026-08-01 |
-| 122 | GPT-6 Sol | Codex CLI | medium | 1 | **14** | 3 | 11 | 13 | 24 min | $2.39 | 2026-09-23 |
-| 123 | GPT-5.6 Luna | Codex CLI | high | 1 | **13** | 5 | 8 | 22 | 64 min | $0.57 | 2026-07-31 |
-| 124 | GLM-5.3 Flash | Claude Code / OpenRouter | default | 1 | **13** | 6 | 7 | 4 | 57 min | $0.79 bill | 2026-08-27 |
-| 125 | DeepSeek V4-Pro | Claude Code / DeepSeek API | high | 1 | **13** | 4 | 9 | 1 | 27 min | $1.08 bill | 2026-09-10 |
-| 126 | Muse Spark 1.3 | Muse Code / Meta API | medium | 3 | **13** | 5.3 | 7.7 | 17.3 | 58 min | $9.24 | 2026-09-14 |
-| 127 | Haiku 5.5 | Claude Code | medium | 1 | **12** | 5 | 7 | 4 | 16 min | $2.66 | 2026-10-08 |
-| 128 | GPT-6.1 Terra | Codex CLI | xhigh | 3 | **11.3** | 5 | 6.3 | 17 | 16 min | $0.75 | 2026-10-26 |
-| 129 | Haiku 5.5 | Claude Code | low | 1 | **11** | 4 | 7 | 2 | 9 min | $1.61 | 2026-10-08 |
-| 130 | Qwen3.8-27B 8-bit | Claude Code / OpenRouter | default | 3 | **10.7** | 3.7 | 7 | 1.7 | 57 min | $2.97 bill | 2026-09-16 |
-| 131 | Gemini 4 Hydrogen | Antigravity CLI | low | 3 | **10.3** | 5.3 | 5 | 6 | 7 min | $0.43 | 2026-11-13 |
-| 132 | GPT-6.1 Terra | Codex CLI | high | 3 | **9.7** | 4.3 | 5.3 | 6.7 | 13 min | $0.56 | 2026-10-26 |
-| 133 | Muse Spark 1.3 | Muse Code / Meta API | low | 3 | **9.7** | 5 | 4.7 | 6.7 | 36 min | $5.61 | 2026-09-14 |
-| 134 | GPT-6 Luna | Codex CLI | high | 1 | **9** | 2 | 7 | 9 | 24 min | $0.13 | 2026-09-23 |
-| 135 | GPT-5.6 Luna | Codex CLI | medium | 1 | **9** | 5 | 4 | 5 | 15 min | $0.33 | 2026-08-27 |
-| 136 | GLM-5.3 Flash | Claude Code / Z.ai API | low | 1 | **9** | 7 | 2 | 4 | 29 min | $0.42 | 2026-09-13 |
-| 137 | Sonnet 5 | Claude Code | high | 1 | **9** | 1 | 8 | 4 | 33 min | $11.38 | 2026-07-26 |
-| 138 | Sonnet 5 | Claude Code | max | 1 | **9** | 3 | 6 | 3 | 61 min | $17.96 | 2026-09-10 |
-| 139 | Opus 4.8 | Claude Code | high | 1 | **9** | 2 | 7 | 1 | 35 min | $21.30 | 2026-07-26 |
-| 140 | GPT-6.1 Terra | Codex CLI | medium | 3 | **7.3** | 3.7 | 3.7 | 7.3 | 10 min | $0.31 | 2026-10-27 |
-| 141 | GPT-6.1 Terra | Codex CLI | low | 3 | **6** | 2.7 | 3.3 | 5 | 10 min | $0.30 | 2026-10-27 |
-| 142 | GPT-6 Sol | Codex CLI | low | 1 | **6** | 3 | 3 | 5 | 11 min | $1.08 | 2026-09-23 |
-| 143 | GPT-6 Luna | Codex CLI | medium | 1 | **4** | 2 | 2 | 0 | 9 min | $0.06 | 2026-09-23 |
-| 144 | GPT-5.6 Luna | Codex CLI | low | 1 | **4** | 0 | 4 | 1 | 6 min | $0.10 | 2026-08-27 |
-| 145 | GPT-6 Luna | Codex CLI | low | 1 | **4** | 1 | 3 | 9 | 19 min | $0.20 | 2026-09-23 |
-| 146 | Gemma 4 31B | Claude Code / OpenRouter | default | 1 | **4** | 1 | 3 | 2 | 222 min | $8.61 bill | 2026-09-16 |
-| 147 | Gemma 4 31B 4-bit | Claude Code / OpenRouter | default | 1 | **3** | 1 | 2 | 2 | 25 min | $0.56 bill | 2026-09-16 |
-| 148 | Haiku 4.5 | Claude Code | default | 2 | **1.5** | 0.5 | 1 | 2.5 | 17 min | $2.22 | 2026-10-08 |
-| 149 | gpt-oss-120b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0.3 | 4 min | $0.11 bill | 2026-09-15 |
-| 150 | gpt-oss-20b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0 | 7 min | $0.11 bill | 2026-09-15 |
+| 67 | GLM-5.4 | Claude Code / Z.ai API | max | 1 | **28** | 13 | 15 | 3 | 70 min | — | 2026-11-24 |
+| 68 | GPT-6 Astra | Codex CLI | low | 1 | **27** | 18 | 9 | 25 | 32 min | $11.69 | 2026-09-05 |
+| 69 | Opus 5 | Claude Code | max | 1 | **27** | 13 | 14 | 2 | 60 min | $54.94 | 2026-08-01 |
+| 70 | Grok 4.7 | Grok Build CLI (ACP) | medium | 3 | **26.7** | 12 | 14.7 | 22.7 | 31 min | $16.76 floor | 2026-09-21 |
+| 71 | Qwen3.8-Flash | Claude Code / Alibaba API | max | 1 | **26** | 13 | 13 | 7 | 97 min | $1.81 | 2026-09-11 |
+| 72 | Opus 5 | Claude Code | xhigh | 1 | **26** | 14 | 12 | 3 | 50 min | $63.25 | 2026-08-28 |
+| 73 | Qwen3.8-Max | Claude Code / Alibaba API | max | 3 | **25.7** | 12.3 | 13.3 | 7 | 117 min | $26.76 | 2026-09-15 |
+| 74 | GPT-6 Sol | Codex CLI | xhigh | 1 | **25** | 10 | 15 | 24 | 51 min | $7.67 | 2026-09-23 |
+| 75 | Gemini 4 Hydrogen | Antigravity CLI | medium | 3 | **24.7** | 9.7 | 15 | 17.7 | 20 min | $2.10 | 2026-11-13 |
+| 76 | Opus 5 | Claude Code | medium | 1 | **24** | 11 | 13 | 4 | 30 min | $37.40 | 2026-08-27 |
+| 77 | Fable 5 | Claude Code | high | 1 | **24** | 9 | 15 | 3 | 31 min | $74.52 | 2026-07-26 |
+| 78 | MiMo-V2.6-Flash | Claude Code / OpenRouter | default | 3 | **23.3** | 8 | 15.3 | 7.3 | 71 min | $0.49 bill | 2026-09-22 |
+| 79 | Sonnet 5.5 | Claude Code | medium | 3 | **23.3** | 8.7 | 14.7 | 8.7 | 17 min | $11.11 | 2026-09-30 |
+| 80 | Qwen3.8-Flash | Claude Code / Alibaba API | low | 1 | **23** | 11 | 12 | 7 | 98 min | $1.37 | 2026-09-11 |
+| 81 | GPT-5.6 Luna | Codex CLI | xhigh | 1 | **23** | 10 | 13 | 53 | 136 min | $2.50 | 2026-08-28 |
+| 82 | Grok 4.6 | Grok Build CLI (ACP) | high | 1 | **23** | 7 | 16 | 16 | 33 min | $15.73 floor | 2026-08-28 |
+| 83 | MiMo-V2.6-Pro | Claude Code / OpenRouter | default | 3 | **22.7** | 11.3 | 11.3 | 5.3 | 91 min | $0.86 bill | 2026-09-22 |
+| 84 | GPT-6.1 Sol | Codex CLI | low | 2 | **22.5** | 11.5 | 11 | 24 | 25 min | $1.34 | 2026-10-01 |
+| 85 | Opus 5.5 | Claude Code | low | 3 | **22.3** | 11.3 | 11 | 9.7 | 12 min | $8.34 | 2026-09-23 |
+| 86 | Grok 4.6 | Grok Build CLI (ACP) | medium | 1 | **22** | 9 | 13 | 11 | 26 min | $5.80 floor | 2026-08-28 |
+| 87 | Gemini 3.7 Flash | Gemini CLI (retired) + model-pinning gateway | high | 1 | **22** | 8 | 14 | 4 | 97 min | $8.43 | 2026-08-24 |
+| 88 | DeepSeek V4.1 Flash | Claude Code / DeepSeek API | max | 3 | **21.7** | 11.3 | 10.3 | 6.7 | 56 min | $0.78 bill | 2026-09-15 |
+| 89 | Haiku 5.5 | Claude Code | max | 2 | **21.5** | 10 | 11.5 | 9 | 32 min | $5.83 | 2026-10-07 |
+| 90 | Fable 5.1 | Claude Code | medium | 1 | **21** | 8 | 13 | 3 | 23 min | $23.73 | 2026-09-10 |
+| 91 | Kimi K3 | Claude Code / OpenRouter | default | 1 | **21** | 4 | 17 | 6 | 108 min | $25.27 | 2026-07-26 |
+| 92 | Opus 5 | Claude Code | high | 1 | **21** | 11 | 10 | 6 | 37 min | $41.51 | 2026-07-26 |
+| 93 | Muse Spark 1.3 | Muse Code / Meta API | xhigh | 3 | **20.3** | 8 | 12.3 | 13.3 | 64 min | $13.71 | 2026-09-14 |
+| 94 | GPT-6 Sol | Codex CLI | high | 1 | **20** | 10 | 10 | 15 | 34 min | $4.16 | 2026-09-23 |
+| 95 | GPT-5.6 Terra | Codex CLI | xhigh | 1 | **20** | 9 | 11 | 29 | 57 min | $8.98 | 2026-08-28 |
+| 96 | Grok 4.7 | Grok Build CLI (ACP) | high | 3 | **19.3** | 8.7 | 10.7 | 15.7 | 38 min | $12.29 floor | 2026-09-21 |
+| 97 | DeepSeek V4.1 Flash | Claude Code / DeepSeek API | high | 1 | **19** | 9 | 10 | 4 | 26 min | $0.31 bill | 2026-09-10 |
+| 98 | Sonnet 5.5 | Claude Code | low | 3 | **19** | 6.7 | 12.3 | 8 | 8 min | $5.73 | 2026-09-30 |
+| 99 | GLM-5.3 | Claude Code / Z.ai API | max | 1 | **19** | 9 | 10 | 2 | 40 min | $15.93 | 2026-09-10 |
+| 100 | Muse Spark 1.3 | Muse Code / Meta API | high | 3 | **18.7** | 8.7 | 10 | 19.3 | 76 min | $12.94 | 2026-09-14 |
+| 101 | GPT-6 Luna | Codex CLI | max | 3 | **18.3** | 6.3 | 12 | 22.7 | 99 min | $0.52 | 2026-09-23 |
+| 102 | Haiku 5.5 | Claude Code | xhigh | 3 | **18.3** | 9 | 9.3 | 6.7 | 24 min | $4.80 | 2026-10-07 |
+| 103 | MiMo-V2.6-Pro | Claude Code / Xiaomi first-party | enabled | 1 | **18** | 9 | 9 | 4 | 75 min | $0.59 | 2026-09-22 |
+| 104 | Hy4 Preview | Claude Code / OpenRouter | default | 1 | **18** | 9 | 9 | 2 | 68 min | $3.13 bill | 2026-08-28 |
+| 105 | GPT-5.6 Terra | Codex CLI | high | 1 | **18** | 7 | 11 | 17 | 28 min | $5.89 | 2026-08-27 |
+| 106 | Gemini 3.8 Flash | Antigravity CLI | high | 3 | **18** | 6.7 | 11.3 | 4 | 39 min | $11.03 | 2026-09-15 |
+| 107 | GLM-5.3 Flash | Claude Code / Z.ai API | max | 3 | **17.7** | 9.3 | 8.3 | 3.3 | 63 min | $1.03 | 2026-09-15 |
+| 108 | Grok 4.5 | Grok Build CLI (ACP) | high | 1 | **17** | 5 | 12 | 10 | 28 min | $8.50 floor | 2026-08-06 |
+| 109 | Muse Spark 1.2 | Claude Code / Meta API | xhigh | 1 | **17** | 6 | 11 | 12 | 36 min | $13.99 | 2026-08-06 |
+| 110 | Ox Alpha (stealth) | Claude Code / OpenRouter | default | 1 | **16** | 8 | 8 | 3 | 59 min | free | 2026-08-25 |
+| 111 | GLM-5.3 Flash | Claude Code / Z.ai API | high | 1 | **16** | 9 | 7 | 4 | 62 min | $0.94 | 2026-09-13 |
+| 112 | DeepSeek V4-Pro | Claude Code / DeepSeek API | max | 1 | **16** | 8 | 8 | 4 | 37 min | $1.89 bill | 2026-09-10 |
+| 113 | Haiku 5.5 | Claude Code | high | 2 | **16** | 5 | 11 | 4 | 19 min | $3.56 | 2026-10-07 |
+| 114 | Gemini 3.7 Flash | Antigravity CLI | high | 1 | **16** | 4 | 12 | 2 | 23 min | $6.36 | 2026-08-28 |
+| 115 | Grok 4.7 | Grok Build CLI (ACP) | low | 3 | **15.7** | 10.3 | 5.3 | 18.3 | 22 min | $9.36 floor | 2026-09-21 |
+| 116 | GPT-5.6 Terra | Codex CLI | medium | 1 | **15** | 4 | 11 | 6 | 20 min | $3.87 | 2026-08-27 |
+| 117 | Grok 4.6 | Grok Build CLI (ACP) | low | 1 | **15** | 6 | 9 | 9 | 18 min | $4.14 floor | 2026-08-27 |
+| 118 | Qwen3.8-27B | Claude Code / Alibaba API | xhigh | 3 | **15** | 5.7 | 9.3 | 2.3 | 57 min | $5.55 | 2026-09-15 |
+| 119 | Mistral Large 4 | Claude Code / OpenRouter | high | 3 | **15** | 5 | 10 | 3.3 | 111 min | $11.95 bill | 2026-10-07 |
+| 120 | Opus 4.8 | Claude Code | max | 1 | **15** | 6 | 9 | 3 | 109 min | $58.11 | 2026-09-10 |
+| 121 | GPT-6 Luna | Codex CLI | xhigh | 1 | **14** | 4 | 10 | 12 | 57 min | $0.39 | 2026-09-23 |
+| 122 | DeepSeek V4-Flash | Claude Code / OpenRouter | default | 1 | **14** | 6 | 8 | 0 | 48 min | $1.52 bill | 2026-08-01 |
+| 123 | GPT-6 Sol | Codex CLI | medium | 1 | **14** | 3 | 11 | 13 | 24 min | $2.39 | 2026-09-23 |
+| 124 | GPT-5.6 Luna | Codex CLI | high | 1 | **13** | 5 | 8 | 22 | 64 min | $0.57 | 2026-07-31 |
+| 125 | GLM-5.3 Flash | Claude Code / OpenRouter | default | 1 | **13** | 6 | 7 | 4 | 57 min | $0.79 bill | 2026-08-27 |
+| 126 | DeepSeek V4-Pro | Claude Code / DeepSeek API | high | 1 | **13** | 4 | 9 | 1 | 27 min | $1.08 bill | 2026-09-10 |
+| 127 | Muse Spark 1.3 | Muse Code / Meta API | medium | 3 | **13** | 5.3 | 7.7 | 17.3 | 58 min | $9.24 | 2026-09-14 |
+| 128 | Haiku 5.5 | Claude Code | medium | 1 | **12** | 5 | 7 | 4 | 16 min | $2.66 | 2026-10-08 |
+| 129 | GPT-6.1 Terra | Codex CLI | xhigh | 3 | **11.3** | 5 | 6.3 | 17 | 16 min | $0.75 | 2026-10-26 |
+| 130 | Haiku 5.5 | Claude Code | low | 1 | **11** | 4 | 7 | 2 | 9 min | $1.61 | 2026-10-08 |
+| 131 | Qwen3.8-27B 8-bit | Claude Code / OpenRouter | default | 3 | **10.7** | 3.7 | 7 | 1.7 | 57 min | $2.97 bill | 2026-09-16 |
+| 132 | Gemini 4 Hydrogen | Antigravity CLI | low | 3 | **10.3** | 5.3 | 5 | 6 | 7 min | $0.43 | 2026-11-13 |
+| 133 | GPT-6.1 Terra | Codex CLI | high | 3 | **9.7** | 4.3 | 5.3 | 6.7 | 13 min | $0.56 | 2026-10-26 |
+| 134 | Muse Spark 1.3 | Muse Code / Meta API | low | 3 | **9.7** | 5 | 4.7 | 6.7 | 36 min | $5.61 | 2026-09-14 |
+| 135 | GPT-6 Luna | Codex CLI | high | 1 | **9** | 2 | 7 | 9 | 24 min | $0.13 | 2026-09-23 |
+| 136 | GPT-5.6 Luna | Codex CLI | medium | 1 | **9** | 5 | 4 | 5 | 15 min | $0.33 | 2026-08-27 |
+| 137 | GLM-5.3 Flash | Claude Code / Z.ai API | low | 1 | **9** | 7 | 2 | 4 | 29 min | $0.42 | 2026-09-13 |
+| 138 | Sonnet 5 | Claude Code | high | 1 | **9** | 1 | 8 | 4 | 33 min | $11.38 | 2026-07-26 |
+| 139 | Sonnet 5 | Claude Code | max | 1 | **9** | 3 | 6 | 3 | 61 min | $17.96 | 2026-09-10 |
+| 140 | Opus 4.8 | Claude Code | high | 1 | **9** | 2 | 7 | 1 | 35 min | $21.30 | 2026-07-26 |
+| 141 | GPT-6.1 Terra | Codex CLI | medium | 3 | **7.3** | 3.7 | 3.7 | 7.3 | 10 min | $0.31 | 2026-10-27 |
+| 142 | GPT-6.1 Terra | Codex CLI | low | 3 | **6** | 2.7 | 3.3 | 5 | 10 min | $0.30 | 2026-10-27 |
+| 143 | GPT-6 Sol | Codex CLI | low | 1 | **6** | 3 | 3 | 5 | 11 min | $1.08 | 2026-09-23 |
+| 144 | GPT-6 Luna | Codex CLI | medium | 1 | **4** | 2 | 2 | 0 | 9 min | $0.06 | 2026-09-23 |
+| 145 | GPT-5.6 Luna | Codex CLI | low | 1 | **4** | 0 | 4 | 1 | 6 min | $0.10 | 2026-08-27 |
+| 146 | GPT-6 Luna | Codex CLI | low | 1 | **4** | 1 | 3 | 9 | 19 min | $0.20 | 2026-09-23 |
+| 147 | Gemma 4 31B | Claude Code / OpenRouter | default | 1 | **4** | 1 | 3 | 2 | 222 min | $8.61 bill | 2026-09-16 |
+| 148 | Gemma 4 31B 4-bit | Claude Code / OpenRouter | default | 1 | **3** | 1 | 2 | 2 | 25 min | $0.56 bill | 2026-09-16 |
+| 149 | Haiku 4.5 | Claude Code | default | 2 | **1.5** | 0.5 | 1 | 2.5 | 17 min | $2.22 | 2026-10-08 |
+| 150 | gpt-oss-120b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0.3 | 4 min | $0.11 bill | 2026-09-15 |
+| 151 | gpt-oss-20b | Claude Code / OpenRouter | default | 3 | **0** | 0 | 0 | 0 | 7 min | $0.11 bill | 2026-09-15 |
 
 **Runs** is how many independent runs the row is built from. A row at `1` is a single measurement. A row above `1` is the MEAN of that many runs of an identical configuration - same model, prompt, harness, route, effort flag and judge - and every count, wall and cost on it is averaged, which is why those rows carry a decimal. The individual runs behind a mean are published in full in the metrics CSVs, so the spread stays auditable: this board has measured a 9-point range of 105 on a fixed configuration, so a single run is not a measurement of a model, and two rows at `1` that differ by a few points may not differ at all.
 
