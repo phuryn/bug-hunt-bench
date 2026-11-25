@@ -7,23 +7,23 @@
 If the numbers save you a benchmark run of your own, **star this repo** — that is what keeps the bench findable, and new models are added as they ship.
 
 <!-- leaderboard:start -->
-![Bug Hunt Bench leaderboard, the featured runs, updated Nov 24, 2026](assets/leaderboard.png?v=2026-11-24-b6297a3d)
+![Bug Hunt Bench leaderboard, the featured runs, updated Nov 25, 2026](assets/leaderboard.png?v=2026-11-25-599c4c08)
 
-**Updated Nov 24, 2026 · 222 rows from 341 scored runs · 56 models · 19 of 105 bugs have never been fixed by any model.**
+**Updated Nov 25, 2026 · 226 rows from 353 scored runs · 56 models · 19 of 105 bugs have never been fixed by any model.**
 
-**Current leader:** Gemini 4 Neon at `xhigh` effort — **63 / 105** (24.3/45 on repo 1, 38.7/60 on repo 2).
+**Current leader:** GPT-6.2 Astra at `max` effort — **62.7 / 105** (25.7/45 on repo 1, 37/60 on repo 2).
 
-**Best per lab:** Google: Gemini 4 Neon (`xhigh`) 63 · OpenAI: GPT-6.2 Astra (`max`) 62.7 · Anthropic: Fable 5.2 (`max`) 58 · DeepSeek: DeepSeek V4.1 Flash 1017 (`max`) 42.7 · Meta: Muse Wonder Full 1.0 (`max`) 42 · Moonshot AI: Kimi K3.1 Pro (`max`) 36 · Unbiased: Pareto (ex-Union Alpha) (`default`) 30.7 · xAI: Grok 4.7 (`xhigh`) 29 · Z.ai: GLM-5.4 (`max`) 28 · Alibaba: Qwen3.8-Flash (`max`) 26 · Xiaomi: MiMo-V2.6-Flash (`default`) 23.3 · Tencent: Hy4 Preview (`default`) 18 · Mistral: Mistral Large 4 (`high`) 15
+**Best per lab:** OpenAI: GPT-6.2 Astra (`max`) 62.7 · Google: Gemini 4 Neon (`xhigh`) 61 · Anthropic: Fable 5.2 (`max`) 58 · DeepSeek: DeepSeek V4.1 Flash 1017 (`max`) 42.7 · Meta: Muse Wonder Full 1.0 (`max`) 42 · Moonshot AI: Kimi K3.1 Pro (`max`) 36 · Unbiased: Pareto (ex-Union Alpha) (`default`) 30.7 · xAI: Grok 4.7 (`xhigh`) 29 · Z.ai: GLM-5.4 (`max`) 28 · Alibaba: Qwen3.8-Flash (`max`) 26 · Xiaomi: MiMo-V2.6-Flash (`default`) 23.3 · Tencent: Hy4 Preview (`default`) 18 · Mistral: Mistral Large 4 (`high`) 15
 
 | # | Model | Harness | Effort | Runs | Fixed /105 | Repo 1 /45 | Repo 2 /60 | Extras | Wall | Cost | Date |
 |--:|---|---|---|--:|--:|--:|--:|--:|--:|--:|---|
-| 1 | Gemini 4 Neon | Antigravity CLI | xhigh | 3 | **63** | 24.3 | 38.7 | 60.3 | 76 min | $46.34 | 2026-11-19 |
-| 2 | GPT-6.2 Astra | Codex CLI | max | 3 | **62.7** | 25.7 | 37 | 60 | 122 min | $28.35 | 2026-11-18 |
+| 1 | GPT-6.2 Astra | Codex CLI | max | 3 | **62.7** | 25.7 | 37 | 60 | 122 min | $28.35 | 2026-11-18 |
+| 2 | Gemini 4 Neon | Antigravity CLI | xhigh | 3 | **61** | 22.3 | 38.7 | 42 | 56 min | $34.42 | 2026-11-25 |
 | 3 | GPT-6.2 Astra | Codex CLI | xhigh | 5 | **60.2** | 25.6 | 34.6 | 72 | 84 min | $22.82 | 2026-11-18 |
 | 4 | GPT-6.2 Astra | Codex CLI | high | 5 | **59.6** | 24.8 | 34.8 | 76.2 | 48 min | $19.84 | 2026-11-18 |
 | 5 | Fable 5.2 | Claude Code | max | 3 | **58** | 23 | 35 | 24.7 | 143 min | $139.65 | 2026-11-09 |
 | 6 | Gemini 4 Carbon | Antigravity CLI | high | 3 | **57.3** | 22.3 | 35 | 25 | 114 min | $31.32 | 2026-11-10 |
-| 7 | Gemini 4 Neon | Antigravity CLI | high | 3 | **57** | 22.3 | 34.7 | 43.7 | 45 min | $29.11 | 2026-11-19 |
+| 7 | Gemini 4 Neon | Antigravity CLI | high | 3 | **56** | 21.3 | 34.7 | 36.3 | 37 min | $20.33 | 2026-11-25 |
 | 8 | Gemini 4 Carbon | Antigravity CLI | medium | 3 | **56** | 21.7 | 34.3 | 46.7 | 81 min | $24.95 | 2026-11-10 |
 | 9 | GPT-6.2 Sol | Codex CLI | max | 3 | **54.7** | 20.7 | 34 | 56 | 68 min | $7.00 | 2026-11-18 |
 | 10 | Sonnet 5.5 | Claude Code | max | 3 | **51.3** | 22.7 | 28.7 | 26.3 | 287 min | $154.03 | 2026-09-29 |
@@ -31,7 +31,7 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 12 | GPT-6.2 Sol | Codex CLI | high | 3 | **49.7** | 19.7 | 30 | 52.7 | 42 min | $4.14 | 2026-11-18 |
 | 13 | GPT-6.2 Sol | Codex CLI | xhigh | 3 | **49** | 18.7 | 30.3 | 52.3 | 41 min | $3.89 | 2026-11-18 |
 | 14 | Fable 5.2 | Claude Code | xhigh | 3 | **49** | 20.7 | 28.3 | 16.7 | 57 min | $61.01 | 2026-11-10 |
-| 15 | Gemini 4 Neon | Antigravity CLI | medium | 3 | **47.7** | 19.3 | 28.3 | 23 | 24 min | $12.84 | 2026-11-19 |
+| 15 | Gemini 4 Neon | Antigravity CLI | medium | 3 | **48.3** | 19.3 | 29 | 20.7 | 23 min | $11.10 | 2026-11-25 |
 | 16 | GPT-6.2 Astra | Codex CLI | low | 3 | **46.3** | 18.7 | 27.7 | 39 | 18 min | $7.28 | 2026-11-18 |
 | 17 | Gemini 4 Carbon | Antigravity CLI | low | 3 | **46** | 17.3 | 28.7 | 18 | 60 min | $7.67 | 2026-11-13 |
 | 18 | GPT-6.2 Sol | Codex CLI | medium | 3 | **45.7** | 16.3 | 29.3 | 49.3 | 32 min | $3.22 | 2026-11-18 |
@@ -73,7 +73,7 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 | 54 | GPT-5.6 Luna | Codex CLI | max | 3 | **31.3** | 16 | 15.3 | 54.7 | 187 min | $3.15 | 2026-09-22 |
 | 55 | Pareto (ex-Union Alpha) | Claude Code / OpenRouter | default | 3 | **30.7** | 16 | 14.7 | 10.3 | 38 min | $4.81 | 2026-09-17 |
 | 56 | Opus 5.5 | Claude Code | medium | 3 | **30.3** | 12.7 | 17.7 | 13.3 | 17 min | $15.68 | 2026-09-23 |
-| 57 | Gemini 4 Neon | Antigravity CLI | low | 3 | **29.7** | 12.7 | 17 | 6.3 | 11 min | $5.29 | 2026-11-19 |
+| 57 | Gemini 4 Neon | Antigravity CLI | low | 3 | **29.7** | 14 | 15.7 | 6.7 | 11 min | $4.36 | 2026-11-25 |
 | 58 | GPT-6 Sol | Codex CLI | max | 3 | **29.3** | 15.3 | 14 | 41.3 | 63 min | $9.33 | 2026-09-23 |
 | 59 | GPT-6.1 Sol | Codex CLI | medium | 2 | **29** | 16 | 13 | 30.5 | 30 min | $1.76 | 2026-09-30 |
 | 60 | GPT-5.6 Sol | Codex CLI | medium | 1 | **29** | 13 | 16 | 24 | 48 min | $15.77 | 2026-09-06 |
@@ -174,7 +174,7 @@ If the numbers save you a benchmark run of your own, **star this repo** — that
 Extras are real, unplanted defects a model fixed on the way; they are counted and never added to the score. Costs are token estimates at published list rates unless tagged **bill** (an actual invoice or credits delta) or **floor** (a reconstructed lower bound). `default` effort means the serving path had no working effort dial; *ran lower* marks a run whose CLI quietly replaced the requested tier. Wall clock is repo 1 plus repo 2 agent time, dependency install excluded.
 Every row's full note, caveat and supersession history is in [results/run-notes.md](https://github.com/phuryn/bug-hunt-bench/blob/main/results/run-notes.md); the runs behind each one are in the metrics CSVs.
 
-71 superseded re-runs stay in the CSVs and on the [live board](https://bughunt.productcompass.pm/?preset=all) but are left off this table.
+75 superseded re-runs stay in the CSVs and on the [live board](https://bughunt.productcompass.pm/?preset=all) but are left off this table.
 <!-- leaderboard:end -->
 
 ## What Bug Hunt Bench is

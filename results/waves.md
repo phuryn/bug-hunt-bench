@@ -4688,7 +4688,7 @@ Google's Gemini 4 Neon through the Antigravity CLI 1.5.11, signed in with a Goog
 
 | Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
 |---|---|---|---|---|---|---|
-| Gemini 4 Neon (xhigh effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **63** / 105 | 24.3 / 45 | 38.7 / 60 | 75.9 min | $46.34 |
+| Gemini 4 Neon (xhigh effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **63** / 105 | 24.3 / 45 | 38.7 / 60 | 75.9 min | $56.70 (restated Nov 25 from $46.34) |
 | Gemini 4 Neon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | **57** / 105 | 22.3 / 45 | 34.7 / 60 | 45.4 min | $29.11 |
 | Gemini 4 Carbon (high effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 57.3 / 105 | 22.3 / 45 | 35 / 60 | 114.0 min | $31.32 |
 | Gemini 4 Carbon (medium effort, Antigravity CLI) - mean of 3 | Antigravity CLI | 56 / 105 | 21.7 / 45 | 34.3 / 60 | 81.1 min | $24.95 |
@@ -4741,3 +4741,30 @@ What it shows. One run of GLM-5.4 at max scores 28 of 105, 9 above GLM-5.3 at ma
 Z.ai's API refused 73 requests with HTTP 529 "The service may be temporarily overloaded" during the run. Repo 1 finished on Claude Code's retries. On repo 2 a first attempt ended with no report when the 429 rate-limit retries ran out and was voided; the rerun was cut off by the 529s at 04:45 Warsaw time, and Z.ai kept refusing the requests sent to resume it from 08:15 to about 10:15. Then the leg continued its own conversation and finished. Walls are working time only, without the waits for the plan's five-hour credit window or for the outage.
 
 Effort: Z.ai maps xhigh, max and ultra to max, its top tier. A probe shows the dial binds at high; max above high was not shown. No cost: Z.ai publishes no per-token price for GLM-5.4. Judged by Grok (grok-4.7). Not featured.
+
+## Gemini 4 Neon — all four levels again on Antigravity CLI 1.5.16, means of 3 (Nov 25)
+
+Google's Gemini 4 Neon at all four thinking levels through the Antigravity CLI 1.5.16, signed in with a Google AI Ultra subscription (no API key), three runs each, one Linux cloud machine per leg. The Nov 19 rows ran 1.5.11 on a Windows laptop; the prompt, model strings, timeout, price table and judge are the same. Every leg read CLI version 1.5.16.
+
+| Row | Harness | Score | Repo 1 | Repo 2 | Wall | Cost |
+|---|---|---|---|---|---|---|
+| Gemini 4 Neon (xhigh effort, Antigravity CLI 1.5.16) - mean of 3 | Antigravity CLI 1.5.16 | **61** / 105 | 22.3 / 45 | 38.7 / 60 | 55.5 min | $34.42 |
+| Gemini 4 Neon (xhigh effort, Antigravity CLI) - mean of 3 (superseded) | Antigravity CLI 1.5.11 | 63 / 105 | 24.3 / 45 | 38.7 / 60 | 75.9 min | $56.70 |
+| Gemini 4 Neon (high effort, Antigravity CLI 1.5.16) - mean of 3 | Antigravity CLI 1.5.16 | **56** / 105 | 21.3 / 45 | 34.7 / 60 | 37.2 min | $20.33 |
+| Gemini 4 Neon (high effort, Antigravity CLI) - mean of 3 (superseded) | Antigravity CLI 1.5.11 | 57 / 105 | 22.3 / 45 | 34.7 / 60 | 45.4 min | $29.11 |
+| Gemini 4 Neon (medium effort, Antigravity CLI 1.5.16) - mean of 3 | Antigravity CLI 1.5.16 | **48.3** / 105 | 19.3 / 45 | 29 / 60 | 22.6 min | $11.10 |
+| Gemini 4 Neon (medium effort, Antigravity CLI) - mean of 3 (superseded) | Antigravity CLI 1.5.11 | 47.7 / 105 | 19.3 / 45 | 28.3 / 60 | 24.5 min | $12.84 |
+| Gemini 4 Neon (low effort, Antigravity CLI 1.5.16) - mean of 3 | Antigravity CLI 1.5.16 | **29.7** / 105 | 14 / 45 | 15.7 / 60 | 10.8 min | $4.36 |
+| Gemini 4 Neon (low effort, Antigravity CLI) - mean of 3 (superseded) | Antigravity CLI 1.5.11 | 29.7 / 105 | 12.7 / 45 | 17 / 60 | 10.8 min | $5.29 |
+
+Runs: xhigh 61, 61 and 61 of 105 (repo 1: 23, 23 and 21 - repo 2: 38, 38 and 40); high 58, 54 and 56 of 105 (repo 1: 24, 20 and 20 - repo 2: 34, 34 and 36); medium 50, 47 and 48 of 105 (repo 1: 20, 18 and 20 - repo 2: 30, 29 and 28); low 29, 27 and 33 of 105 (repo 1: 14, 14 and 14 - repo 2: 15, 13 and 19).
+
+What it shows. The levels keep their order and roughly their distances: xhigh 61, high 56, medium 48.3 and low 29.7, against 63, 57, 47.7 and 29.7 on 1.5.11. The differences (-2.0, -1.0, +0.6, +0.0) are within the run-to-run spread; over the four levels the mean drop is 0.6, which relabelling the runs within each level reaches about 3 times in 10. At xhigh Neon is now 1.7 below GPT-6.2 Astra at max (62.7); on 1.5.11 it was 0.3 above. Both gaps are smaller than Astra max's own spread across its three runs.
+
+The four Nov 19 rows are superseded and stay in the receipts; no score is retracted. The Nov 19 xhigh cost is restated from $46.34 to $56.70: run 2's repo 2 leg also started 15 sub-agents through the CLI's scripted-workflow tool, which the first count missed ($31.09). All 24 Nov 19 streams were checked; no other leg used that tool.
+
+Effort. In these runs the main conversation thought 110,817 to 141,805 tokens per run at xhigh, 47,709 to 60,119 at high, 25,733 to 27,519 at medium and 7,699 to 9,415 at low, no overlap. A one-prompt probe the same morning did not separate high from xhigh (3,980 to 4,889 and 3,969 to 4,767 tokens); on 1.5.11 the same prompt gave xhigh 7,815 to 7,916.
+
+Paused legs. Five legs (xhigh run 2 both repos, xhigh run 3 repo 1, high run 2 both repos) were ended mid-task after 12 to 14 minutes so the legs ahead of them could finish inside the subscription's usage window, and continued 18 to 25 minutes later on their own conversations. Their walls exclude the pause.
+
+Cost is a list estimate at Google's gemini-4-neon rate ($3 input, $0.15 cached, $15 output per million) from the CLI's own per-step token counts, sub-agents included; on the Argon rows those counts read 10 to 38% below Google's per-call usage, so it may still read low. Walls come from cloud machines and do not compare directly with the laptop rows. Judged by Grok (grok-4.7), the judge of the Nov 19 rows. Xhigh and high are featured; medium and low are not.

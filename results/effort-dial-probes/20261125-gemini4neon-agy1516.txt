@@ -1,0 +1,19 @@
+Gemini 4 Neon in Antigravity CLI 1.5.16 on a Google AI Ultra subscription sign-in (no gateway), Linux cloud machine: does the xhigh slug think above high? - 2026-11-25 04:49-04:55 (Warsaw)
+
+agy -p <probe_effort_dial.DEFAULT_PROMPT> --model <slug> --effort <tier> --output-format json; usage.thinking_tokens is the CLI's own meter (no wire readback on this path). n=3 per slug, the two slugs alternating.
+
+=== RESULT ===
+gemini-4-neon-high         thinking=[4889, 3980, 4631] mean=4500 range=3980-4889 output=[5915, 4985, 5668] wall=[49.0, 42.5, 47.8] exits=[0, 0, 0]
+gemini-4-neon-xhigh        thinking=[4767, 3969, 4139] mean=4292 range=3969-4767 output=[5251, 4404, 4617] wall=[44.6, 37.2, 41.4] exits=[0, 0, 0]
+
+xhigh/high mean ratio 0.95x; ranges OVERLAP
+VERDICT xhigh/high on this prompt: DOES NOT SEPARATE
+
+The full runs made the same day on the same CLI and sign-in do separate. Thinking tokens of the main conversation, both repos, per run:
+  xhigh   110817, 120254, 141805
+  high     47709,  57235,  60119
+  medium   27519,  25733,  26711
+  low       8265,   7699,   9415
+Four bands, no overlap.
+
+Same prompt on CLI 1.5.11, 2026-11-19 (20261118-gemini4neon-agy-login.txt): high 3484-5117 (mean 4335), xhigh 7815-7916 (mean 7856). High is unchanged; on 1.5.16 xhigh thought about as much as high on this prompt. The client changed between the two probes and the server may have; the probe cannot tell which.
